@@ -1,6 +1,5 @@
 import config from "config";
 import request from "request";
-import { Logger } from './logger';
 
 export function isDevMode() {
 	return config.util.getEnv('NODE_ENV').split(',').includes('development');

@@ -61,6 +61,8 @@ export async function getMWBot() {
 		const online = await this.readText(title, false, customRequestOptions);
 		content = content.replace(/\r/g, "\n");
 		if (content != online) {
+			// diffStrings(content, online);
+			// debugger;
 			const editRes = await this.edit(title, content, summary, Object.assign({}, customRequestOptions, {
 				bot: true,
 			}));
@@ -97,4 +99,16 @@ export async function getMWBot() {
 	};
 
 	return bot;
+}
+
+function diffStrings(str1: string, str2: string) {
+	const str1a = str1.split('\n');
+	const str2a = str2.split('\n');
+	for (let i = 0; i < Math.max(str1a.length, str2a.length); i++) {
+		const s1 = str1a[i];
+		const s2 = str2a[i];
+		if (s1 !== s2) {
+			console.log(`Line ${i + 1} | ${s1} | ${s2}`);
+		}
+	}
 }

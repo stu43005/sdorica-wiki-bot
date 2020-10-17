@@ -197,6 +197,9 @@ export class RowWrapper {
 					break;
 			}
 		}
+		if (typeof value === "string") {
+			value = value.replace('\b', '');
+		}
 		return value;
 	}
 

@@ -1,10 +1,11 @@
-name: "Data Process"
+name: "Wiki"
 
 on:
-  push:
+  workflow_run:
+    workflows: ["Data Process"]
     branches: [master]
-  schedule:
-    - cron: "0 * * * *"
+    types:
+      - completed
 
 jobs:
   script:
@@ -27,8 +28,11 @@ jobs:
 
     - name: Create local changes
       timeout-minutes: 15
-      run: npm run script
+      run: npm run wiki
       env:
+        MW_USER: ${{ secrets.MW_USER }}
+        MW_PASS: ${{ secrets.MW_PASS }}
+        DC_WEBHOOK: ${{ secrets.DC_WEBHOOK }}
         NODE_ENV: production
 
     - name: Commit files
@@ -37,7 +41,7 @@ jobs:
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git add .
-        git commit -m "更新資料" -a
+        git commit -m "更新Wiki資料" -a
 
     - name: Push changes
       uses: ad-m/github-push-action@master
