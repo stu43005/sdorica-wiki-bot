@@ -15,7 +15,7 @@ export async function charAssetsDownloader() {
 	const charAssets = ImperiumData.from('charAssets');
 	const asset = charAssets.getAsset("charAssets.bson");
 	if (asset) {
-		await downloadCharAssets(asset);
+		return await downloadCharAssets(asset);
 	} else {
 		logger.error("charAssets.bson asset not exists.");
 		debugger;
@@ -30,7 +30,7 @@ export async function charAssetsDownloadByUuid(uuid: string) {
 		L: url,
 		H: "",
 	};
-	await downloadCharAssets(asset);
+	return await downloadCharAssets(asset);
 }
 
 export async function downloadCharAssets(asset: AssetDataRaw) {

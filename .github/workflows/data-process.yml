@@ -1,0 +1,47 @@
+name: "Data Process"
+
+on:
+  push:
+    branches: [master]
+  schedule:
+    - cron: "0 * * * *"
+
+jobs:
+  script:
+    name: Analyze
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+	  uses: actions/checkout@v2
+      with:
+        fetch-depth: 2
+
+    - name: Install Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: '12'
+
+    - name: Install Dependencies
+	  run: npm ci
+
+    - name: Create local changes
+      timeout-minutes: 15
+      run: npm run script
+      env:
+        MW_USER: ${{ secrets.MW_USER }}
+        MW_PASS: ${{ secrets.MW_PASS }}
+        DC_WEBHOOK: ${{ secrets.DC_WEBHOOK }}
+
+    - name: Commit files
+      timeout-minutes: 15
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add .
+        git commit -m "更新資料" -a
+
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
