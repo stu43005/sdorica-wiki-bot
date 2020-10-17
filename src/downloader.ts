@@ -138,11 +138,13 @@ export async function downloadGamedata(key: string, latest: LatestDataRaw) {
 
 export async function downloader() {
 	const origin: Record<string, string> = require(ORIGIN_PATH);
+	const result: Record<string, boolean> = {};
 
 	for (const key in origin) {
 		if (Object.prototype.hasOwnProperty.call(origin, key)) {
 			const originUuid = origin[key];
-			await downloadLatest(key, originUuid);
+			result[key] = await downloadLatest(key, originUuid);
 		}
 	}
+	return result;
 }

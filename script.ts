@@ -5,8 +5,8 @@ import { localizationChineseOnly } from "./src/localization-chinese-only";
 
 // script mode
 (async () => {
-	await downloader();
-	await charAssetsDownloader();
-	await localizationChineseOnly();
-	await gamedataTranslate();
+	const result = await downloader();
+	if (result['charAssets']) await charAssetsDownloader();
+	if (result['localization']) await localizationChineseOnly();
+	if (result['gamedata']) await gamedataTranslate();
 })();
