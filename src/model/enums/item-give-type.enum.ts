@@ -1,0 +1,22 @@
+export enum ItemGiveType {
+	Coin = 'Coin',
+	Ring = 'Ring',
+	Soul = 'Soul',
+	// Gem = 'Gem',
+	Medal = 'Medal',
+	GuildCoin = 'GuildCoin',
+	GuildRing = 'GuildRing',
+	PaidGem = 'PaidGem',
+	FreeGem = 'FreeGem',
+	Item = 'Item',
+	ExploreItem = 'ExploreItem',
+
+	IOSGem = 'IOSGem',
+	AndGem = 'AndGem',
+	DMMGem = 'DMMGem',
+	PlayerExp = 'PlayerExp',
+	Monster = 'Monster',
+	MonsterExp = 'MonsterExp',
+	HomeExp = 'HomeExp',
+	Decoration = 'Decoration',
+}
