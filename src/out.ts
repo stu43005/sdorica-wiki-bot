@@ -108,11 +108,13 @@ export function outCsv(filename: string, out: stringify.Input) {
 
 export async function outJson(filename: string, data: any) {
 	logger.debug(`saving json to ${filename}`);
+	await mkdir(path.dirname(filename));
 	await fs.writeFile(filename, JSON.stringify(data, null, 2), { encoding: 'utf8' });
 }
 
 export async function outText(filename: string, text: string) {
 	logger.debug(`saving text to ${filename}`);
+	await mkdir(path.dirname(filename));
 	await fs.writeFile(filename, text, { encoding: 'utf8' });
 }
 
@@ -133,6 +135,7 @@ export async function outXlsx(filename: string, data: ImperiumDataRaw) {
 		ws['!autofilter'] = { ref: `A1:${xlsx.utils.encode_col(keyWithType.length - 1)}1` };
 		xlsx.utils.book_append_sheet(wb, ws, name);
 	}
+	await mkdir(path.dirname(filename));
 	xlsx.writeFile(wb, filename);
 }
 
@@ -156,9 +159,9 @@ export async function mkdir(dirname: string) {
 
 export async function rpFile(url: string, filePath: string) {
 	logger.debug(`downloading ${url} to ${filePath}`);
-	await mkdir(path.dirname(filePath));
 	const res = await fetch(url);
 	const buffer = await res.buffer();
+	await mkdir(path.dirname(filePath));
 	await fs.writeFile(filePath, buffer);
 }
 
