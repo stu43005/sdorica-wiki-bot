@@ -372,6 +372,18 @@ export function localizationQuestName(): Func1 {
 	return call2(gamedataString("Quests", "id", "levelId"), localizationString("QuestName"));
 }
 
+export function localizationQuestSubtitle(): Func1 {
+	return (str) => {
+		switch (String(str)) {
+			case "Story": return "故事";
+			case "Battle": return "戰鬥";
+			case "Challenge": return "挑戰";
+			case "Activity": return "活動";
+		}
+		return str;
+	};
+}
+
 export function localizationUnlockCondition(): Func1 {
 	return (str) => {
 		const strings = str.split(":");

@@ -84,7 +84,7 @@ function enumsOut(out: stringify.Input, enums: Record<string, string[]>) {
 
 export function outCsv(filename: string, out: stringify.Input) {
 	logger.debug(`saving csv to ${filename}`);
-	return new Promise((resolve, reject) => {
+	return new Promise<void>((resolve, reject) => {
 		stringify(out, {
 			cast: {
 				boolean: (value) => value ? 'true' : 'false',
@@ -111,7 +111,12 @@ export async function outJson(filename: string, data: any) {
 	await fs.writeFile(filename, JSON.stringify(data, null, 2), { encoding: 'utf8' });
 }
 
-export function outXlsx(filename: string, data: ImperiumDataRaw) {
+export async function outText(filename: string, text: string) {
+	logger.debug(`saving text to ${filename}`);
+	await fs.writeFile(filename, text, { encoding: 'utf8' });
+}
+
+export async function outXlsx(filename: string, data: ImperiumDataRaw) {
 	logger.debug(`saving xlsx to ${filename}`);
 	const wb = xlsx.utils.book_new();
 	for (const [name, table] of Object.entries(data.C).sort((a, b) => a[0].localeCompare(b[0]))) {
