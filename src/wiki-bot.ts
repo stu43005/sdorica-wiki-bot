@@ -91,10 +91,10 @@ export async function getMWBot() {
 					"content": `Edit: [${title}](${pageUrl}) ([diff](${diffUrl}))`,
 				});
 			}
-			logger.log(`[S] [MWBOT] Edit: ${title}`);
+			logger.log(`Edit: ${title}`);
 		}
 		else {
-			logger.log(`[i] [MWBOT] No modify: ${title}`);
+			logger.log(`No modify: ${title}`);
 		}
 	};
 

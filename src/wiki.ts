@@ -10,6 +10,7 @@ import { getQuestJsonData } from "./wiki-quest";
 import wikiAdvAchievements from "./wiki/AdvAchievements";
 import wikiAdventure from "./wiki/Adventure";
 import wikiAdventureRank from "./wiki/AdventureRank";
+import { wikiHeroBot } from "./wiki/auto/hero";
 import wikiAvatars from "./wiki/Avatars";
 import wikiChapter from "./wiki/Chapter";
 import wikiCharVoice from "./wiki/CharVoice";
@@ -127,4 +128,10 @@ export async function wikiMain() {
 	await outText(path.join(WIKI_PATH, "raw/quests.txt"), wikiQuestsData());
 	await outText(path.join(WIKI_PATH, "raw/heroes.txt"), wikiHeroesData());
 	await outText(path.join(WIKI_PATH, "raw/items.txt"), wikiItemsData());
+
+	await wikiHeroBot(bot);
+	// await wikiMonsterBot(bot);
+	// await wikiRuneRedirectBot(bot);
+	// await wikiScRedirectBot(bot);
+	// await wikiUpdateExploreItemBot(bot);
 }

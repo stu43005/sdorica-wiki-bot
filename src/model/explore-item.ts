@@ -53,6 +53,7 @@ export class ExploreItem extends ItemBase {
 	get iconKey(): string { return `${this.row.get('iconKey')}`.replace(/Explore\//g, ''); }
 
 	name: string;
+	scName: string;
 	description: string;
 
 	get enable() {
@@ -72,6 +73,7 @@ export class ExploreItem extends ItemBase {
 	constructor(row: RowWrapper) {
 		super(row);
 		this.name = itemNameNormalization(localizationString("ExpItem")(row.get('localizationKeyName')) || this.iconKey);
+		this.scName = itemNameNormalization(localizationString("ExpItem", "", "Key", "ChineseSimplified")(row.get('localizationKeyName')) || this.iconKey);
 		this.description = localizationString("ExpItem")(row.get('localizationKeyDescription'));
 	}
 
