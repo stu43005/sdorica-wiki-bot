@@ -4,9 +4,12 @@ import http from 'http';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 import https from 'https';
 import { ORIGIN_PATH } from './config';
+import { inputJsonSync } from "./input";
 import { Logger } from './logger';
 import { fsExists, outJson } from "./out";
+import { scriptMain } from "./script";
 import { discordWebhook, jsonBlock } from './utils';
+import { wikiMain } from "./wiki";
 
 const logger = new Logger('origin-proxy');
 
@@ -53,11 +56,14 @@ async function onProxyReq(proxyReq: http.ClientRequest, req: express.Request, re
 
 		let oldJson = {};
 		if (await fsExists(ORIGIN_PATH)) {
-			oldJson = require(ORIGIN_PATH);
+			oldJson = inputJsonSync(ORIGIN_PATH);
 		}
 		await outJson(ORIGIN_PATH, Object.assign({}, oldJson, latestUUID));
 
 		latestUUID = {};
+
+		await scriptMain();
+		await wikiMain();
 	}
 }
 

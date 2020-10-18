@@ -1,7 +1,8 @@
 import * as path from "path";
 import { GAMEDATA_PATH, LATEST_PATH, ORIGIN_PATH } from "./config";
 import { ImperiumDataRaw, LatestDataRaw } from "./data-raw-type";
-import { inputFilePack, isImperiumData, isLatestData } from "./input";
+import { ImperiumData } from './imperium-data';
+import { inputFilePack, inputJsonSync, isImperiumData, isLatestData } from "./input";
 import { Logger } from "./logger";
 import { dataOut, fsExists, outCsv, outJson, outXlsx, rpFile } from "./out";
 
@@ -67,7 +68,7 @@ export async function downloadLatest(key: string, uuid: string) {
 		let updated = false;
 
 		if (await fsExists(jsonFilePath)) {
-			const oldData = require(jsonFilePath) as LatestDataRaw;
+			const oldData = inputJsonSync<LatestDataRaw>(jsonFilePath);
 			if (data.R > oldData.R) {
 				updated = true;
 			}
@@ -128,6 +129,10 @@ export async function downloadGamedata(key: string, latest: LatestDataRaw) {
 		await outCsv(csvFilePath, dataOut(data));
 		await outXlsx(xlsxFilePath, data);
 
+		if (ImperiumData.has(key)) {
+			ImperiumData.from(key).reloadData();
+		}
+
 	} catch (error) {
 		logger.error('output gamedata error:', error);
 		debugger;
@@ -137,7 +142,7 @@ export async function downloadGamedata(key: string, latest: LatestDataRaw) {
 }
 
 export async function downloader() {
-	const origin: Record<string, string> = require(ORIGIN_PATH);
+	const origin: Record<string, string> = inputJsonSync(ORIGIN_PATH);
 	const result: Record<string, boolean> = {};
 
 	for (const key in origin) {

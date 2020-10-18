@@ -1,6 +1,7 @@
 import * as path from "path";
 import { GAMEDATA_PATH } from "./config";
 import { ImperiumDataRaw, TableDataRaw } from "./data-raw-type";
+import { inputJsonSync } from "./input";
 import { Logger } from './logger';
 import { fsExists } from "./out";
 
@@ -9,21 +10,13 @@ const logger = new Logger('imperium-data');
 export class ImperiumData {
 	private static instances: Record<string, ImperiumData> = {};
 
+	static has(name: string) {
+		return name in this.instances;
+	}
 	static from(name: string) {
-		if (!(name in this.instances)) {
-			// throw "Create instance first";
-			try {
-				const jsonFilePath = path.join(GAMEDATA_PATH, `${name}.json`);
-				if (!fsExists(jsonFilePath)) {
-					logger.error(`Not exists: "${jsonFilePath}"`);
-					debugger;
-					throw new Error(`Not exists: "${jsonFilePath}"`);
-				}
-				const raw = require(jsonFilePath) as ImperiumDataRaw;
-				this.instances[name] = new ImperiumData(raw);
-			} catch (error) {
-				this.instances[name] = new ImperiumData(null);
-			}
+		if (!this.has(name)) {
+			this.instances[name] = new ImperiumData(name);
+			this.instances[name].loadData();
 		}
 		return this.instances[name]!;
 	}
@@ -34,10 +27,29 @@ export class ImperiumData {
 		return this.from("localization");
 	}
 
-	data: ImperiumDataRaw | null;
+	data: ImperiumDataRaw | null = null;
 
-	constructor(data: ImperiumDataRaw | null) {
-		this.data = data;
+	constructor(private name: string) {
+	}
+
+	loadData() {
+		try {
+			const jsonFilePath = path.join(GAMEDATA_PATH, `${this.name}.json`);
+			if (!fsExists(jsonFilePath)) {
+				logger.error(`Not exists: "${jsonFilePath}"`);
+				debugger;
+				throw new Error(`Not exists: "${jsonFilePath}"`);
+			}
+			const raw = inputJsonSync<ImperiumDataRaw>(jsonFilePath);
+			this.data = raw;
+		} catch (error) {
+			this.data = null;
+		}
+	}
+
+	reloadData() {
+		this.data = null;
+		this.loadData();
 	}
 
 	private tables: Record<string, TableWrapper> = {};
@@ -61,6 +73,9 @@ export class ImperiumData {
 	}
 
 	getRawData() {
+		if (!this.data) {
+			this.loadData();
+		}
 		return this.data!;
 	}
 }

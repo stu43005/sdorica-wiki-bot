@@ -1,4 +1,4 @@
-import { fsData, Dictionary } from "./fsData";
+import { Dictionary, fsData } from "./fsData";
 
 const fsGlobalConfig = require("./fsGlobalConfig.json");
 

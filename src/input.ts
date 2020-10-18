@@ -25,6 +25,12 @@ export async function inputDir(dirname: string, callback: (name: string, file: f
 	}
 }
 
+export function inputJsonSync<T = any>(filepath: string): T {
+	const content = fs.readFileSync(filepath, { encoding: 'utf8' });
+	const json = JSON.parse(content);
+	return json;
+}
+
 /**
  * Read file using MessagePack.
  */

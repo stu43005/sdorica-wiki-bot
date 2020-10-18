@@ -4,6 +4,7 @@ import * as path from 'path';
 import { CHARASSETS_PATH } from './config';
 import { AssetDataRaw } from './data-raw-type';
 import { ImperiumData } from "./imperium-data";
+import { inputJsonSync } from "./input";
 import { localizationBuffName, localizationCharacterName } from "./localization";
 import { Logger } from './logger';
 import { fsExists, outJson, rpFile } from './out';
@@ -41,7 +42,7 @@ export async function downloadCharAssets(asset: AssetDataRaw) {
 
 	try {
 		if (await fsExists(metadataFilePath)) {
-			const meta = require(metadataFilePath) as AssetDataRaw;
+			const meta = inputJsonSync<AssetDataRaw>(metadataFilePath);
 			if (meta.I === asset.I) {
 				return false;
 			}

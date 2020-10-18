@@ -30,6 +30,10 @@ export function doGamedataTranslation() {
 	});
 }
 
+export function cleanupGamedataTranslation() {
+	ImperiumData.fromGamedata().reloadData();
+}
+
 export async function gamedataTranslate() {
 	const filename = 'gamedata-translated';
 	const csvFilePath = path.join(DATA_PATH, `${filename}.csv`);
@@ -40,4 +44,6 @@ export async function gamedataTranslate() {
 	const gamedata = ImperiumData.fromGamedata().getRawData();
 	await outCsv(csvFilePath, dataOut(gamedata));
 	await outXlsx(xlsxFilePath, gamedata);
+
+	cleanupGamedataTranslation();
 }
