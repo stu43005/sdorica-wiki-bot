@@ -47,17 +47,25 @@ async function onProxyReq(proxyReq: http.ClientRequest, req: express.Request, re
 			// not complete
 			return;
 		}
-		logger.log(JSON.stringify(latestUUID));
+
+		let oldJson = {};
+		if (await fsExists(ORIGIN_PATH)) {
+			oldJson = inputJsonSync(ORIGIN_PATH);
+
+			// 檢查是否全部都一樣
+			if (Object.keys(latestUUID).every(key => latestUUID[key] === oldJson[key])) {
+				latestUUID = {};
+				return;
+			}
+		}
+
 		logger.log('All Done!');
+		logger.log(JSON.stringify(latestUUID));
 
 		discordWebhook({
 			"content": 'new origin <:MisaDa:586572564399259669>' + jsonBlock(latestUUID),
 		});
 
-		let oldJson = {};
-		if (await fsExists(ORIGIN_PATH)) {
-			oldJson = inputJsonSync(ORIGIN_PATH);
-		}
 		await outJson(ORIGIN_PATH, Object.assign({}, oldJson, latestUUID));
 
 		latestUUID = {};
