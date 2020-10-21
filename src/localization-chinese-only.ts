@@ -2,6 +2,7 @@ import path from "path";
 import { DATA_PATH } from "./config";
 import { ImperiumData } from "./imperium-data";
 import { dataOut, outCsv } from "./out";
+import { sortKeyByTable } from "./out-sort-key";
 import { flipMatrix } from "./utils";
 
 export async function localizationChineseOnly() {
@@ -12,13 +13,15 @@ export async function localizationChineseOnly() {
 		if (localization.C.hasOwnProperty(tablename)) {
 			const table = localization.C[tablename];
 			if (!table.D) continue;
-			let data = flipMatrix(table.D);
-			let i = 2;
-			while (data[i]) {
-				delete data[i];
-				i++;
-			}
-			table.D = flipMatrix(data);
+			table.D.push(table.T);
+			table.D.push(table.K);
+			let data = flipMatrix(table.D)
+				.filter((value: any[]) => ['Key', 'Chinese'].indexOf('' + value[value.length - 1]) != -1)
+				.sort(sortKeyByTable(tablename));
+			const edited = flipMatrix(data);
+			table.K = edited.pop() || [];
+			table.T = edited.pop() || [];
+			table.D = edited;
 		}
 	}
 
