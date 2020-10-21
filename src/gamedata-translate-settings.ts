@@ -623,6 +623,11 @@ export const gamedataTeanslateSettings: GamedataRef[] = [
 		func: localizationString("HeroSkills", "skill_set_"),
 	},
 	{
+		table: "SkillLevel",
+		column: "ceilingSkill",
+		func: localizationString("HeroSkills", "skill_set_"),
+	},
+	{
 		table: "PaddingAssistants",
 		column: "heroId",
 		func: localizationCharacterNameByHeroId(),

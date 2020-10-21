@@ -242,7 +242,9 @@ const TABLE_KEYS_BLACKLIST: Record<string, string[]> = {
 	GlobalBlacklist: ["id"],
 	Items: ["price", "sellCurrency"],
 	Missions: ["reward", "itemId", "rewardCount"],
+	RankUpItemRefs: ["id"],
 	RewardGroups: ["rewardType", "rewardItemId", "rewardCount"],
+	SkillLevel: ["id"],
 	TavernMissionDrop: ["id"],
 };
 
