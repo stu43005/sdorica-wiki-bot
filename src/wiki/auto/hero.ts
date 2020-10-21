@@ -4,6 +4,8 @@ import { getHeroJsonData } from "../../wiki-hero";
 
 const logger = new Logger('mwbot');
 
+const checkRanks = ['三階+', 'Skin', 'Alt'];
+
 export async function wikiHeroBot(bot: MWBot) {
 	const json = getHeroJsonData();
 
@@ -37,6 +39,8 @@ export async function wikiHeroBot(bot: MWBot) {
 
 			for (const rankName in hero.ranks) {
 				if (hero.ranks.hasOwnProperty(rankName)) {
+					if (heroExists && !checkRanks.map(s => rankName.includes(s)).find(b => b)) { continue; }
+
 					const rankExists = await bot.exists(rankName);
 					if (!rankExists) {
 						try {
