@@ -1,5 +1,6 @@
-import stringify from "csv-stringify";
+import csvStringify from "csv-stringify";
 import fs from "fs-extra";
+import jsonStableStringify from "json-stable-stringify";
 import fetch from "node-fetch";
 import * as path from "path";
 import * as xlsx from "xlsx";
@@ -11,7 +12,7 @@ import { flipMatrix } from "./utils";
 const logger = new Logger('out');
 
 export function dataOut(data: ImperiumDataRaw) {
-	const out: stringify.Input = [];
+	const out: csvStringify.Input = [];
 
 	if (data.D) {
 		out.push(["D", data.D]);
@@ -43,7 +44,7 @@ function objectSortedForEach<T>(obj: Record<string, T>, callback: (key: string, 
 	});
 }
 
-function assetOut(out: stringify.Input, assets: Record<string, AssetDataRaw>) {
+function assetOut(out: csvStringify.Input, assets: Record<string, AssetDataRaw>) {
 	objectSortedForEach(assets, (name, asset) => {
 		out.push(["##### Asset #####", name]);
 		out.push(["Hash", asset.H]);
@@ -52,13 +53,13 @@ function assetOut(out: stringify.Input, assets: Record<string, AssetDataRaw>) {
 	});
 }
 
-function tablesOut(out: stringify.Input, tables: Record<string, TableDataRaw>) {
+function tablesOut(out: csvStringify.Input, tables: Record<string, TableDataRaw>) {
 	objectSortedForEach(tables, (name, table) => {
 		tableOut(out, name, table);
 	});
 }
 
-export function tableOut(out: stringify.Input, name: string, table: TableDataRaw) {
+export function tableOut(out: csvStringify.Input, name: string, table: TableDataRaw) {
 	out.push(["##### Table #####", name]);
 
 	// localization sort key
@@ -75,17 +76,17 @@ export function tableOut(out: stringify.Input, name: string, table: TableDataRaw
 	table.D.forEach(row => out.push(row));
 }
 
-function enumsOut(out: stringify.Input, enums: Record<string, string[]>) {
+function enumsOut(out: csvStringify.Input, enums: Record<string, string[]>) {
 	objectSortedForEach(enums, (name, enumm) => {
 		out.push(["##### Enum #####", name]);
 		out.push(enumm);
 	});
 }
 
-export function outCsv(filename: string, out: stringify.Input) {
+export function outCsv(filename: string, out: csvStringify.Input) {
 	logger.debug(`saving csv to ${filename}`);
 	return new Promise<void>((resolve, reject) => {
-		stringify(out, {
+		csvStringify(out, {
 			cast: {
 				boolean: (value) => value ? 'true' : 'false',
 			},
@@ -106,10 +107,28 @@ export function outCsv(filename: string, out: stringify.Input) {
 	});
 }
 
+export function jsonStringify(data: any) {
+	return jsonStableStringify(data, {
+		space: 2,
+		replacer: (key: string, value: any) => {
+			if (typeof value === 'object' && value.K instanceof Array && value.T instanceof Array && value.D instanceof Array) {
+				const table = value as TableDataRaw;
+				table.D.push(table.T);
+				table.D.push(table.K);
+				const sorted = flipMatrix(flipMatrix(table.D).sort(sortKeyByTable()));
+				table.K = sorted.pop() || [];
+				table.T = sorted.pop() || [];
+				table.D = sorted;
+			}
+			return value;
+		},
+	});
+}
+
 export async function outJson(filename: string, data: any) {
 	logger.debug(`saving json to ${filename}`);
 	await mkdir(path.dirname(filename));
-	await fs.writeFile(filename, JSON.stringify(data, null, 2), { encoding: 'utf8' });
+	await fs.writeFile(filename, jsonStringify(data), { encoding: 'utf8' });
 }
 
 export async function outText(filename: string, text: string) {

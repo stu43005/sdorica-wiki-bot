@@ -5,8 +5,9 @@ import { localizationChineseOnly } from "./localization-chinese-only";
 import { isDevMode } from "./utils";
 
 export async function scriptMain() {
-	const result = await downloader();
-	if (result['charAssets']) await charAssetsDownloader();
-	if (result['localization']) await localizationChineseOnly();
-	if (result['gamedata'] || isDevMode()) await gamedataTranslate();
+	const force = isDevMode();
+	const result = await downloader(force);
+	if (force || result['charAssets']) await charAssetsDownloader();
+	if (force || result['localization']) await localizationChineseOnly();
+	if (force || result['gamedata']) await gamedataTranslate();
 }

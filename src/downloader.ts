@@ -36,7 +36,7 @@ export function getGamedataUrl(key: string, uuid: string) {
 	return `https://${host}/${key}/client_gamedata/${uuid}/default/gamedata`;
 }
 
-export async function downloadLatest(key: string, uuid: string) {
+export async function downloadLatest(key: string, uuid: string, force = false) {
 	const url = getLatestUrl(key, uuid);
 	const msgpackFilePath = path.join(LATEST_PATH, `${key}.msgpack`);
 	const jsonFilePath = path.join(LATEST_PATH, `${key}.json`);
@@ -78,7 +78,7 @@ export async function downloadLatest(key: string, uuid: string) {
 
 		await outJson(jsonFilePath, data);
 
-		if (updated) {
+		if (updated || force) {
 			await downloadGamedata(key, data);
 			logger.log(`down ${key}: ${data.I}`);
 		} else {
@@ -141,14 +141,14 @@ export async function downloadGamedata(key: string, latest: LatestDataRaw) {
 	return true;
 }
 
-export async function downloader() {
+export async function downloader(force?: boolean) {
 	const origin: Record<string, string> = inputJsonSync(ORIGIN_PATH);
 	const result: Record<string, boolean> = {};
 
 	for (const key in origin) {
 		if (Object.prototype.hasOwnProperty.call(origin, key)) {
 			const originUuid = origin[key];
-			result[key] = await downloadLatest(key, originUuid);
+			result[key] = await downloadLatest(key, originUuid, force);
 		}
 	}
 	return result;
