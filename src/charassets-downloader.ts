@@ -30,6 +30,7 @@ export async function charAssetsDownloadByUuid(uuid: string) {
 		I: uuid,
 		L: url,
 		H: "",
+		B: 0,
 	};
 	return await downloadCharAssets(asset);
 }

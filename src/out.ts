@@ -50,6 +50,7 @@ function assetOut(out: csvStringify.Input, assets: Record<string, AssetDataRaw>)
 		out.push(["Hash", asset.H]);
 		out.push(["UUID", asset.I]);
 		out.push(["Link", asset.L]);
+		out.push(["Size", asset.B]);
 	});
 }
 

@@ -11,6 +11,10 @@ export interface AssetDataRaw {
 	 * URL Link
 	 */
 	L: string;
+	/**
+	 * Size
+	 */
+	B: number;
 }
 
 export interface TableDataRaw {
