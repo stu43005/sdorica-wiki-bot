@@ -27,5 +27,5 @@ export async function localizationChineseOnly() {
 
 	await outCsv(chineseFilePath, dataOut(localization));
 
-	ImperiumData.fromLocalization().reloadData();
+	await ImperiumData.fromLocalization().reloadData();
 }

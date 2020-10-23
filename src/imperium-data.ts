@@ -1,14 +1,11 @@
-import * as path from "path";
-import { GAMEDATA_PATH } from "./config";
 import { ImperiumDataRaw, TableDataRaw } from "./data-raw-type";
-import { inputJsonSync } from "./input";
 import { Logger } from './logger';
-import { fsExists } from "./out";
 
 const logger = new Logger('imperium-data');
 
 export class ImperiumData {
 	private static instances: Record<string, ImperiumData> = {};
+	public static dataLoader: (self: ImperiumData) => void | Promise<void>;
 
 	static has(name: string) {
 		return name in this.instances;
@@ -29,19 +26,12 @@ export class ImperiumData {
 
 	data: ImperiumDataRaw | null = null;
 
-	constructor(private name: string) {
+	constructor(public name: string) {
 	}
 
-	loadData() {
+	async loadData() {
 		try {
-			const jsonFilePath = path.join(GAMEDATA_PATH, `${this.name}.json`);
-			if (!fsExists(jsonFilePath)) {
-				logger.error(`Not exists: "${jsonFilePath}"`);
-				debugger;
-				throw new Error(`Not exists: "${jsonFilePath}"`);
-			}
-			const raw = inputJsonSync<ImperiumDataRaw>(jsonFilePath);
-			this.data = raw;
+			await ImperiumData.dataLoader(this);
 		} catch (error) {
 			this.data = null;
 		}
@@ -49,7 +39,7 @@ export class ImperiumData {
 
 	reloadData() {
 		this.data = null;
-		this.loadData();
+		return this.loadData();
 	}
 
 	private tables: Record<string, TableWrapper> = {};
@@ -73,9 +63,6 @@ export class ImperiumData {
 	}
 
 	getRawData() {
-		if (!this.data) {
-			this.loadData();
-		}
 		return this.data!;
 	}
 }

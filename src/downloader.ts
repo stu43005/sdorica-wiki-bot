@@ -130,7 +130,7 @@ export async function downloadGamedata(key: string, latest: LatestDataRaw) {
 		await outXlsx(xlsxFilePath, data);
 
 		if (ImperiumData.has(key)) {
-			ImperiumData.from(key).reloadData();
+			await ImperiumData.from(key).reloadData();
 		}
 
 	} catch (error) {

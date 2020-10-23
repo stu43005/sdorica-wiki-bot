@@ -1,11 +1,13 @@
 import { CronJob } from "cron";
 import * as path from "path";
 import requireAll from "require-all";
+import { registerImperiumLocalLoader } from "./src/imperium-data-local";
 import { Logger } from './src/logger';
 import { createOriginProxy } from "./src/origin-proxy";
 
 // server mode
 const logger = new Logger('main');
+registerImperiumLocalLoader();
 
 // process event handle
 process
