@@ -1,8 +1,9 @@
-import config from 'config';
+import config from "config";
 import MWBot, { MWRevision, MWRevisionSlot } from "mwbot";
 import url from "url";
-import { Logger } from './logger';
-import { discordWebhook, isDevMode } from "./utils";
+import { discordWebhook } from "./discord-webhook";
+import { Logger } from "./logger";
+import { isDevMode } from "./utils";
 
 const logger = new Logger('mwbot');
 

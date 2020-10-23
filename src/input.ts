@@ -5,8 +5,6 @@ import * as readline from "readline";
 import streamToPromise from "stream-to-promise";
 import { DataRaw, ImperiumDataRaw, LatestDataRaw } from "./data-raw-type";
 
-const msgpack = msgpack5();
-
 export async function inputDir(dirname: string, callback: (name: string, file: fs.Stats) => Promise<void>, includeSubDir = false) {
 	const files: string[] = await fs.readdir(dirname);
 	while (files.length > 0) {
@@ -35,6 +33,7 @@ export function inputJsonSync<T = any>(filepath: string): T {
  * Read file using MessagePack.
  */
 export async function inputFilePack(filepath: string): Promise<DataRaw> {
+	const msgpack = msgpack5();
 	const stream = fs.createReadStream(filepath)
 		.pipe(msgpack.decoder());
 	const raw = await streamToPromise(stream) as any;

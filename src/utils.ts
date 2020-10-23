@@ -1,8 +1,5 @@
-import config from "config";
-import request from "request";
-
 export function isDevMode() {
-	return config.util.getEnv('NODE_ENV').split(',').includes('development');
+	return process.env.NODE_ENV === 'development';
 }
 
 /**
@@ -92,32 +89,6 @@ export function numMultiply(arg1: number, arg2: number): number {
 	}
 	catch (e) { }
 	return Number(s1.replace(".", "")) * Number(s2.replace(".", "")) / Math.pow(10, m);
-}
-
-export function discordWebhook(data: any) {
-	if (!config.get('dcWebhook')) {
-		console.log("Not set DC_WEBHOOK.");
-		return;
-	}
-	return new Promise<void>((resolve, reject) => {
-		request.post({
-			url: config.get<string>('dcWebhook'),
-			formData: data,
-		}, (err, httpResponse, body) => {
-			if (err) {
-				console.error(err);
-				debugger;
-				return reject(err);
-			}
-			switch (httpResponse.statusCode) {
-				case 403:
-					console.error(body);
-					debugger;
-					return reject(body);
-			}
-			resolve();
-		});
-	});
 }
 
 export function isNumber(num: any): num is number {
