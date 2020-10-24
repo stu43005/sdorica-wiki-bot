@@ -1,28 +1,21 @@
 import config from "config";
-import request from "request";
+import fetch from 'node-fetch';
+import { Logger } from './logger';
 
-export function discordWebhook(data: any) {
-	if (!config.get('dcWebhook')) {
-		console.log("Not set DC_WEBHOOK.");
+const logger = new Logger('discord-webhook');
+
+export async function discordWebhook(data: any) {
+	const url = config.get<string>('dcWebhook');
+	if (!url) {
+		logger.log("DC_WEBHOOK not set.");
 		return;
 	}
-	return new Promise<void>((resolve, reject) => {
-		request.post({
-			url: config.get<string>('dcWebhook'),
-			formData: data,
-		}, (err, httpResponse, body) => {
-			if (err) {
-				console.error(err);
-				debugger;
-				return reject(err);
-			}
-			switch (httpResponse.statusCode) {
-				case 403:
-					console.error(body);
-					debugger;
-					return reject(body);
-			}
-			resolve();
-		});
+	const response = await fetch(url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+		},
+		body: data,
 	});
+	return response.text();
 }
