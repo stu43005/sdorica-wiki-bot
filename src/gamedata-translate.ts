@@ -1,34 +1,9 @@
 import path from "path";
 import { DATA_PATH } from "./config";
-import { gamedataTeanslateSettings } from "./gamedata-translate-settings";
+import { doGamedataTranslation } from "./gamedata-translate-settings";
 import { ImperiumData } from "./imperium-data";
-import { Logger } from './logger';
-import { dataOut, outCsv, outXlsx } from "./out";
-
-const logger = new Logger('gamedata-translate');
-
-export function doGamedataTranslation() {
-	gamedataTeanslateSettings.forEach((ref) => {
-		const table = ImperiumData.fromGamedata().getTable(ref.table);
-		if (!table) {
-			logger.debug(ref);
-			debugger;
-			return;
-		}
-		for (let i = 0; i < table.length; i++) {
-			const row = table.get(i);
-			const columns = ref.column.split(",");
-			columns.forEach(col => {
-				const subcols = col.split(":");
-				const data = subcols.map(c => row.get(c)).join(":");
-				const result = ref.func.call(row, data);
-				if (result) {
-					row.set(subcols[0], `${row.get(subcols[0])} (${result})`);
-				}
-			});
-		}
-	});
-}
+import { outCsv, outXlsx } from "./out";
+import { dataOut } from "./out-data";
 
 export async function gamedataTranslate() {
 	const filename = 'gamedata-translated';

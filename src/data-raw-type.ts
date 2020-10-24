@@ -82,3 +82,8 @@ export interface LatestDataRaw {
 }
 
 export type DataRaw = ImperiumDataRaw | LatestDataRaw | Record<string, any>;
+
+export interface CharAssetsRaw {
+	BattleCharacters: Record<string, string>;
+	Buffs: Record<string, string>;
+}

@@ -23,6 +23,9 @@ export class ImperiumData {
 	static fromLocalization() {
 		return this.from("localization");
 	}
+	static fromCharAssets() {
+		return this.from("charAssets");
+	}
 
 	data: ImperiumDataRaw | null = null;
 
@@ -63,6 +66,9 @@ export class ImperiumData {
 	}
 
 	getRawData() {
+		if (!this.data) {
+			this.loadData();
+		}
 		return this.data!;
 	}
 }

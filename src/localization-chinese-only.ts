@@ -1,7 +1,8 @@
 import path from "path";
 import { DATA_PATH } from "./config";
 import { ImperiumData } from "./imperium-data";
-import { dataOut, outCsv } from "./out";
+import { outCsv } from "./out";
+import { dataOut } from "./out-data";
 import { sortKeyByTable } from "./out-sort-key";
 import { flipMatrix } from "./utils";
 

@@ -1,6 +1,9 @@
 import { ImperiumData } from "./imperium-data";
 import { black, call2, colonFirst, Func1, gamedataString, gold, ifor, localizationCharacterName, localizationCharacterNameByHeroId, localizationCharacterNameWithDefault, localizationExploreBuildingName, localizationHomelandBuildingName, localizationItemName, localizationItemNameWithType, localizationMonsterName, localizationMonsterSkillName, localizationMonsterSpecialityName, localizationQuestName, localizationString, localizationStringAuto, localizationTavernMissionName, localizationUnlockCondition, rank, semicolon, weekday, white } from "./localization";
+import { Logger } from "./logger";
 import { exploreLabelName } from "./wiki-item";
+
+const logger = new Logger('gamedata-translate');
 
 export interface GamedataRef {
 	table: string;
@@ -643,3 +646,26 @@ export const gamedataTeanslateSettings: GamedataRef[] = [
 		func: semicolon(localizationString("HeroSkills", "skill_set_")),
 	},
 ];
+
+export function doGamedataTranslation() {
+	gamedataTeanslateSettings.forEach((ref) => {
+		const table = ImperiumData.fromGamedata().getTable(ref.table);
+		if (!table) {
+			logger.debug(ref);
+			debugger;
+			return;
+		}
+		for (let i = 0; i < table.length; i++) {
+			const row = table.get(i);
+			const columns = ref.column.split(",");
+			columns.forEach(col => {
+				const subcols = col.split(":");
+				const data = subcols.map(c => row.get(c)).join(":");
+				const result = ref.func.call(row, data);
+				if (result) {
+					row.set(subcols[0], `${row.get(subcols[0])} (${result})`);
+				}
+			});
+		}
+	});
+}

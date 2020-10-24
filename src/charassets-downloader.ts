@@ -13,7 +13,7 @@ import { sortByCharacterModelNo } from "./utils";
 const logger = new Logger('charassets-downloader');
 
 export async function charAssetsDownloader() {
-	const charAssets = ImperiumData.from('charAssets');
+	const charAssets = ImperiumData.fromCharAssets();
 	const asset = charAssets.getAsset("charAssets.bson");
 	if (asset) {
 		return await downloadCharAssets(asset);

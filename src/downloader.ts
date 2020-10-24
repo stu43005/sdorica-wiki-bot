@@ -4,7 +4,8 @@ import { ImperiumDataRaw, LatestDataRaw } from "./data-raw-type";
 import { ImperiumData } from './imperium-data';
 import { inputFilePack, inputJsonSync, isImperiumData, isLatestData } from "./input";
 import { Logger } from "./logger";
-import { dataOut, fsExists, outCsv, outJson, outXlsx, rpFile } from "./out";
+import { fsExists, outCsv, outJson, outXlsx, rpFile } from "./out";
+import { dataOut } from "./out-data";
 
 const logger = new Logger('downloader');
 
