@@ -8,12 +8,11 @@ import { Logger } from '../logger';
 const logger = new Logger('viewerjs-uploader');
 
 export async function putToSI(name: string) {
-	let bundle = await fs.readFile(path.join(__dirname, `../../dist/viewerjs/${name}.bundle.js`), "utf-8");
+	const bundle = await fs.readFile(path.join(__dirname, `../../dist/viewerjs/${name}.bundle.js`), "utf-8");
 
 	let helperName = 'this';
 	if (name === '$ViewerInit') {
 		helperName = 'data';
-		bundle = bundle.replace("this.$ViewerInit", "data.$ViewerInit");
 	}
 
 	const script = `(data) => {

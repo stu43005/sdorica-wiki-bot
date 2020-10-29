@@ -20,7 +20,7 @@ module.exports = {
 		path: path.resolve(__dirname, 'dist/viewerjs'),
 		library: '[name]',
 		// libraryExport: 'default',
-		libraryTarget: 'this',
+		libraryTarget: 'self',
 	},
 	module: {
 		rules: [
