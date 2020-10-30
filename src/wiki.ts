@@ -134,4 +134,5 @@ export async function wikiMain() {
 	// await wikiRuneRedirectBot(bot);
 	// await wikiScRedirectBot(bot);
 	// await wikiUpdateExploreItemBot(bot);
+	// await wikiItemImageBot(bot);
 }
