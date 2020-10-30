@@ -47,7 +47,7 @@ export class Item extends ItemBase {
 		}
 	}
 
-	get isExplore(): boolean { return false; }
+	readonly isExplore = false;
 
 	get id(): string { return this.row.get('id'); }
 	get no(): number { return +this.id; }

@@ -1,9 +1,9 @@
-import { Hero } from './hero';
-import { Item } from './item';
 import { ImperiumData, RowWrapper } from "../imperium-data";
 import { localizationString } from "../localization";
 import { AvatarInfoboxParams, avatarInfoboxTemplate } from './../templates/avatar-infobox';
 import { ItemCategory } from './enums/item-category.enum';
+import { Hero } from './hero';
+import { Item } from './item';
 
 const AvatarsTable = ImperiumData.fromGamedata().getTable("Avatars");
 

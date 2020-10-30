@@ -3,9 +3,8 @@ import * as idb from "idb";
 import { CharAssetsRaw } from "../data-raw-type";
 import { ImperiumData } from "../imperium-data";
 import { objectEach } from "../utils";
-import { SiContainerMultiSearch, SiContainerSearch } from "./types/container-search";
-import { SiContainer, SiContainers } from "./types/containers";
-import { SiImperium } from "./types/imperium";
+import { SdoricaInspectorApi } from './si-api';
+import { SiContainer } from "./types/containers";
 import { ViewerJSHelper } from "./viewerjs-helper";
 
 export function siJsonParse(text: string) {
@@ -15,7 +14,8 @@ export function siJsonParse(text: string) {
 export async function getImperiumName(helper: ViewerJSHelper, typeName: string) {
 	const typeId = helper.vue.$imperiumType.indexOf(typeName);
 	if (typeId < 0) return "";
-	const { data: imperiums }: { data: SiImperium[] } = await helper.vue.$http.get('/api/imperium/');
+	const api = new SdoricaInspectorApi(helper);
+	const imperiums = await api.imperium();
 	const i = imperiums.find(x => x.type_id === typeId);
 	if (i) {
 		return `${i.id}::${i.name}`;
@@ -68,13 +68,9 @@ export async function containerSearchAuto(helper: ViewerJSHelper, path: string) 
 }
 
 export async function containerSearch(helper: ViewerJSHelper, path: string) {
-	const vue = helper.vue;
+	const api = new SdoricaInspectorApi(helper);
 	// step 1: Container Search
-	const { data: searchResult }: { data: SiContainerSearch } = await vue.$http.get('/api/container/search/', {
-		params: {
-			query: path,
-		}
-	});
+	const searchResult = await api.containerSearch(path);
 	const resultMatch = searchResult.find(r => r.name.toLowerCase() == path.toLowerCase());
 	if (!resultMatch) {
 		console.error(`Not found: ${path}`);
@@ -83,7 +79,7 @@ export async function containerSearch(helper: ViewerJSHelper, path: string) {
 	}
 	const assetBundle = resultMatch.asset_bundles[resultMatch.asset_bundles.length - 1];
 	// step 2: Get AssetBundle
-	const { data: containers }: { data: SiContainers } = await vue.$http.get(`/api/asset_bundle/${assetBundle.md5}/containers/`);
+	const containers = await api.assetbundleContainers(assetBundle.md5);
 	let pathId: string = "";
 	objectEach(containers, (id, value) => {
 		if (value.name.toLowerCase() == path.toLowerCase()) {
@@ -96,7 +92,7 @@ export async function containerSearch(helper: ViewerJSHelper, path: string) {
 		throw `No pathId: ${path}`;
 	}
 	// step 3: Get Container data
-	const { data: container }: { data: SiContainer } = await vue.$http.get(`/api/asset_bundle/${assetBundle.md5}/containers/${pathId}/`);
+	const container = await api.assetbundleContainer(assetBundle.md5, pathId);
 	// step 4: Run ViewerJS code
 	const interpretedData: SiContainer = helper.getCode(containers[pathId].type) ? await new Promise((resolve) => {
 		container.__skip_prompt = true;
@@ -106,6 +102,35 @@ export async function containerSearch(helper: ViewerJSHelper, path: string) {
 		});
 	}) : container;
 	return interpretedData;
+}
+
+export async function containerSearchData(helper: ViewerJSHelper, path: string) {
+	const api = new SdoricaInspectorApi(helper);
+	// step 1: Container Search
+	const searchResult = await api.containerSearch(path);
+	const resultMatch = searchResult.find(r => r.name.toLowerCase() == path.toLowerCase());
+	if (!resultMatch) {
+		console.error(`Not found: ${path}`);
+		debugger;
+		throw `Not found: ${path}`;
+	}
+	const assetBundle = resultMatch.asset_bundles[resultMatch.asset_bundles.length - 1];
+	// step 2: Get AssetBundle
+	const containers = await api.assetbundleContainers(assetBundle.md5);
+	let pathId: string = "";
+	objectEach(containers, (id, value) => {
+		if (value.name.toLowerCase() == path.toLowerCase()) {
+			pathId = id;
+		}
+	});
+	if (!pathId) {
+		console.error(`No pathId: ${path}`);
+		debugger;
+		throw `No pathId: ${path}`;
+	}
+	// step 3: Get Container data
+	const stream = await api.assetbundleContainerData(assetBundle.md5, pathId);
+	return stream;
 }
 
 export async function containerSearchMultiSplit(helper: ViewerJSHelper, ql: string[], count = 50) {
@@ -121,13 +146,9 @@ export async function containerSearchMultiSplit(helper: ViewerJSHelper, ql: stri
 }
 
 export async function containerSearchMulti(helper: ViewerJSHelper, ql: string[]) {
-	const vue = helper.vue;
+	const api = new SdoricaInspectorApi(helper);
 	// step 1: Container Search
-	const { data: searchResults }: { data: SiContainerMultiSearch } = await vue.$http.post(`/api/container/multi_search/`, {
-		queries: ql,
-	}, {
-		timeout: 0,
-	});
+	const searchResults = await api.containerMultiSearch(ql);
 	const qlmd5: string[] = [];
 	const abl = [...searchResults.reduce((prev, curr, index) => {
 		const path = ql[index];
@@ -144,10 +165,7 @@ export async function containerSearchMulti(helper: ViewerJSHelper, ql: string[])
 	}, new Set<string>())];
 
 	// step 2: Get AssetBundle
-	const abd = await Promise.all(abl.map(async md5 => {
-		const { data: containers }: { data: SiContainers } = await vue.$http.get(`/api/asset_bundle/${md5}/containers/`);
-		return containers;
-	}));
+	const abd = await Promise.all(abl.map(async md5 => await api.assetbundleContainers(md5)));
 	const qlpathid: string[] = [];
 	const qltype: string[] = [];
 	ql.forEach((path, index) => {
@@ -167,11 +185,7 @@ export async function containerSearchMulti(helper: ViewerJSHelper, ql: string[])
 
 	// step 3: Get Container data
 	const qll = ql.map<[string, string]>((path, index) => [qlmd5[index], qlpathid[index]]);
-	const { data: containerResults }: { data: SiContainer[] } = await vue.$http.post(`/api/asset_bundle/containers/multi_retrieve/`, {
-		queries: qll,
-	}, {
-		timeout: 0,
-	});
+	const containerResults = await api.assetbundleContainerMultiRetrieve(qll);
 
 	// step 4: Run ViewerJS code
 	const interpretedDatas: SiContainer[] = await Promise.all(qll.map(async (q, index) => {

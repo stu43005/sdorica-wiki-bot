@@ -4,10 +4,10 @@ import jsonStableStringify from "json-stable-stringify";
 import fetch from "node-fetch";
 import * as path from "path";
 import * as xlsx from "xlsx";
-import { AssetDataRaw, ImperiumDataRaw, TableDataRaw } from "./data-raw-type";
+import { ImperiumDataRaw, TableDataRaw } from "./data-raw-type";
 import { Logger } from "./logger";
 import { tableOut } from "./out-data";
-import { filterKeyByTable, sortKeyByTable } from "./out-sort-key";
+import { sortKeyByTable } from "./out-sort-key";
 import { flipMatrix } from "./utils";
 
 const logger = new Logger('out');
