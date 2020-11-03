@@ -5,6 +5,7 @@ on:
     branches: [master]
   schedule:
     - cron: "0 * * * *"
+  workflow_dispatch:
 
 jobs:
   script:
@@ -39,7 +40,18 @@ jobs:
       env:
         NODE_ENV: production
 
+    # - name: Commit files
+    #   uses: stefanzweifel/git-auto-commit-action@v4
+    #   with:
+    #     commit_message: 更新資料
+
     - name: Commit files
-      uses: stefanzweifel/git-auto-commit-action@v4
+      uses: peaceiris/actions-gh-pages@v3
       with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./data
+        publish_branch: data
         commit_message: 更新資料
+        keep_files: true
+        user_name: 'github-actions[bot]'
+        user_email: 'github-actions[bot]@users.noreply.github.com'
