@@ -1,11 +1,11 @@
 name: "Wiki"
 
 on:
-  workflow_run:
-    workflows: ["Data Process"]
-    branches: [master]
-    types:
-      - completed
+  push:
+    branches:
+    - master
+    - data
+  workflow_dispatch:
 
 jobs:
   script:
@@ -16,7 +16,13 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
       with:
-        fetch-depth: 2
+        ref: master
+
+    - name: Checkout data
+      uses: actions/checkout@v2
+      with:
+        ref: data
+        path: data
 
     - name: Cache node modules
       uses: actions/cache@v2
@@ -46,4 +52,5 @@ jobs:
     - name: Commit files
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
-        commit_message: 更新Wiki資料
+        commit_message: 更新Wiki資料 ${{ github.event.head_commit.sha }}
+        repository: data

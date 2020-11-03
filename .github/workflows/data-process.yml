@@ -2,7 +2,8 @@ name: "Data Process"
 
 on:
   push:
-    branches: [master]
+    branches:
+    - master
   schedule:
     - cron: "0 * * * *"
   workflow_dispatch:
@@ -15,8 +16,13 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
+
+    - name: Checkout data
+      uses: actions/checkout@v2
       with:
-        fetch-depth: 2
+        ref: data
+        path: data
+        token: ${{ secrets.PAT }}
 
     - name: Cache node modules
       uses: actions/cache@v2
@@ -40,18 +46,8 @@ jobs:
       env:
         NODE_ENV: production
 
-    # - name: Commit files
-    #   uses: stefanzweifel/git-auto-commit-action@v4
-    #   with:
-    #     commit_message: 更新資料
-
     - name: Commit files
-      uses: peaceiris/actions-gh-pages@v3
+      uses: stefanzweifel/git-auto-commit-action@v4
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./data
-        publish_branch: data
-        commit_message: 更新資料
-        keep_files: true
-        user_name: 'github-actions[bot]'
-        user_email: 'github-actions[bot]@users.noreply.github.com'
+        commit_message: 更新資料 ${{ github.event.head_commit.sha }}
+        repository: data
