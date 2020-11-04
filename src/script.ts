@@ -9,5 +9,5 @@ export async function scriptMain() {
 	const result = await downloader(force);
 	if (force || result['charAssets']) await charAssetsDownloader();
 	if (force || result['localization']) await localizationChineseOnly();
-	if (force || result['gamedata']) await gamedataTranslate();
+	if (force || result['gamedata'] || result['localization']) await gamedataTranslate();
 }
