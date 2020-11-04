@@ -127,7 +127,7 @@ const TABLE_KEYS: Record<string, string[]> = {
 	],
 	RewardGroups: ["rewardGroupId", "note", "note2", "order", "targetItemId", "targetCount", "giveType", "giveLinkId", "giveAmount"],
 	SkillLevel: [
-		"id",
+		"id", "note",
 		"rootSkill", "requiredSubrank",
 		"skillLv", "targetSkillSet", "ceilingSkill",
 		"S1", "S2", "S3",
