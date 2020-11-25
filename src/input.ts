@@ -93,8 +93,8 @@ function processTableData(data: ImperiumDataRaw) {
  * @param {string} filepath File path
  * @returns {Promise<{ [key: string]: any }>} unserialized State key-value pair
  */
-export function inputMonoBehaviour(filepath: string): Record<string, any> {
-	return new Promise((resolve, reject) => {
+export function inputMonoBehaviour(filepath: string): Promise<Record<string, any[]>> {
+	return new Promise<Record<string, any[]>>((resolve, reject) => {
 		const rl = readline.createInterface({
 			input: fs.createReadStream(filepath, 'utf8'),
 			crlfDelay: Infinity,
