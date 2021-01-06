@@ -18,9 +18,10 @@ export default function wikiExploreComposite() {
 		for (let j = 0; j < composites.length; j++) {
 			const row = composites[j];
 			const items = itemList(row);
+			const reset = row.get("resetDay") != -1 ? `<br/>(${row.get("maxCount")}次/${row.get("resetDay")}日)` : "";
 			str += `|-
 | style="text-align:center" | Lv ${building.get("level")}
-| ${item2wiki(row.get("itemId"), undefined, true)}
+| ${item2wiki(row.get("itemId"), undefined, true)}${reset}
 | ${items.join(" ")}
 | ${row.get("requireFlagId") ? `style="text-align: center" | {{?}}` : `style="text-align: center" | -`}
 `;
@@ -42,10 +43,11 @@ export default function wikiExploreComposite() {
 			const row = otherComposites[j];
 			if (Number(row.get("itemId")) >= 1 && Number(row.get("itemId")) <= 11) continue;
 			const items = itemList(row);
+			const reset = row.get("resetDay") != -1 ? `<br/>(${row.get("maxCount")}次/${row.get("resetDay")}日)` : "";
 			const building = ExploreBuildingTable.find(b => b.get("id") == row.get("requireBuildingId"));
 			str += `|-
 | style="text-align:center" | ${building ? `${building.get("type")} Lv ${building.get("level")}` : row.get("requireBuildingId")}
-| ${item2wiki(row.get("itemId"), undefined, true)}
+| ${item2wiki(row.get("itemId"), undefined, true)}${reset}
 | ${items.join(" ")}
 | ${row.get("requireFlagId") ? `style="text-align: center" | {{?}}` : `style="text-align: center" | -`}
 `;
