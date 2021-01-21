@@ -2,7 +2,7 @@ import MWBot from "mwbot";
 import path from "path";
 import { WIKI_PATH } from "./config";
 import { outJson, outText } from "./out";
-import { objectEach } from "./utils";
+import { isDevMode, objectEach } from "./utils";
 import { getMWBot } from "./wiki-bot";
 import { getHeroJsonData } from "./wiki-hero";
 import { getItemJsonData } from "./wiki-item";
@@ -71,20 +71,24 @@ function wrapHiddenDiv(content: string) {
 
 async function outWiki(bot: MWBot, title: string, out: string) {
 	await outText(path.join(WIKI_PATH, `${title.replace(/:/, '_')}.txt`), out);
-	if (title.startsWith('模板:')) {
-		await bot.editOnDifference(title, out);
-	} else {
-		await bot.editOnDifference(`使用者:小飄飄/wiki/${title}`, wrapHiddenDiv(out));
+	if (!isDevMode()) {
+		if (title.startsWith('模板:')) {
+			await bot.editOnDifference(title, out);
+		} else {
+			await bot.editOnDifference(`使用者:小飄飄/wiki/${title}`, wrapHiddenDiv(out));
+		}
 	}
 }
 
 async function outWikiJson(bot: MWBot, title: string, data: any) {
 	await outJson(path.join(WIKI_PATH, `${title}.json`), data);
-	await bot.editOnDifference(`使用者:小飄飄/bot/${title}.json`, JSON.stringify(data, null, 4));
+	if (!isDevMode()) {
+		await bot.editOnDifference(`使用者:小飄飄/bot/${title}.json`, JSON.stringify(data, null, 4));
+	}
 }
 
 async function outWikiConstant(bot: MWBot, title: string, value: string) {
-	if (value) {
+	if (value && !isDevMode()) {
 		await bot.editOnDifference(`模板:Constant/${title}`, `${value}<noinclude>{{Documentation}}</noinclude>`);
 	}
 }
@@ -129,10 +133,12 @@ export async function wikiMain() {
 	await outText(path.join(WIKI_PATH, "raw/heroes.txt"), wikiHeroesData());
 	await outText(path.join(WIKI_PATH, "raw/items.txt"), wikiItemsData());
 
-	await wikiHeroBot(bot);
-	// await wikiMonsterBot(bot);
-	// await wikiRuneRedirectBot(bot);
-	// await wikiScRedirectBot(bot);
-	// await wikiUpdateExploreItemBot(bot);
-	// await wikiItemImageBot(bot);
+	if (!isDevMode()) {
+		await wikiHeroBot(bot);
+		// await wikiMonsterBot(bot);
+		// await wikiRuneRedirectBot(bot);
+		// await wikiScRedirectBot(bot);
+		// await wikiUpdateExploreItemBot(bot);
+		// await wikiItemImageBot(bot);
+	}
 }
