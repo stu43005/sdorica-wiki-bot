@@ -168,6 +168,7 @@ const TABLE_KEYS: Record<string, string[]> = {
 		"visibleCondition", "param1",
 		"unlockCondition", "param2", "unlockText", "unlockNoteText"
 	],
+	VoucherGifts: ["id", "groupId", "giveType", "giveLinkId", "giveAmount"],
 };
 
 const itemKeys: string[] = [];

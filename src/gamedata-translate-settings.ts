@@ -1,6 +1,8 @@
 import { ImperiumData } from "./imperium-data";
 import { black, call2, colonFirst, Func1, gamedataString, gold, ifor, localizationCharacterName, localizationCharacterNameByHeroId, localizationCharacterNameWithDefault, localizationExploreBuildingName, localizationHomelandBuildingName, localizationItemName, localizationItemNameWithType, localizationMonsterName, localizationMonsterSkillName, localizationMonsterSpecialityName, localizationQuestName, localizationString, localizationStringAuto, localizationTavernMissionName, localizationUnlockCondition, rank, semicolon, weekday, white } from "./localization";
 import { Logger } from "./logger";
+import { ItemCategory } from './model/enums/item-category.enum';
+import { Item } from './model/item';
 import { exploreLabelName } from "./wiki-item";
 
 const logger = new Logger('gamedata-translate');
@@ -644,6 +646,19 @@ export const gamedataTeanslateSettings: GamedataRef[] = [
 		table: "PaddingAssistants",
 		column: "skillIds",
 		func: semicolon(localizationString("HeroSkills", "skill_set_")),
+	},
+	{
+		table: "VoucherGifts",
+		column: "giveLinkId:giveType",
+		func: localizationItemNameWithType(),
+	},
+	{
+		table: "VoucherGifts",
+		column: "groupId",
+		func: (str) => {
+			const item = Item.find(item => item.category == ItemCategory.Voucher && item.effectValue == +str);
+			return item?.name ?? '';
+		},
 	},
 ];
 

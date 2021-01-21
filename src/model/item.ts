@@ -1,6 +1,6 @@
 import { ImperiumData, RowWrapper } from "../imperium-data";
 import { itemNameNormalization, localizationString } from "../localization";
-import { treasureList } from "../wiki-item";
+import { treasureList, voucherList } from "../wiki-item";
 import { Avatar } from './avatar';
 import { ExploreItemsCategory } from './enums/explore-items-category.enum';
 import { ItemCategory } from './enums/item-category.enum';
@@ -118,6 +118,9 @@ export class Item extends ItemBase {
 	getWikiTreasureList(heading = '== 開啟寶箱獲得道具 ==') {
 		if (this.category == ItemCategory.Treasure) {
 			return heading + treasureList(this.effectValue);
+
+		} else if (this.category == ItemCategory.Voucher) {
+			return '== 自選項目 ==' + voucherList(this.effectValue);
 		}
 		return '';
 	}

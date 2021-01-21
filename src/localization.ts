@@ -125,6 +125,10 @@ export function localizationItemNameWithType(withCurrencyType: boolean = false):
 			case "Monster":
 				// return localizationMonsterName()(strings[0]);
 				return `${localizationMonsterNameById()(strings[0])}:${gamedataString("HomelandMonster", "id", "rank")(strings[0])}`;
+			case "Hero": {
+				const [heroId, rankId] = strings[0].split("_");
+				return `${localizationCharacterNameByHeroId()(heroId)}_${rank()(rankId)}`;
+			}
 		}
 		return "";
 	};

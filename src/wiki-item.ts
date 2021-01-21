@@ -1,7 +1,8 @@
 import numeral from "numeral";
 import { ImperiumData, RowWrapper } from "./imperium-data";
-import { currency2Id, Func1, gamedataString, localizationExploreBuildingName, localizationItemName, localizationMonsterNameById, localizationString } from "./localization";
+import { currency2Id, Func1, gamedataString, localizationCharacterNameByHeroId, localizationExploreBuildingName, localizationItemName, localizationMonsterNameById, localizationString, rank } from "./localization";
 import { ExploreItem } from './model/explore-item';
+import { Hero } from "./model/hero";
 import { Item } from './model/item';
 import { arrayUnique } from "./utils";
 import { wikitemplate, wikiTitleEscape } from "./wiki-utils";
@@ -12,6 +13,7 @@ const ExploreItemsTable = ImperiumData.fromGamedata().getTable("ExploreItems");
 const ExploreBuildingTable = ImperiumData.fromGamedata().getTable("ExploreBuilding");
 const ExploreCompositeTable = ImperiumData.fromGamedata().getTable("ExploreComposite");
 const HeroSkillsTable = ImperiumData.fromGamedata().getTable("HeroSkills");
+const VoucherGiftsTable = ImperiumData.fromGamedata().getTable("VoucherGifts");
 
 export function getItemJsonData() {
 	const out: Record<string, Record<string, string>> = {
@@ -71,6 +73,15 @@ function dropItemListEntry(item: RowWrapper, weightCount = 0) {
 	}
 	else if (item.get("category") == "Weight" && weightCount && item.get("value") != weightCount) {
 		str += `：${Math.floor(item.get("value") / weightCount * 10000) / 100}%`;
+	}
+	return str;
+}
+
+export function voucherList(groupId: number) {
+	const items = VoucherGiftsTable.filter(r => r.get('groupId') == groupId);
+	let str = "";
+	for (const item of items) {
+		str += `\n* ${item2wikiWithType(item.get("giveType"), item.get("giveLinkId"), item.get("giveAmount"))}`;
 	}
 	return str;
 }
@@ -447,6 +458,12 @@ export function item2wikiWithType(type: string, id: string, count?: number, opti
 
 		case "Monster":
 			return monster2wiki(id, count, options);
+
+		case "Hero": {
+			const [heroId, rankId] = id.split("_");
+			const hero = Hero.get(heroId)?.toWikiSmallIcon() ?? localizationCharacterNameByHeroId()(heroId);
+			return `${hero} (${rank()(rankId)})` + (count ? ` x${count}` : "");
+		}
 	}
 }
 

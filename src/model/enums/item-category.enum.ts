@@ -23,4 +23,5 @@ export enum ItemCategory {
 	Flag = 'Flag',
 	Space = 'Space',
 	Custom = 'Custom',
+	Voucher = 'Voucher',
 }
