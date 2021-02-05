@@ -40,7 +40,7 @@ export function jsonStringify(data: any) {
 	return jsonStableStringify(data, {
 		space: 2,
 		replacer: (key: string, value: any) => {
-			if (typeof value === 'object' && value.K instanceof Array && value.T instanceof Array && value.D instanceof Array) {
+			if (value && typeof value === 'object' && value.K instanceof Array && value.T instanceof Array && value.D instanceof Array) {
 				const table = value as TableDataRaw;
 				table.D.push(table.T);
 				table.D.push(table.K);
