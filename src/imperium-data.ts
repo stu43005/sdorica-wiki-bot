@@ -77,6 +77,16 @@ export class TableWrapper implements Iterable<RowWrapper> {
 	get table(): TableDataRaw {
 		const raw = this.data.getRawData();
 		if (!raw) {
+			logger.error(`raw data not yet loaded.`);
+			debugger;
+			// throw `raw data not yet loaded.`;
+			return {
+				K: [],
+				T: [],
+				D: [],
+			};
+		}
+		if (!raw.C[this.name]) {
 			logger.error(`table "${this.name}" not exists.`);
 			debugger;
 			// throw `table "${this.name}" not exists.`;
