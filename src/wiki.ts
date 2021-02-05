@@ -105,8 +105,8 @@ export async function wikiMain() {
 	await outWiki(bot, 'ExploreBuilding', wikiExploreBuilding());
 	await outWiki(bot, 'ExploreComposite', wikiExploreComposite());
 	await outWiki(bot, 'ExploreItems', wikiExploreItems());
-	await outWiki(bot, 'Gashapons', wikiGashapons());
-	await outWikiJson(bot, 'Gashapons', wikiGashaponsJson());
+	// await outWiki(bot, 'Gashapons', wikiGashapons());
+	// await outWikiJson(bot, 'Gashapons', wikiGashaponsJson());
 	await outWiki(bot, 'Heroes', wikiHeroes());
 	await outWikiJson(bot, 'Heroes', wikiHeroesJson());
 	await outWiki(bot, 'HomelandBuilding', wikiHomelandBuilding());
