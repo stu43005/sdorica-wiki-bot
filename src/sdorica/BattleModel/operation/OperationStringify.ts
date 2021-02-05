@@ -69,8 +69,7 @@ export function operationStringify(operation: IBaseOperation) {
 			return `${skillEffectStringify(effect)}`;
 		}).join("、")}`;
 	}
-	console.error(`Unknown operation type: ${operation.$type}`);
-	debugger;
+	console.error(`Unknown IBaseOperation type: ${operation.$type}`);
 	return JSON.stringify(operation);
 }
 
@@ -115,8 +114,7 @@ export function operateCharacterStringify(operation: IOperationToCharacter) {
 		const obj = operation as OperateCharacterAllConditionalBuffs;
 		return `符合(${conditionBuffStringify(obj.condition)})的狀態${operateBuffStringify(obj.operation)}`;
 	}
-	console.error(`Unknown operation to character type: ${operation.$type}`);
-	debugger;
+	console.error(`Unknown IOperationToCharacter type: ${operation.$type}`);
 	return JSON.stringify(operation);
 }
 
@@ -130,7 +128,6 @@ export function operateBuffStringify(operation: IOperationToBuff) {
 		const obj = operation as ReplaceBuffTag;
 		return `覆蓋標籤為(${BuffTag.toString(obj.newTag)})`;
 	}
-	console.error(`Unknown operation to character type: ${operation.$type}`);
-	debugger;
+	console.error(`Unknown IOperationToBuff type: ${operation.$type}`);
 	return JSON.stringify(operation);
 }

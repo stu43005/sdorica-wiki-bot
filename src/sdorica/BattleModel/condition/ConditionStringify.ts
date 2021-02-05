@@ -150,8 +150,7 @@ export function conditionStringify(condition: IConditionOfModel, isInverse: bool
 		const pa = Math.floor(obj.lessThan / obj.randBase * 10000) / 100;
 		return `${isInverse ? 100 - pa : pa}%機率`;
 	}
-	console.error(`Unknown condition type: ${condition.$type}`);
-	debugger;
+	console.error(`Unknown IConditionOfModel type: ${condition.$type}`);
 	return JSON.stringify(condition);
 }
 
@@ -214,8 +213,7 @@ export function conditionCharStringify(condition: IConditionOfCharacter, isInver
 		const obj = condition as IsCharacterDead;
 		return `${isInverse ? "沒有" : "已經"}死亡`;
 	}
-	console.error(`Unknown condition type: ${condition.$type}`);
-	debugger;
+	console.error(`Unknown IConditionOfCharacter type: ${condition.$type}`);
 	return JSON.stringify(condition);
 }
 
@@ -262,7 +260,6 @@ export function conditionBuffStringify(condition: IConditionOfBuff, isInverse: b
 		const obj = condition as CheckBuffBelongLabel;
 		return `${isInverse ? "沒" : ""}有在${buffLabelStringify(obj.BuffLabel)}列表內`;
 	}
-	console.error(`Unknown condition type: ${condition.$type}`);
-	debugger;
+	console.error(`Unknown IConditionOfBuff type: ${condition.$type}`);
 	return JSON.stringify(condition);
 }

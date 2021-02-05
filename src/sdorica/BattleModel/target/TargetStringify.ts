@@ -104,8 +104,7 @@ export function singleTargetStringify(target: ISingleCharacter): string {
 		const obj = target as FieldMaxChar;
 		return `${mulitTargetStringify(obj.group)}中${constantCharStringify(obj.field)}最高的角色`;
 	}
-	console.error(`Unknown target type: ${target.$type}`);
-	debugger;
+	console.error(`Unknown ISingleCharacter type: ${target.$type}`);
 	return JSON.stringify(target);
 }
 
@@ -159,7 +158,6 @@ export function mulitTargetStringify(target: IGroupedCharacter): string {
 		const obj = target as SelftTeamEmptySlots;
 		return `${singleTargetStringify(obj.reference)}隊伍的空位`;
 	}
-	console.error(`Unknown target type: ${target.$type}`);
-	debugger;
+	console.error(`Unknown IGroupedCharacter type: ${target.$type}`);
 	return JSON.stringify(target);
 }

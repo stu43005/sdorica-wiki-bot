@@ -27,8 +27,7 @@ export function singleBuffStringify(buff: ISingleBuff) {
 		const obj = buff as BuffOnCharater;
 		return `在${singleTargetStringify(obj.character)}的${localizationBuffName(true)(obj.buffId)}狀態`;
 	}
-	console.error(`Unknown condition type: ${buff.$type}`);
-	debugger;
+	console.error(`Unknown ISingleBuff type: ${buff.$type}`);
 	return JSON.stringify(buff);
 }
 
@@ -42,8 +41,7 @@ export function groupedBuffStringify(buff: IGroupedBuff): string {
 		const obj = buff as BuffGroupWhere;
 		return `${groupedBuffStringify(obj.group)}中${conditionBuffStringify(obj.condition)}的Buff`;
 	}
-	console.error(`Unknown condition type: ${buff.$type}`);
-	debugger;
+	console.error(`Unknown IGroupedBuff type: ${buff.$type}`);
 	return JSON.stringify(buff);
 }
 
@@ -57,8 +55,7 @@ export function groupedBuffIdStringify(buff: IGroupedBuffId) {
 		const obj = buff as GeneralGroupedBuffId;
 		return groupedBuffStringify(obj.BuffGroup);
 	}
-	console.error(`Unknown condition type: ${buff.$type}`);
-	debugger;
+	console.error(`Unknown IGroupedBuffId type: ${buff.$type}`);
 	return JSON.stringify(buff);
 }
 

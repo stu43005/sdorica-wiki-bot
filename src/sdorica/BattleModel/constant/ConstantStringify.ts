@@ -171,7 +171,6 @@ export function constantStringify(constant: ISingleInteger): string {
 		return `(${groupedIntegerStringify(obj.group)})的總和`;
 	}
 	console.error(`Unknown ISingleInteger type: ${constant.$type}`);
-	debugger;
 	return JSON.stringify(constant);
 }
 
@@ -234,7 +233,6 @@ export function constantCharStringify(constant: ISingleIntegerOfCharacter) {
 		return `(${constantCharStringify(obj.left)} * ${obj.ratio})`;
 	}
 	console.error(`Unknown ISingleIntegerOfCharacter type: ${constant.$type}`);
-	debugger;
 	return JSON.stringify(constant);
 }
 
@@ -297,7 +295,6 @@ export function constantBuffStringify(constant: ISingleIntegerOfBuff) {
 		return `(${constantBuffStringify(obj.left)} * ${obj.ratio})`;
 	}
 	console.error(`Unknown ISingleIntegerOfBuff type: ${constant.$type}`);
-	debugger;
 	return JSON.stringify(constant);
 }
 
@@ -308,7 +305,6 @@ export function battleActionRecordValueStringify(constant: IBattleActionRecordVa
 		return `目前戰鬥回合數`;
 	}
 	console.error(`Unknown IBattleActionRecordValue type: ${constant.$type}`);
-	debugger;
 	return JSON.stringify(constant);
 }
 
@@ -322,7 +318,6 @@ export function groupedIntegerStringify(constant: IGroupedInteger) {
 		const obj = constant as IntsOnCharGroup;
 		return `${mulitTargetStringify(obj.group)}中的${BuffEnums.CharacterIntegerField.toString(obj.targetField)}`;
 	}
-	console.error(`Unknown IBattleActionRecordValue type: ${constant.$type}`);
-	debugger;
+	console.error(`Unknown IGroupedInteger type: ${constant.$type}`);
 	return JSON.stringify(constant);
 }

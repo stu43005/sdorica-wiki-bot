@@ -161,8 +161,7 @@ export function skillEffectStringify(skillEffect: BaseSkillEffect): string {
 		}
 		return `複製${singleTargetStringify(obj.SingleCharacter)}符合(${conditionBuffStringify(obj.FilterCondition)})條件${obj.RandomSelectBuff ? `並隨機選擇${obj.RandomCopyCount}個${obj.NotRepeatSameBuffId ? "不重複的" : ""}` : "的"}狀態`;
 	}
-	console.error(`Unknown skill effect type: ${skillEffect.$type}`);
-	debugger;
+	console.error(`Unknown BaseSkillEffect type: ${skillEffect.$type}`);
 	return JSON.stringify(skillEffect);
 }
 
