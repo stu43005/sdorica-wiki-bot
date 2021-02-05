@@ -31,7 +31,7 @@ let queueTimer: any = null;
 let queue: QueueEntry[] = [];
 interface QueueEntry {
 	path: string;
-	resolve: (value?: SiContainer | PromiseLike<SiContainer>) => void;
+	resolve: (value: SiContainer | PromiseLike<SiContainer>) => void;
 	reject: (reason?: any) => void;
 }
 
