@@ -1,4 +1,44 @@
 {
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "OnBuffAdd": {
+        "效果": [
+          {
+            "效果": [
+              "立即施展技能：對玩家首位的目標攻擊((floor(玩家首位的目標的最大HP * 0.3) * 本狀態的層數) x1)",
+              "對玩家首位的目標賦予1回合1層burn(燃燒)",
+              "對本角色移除狀態scroll_fireball"
+            ],
+            "條件": [
+              "當前事件的狀態 是＂scroll_fireball＂"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnEachSkillTargetEffect": {
+        "效果": [
+          {
+            "效果": [
+              "立即施展技能：對玩家首位的目標攻擊((floor(玩家首位的目標的最大HP * 0.3) * 本狀態的層數) x1)",
+              "對玩家首位的目標賦予1回合1層burn(燃燒)",
+              "對本角色移除狀態scroll_fireball"
+            ],
+            "條件": [
+              "當前事件的狀態 是＂scroll_fireball＂"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 99,
+    "標籤": "Hidden | StackIndependent | InfinityTrigger"
+  },
   "$type": "BattleModel.Buff",
   "ReferenceBuffKeys": [
     "burn"
@@ -61,7 +101,32 @@
                         "_skillModifier": {
                           "_constant": 0,
                           "_parameter": {
-                            "$type": "BattleModel.AssignedValue"
+                            "$type": "BattleModel.AssignedValue",
+                            "_value": {
+                              "$type": "BattleModel.MultiplyInt",
+                              "left": {
+                                "$type": "BattleModel.MultiplyFloat",
+                                "left": {
+                                  "$type": "BattleModel.IntCharaterField",
+                                  "character": {
+                                    "$type": "BattleModel.EnemyAssignee",
+                                    "reference": {
+                                      "$type": "BattleModel.FrontOfChars",
+                                      "group": {
+                                        "$type": "BattleModel.PVEPlayerTeam",
+                                        "includeDead": false,
+                                        "includeEmpty": false
+                                      }
+                                    }
+                                  },
+                                  "targetField": 1
+                                },
+                                "ratio": 0.3
+                              },
+                              "right": {
+                                "$type": "BattleModel.ThisBuffLevel"
+                              }
+                            }
                           },
                           "_ratio": 1
                         }
@@ -186,7 +251,32 @@
                         "_skillModifier": {
                           "_constant": 0,
                           "_parameter": {
-                            "$type": "BattleModel.AssignedValue"
+                            "$type": "BattleModel.AssignedValue",
+                            "_value": {
+                              "$type": "BattleModel.MultiplyInt",
+                              "left": {
+                                "$type": "BattleModel.MultiplyFloat",
+                                "left": {
+                                  "$type": "BattleModel.IntCharaterField",
+                                  "character": {
+                                    "$type": "BattleModel.EnemyAssignee",
+                                    "reference": {
+                                      "$type": "BattleModel.FrontOfChars",
+                                      "group": {
+                                        "$type": "BattleModel.PVEPlayerTeam",
+                                        "includeDead": false,
+                                        "includeEmpty": false
+                                      }
+                                    }
+                                  },
+                                  "targetField": 1
+                                },
+                                "ratio": 0.3
+                              },
+                              "right": {
+                                "$type": "BattleModel.ThisBuffLevel"
+                              }
+                            }
                           },
                           "_ratio": 1
                         }

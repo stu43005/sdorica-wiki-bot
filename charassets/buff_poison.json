@@ -1,4 +1,85 @@
 {
+  "$interpreted": {
+    "Localization": "中毒：自身回合結束時，每層中毒失去現有10%血量，最高3層，被治癒後解除。",
+    "動作": {
+      "OnBuffAdd": {
+        "效果": [
+          {
+            "效果": [
+              "對本狀態覆蓋標籤為(NotRemoveAfterBattle | TriggerOncePerTurn | StackIndependent | InfinityTrigger)"
+            ],
+            "條件": [
+              "本角色擁有long_term(長效)狀態"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnBuffStack": {
+        "效果": [
+          {
+            "效果": [
+              "對本狀態覆蓋標籤為(NotRemoveAfterBattle | TriggerOncePerTurn | StackIndependent | InfinityTrigger)"
+            ],
+            "條件": [
+              "本角色擁有long_term(長效)狀態"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnEachSkillTargetEffect": {
+        "效果": [
+          {
+            "效果": [
+              "對本角色移除狀態poison(中毒)"
+            ],
+            "條件": [
+              "本角色是此技能效果目標的一員",
+              "施展的技能效果中包含(Heal)屬性"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnTurnBegin": {
+        "效果": [
+          {
+            "效果": [
+              "對本狀態覆蓋標籤為(NotRemoveAfterBattle | TriggerOncePerTurn | StackIndependent | InfinityTrigger)"
+            ],
+            "條件": [
+              "本角色擁有long_term(長效)狀態"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnTurnEnd": {
+        "效果": [
+          {
+            "效果": [
+              "對本角色賦予1回合1層poison_trigger",
+              "立即施展技能：對本角色穿透((本角色的HP * 本狀態的層數) x0.1)"
+            ],
+            "條件": [
+            ]
+          }
+        ],
+        "條件": [
+          "目前回合輪到本角色",
+          "本角色沒有immunity_poison(本角色無視毒液相關的傷害。)狀態"
+        ]
+      }
+    },
+    "持續時間": 1,
+    "最高層數": 3,
+    "標籤": "TriggerOncePerTurn | StackIndependent | InfinityTrigger"
+  },
   "$type": "BattleModel.Buff",
   "ReferenceBuffKeys": [
     "poison_trigger"
@@ -64,7 +145,24 @@
                         "_skillModifier": {
                           "_constant": 0,
                           "_parameter": {
-                            "$type": "BattleModel.AssignedValue"
+                            "$type": "BattleModel.AssignedValue",
+                            "_value": {
+                              "$type": "BattleModel.MultiplyInt",
+                              "left": {
+                                "$type": "BattleModel.IntCharaterField",
+                                "character": {
+                                  "$type": "BattleModel.ThisBuffOwner"
+                                },
+                                "targetField": 0
+                              },
+                              "right": {
+                                "$type": "BattleModel.IntBuffField",
+                                "buff": {
+                                  "$type": "BattleModel.ThisBuff"
+                                },
+                                "targetField": 1
+                              }
+                            }
                           },
                           "_ratio": 0.1
                         }

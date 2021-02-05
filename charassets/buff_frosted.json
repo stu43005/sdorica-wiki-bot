@@ -1,4 +1,87 @@
 {
+  "$interpreted": {
+    "Localization": "寒冷：自身回合開始時，每層寒冷使血量無法超過80%/60%/40%，被疊盾後解除。",
+    "動作": {
+      "OnBuffAdd": {
+        "效果": [
+          {
+            "效果": [
+              "對本狀態覆蓋標籤為(NotRemoveAfterBattle | StackIndependent | InfinityTrigger)"
+            ],
+            "條件": [
+              "本角色擁有long_term(長效)狀態"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnBuffStack": {
+        "效果": [
+          {
+            "效果": [
+              "對本狀態覆蓋標籤為(NotRemoveAfterBattle | StackIndependent | InfinityTrigger)"
+            ],
+            "條件": [
+              "本角色擁有long_term(長效)狀態"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnEachSkillTargetEffect": {
+        "效果": [
+          {
+            "效果": [
+              "對本角色移除狀態frosted(寒冷)"
+            ],
+            "條件": [
+              "本角色是指定目標",
+              "施展的技能效果中包含(GainArmor)屬性"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnTurnBegin": {
+        "效果": [
+          {
+            "效果": [
+              "立即施展技能：對本角色穿透((本角色的HP + floor(本角色的最大HP * -0.8)) x1)"
+            ],
+            "條件": [
+              "本狀態的層數 == 1"
+            ]
+          },
+          {
+            "效果": [
+              "立即施展技能：對本角色穿透((本角色的HP + floor(本角色的最大HP * -0.6)) x1)"
+            ],
+            "條件": [
+              "本狀態的層數 == 2"
+            ]
+          },
+          {
+            "效果": [
+              "立即施展技能：對本角色穿透((本角色的HP + floor(本角色的最大HP * -0.4)) x1)"
+            ],
+            "條件": [
+              "本狀態的層數 == 3"
+            ]
+          }
+        ],
+        "條件": [
+          "目前回合輪到本角色",
+          "本角色的失去的HP% < (本狀態的層數 * 20)"
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 3,
+    "標籤": "StackIndependent | InfinityTrigger"
+  },
   "$type": "BattleModel.Buff",
   "ReferenceBuffKeys": [
   ],

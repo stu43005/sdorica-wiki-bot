@@ -1,4 +1,76 @@
 {
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "BeforeAnyoneDie": {
+        "效果": [
+          {
+            "效果": [
+              "對本角色賦予1回合1層joy2"
+            ],
+            "條件": [
+              "本角色是施術者"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnEachSkillSetEnd": {
+        "效果": [
+          {
+            "效果": [
+              "對本角色{\"operation\":{\"buffToAdd\":{\"BuffId\":\"b0045c2_P2\",\"OverwriteDuration\":-1,\"Forever\":false,\"LevelStack\":1,\"UserDefineVariable\":{}},\"$type\":\"BattleModel.AddBuff\"},\"viewActionTime\":{\"TriggerTime\":{\"TagName\":\"Attack\",\"TagType\":\"SkillProperty\"},\"Index\":\"Last\",\"FrameOffset\":0},\"$type\":\"BattleModel.OperateCharacterViewActionTime\"}",
+              "對本角色{\"operation\":{\"buffToAdd\":{\"BuffId\":\"sweat\",\"OverwriteDuration\":-1,\"Forever\":false,\"LevelStack\":1,\"UserDefineVariable\":{}},\"$type\":\"BattleModel.AddBuff\"},\"viewActionTime\":{\"TriggerTime\":{\"TagName\":\"Attack\",\"TagType\":\"SkillProperty\"},\"Index\":\"Last\",\"FrameOffset\":0},\"$type\":\"BattleModel.OperateCharacterViewActionTime\"}"
+            ],
+            "條件": [
+              "本角色的疊盾 <= 0",
+              "本角色沒有b0045c2_P2(此時本角色無法執行攻擊。)狀態"
+            ]
+          },
+          {
+            "效果": [
+              "對本角色{\"operation\":{\"buffId\":\"b0045c2_P2\",\"$type\":\"BattleModel.RemoveBuff\"},\"viewActionTime\":{\"TriggerTime\":{\"TagName\":\"GainArmor\",\"TagType\":\"SkillProperty\"},\"Index\":\"Last\",\"FrameOffset\":0},\"$type\":\"BattleModel.OperateCharacterViewActionTime\"}"
+            ],
+            "條件": [
+              "本角色的疊盾 > 0",
+              "本角色擁有b0045c2_P2(此時本角色無法執行攻擊。)狀態"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnTurnBegin": {
+        "效果": [
+          {
+            "效果": [
+              "對本角色觸發TurnOver，並重設冷卻時間"
+            ],
+            "條件": [
+              "本角色的疊盾 <= 0",
+              "目前回合輪到本角色",
+              "本角色沒有b0045c2_P2(此時本角色無法執行攻擊。)狀態"
+            ]
+          },
+          {
+            "效果": [
+              "對本角色觸發TurnBack"
+            ],
+            "條件": [
+              "本角色的疊盾 > 0",
+              "本角色擁有b0045c2_P2(此時本角色無法執行攻擊。)狀態"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      }
+    },
+    "持續時間": 1,
+    "最高層數": 99,
+    "標籤": "Forever"
+  },
   "$type": "BattleModel.Buff",
   "ReferenceBuffKeys": [
     "b0045c2_P2",

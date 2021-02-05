@@ -1,4 +1,69 @@
 {
+  "$interpreted": {
+    "Localization": "燃燒：自身回合結束時，每層燃燒失去5%總血量，最高3層，技能目標獲得燃燒。",
+    "動作": {
+      "OnBuffAdd": {
+        "效果": [
+          {
+            "效果": [
+              "對本狀態覆蓋標籤為(NotRemoveAfterBattle | TriggerOncePerTurn | StackIndependent | InfinityTrigger)"
+            ],
+            "條件": [
+              "本角色擁有long_term(長效)狀態"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnBuffStack": {
+        "效果": [
+          {
+            "效果": [
+              "對本狀態覆蓋標籤為(NotRemoveAfterBattle | TriggerOncePerTurn | StackIndependent | InfinityTrigger)"
+            ],
+            "條件": [
+              "本角色擁有long_term(長效)狀態"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnEachSkillSetEnd": {
+        "效果": [
+          {
+            "效果": [
+              "對{\"group1\":{\"group1\":{\"reference\":{\"$type\":\"BattleModel.ThisSkillCaster\"},\"includeDead\":false,\"includeEmpty\":false,\"$type\":\"BattleModel.OppositeTeamChars\"},\"group2\":{\"reference\":{\"$type\":\"BattleModel.ThisSkillCaster\"},\"excludeSelf\":false,\"includeDead\":false,\"includeEmpty\":false,\"$type\":\"BattleModel.SelfTeamChars\"},\"$type\":\"BattleModel.UnionCharGroup\"},\"group2\":{\"$type\":\"BattleModel.ThisSkillEffectTargets\"},\"$type\":\"BattleModel.IntersectCharGroup\"}所有角色賦予1回合1層burn(燃燒)"
+            ],
+            "條件": [
+              "本角色是施術者"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnTurnEnd": {
+        "效果": [
+          {
+            "效果": [
+              "立即施展技能：對本角色穿透((本角色的最大HP * 本狀態的層數) x0.05)"
+            ],
+            "條件": [
+              "本角色沒有immunity_burn(本角色無視燃燒相關的傷害。)狀態"
+            ]
+          }
+        ],
+        "條件": [
+          "目前回合輪到本角色"
+        ]
+      }
+    },
+    "持續時間": 1,
+    "最高層數": 3,
+    "標籤": "TriggerOncePerTurn | StackIndependent | InfinityTrigger"
+  },
   "$type": "BattleModel.Buff",
   "ReferenceBuffKeys": [
   ],

@@ -1,4 +1,106 @@
 {
+  "$interpreted": {
+    "Localization": "減傷：被攻擊時，每層減傷降低30%技能效果，最高3層。",
+    "動作": {
+      "OnBuffAdd": {
+        "效果": [
+          {
+            "效果": [
+              "對本狀態的變數一改為1"
+            ],
+            "條件": [
+            ]
+          },
+          {
+            "效果": [
+              "對本狀態覆蓋標籤為(NotRemoveAfterBattle | StackIndependent | InfinityTrigger)"
+            ],
+            "條件": [
+              "本角色擁有long_term(長效)狀態"
+            ]
+          }
+        ],
+        "條件": [
+          "當前事件的狀態 是＂defense_up_small(減傷)＂"
+        ]
+      },
+      "OnBuffStack": {
+        "效果": [
+          {
+            "效果": [
+              "對本狀態的變數一改為1"
+            ],
+            "條件": [
+            ]
+          },
+          {
+            "效果": [
+              "對本狀態覆蓋標籤為(NotRemoveAfterBattle | StackIndependent | InfinityTrigger)"
+            ],
+            "條件": [
+              "本角色擁有long_term(長效)狀態"
+            ]
+          }
+        ],
+        "條件": [
+          "當前事件的狀態 是＂defense_up_small(減傷)＂"
+        ]
+      },
+      "OnEachSkillSetEnd": {
+        "效果": [
+          {
+            "效果": [
+              "對本狀態的變數一改為0"
+            ],
+            "條件": [
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnEachSkillTargetEffect": {
+        "效果": [
+          {
+            "效果": [
+              "技能的(Attack)屬性效果增加((-30 * floor(本狀態的層數 * 1)))%"
+            ],
+            "條件": [
+            ]
+          },
+          {
+            "效果": [
+              "技能的(Attack)屬性效果增加((-30 * floor(1 * 1)))%"
+            ],
+            "條件": [
+              "本狀態的層數 == 0"
+            ]
+          }
+        ],
+        "條件": [
+          "本角色是指定目標",
+          "施術者沒有ImmuneTodefense_up_small(攻擊時，無視該角色的減傷效果。)狀態"
+        ]
+      },
+      "OnTurnBegin": {
+        "效果": [
+          {
+            "效果": [
+              "對本狀態覆蓋標籤為(NotRemoveAfterBattle | StackIndependent | InfinityTrigger)"
+            ],
+            "條件": [
+              "本角色擁有long_term(長效)狀態"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      }
+    },
+    "持續時間": 1,
+    "最高層數": 3,
+    "標籤": "StackIndependent | InfinityTrigger"
+  },
   "$type": "BattleModel.Buff",
   "ReferenceBuffKeys": [
   ],

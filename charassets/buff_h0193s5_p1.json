@@ -1,4 +1,58 @@
 {
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "AfterAnyoneDie": {
+        "效果": [
+          {
+            "效果": [
+              "對本角色移除狀態h0193s5_P1(符咒)"
+            ],
+            "條件": [
+            ]
+          }
+        ],
+        "條件": [
+          "死亡或復活的角色是賦予者"
+        ]
+      },
+      "OnEachSkillSetEnd": {
+        "效果": [
+          {
+            "效果": [
+              "立即施展技能：對賦予者攻擊((在此技能組的目標中，本角色的減少體力 + 在此技能組的目標中，本角色的減少疊盾) x1)",
+              "對本角色{\"operation\":{\"buffToAdd\":{\"BuffId\":\"h0193s5_P11\",\"OverwriteDuration\":1,\"Forever\":false,\"LevelStack\":0,\"UserDefineVariable\":{}},\"$type\":\"BattleModel.AddBuff\"},\"viewActionTime\":{\"TriggerTime\":{\"TagName\":\"AddBuff\",\"TagType\":\"SkillProperty\"},\"Index\":\"First\",\"FrameOffset\":0},\"$type\":\"BattleModel.OperateCharacterViewActionTime\"}",
+              "對賦予者{\"operation\":{\"buffToAdd\":{\"BuffId\":\"h0193s5_P12\",\"OverwriteDuration\":1,\"Forever\":false,\"LevelStack\":0,\"UserDefineVariable\":{}},\"$type\":\"BattleModel.AddBuff\"},\"viewActionTime\":{\"TriggerTime\":{\"TagName\":\"AddBuff\",\"TagType\":\"SkillProperty\"},\"Index\":\"First\",\"FrameOffset\":5},\"$type\":\"BattleModel.OperateCharacterViewActionTime\"}"
+            ],
+            "條件": [
+              "(在此技能組的目標中，本角色的減少體力 + 在此技能組的目標中，本角色的減少疊盾) > 0",
+              "賦予者 沒有死亡"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnEachSkillTargetEffect": {
+        "效果": [
+          {
+            "效果": [
+              "技能的(Attack)屬性效果增加(-50)%"
+            ],
+            "條件": [
+              "本角色是指定目標",
+              "賦予者 沒有死亡"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 99,
+    "標籤": ""
+  },
   "$type": "BattleModel.Buff",
   "ReferenceBuffKeys": [
     "h0193s5_P11",
@@ -67,7 +121,38 @@
                         "_skillModifier": {
                           "_constant": 0,
                           "_parameter": {
-                            "$type": "BattleModel.AssignedValue"
+                            "$type": "BattleModel.AssignedValue",
+                            "_value": {
+                              "$type": "BattleModel.PlusInt",
+                              "left": {
+                                "$type": "BattleModel.TransitionResultValue",
+                                "ResultValue": {
+                                  "$type": "BattleModel.TotalResultsValueOfCharacter",
+                                  "CharType": "Target",
+                                  "Character": {
+                                    "$type": "BattleModel.ThisBuffOwner"
+                                  },
+                                  "Results": {
+                                    "$type": "BattleModel.ThisSkillSetResult"
+                                  },
+                                  "ValueType": "HpDamage"
+                                }
+                              },
+                              "right": {
+                                "$type": "BattleModel.TransitionResultValue",
+                                "ResultValue": {
+                                  "$type": "BattleModel.TotalResultsValueOfCharacter",
+                                  "CharType": "Target",
+                                  "Character": {
+                                    "$type": "BattleModel.ThisBuffOwner"
+                                  },
+                                  "Results": {
+                                    "$type": "BattleModel.ThisSkillSetResult"
+                                  },
+                                  "ValueType": "ArmorReduce"
+                                }
+                              }
+                            }
                           },
                           "_ratio": 1
                         }

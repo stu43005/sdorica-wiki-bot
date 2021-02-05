@@ -1,4 +1,77 @@
 {
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "OnBuffAddFromAnyone": {
+        "效果": [
+          {
+            "效果": [
+              "對本角色移除狀態Reflect_trigger",
+              "對本角色賦予永久Reflect_trigger",
+              "對本狀態的變數一改為0"
+            ],
+            "條件": [
+              "當前事件的狀態 是＂DmgReflect_target＂",
+              "本狀態的變數一 == 1"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnBuffStackFromAnyone": {
+        "效果": [
+          {
+            "效果": [
+              "對本角色移除狀態Reflect_trigger",
+              "對本角色賦予永久Reflect_trigger",
+              "對本狀態的變數一改為0"
+            ],
+            "條件": [
+              "當前事件的狀態 是＂DmgReflect_target＂",
+              "本狀態的變數一 == 1"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnEachSkillSetEnd": {
+        "效果": [
+          {
+            "效果": [
+              "對本狀態的變數一改為1",
+              "立即施展技能：對本角色的對方全體攻擊((在此技能組的目標中，本角色的減少體力 + 在此技能組的目標中，本角色的減少疊盾) x1)、賦予永久DmgReflect_target",
+              "對本狀態的變數二改為1"
+            ],
+            "條件": [
+              "(在此技能組的目標中，本角色的減少體力 + 在此技能組的目標中，本角色的減少疊盾) > 0",
+              "本狀態的變數二 == 0"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnTurnBegin": {
+        "效果": [
+          {
+            "效果": [
+              "對本狀態的變數二改為0"
+            ],
+            "條件": [
+              "目前回合輪到本角色"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 99,
+    "標籤": "Forever"
+  },
   "$type": "BattleModel.Buff",
   "ReferenceBuffKeys": [
     "DmgReflect_target",
@@ -80,7 +153,38 @@
                         "_skillModifier": {
                           "_constant": 0,
                           "_parameter": {
-                            "$type": "BattleModel.AssignedValue"
+                            "$type": "BattleModel.AssignedValue",
+                            "_value": {
+                              "$type": "BattleModel.PlusInt",
+                              "left": {
+                                "$type": "BattleModel.TransitionResultValue",
+                                "ResultValue": {
+                                  "$type": "BattleModel.TotalResultsValueOfCharacter",
+                                  "CharType": "Target",
+                                  "Character": {
+                                    "$type": "BattleModel.ThisBuffOwner"
+                                  },
+                                  "Results": {
+                                    "$type": "BattleModel.ThisSkillSetResult"
+                                  },
+                                  "ValueType": "HpDamage"
+                                }
+                              },
+                              "right": {
+                                "$type": "BattleModel.TransitionResultValue",
+                                "ResultValue": {
+                                  "$type": "BattleModel.TotalResultsValueOfCharacter",
+                                  "CharType": "Target",
+                                  "Character": {
+                                    "$type": "BattleModel.ThisBuffOwner"
+                                  },
+                                  "Results": {
+                                    "$type": "BattleModel.ThisSkillSetResult"
+                                  },
+                                  "ValueType": "ArmorReduce"
+                                }
+                              }
+                            }
                           },
                           "_ratio": 1
                         }

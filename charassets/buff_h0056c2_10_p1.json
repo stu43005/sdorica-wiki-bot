@@ -1,4 +1,58 @@
 {
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "BeforeAnyoneDie": {
+        "效果": [
+          {
+            "效果": [
+              "對本角色移除狀態h0056c2_10_P1(芙蕾莉卡在場上時，本角色血量歸零後不會死亡，但無法行動。)"
+            ],
+            "條件": [
+              "死亡或復活的角色是本角色的隊伍中符合(的AssetId包含＂h0135＂字串)的角色的一員"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnEachSkillSetEnd": {
+        "效果": [
+          {
+            "效果": [
+              "對本狀態的變數一改為1",
+              "對本角色賦予1回合1層changeIdle",
+              "對本角色{\"value\":{\"constant\":5,\"$type\":\"BattleModel.ConstanctInt\"},\"$type\":\"BattleModel.AddCharacterCD\"}"
+            ],
+            "條件": [
+              "本狀態的變數一 != 1",
+              "本角色的HP == 0"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnTurnEnd": {
+        "效果": [
+          {
+            "效果": [
+              "對本角色{\"value\":{\"constant\":1,\"$type\":\"BattleModel.ConstanctInt\"},\"$type\":\"BattleModel.AddCharacterCD\"}"
+            ],
+            "條件": [
+              "本角色的HP == 0"
+            ]
+          }
+        ],
+        "條件": [
+          "目前回合輪到本角色"
+        ]
+      }
+    },
+    "持續時間": 1,
+    "最高層數": 99,
+    "標籤": "Forever | Undead"
+  },
   "$type": "BattleModel.Buff",
   "ReferenceBuffKeys": [
     "changeIdle"
