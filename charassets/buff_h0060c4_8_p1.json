@@ -1,0 +1,87 @@
+{
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+    "devineShield"
+  ],
+  "_actionTable": [
+    {
+      "Key": 1,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "devineShield",
+                      "Forever": true,
+                      "LevelStack": -1,
+                      "OverwriteDuration": 1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CurrentTurnBelongsTo",
+                "character": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                }
+              },
+              {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.FieldMinChar",
+                  "field": {
+                    "$type": "BattleModel.IntFieldC",
+                    "targetField": 2
+                  },
+                  "group": {
+                    "$type": "BattleModel.PVEEnemyTeam",
+                    "includeDead": false,
+                    "includeEmpty": false
+                  }
+                },
+                "right": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                }
+              },
+              {
+                "$type": "BattleModel.Inverse",
+                "condition": {
+                  "$type": "BattleModel.CharacterHasBuff",
+                  "buffId": "devineShield",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 99,
+  "_orderTable": [
+    {
+      "Key": 1,
+      "Value": {
+        "Order": 0
+      }
+    }
+  ],
+  "_tag": 64
+}

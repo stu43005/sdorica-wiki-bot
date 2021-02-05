@@ -1,0 +1,508 @@
+{
+  "$type": "BattleModel.EnemyCharacter",
+  "ReferenceBuffKeys": [
+    "e0039c1_P2",
+    "e0039c1_P1",
+    "nerf_damage_small"
+  ],
+  "ReferenceCharacterKeys": [
+  ],
+  "ReferenceEffectKeys": [
+    "e0039c1_s01_Gather01",
+    "e0039c1_s01_Shoot01",
+    "e0039c1_s01_Juice01",
+    "e0039c1_s01_Bug_spine",
+    "e0039c1_s01_Smoke01",
+    "e0039c1_s03_Smoke01",
+    "e0039c1_s03_Move01",
+    "Common_Smoke03",
+    "e0039c1_s03_Hit01",
+    "e0039c1_s03_Leaf01",
+    "Common_SmokeDown02_A",
+    "e0039c1_s04_Posion01",
+    "e0039c1_s04_Ready01",
+    "e0039c1_s04_Posion02",
+    "Common_Smoke03_Loop01",
+    "e0039c1_s05_Smoke03",
+    "e0039c1_s04_Posion03",
+    "Common_SmokeDown03_A",
+    "e0039c1_s02_minime1_spine",
+    "Common_HitSlash01_C",
+    "e0039c1_s02_Leaf01",
+    "e0039c1_s02_Light01",
+    "e0039c1_tr_Leaf01",
+    "e0039c1_s05_Radia01",
+    "e0039c1_tr_Smoke01",
+    "e0039c1_tr_Smoke02"
+  ],
+  "ReferenceEmoIconKeys": [
+  ],
+  "ReferenceMusicKeys": [
+  ],
+  "ReferenceSFXKeys": [
+    "movment_508",
+    "voice_526",
+    "movment_509",
+    "magic_dark_011",
+    "bullet_hit_mud_impact_02",
+    "step_rock_005",
+    "movment_017",
+    "voice_519",
+    "swoosh_011",
+    "impact_body_stab_03",
+    "step_rock_001",
+    "voice_520",
+    "movment_511",
+    "rock_502",
+    "rock_004",
+    "swoosh_082",
+    "swoosh_516",
+    "magic_light_039",
+    "voice_521",
+    "movment_510",
+    "movment_512",
+    "bite_piercing_short_01",
+    "metal_502",
+    "movment_029",
+    "voice_522",
+    "step_rock_009",
+    "rock_009",
+    "movement_mud_tentacle_transform_01",
+    "voice_523"
+  ],
+  "ReferenceVoiceSFXKeys": [
+  ],
+  "_armorCapacity": 0,
+  "_assistantSkill": null,
+  "_bloodCapacity": 1500,
+  "_characterAI": {
+    "$type": "BattleModel.SequenceEnemyAI",
+    "Character": null,
+    "OrderList": [
+      "S1_I2"
+    ]
+  },
+  "_defaultCoolDown": 2,
+  "_initialCoolDown": 0,
+  "_levelStartBuff": [
+  ],
+  "_mass": 999,
+  "_masterRank": 0,
+  "_passiveBuff": [
+    {
+      "BuffId": "e0039c1_P2",
+      "Forever": false,
+      "LevelStack": 1,
+      "OverwriteDuration": -1,
+      "UserDefineVariable": {
+      }
+    }
+  ],
+  "_pose": "Stand",
+  "_power": 90,
+  "_reviveCount": 0,
+  "_skills": {
+    "S1": {
+      "$type": "BattleModel.BattleSkill",
+      "_isResolveTargetEachUnit": false,
+      "_skillIdentifiers": [
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": false,
+          "multi": null,
+          "single": {
+            "$type": "BattleModel.RandomOfChars",
+            "group": {
+              "$type": "BattleModel.OppositeTeamChars",
+              "includeDead": false,
+              "includeEmpty": false,
+              "reference": {
+                "$type": "BattleModel.ThisSkillCaster"
+              }
+            }
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.AddBuffSkillEffect",
+              "Tag": 132,
+              "_buffData": [
+                {
+                  "BuffId": "e0039c1_P1",
+                  "Forever": false,
+                  "LevelStack": 0,
+                  "OverwriteDuration": 3,
+                  "UserDefineVariable": {
+                  }
+                }
+              ],
+              "_keyString": "1"
+            }
+          ]
+        }
+      ]
+    },
+    "S2": {
+      "$type": "BattleModel.BattleSkill",
+      "_isResolveTargetEachUnit": false,
+      "_skillIdentifiers": [
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": true,
+          "multi": {
+            "$type": "BattleModel.CharGroupWhere",
+            "condition": {
+              "$type": "BattleModel.HasConditionalBuff",
+              "buffCondition": {
+                "$type": "BattleModel.IntCompareB",
+                "left": {
+                  "$type": "BattleModel.IntFieldB",
+                  "targetField": 0
+                },
+                "op": 5,
+                "right": {
+                  "$type": "BattleModel.ConstantIntB",
+                  "constant": 0
+                }
+              },
+              "buffId": "e0039c1_P1"
+            },
+            "group": {
+              "$type": "BattleModel.OppositeTeamChars",
+              "includeDead": false,
+              "includeEmpty": false,
+              "reference": {
+                "$type": "BattleModel.ThisSkillCaster"
+              }
+            }
+          },
+          "single": null,
+          "skillEffects": [
+            {
+              "$type": "BattleModel.HpDamageSkillEffect",
+              "Tag": 9,
+              "_keyString": "1",
+              "_skillModifier": {
+                "_constant": 0,
+                "_parameter": {
+                  "$type": "BattleModel.SkillCasterPower",
+                  "basePower": false
+                },
+                "_ratio": 2
+              }
+            },
+            {
+              "$type": "BattleModel.RemoveBuffSkillEffect",
+              "Tag": 4100,
+              "_buffID": "e0039c1_P1",
+              "_keyString": "1"
+            }
+          ]
+        }
+      ]
+    },
+    "S3": {
+      "$type": "BattleModel.BattleSkill",
+      "_isResolveTargetEachUnit": false,
+      "_skillIdentifiers": [
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": false,
+          "multi": null,
+          "single": {
+            "$type": "BattleModel.RandomOfChars",
+            "group": {
+              "$type": "BattleModel.OppositeTeamChars",
+              "includeDead": false,
+              "includeEmpty": false,
+              "reference": {
+                "$type": "BattleModel.ThisSkillCaster"
+              }
+            }
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.HpDamageSkillEffect",
+              "Tag": 9,
+              "_keyString": "1",
+              "_skillModifier": {
+                "_constant": 0,
+                "_parameter": {
+                  "$type": "BattleModel.SkillCasterPower",
+                  "basePower": false
+                },
+                "_ratio": 1
+              }
+            }
+          ]
+        },
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": false,
+          "multi": null,
+          "single": {
+            "$type": "BattleModel.ThisSkillCaster"
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.AddBuffSkillEffect",
+              "Tag": 132,
+              "_buffData": [
+                {
+                  "BuffId": "e0039c1_P2",
+                  "Forever": false,
+                  "LevelStack": 1,
+                  "OverwriteDuration": -1,
+                  "UserDefineVariable": {
+                  }
+                }
+              ],
+              "_keyString": "1"
+            }
+          ]
+        }
+      ]
+    },
+    "S4": {
+      "$type": "BattleModel.BattleSkill",
+      "_isResolveTargetEachUnit": false,
+      "_skillIdentifiers": [
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": true,
+          "multi": {
+            "$type": "BattleModel.OppositeTeamChars",
+            "includeDead": false,
+            "includeEmpty": false,
+            "reference": {
+              "$type": "BattleModel.ThisSkillCaster"
+            }
+          },
+          "single": null,
+          "skillEffects": [
+            {
+              "$type": "BattleModel.HpDamageSkillEffect",
+              "Tag": 9,
+              "_keyString": "1",
+              "_skillModifier": {
+                "_constant": 0,
+                "_parameter": {
+                  "$type": "BattleModel.SkillCasterPower",
+                  "basePower": false
+                },
+                "_ratio": 1
+              }
+            },
+            {
+              "$type": "BattleModel.AddBuffSkillEffect",
+              "Tag": 132,
+              "_buffData": [
+                {
+                  "BuffId": "nerf_damage_small",
+                  "Forever": false,
+                  "LevelStack": 1,
+                  "OverwriteDuration": 3,
+                  "UserDefineVariable": {
+                  }
+                }
+              ],
+              "_keyString": "1"
+            }
+          ]
+        },
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": false,
+          "multi": null,
+          "single": {
+            "$type": "BattleModel.ThisSkillCaster"
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.AddBuffSkillEffect",
+              "Tag": 132,
+              "_buffData": [
+                {
+                  "BuffId": "e0039c1_P2",
+                  "Forever": false,
+                  "LevelStack": 1,
+                  "OverwriteDuration": -1,
+                  "UserDefineVariable": {
+                  }
+                }
+              ],
+              "_keyString": "1"
+            }
+          ]
+        }
+      ]
+    },
+    "S5": {
+      "$type": "BattleModel.BattleSkill",
+      "_isResolveTargetEachUnit": false,
+      "_skillIdentifiers": [
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": true,
+          "multi": {
+            "$type": "BattleModel.OppositeTeamChars",
+            "includeDead": false,
+            "includeEmpty": false,
+            "reference": {
+              "$type": "BattleModel.ThisSkillCaster"
+            }
+          },
+          "single": null,
+          "skillEffects": [
+            {
+              "$type": "BattleModel.HpDamageSkillEffect",
+              "Tag": 9,
+              "_keyString": "1",
+              "_skillModifier": {
+                "_constant": 0,
+                "_parameter": {
+                  "$type": "BattleModel.SkillCasterPower",
+                  "basePower": false
+                },
+                "_ratio": 1
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "_skillsetTable": {
+    "S1_I1": {
+      "ComboList": [
+        {
+          "ConditionList": [
+          ],
+          "SkillList": [
+            {
+              "ConditionList": [
+              ],
+              "SkillID": "S4",
+              "_conditionalSequences": [
+              ],
+              "seq": "",
+              "t": null
+            }
+          ],
+          "_characterCoolDown": 0,
+          "assignTarget": null,
+          "icon": 0
+        }
+      ],
+      "_isViewSkillSet": false
+    },
+    "S1_I2": {
+      "ComboList": [
+        {
+          "ConditionList": [
+            {
+              "$type": "BattleModel.CharacterHasBuff",
+              "buffId": "e0039c1_P2",
+              "character": {
+                "$type": "BattleModel.ThisSkillCaster"
+              }
+            }
+          ],
+          "SkillList": [
+            {
+              "ConditionList": [
+              ],
+              "SkillID": "S1",
+              "_conditionalSequences": [
+              ],
+              "seq": "",
+              "t": null
+            }
+          ],
+          "_characterCoolDown": 0,
+          "assignTarget": null,
+          "icon": 0
+        },
+        {
+          "ConditionList": [
+            {
+              "$type": "BattleModel.RandomCondition",
+              "lessThan": 2,
+              "randBase": 3
+            }
+          ],
+          "SkillList": [
+            {
+              "ConditionList": [
+              ],
+              "SkillID": "S3",
+              "_conditionalSequences": [
+              ],
+              "seq": "",
+              "t": null
+            }
+          ],
+          "_characterCoolDown": 0,
+          "assignTarget": null,
+          "icon": 0
+        },
+        {
+          "ConditionList": [
+          ],
+          "SkillList": [
+            {
+              "ConditionList": [
+              ],
+              "SkillID": "S4",
+              "_conditionalSequences": [
+              ],
+              "seq": "",
+              "t": null
+            }
+          ],
+          "_characterCoolDown": 0,
+          "assignTarget": null,
+          "icon": 0
+        }
+      ],
+      "_isViewSkillSet": false
+    },
+    "S3_I2": {
+      "ComboList": [
+        {
+          "ConditionList": [
+          ],
+          "SkillList": [
+            {
+              "ConditionList": [
+              ],
+              "SkillID": "S2",
+              "_conditionalSequences": [
+              ],
+              "seq": "",
+              "t": null
+            }
+          ],
+          "_characterCoolDown": 0,
+          "assignTarget": null,
+          "icon": 0
+        }
+      ],
+      "_isViewSkillSet": false
+    }
+  },
+  "_stoneEraseSetting": [
+    {
+      "Key": 0,
+      "Value": "S1"
+    },
+    {
+      "Key": 1,
+      "Value": "S2"
+    },
+    {
+      "Key": 2,
+      "Value": "S3"
+    }
+  ],
+  "_stoneType": 0
+}

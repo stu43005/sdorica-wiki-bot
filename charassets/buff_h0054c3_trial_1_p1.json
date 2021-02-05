@@ -1,0 +1,80 @@
+{
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+    "bonusAttackPower"
+  ],
+  "_actionTable": [
+    {
+      "Key": 131072,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "bonusAttackPower",
+                      "Forever": false,
+                      "LevelStack": 1,
+                      "OverwriteDuration": 3,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+            ]
+          }
+        ],
+        "Conditions": [
+          {
+            "$type": "BattleModel.CurrentTurnBelongsTo",
+            "character": {
+              "$type": "BattleModel.ThisBuffOwner"
+            }
+          },
+          {
+            "$type": "BattleModel.CharacterEqual",
+            "left": {
+              "$type": "BattleModel.ThisSkillCaster"
+            },
+            "right": {
+              "$type": "BattleModel.ThisBuffOwner"
+            }
+          },
+          {
+            "$type": "BattleModel.Inverse",
+            "condition": {
+              "$type": "BattleModel.CharacterEqual",
+              "left": {
+                "$type": "BattleModel.ThisBuffOwner"
+              },
+              "right": {
+                "$type": "BattleModel.DeadOrReviveTarget"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "_duration": 1,
+  "_maxLevel": 99,
+  "_orderTable": [
+    {
+      "Key": 131072,
+      "Value": {
+        "Order": 0
+      }
+    }
+  ],
+  "_tag": 64
+}

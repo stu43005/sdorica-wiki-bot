@@ -1,0 +1,158 @@
+{
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+    "nerf_damage_small",
+    "weak",
+    "tearing",
+    "poison",
+    "stun",
+    "infection_maintain",
+    "bleeding_maintain",
+    "infection",
+    "frosted",
+    "burn",
+    "tearing_trigger",
+    "tearing_trigger_alert",
+    "poison_trigger"
+  ],
+  "_actionTable": [
+    {
+      "Key": 1024,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.BonusEffectForSkillProperty",
+                  "isPercent": true,
+                  "property": 8,
+                  "value": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 45
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterInside",
+                "group": {
+                  "$type": "BattleModel.PVEPlayerTeam",
+                  "includeDead": false,
+                  "includeEmpty": false
+                },
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              },
+              {
+                "$type": "BattleModel.ThisSkillEffectTagContains",
+                "containsAll": 8
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 1,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": null,
+                    "single": {
+                      "$type": "BattleModel.FriendAssignee",
+                      "reference": {
+                        "$type": "BattleModel.FrontOfChars",
+                        "group": {
+                          "$type": "BattleModel.PVEPlayerTeam",
+                          "includeDead": true,
+                          "includeEmpty": false
+                        }
+                      }
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.AddBuffFromGroupedBuffIdSkillEffect",
+                        "AddAllBuff": false,
+                        "BuffGroupIds": {
+                          "$type": "BattleModel.BuffIdFromLabelList",
+                          "BuffLabel": {
+                            "BuffIdList": [
+                              "nerf_damage_small",
+                              "weak",
+                              "tearing",
+                              "poison",
+                              "weak",
+                              "stun",
+                              "infection_maintain",
+                              "bleeding_maintain",
+                              "infection",
+                              "frosted",
+                              "burn"
+                            ],
+                            "BuffLabel": "generalNerf"
+                          }
+                        },
+                        "Forever": false,
+                        "LevelStack": 1,
+                        "NotRepeatSameBuffId": false,
+                        "OverwriteDuration": 4,
+                        "RandomAddCount": 1,
+                        "Tag": 132,
+                        "_keyString": ""
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": true
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CurrentTurnBelongsTo",
+                "character": {
+                  "$type": "BattleModel.FrontOfChars",
+                  "group": {
+                    "$type": "BattleModel.PVEPlayerTeam",
+                    "includeDead": true,
+                    "includeEmpty": false
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 99,
+  "_orderTable": [
+    {
+      "Key": 1024,
+      "Value": {
+        "Order": 0
+      }
+    },
+    {
+      "Key": 1,
+      "Value": {
+        "Order": 0
+      }
+    }
+  ],
+  "_tag": 32832
+}

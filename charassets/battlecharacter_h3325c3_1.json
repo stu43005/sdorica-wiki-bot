@@ -1,0 +1,231 @@
+{
+  "$type": "BattleModel.EnemyCharacter",
+  "ReferenceBuffKeys": [
+    "h0054c3_trial_1_P2",
+    "christmas19_level_buff",
+    "poison",
+    "poison_trigger"
+  ],
+  "ReferenceCharacterKeys": [
+  ],
+  "ReferenceEffectKeys": [
+    "m0022c1_s01_Ready",
+    "h3325c3_s01_bodymove02",
+    "m0022c1_s01_Hit",
+    "m0022c1_s01_End"
+  ],
+  "ReferenceEmoIconKeys": [
+  ],
+  "ReferenceMusicKeys": [
+  ],
+  "ReferenceSFXKeys": [
+    "Footsteps_jump_003_comedy",
+    "swoosh_051",
+    "movment_053",
+    "punch_010",
+    "Hit_ethereal_010_laser_short_thin",
+    "movment_054",
+    "Movement_misc_026_comedy"
+  ],
+  "ReferenceVoiceSFXKeys": [
+  ],
+  "_armorCapacity": 200,
+  "_assistantSkill": null,
+  "_bloodCapacity": 200,
+  "_characterAI": {
+    "$type": "BattleModel.SequenceEnemyAI",
+    "Character": null,
+    "OrderList": [
+      "S2"
+    ]
+  },
+  "_defaultCoolDown": 4,
+  "_initialCoolDown": 0,
+  "_levelStartBuff": [
+  ],
+  "_mass": 3,
+  "_masterRank": 2,
+  "_passiveBuff": [
+    {
+      "BuffId": "h0054c3_trial_1_P2",
+      "Forever": false,
+      "LevelStack": 0,
+      "OverwriteDuration": 0,
+      "UserDefineVariable": {
+      }
+    },
+    {
+      "BuffId": "christmas19_level_buff",
+      "Forever": true,
+      "LevelStack": 0,
+      "OverwriteDuration": -1,
+      "UserDefineVariable": {
+      }
+    }
+  ],
+  "_pose": "Stand",
+  "_power": 60,
+  "_reviveCount": 0,
+  "_skills": {
+    "Arrive1": {
+      "$type": "BattleModel.BattleSkill",
+      "_isResolveTargetEachUnit": false,
+      "_skillIdentifiers": [
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": false,
+          "multi": null,
+          "single": {
+            "$type": "BattleModel.ThisSkillCaster"
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.ChangeCDSkillEffect",
+              "Tag": 1028,
+              "_keyString": "",
+              "_value": 1
+            }
+          ]
+        }
+      ]
+    },
+    "Retreat1": {
+      "$type": "BattleModel.BattleSkill",
+      "_isResolveTargetEachUnit": false,
+      "_skillIdentifiers": [
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": false,
+          "multi": null,
+          "single": {
+            "$type": "BattleModel.ThisSkillCaster"
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.AmrReduceRatioSkillEffect",
+              "Tag": 2052,
+              "_keyString": "1",
+              "_skillModifier": {
+                "_constant": 0,
+                "_parameter": {
+                  "$type": "BattleModel.SkillCasterPower",
+                  "basePower": false
+                },
+                "_ratio": 1
+              }
+            },
+            {
+              "$type": "BattleModel.HpDamageRatioMaxSkillEffect",
+              "Tag": 9,
+              "_keyString": "1",
+              "_skillModifier": {
+                "_constant": 0,
+                "_parameter": {
+                  "$type": "BattleModel.SkillCasterPower",
+                  "basePower": false
+                },
+                "_ratio": 1
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "S1": {
+      "$type": "BattleModel.BattleSkill",
+      "_isResolveTargetEachUnit": false,
+      "_skillIdentifiers": [
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": true,
+          "multi": {
+            "$type": "BattleModel.PVEPlayerTeam",
+            "includeDead": false,
+            "includeEmpty": false
+          },
+          "single": {
+            "$type": "BattleModel.EnemyAssignee",
+            "reference": {
+              "$type": "BattleModel.ThisSkillCaster"
+            }
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.HpDamageSkillEffect",
+              "Tag": 9,
+              "_keyString": "1",
+              "_skillModifier": {
+                "_constant": 0,
+                "_parameter": {
+                  "$type": "BattleModel.SkillCasterPower",
+                  "basePower": false
+                },
+                "_ratio": 1
+              }
+            },
+            {
+              "$type": "BattleModel.AddBuffSkillEffect",
+              "Tag": 132,
+              "_buffData": [
+                {
+                  "BuffId": "poison",
+                  "Forever": false,
+                  "LevelStack": 2,
+                  "OverwriteDuration": 1,
+                  "UserDefineVariable": {
+                  }
+                }
+              ],
+              "_keyString": "1"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "_skillsetTable": {
+    "S2": {
+      "ComboList": [
+        {
+          "ConditionList": [
+          ],
+          "SkillList": [
+            {
+              "ConditionList": [
+              ],
+              "SkillID": "S1",
+              "_conditionalSequences": [
+                {
+                  "ConditionList": [
+                  ],
+                  "_sequenceId": "S1"
+                }
+              ],
+              "seq": "S3",
+              "t": null
+            }
+          ],
+          "_characterCoolDown": 5,
+          "assignTarget": null,
+          "icon": 0
+        }
+      ],
+      "_isViewSkillSet": false
+    }
+  },
+  "_stoneEraseSetting": [
+    {
+      "Key": 0,
+      "Value": "S1"
+    },
+    {
+      "Key": 1,
+      "Value": "S2"
+    },
+    {
+      "Key": 2,
+      "Value": "S3"
+    }
+  ],
+  "_stoneType": 0
+}

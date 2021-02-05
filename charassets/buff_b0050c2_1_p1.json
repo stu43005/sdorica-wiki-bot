@@ -1,0 +1,81 @@
+{
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+    "bonusAttackPower"
+  ],
+  "_actionTable": [
+    {
+      "Key": 8,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "bonusAttackPower",
+                      "Forever": false,
+                      "LevelStack": 1,
+                      "OverwriteDuration": 1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+            ]
+          }
+        ],
+        "Conditions": [
+          {
+            "$type": "BattleModel.CharacterInside",
+            "group": {
+              "$type": "BattleModel.ThisSkillEffectTargets"
+            },
+            "left": {
+              "$type": "BattleModel.ThisBuffOwner"
+            }
+          },
+          {
+            "$type": "BattleModel.ThisSkillEffectTagContains",
+            "containsAll": 1
+          },
+          {
+            "$type": "BattleModel.IntCompare",
+            "left": {
+              "$type": "BattleModel.IntCharaterField",
+              "character": {
+                "$type": "BattleModel.ThisBuffOwner"
+              },
+              "targetField": 0
+            },
+            "op": 5,
+            "right": {
+              "$type": "BattleModel.ConstanctInt",
+              "constant": 0
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "_duration": 1,
+  "_maxLevel": 99,
+  "_orderTable": [
+    {
+      "Key": 8,
+      "Value": {
+        "Order": 0
+      }
+    }
+  ],
+  "_tag": 64
+}

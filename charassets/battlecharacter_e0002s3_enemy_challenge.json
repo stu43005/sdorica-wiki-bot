@@ -1,0 +1,251 @@
+{
+  "$type": "BattleModel.EnemyCharacter",
+  "ReferenceBuffKeys": [
+    "n0038c1_P1",
+    "e0002s3_enemy_challenge_P1",
+    "n0038c1_P2",
+    "CD_increase"
+  ],
+  "ReferenceCharacterKeys": [
+  ],
+  "ReferenceEffectKeys": [
+    "e0002s4_s02_Heal",
+    "e0002s4_s1_light",
+    "e0002s4_s1_hit",
+    "e0002s4_s1_musicnoise",
+    "e0002s4_s1_windline"
+  ],
+  "ReferenceEmoIconKeys": [
+  ],
+  "ReferenceMusicKeys": [
+  ],
+  "ReferenceSFXKeys": [
+    "magic_light_081",
+    "magic_light_022"
+  ],
+  "ReferenceVoiceSFXKeys": [
+    "e0002s4_skill_s1",
+    "e0002_battle_hit_01_1_short_normal",
+    "e0002_battle_hit_01_3_short_strong"
+  ],
+  "_armorCapacity": 600,
+  "_assistantSkill": {
+    "$type": "BattleModel.AssistantActiveCastSkill",
+    "Skill": {
+      "ComboList": [
+        {
+          "ConditionList": [
+          ],
+          "SkillList": [
+            {
+              "ConditionList": [
+              ],
+              "SkillID": "A1",
+              "_conditionalSequences": [
+              ],
+              "seq": "",
+              "t": null
+            }
+          ],
+          "_characterCoolDown": 0,
+          "assignTarget": null,
+          "icon": 8
+        }
+      ],
+      "_isViewSkillSet": false
+    },
+    "_maxCastStack": 1,
+    "_skillCD": 5,
+    "_startCD": 0,
+    "_startCastStack": 0
+  },
+  "_bloodCapacity": 600,
+  "_characterAI": {
+    "$type": "BattleModel.SequenceEnemyAI",
+    "Character": null,
+    "OrderList": [
+    ]
+  },
+  "_defaultCoolDown": 0,
+  "_initialCoolDown": 0,
+  "_levelStartBuff": [
+  ],
+  "_mass": 1,
+  "_masterRank": 0,
+  "_passiveBuff": [
+    {
+      "BuffId": "n0038c1_P1",
+      "Forever": false,
+      "LevelStack": 0,
+      "OverwriteDuration": -1,
+      "UserDefineVariable": {
+      }
+    },
+    {
+      "BuffId": "e0002s3_enemy_challenge_P1",
+      "Forever": false,
+      "LevelStack": 0,
+      "OverwriteDuration": -1,
+      "UserDefineVariable": {
+      }
+    }
+  ],
+  "_pose": "Stand",
+  "_power": 45,
+  "_reviveCount": 0,
+  "_skills": {
+    "Arrive1": {
+      "$type": "BattleModel.BattleSkill",
+      "_isResolveTargetEachUnit": false,
+      "_skillIdentifiers": [
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": false,
+          "multi": null,
+          "single": {
+            "$type": "BattleModel.ThisSkillCaster"
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.ChangeCDSkillEffect",
+              "Tag": 1028,
+              "_keyString": "",
+              "_value": 1
+            }
+          ]
+        }
+      ]
+    },
+    "Retreat1": {
+      "$type": "BattleModel.BattleSkill",
+      "_isResolveTargetEachUnit": false,
+      "_skillIdentifiers": [
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": false,
+          "multi": null,
+          "single": {
+            "$type": "BattleModel.ThisSkillCaster"
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.AmrReduceRatioSkillEffect",
+              "Tag": 2052,
+              "_keyString": "1",
+              "_skillModifier": {
+                "_constant": 0,
+                "_parameter": {
+                  "$type": "BattleModel.SkillCasterPower",
+                  "basePower": false
+                },
+                "_ratio": 1
+              }
+            },
+            {
+              "$type": "BattleModel.HpDamageRatioMaxSkillEffect",
+              "Tag": 9,
+              "_keyString": "1",
+              "_skillModifier": {
+                "_constant": 0,
+                "_parameter": {
+                  "$type": "BattleModel.SkillCasterPower",
+                  "basePower": false
+                },
+                "_ratio": 1
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "S1": {
+      "$type": "BattleModel.BattleSkill",
+      "_isResolveTargetEachUnit": false,
+      "_skillIdentifiers": [
+        {
+          "CanBeEmpty": true,
+          "IsMultiple": true,
+          "multi": {
+            "$type": "BattleModel.OppositeTeamDeadChars",
+            "reference": {
+              "$type": "BattleModel.ThisSkillCaster"
+            }
+          },
+          "single": {
+            "$type": "BattleModel.FriendAssignee",
+            "reference": {
+              "$type": "BattleModel.ThisSkillCaster"
+            }
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.ReviveSkillEffect",
+              "RecoverArmorInPercentage": true,
+              "RecoverBloodInPercentage": true,
+              "ReviveTargetArmor": 0,
+              "ReviveTargetBlood": 1,
+              "Tag": 4,
+              "_keyString": "1"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "_skillsetTable": {
+    "S1": {
+      "ComboList": [
+        {
+          "ConditionList": [
+            {
+              "$type": "BattleModel.IntCompare",
+              "left": {
+                "$type": "BattleModel.CountOfCharGroup",
+                "group": {
+                  "$type": "BattleModel.PVEPlayerTeam",
+                  "includeDead": false,
+                  "includeEmpty": false
+                }
+              },
+              "op": 5,
+              "right": {
+                "$type": "BattleModel.ConstanctInt",
+                "constant": 0
+              }
+            }
+          ],
+          "SkillList": [
+            {
+              "ConditionList": [
+              ],
+              "SkillID": "S1",
+              "_conditionalSequences": [
+              ],
+              "seq": "",
+              "t": null
+            }
+          ],
+          "_characterCoolDown": 5,
+          "assignTarget": null,
+          "icon": 8
+        }
+      ],
+      "_isViewSkillSet": false
+    }
+  },
+  "_stoneEraseSetting": [
+    {
+      "Key": 0,
+      "Value": "S1"
+    },
+    {
+      "Key": 1,
+      "Value": "S2"
+    },
+    {
+      "Key": 2,
+      "Value": "S3"
+    }
+  ],
+  "_stoneType": 4
+}

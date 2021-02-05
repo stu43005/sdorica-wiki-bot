@@ -1,0 +1,794 @@
+{
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+    "FSM_MagicalCircle01",
+    "FSM_MagicalCircle02"
+  ],
+  "_actionTable": [
+    {
+      "Key": 1024,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacterGroup",
+                  "group": {
+                    "$type": "BattleModel.PVEPlayerTeam",
+                    "includeDead": false,
+                    "includeEmpty": false
+                  },
+                  "operation": {
+                    "$type": "BattleModel.RemoveBuff",
+                    "buffId": "FSM_MagicalCircle02"
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "FSM_MagicalCircle03",
+                      "Forever": true,
+                      "LevelStack": 1,
+                      "OverwriteDuration": -1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.ThisSkillEffectTagContains",
+                "containsAll": 1
+              },
+              {
+                "$type": "BattleModel.CharacterInside",
+                "group": {
+                  "$type": "BattleModel.SelfTeamChars",
+                  "excludeSelf": false,
+                  "includeDead": false,
+                  "includeEmpty": false,
+                  "reference": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  }
+                },
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.IndexOfChars",
+                    "backward": false,
+                    "group": {
+                      "$type": "BattleModel.SelfTeamChars",
+                      "excludeSelf": false,
+                      "includeDead": true,
+                      "includeEmpty": true,
+                      "reference": {
+                        "$type": "BattleModel.ThisBuffOwner"
+                      }
+                    },
+                    "index": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 0
+                    }
+                  },
+                  "operation": {
+                    "$type": "BattleModel.OperateCharacterViewActionTime",
+                    "operation": {
+                      "$type": "BattleModel.AddBuff",
+                      "buffToAdd": {
+                        "BuffId": "FSM_MagicalCircle01",
+                        "Forever": false,
+                        "LevelStack": 0,
+                        "OverwriteDuration": 0,
+                        "UserDefineVariable": {
+                        }
+                      }
+                    },
+                    "viewActionTime": {
+                      "FrameOffset": 0,
+                      "Index": "Last",
+                      "TriggerTime": {
+                        "TagName": "SkillStart",
+                        "TagType": "TriggerTimeEnum"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.OperateCharacterViewActionTime",
+                    "operation": {
+                      "$type": "BattleModel.AddBuff",
+                      "buffToAdd": {
+                        "BuffId": "FSM_MagicalCircle02",
+                        "Forever": false,
+                        "LevelStack": 0,
+                        "OverwriteDuration": 0,
+                        "UserDefineVariable": {
+                        }
+                      }
+                    },
+                    "viewActionTime": {
+                      "FrameOffset": 20,
+                      "Index": "Last",
+                      "TriggerTime": {
+                        "TagName": "SkillStart",
+                        "TagType": "TriggerTimeEnum"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.IndexOfChars",
+                    "backward": false,
+                    "group": {
+                      "$type": "BattleModel.SelfTeamChars",
+                      "excludeSelf": false,
+                      "includeDead": true,
+                      "includeEmpty": true,
+                      "reference": {
+                        "$type": "BattleModel.ThisBuffOwner"
+                      }
+                    },
+                    "index": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 0
+                    }
+                  },
+                  "operation": {
+                    "$type": "BattleModel.RemoveBuff",
+                    "buffId": "FSM_MagicalCircle01"
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                },
+                "right": {
+                  "$type": "BattleModel.IndexOfChars",
+                  "backward": false,
+                  "group": {
+                    "$type": "BattleModel.SelfTeamChars",
+                    "excludeSelf": false,
+                    "includeDead": true,
+                    "includeEmpty": true,
+                    "reference": {
+                      "$type": "BattleModel.ThisBuffOwner"
+                    }
+                  },
+                  "index": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 0
+                  }
+                }
+              },
+              {
+                "$type": "BattleModel.ThisSkillEffectTagContains",
+                "containsAll": 1
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.IndexOfChars",
+                    "backward": false,
+                    "group": {
+                      "$type": "BattleModel.SelfTeamChars",
+                      "excludeSelf": false,
+                      "includeDead": true,
+                      "includeEmpty": true,
+                      "reference": {
+                        "$type": "BattleModel.ThisBuffOwner"
+                      }
+                    },
+                    "index": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 1
+                    }
+                  },
+                  "operation": {
+                    "$type": "BattleModel.OperateCharacterViewActionTime",
+                    "operation": {
+                      "$type": "BattleModel.AddBuff",
+                      "buffToAdd": {
+                        "BuffId": "FSM_MagicalCircle01",
+                        "Forever": false,
+                        "LevelStack": 0,
+                        "OverwriteDuration": 0,
+                        "UserDefineVariable": {
+                        }
+                      }
+                    },
+                    "viewActionTime": {
+                      "FrameOffset": 0,
+                      "Index": "Last",
+                      "TriggerTime": {
+                        "TagName": "SkillStart",
+                        "TagType": "TriggerTimeEnum"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.OperateCharacterViewActionTime",
+                    "operation": {
+                      "$type": "BattleModel.AddBuff",
+                      "buffToAdd": {
+                        "BuffId": "FSM_MagicalCircle02",
+                        "Forever": false,
+                        "LevelStack": 0,
+                        "OverwriteDuration": 0,
+                        "UserDefineVariable": {
+                        }
+                      }
+                    },
+                    "viewActionTime": {
+                      "FrameOffset": 20,
+                      "Index": "Last",
+                      "TriggerTime": {
+                        "TagName": "SkillStart",
+                        "TagType": "TriggerTimeEnum"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.IndexOfChars",
+                    "backward": false,
+                    "group": {
+                      "$type": "BattleModel.SelfTeamChars",
+                      "excludeSelf": false,
+                      "includeDead": true,
+                      "includeEmpty": true,
+                      "reference": {
+                        "$type": "BattleModel.ThisBuffOwner"
+                      }
+                    },
+                    "index": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 1
+                    }
+                  },
+                  "operation": {
+                    "$type": "BattleModel.RemoveBuff",
+                    "buffId": "FSM_MagicalCircle01"
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                },
+                "right": {
+                  "$type": "BattleModel.IndexOfChars",
+                  "backward": false,
+                  "group": {
+                    "$type": "BattleModel.SelfTeamChars",
+                    "excludeSelf": false,
+                    "includeDead": true,
+                    "includeEmpty": true,
+                    "reference": {
+                      "$type": "BattleModel.ThisBuffOwner"
+                    }
+                  },
+                  "index": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 1
+                  }
+                }
+              },
+              {
+                "$type": "BattleModel.ThisSkillEffectTagContains",
+                "containsAll": 1
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.IndexOfChars",
+                    "backward": false,
+                    "group": {
+                      "$type": "BattleModel.SelfTeamChars",
+                      "excludeSelf": false,
+                      "includeDead": true,
+                      "includeEmpty": true,
+                      "reference": {
+                        "$type": "BattleModel.ThisBuffOwner"
+                      }
+                    },
+                    "index": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 2
+                    }
+                  },
+                  "operation": {
+                    "$type": "BattleModel.OperateCharacterViewActionTime",
+                    "operation": {
+                      "$type": "BattleModel.AddBuff",
+                      "buffToAdd": {
+                        "BuffId": "FSM_MagicalCircle01",
+                        "Forever": false,
+                        "LevelStack": 0,
+                        "OverwriteDuration": 0,
+                        "UserDefineVariable": {
+                        }
+                      }
+                    },
+                    "viewActionTime": {
+                      "FrameOffset": 0,
+                      "Index": "Last",
+                      "TriggerTime": {
+                        "TagName": "SkillStart",
+                        "TagType": "TriggerTimeEnum"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.OperateCharacterViewActionTime",
+                    "operation": {
+                      "$type": "BattleModel.AddBuff",
+                      "buffToAdd": {
+                        "BuffId": "FSM_MagicalCircle02",
+                        "Forever": false,
+                        "LevelStack": 0,
+                        "OverwriteDuration": 0,
+                        "UserDefineVariable": {
+                        }
+                      }
+                    },
+                    "viewActionTime": {
+                      "FrameOffset": 20,
+                      "Index": "Last",
+                      "TriggerTime": {
+                        "TagName": "SkillStart",
+                        "TagType": "TriggerTimeEnum"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.IndexOfChars",
+                    "backward": false,
+                    "group": {
+                      "$type": "BattleModel.SelfTeamChars",
+                      "excludeSelf": false,
+                      "includeDead": true,
+                      "includeEmpty": true,
+                      "reference": {
+                        "$type": "BattleModel.ThisBuffOwner"
+                      }
+                    },
+                    "index": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 2
+                    }
+                  },
+                  "operation": {
+                    "$type": "BattleModel.RemoveBuff",
+                    "buffId": "FSM_MagicalCircle01"
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                },
+                "right": {
+                  "$type": "BattleModel.IndexOfChars",
+                  "backward": false,
+                  "group": {
+                    "$type": "BattleModel.SelfTeamChars",
+                    "excludeSelf": false,
+                    "includeDead": true,
+                    "includeEmpty": true,
+                    "reference": {
+                      "$type": "BattleModel.ThisBuffOwner"
+                    }
+                  },
+                  "index": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 2
+                  }
+                }
+              },
+              {
+                "$type": "BattleModel.ThisSkillEffectTagContains",
+                "containsAll": 1
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.IndexOfChars",
+                    "backward": false,
+                    "group": {
+                      "$type": "BattleModel.SelfTeamChars",
+                      "excludeSelf": false,
+                      "includeDead": true,
+                      "includeEmpty": true,
+                      "reference": {
+                        "$type": "BattleModel.ThisBuffOwner"
+                      }
+                    },
+                    "index": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 3
+                    }
+                  },
+                  "operation": {
+                    "$type": "BattleModel.OperateCharacterViewActionTime",
+                    "operation": {
+                      "$type": "BattleModel.AddBuff",
+                      "buffToAdd": {
+                        "BuffId": "FSM_MagicalCircle01",
+                        "Forever": false,
+                        "LevelStack": 0,
+                        "OverwriteDuration": 0,
+                        "UserDefineVariable": {
+                        }
+                      }
+                    },
+                    "viewActionTime": {
+                      "FrameOffset": 0,
+                      "Index": "Last",
+                      "TriggerTime": {
+                        "TagName": "SkillStart",
+                        "TagType": "TriggerTimeEnum"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.OperateCharacterViewActionTime",
+                    "operation": {
+                      "$type": "BattleModel.AddBuff",
+                      "buffToAdd": {
+                        "BuffId": "FSM_MagicalCircle02",
+                        "Forever": false,
+                        "LevelStack": 0,
+                        "OverwriteDuration": 0,
+                        "UserDefineVariable": {
+                        }
+                      }
+                    },
+                    "viewActionTime": {
+                      "FrameOffset": 20,
+                      "Index": "Last",
+                      "TriggerTime": {
+                        "TagName": "SkillStart",
+                        "TagType": "TriggerTimeEnum"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.IndexOfChars",
+                    "backward": false,
+                    "group": {
+                      "$type": "BattleModel.SelfTeamChars",
+                      "excludeSelf": false,
+                      "includeDead": true,
+                      "includeEmpty": true,
+                      "reference": {
+                        "$type": "BattleModel.ThisBuffOwner"
+                      }
+                    },
+                    "index": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 3
+                    }
+                  },
+                  "operation": {
+                    "$type": "BattleModel.RemoveBuff",
+                    "buffId": "FSM_MagicalCircle01"
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                },
+                "right": {
+                  "$type": "BattleModel.IndexOfChars",
+                  "backward": false,
+                  "group": {
+                    "$type": "BattleModel.SelfTeamChars",
+                    "excludeSelf": false,
+                    "includeDead": true,
+                    "includeEmpty": true,
+                    "reference": {
+                      "$type": "BattleModel.ThisBuffOwner"
+                    }
+                  },
+                  "index": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 3
+                  }
+                }
+              },
+              {
+                "$type": "BattleModel.ThisSkillEffectTagContains",
+                "containsAll": 1
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.IndexOfChars",
+                    "backward": false,
+                    "group": {
+                      "$type": "BattleModel.SelfTeamChars",
+                      "excludeSelf": false,
+                      "includeDead": true,
+                      "includeEmpty": true,
+                      "reference": {
+                        "$type": "BattleModel.ThisBuffOwner"
+                      }
+                    },
+                    "index": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 4
+                    }
+                  },
+                  "operation": {
+                    "$type": "BattleModel.OperateCharacterViewActionTime",
+                    "operation": {
+                      "$type": "BattleModel.AddBuff",
+                      "buffToAdd": {
+                        "BuffId": "FSM_MagicalCircle01",
+                        "Forever": false,
+                        "LevelStack": 0,
+                        "OverwriteDuration": 0,
+                        "UserDefineVariable": {
+                        }
+                      }
+                    },
+                    "viewActionTime": {
+                      "FrameOffset": 0,
+                      "Index": "Last",
+                      "TriggerTime": {
+                        "TagName": "SkillStart",
+                        "TagType": "TriggerTimeEnum"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.OperateCharacterViewActionTime",
+                    "operation": {
+                      "$type": "BattleModel.AddBuff",
+                      "buffToAdd": {
+                        "BuffId": "FSM_MagicalCircle02",
+                        "Forever": false,
+                        "LevelStack": 0,
+                        "OverwriteDuration": 0,
+                        "UserDefineVariable": {
+                        }
+                      }
+                    },
+                    "viewActionTime": {
+                      "FrameOffset": 20,
+                      "Index": "Last",
+                      "TriggerTime": {
+                        "TagName": "SkillStart",
+                        "TagType": "TriggerTimeEnum"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.IndexOfChars",
+                    "backward": false,
+                    "group": {
+                      "$type": "BattleModel.SelfTeamChars",
+                      "excludeSelf": false,
+                      "includeDead": true,
+                      "includeEmpty": true,
+                      "reference": {
+                        "$type": "BattleModel.ThisBuffOwner"
+                      }
+                    },
+                    "index": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 4
+                    }
+                  },
+                  "operation": {
+                    "$type": "BattleModel.RemoveBuff",
+                    "buffId": "FSM_MagicalCircle01"
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                },
+                "right": {
+                  "$type": "BattleModel.IndexOfChars",
+                  "backward": false,
+                  "group": {
+                    "$type": "BattleModel.SelfTeamChars",
+                    "excludeSelf": false,
+                    "includeDead": true,
+                    "includeEmpty": true,
+                    "reference": {
+                      "$type": "BattleModel.ThisBuffOwner"
+                    }
+                  },
+                  "index": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 4
+                  }
+                }
+              },
+              {
+                "$type": "BattleModel.ThisSkillEffectTagContains",
+                "containsAll": 1
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 2,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 1,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 1
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 2,
+  "_orderTable": [
+    {
+      "Key": 1024,
+      "Value": {
+        "Order": 0
+      }
+    },
+    {
+      "Key": 2,
+      "Value": {
+        "Order": 0
+      }
+    }
+  ],
+  "_tag": 69
+}

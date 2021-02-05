@@ -1,0 +1,112 @@
+{
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+    "e0084c4_turn02",
+    "e0084c4_P1",
+    "revengeTarget"
+  ],
+  "_actionTable": [
+    {
+      "Key": 2,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "e0084c4_turn02",
+                      "Forever": false,
+                      "LevelStack": 0,
+                      "OverwriteDuration": -1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "e0084c4_P1",
+                      "Forever": false,
+                      "LevelStack": 0,
+                      "OverwriteDuration": -1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterHasBuff",
+                "buffId": "e0084c4_Target",
+                "character": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+          {
+            "$type": "BattleModel.IntCompare",
+            "left": {
+              "$type": "BattleModel.IntCharaterField",
+              "character": {
+                "$type": "BattleModel.ThisBuffOwner"
+              },
+              "targetField": 2
+            },
+            "op": 1,
+            "right": {
+              "$type": "BattleModel.ConstanctInt",
+              "constant": 100
+            }
+          },
+          {
+            "$type": "BattleModel.Inverse",
+            "condition": {
+              "$type": "BattleModel.CharacterHasBuff",
+              "buffId": "e0084c4_turn02",
+              "character": {
+                "$type": "BattleModel.ThisBuffOwner"
+              }
+            }
+          },
+          {
+            "$type": "BattleModel.CurrentTurnBelongsTo",
+            "character": {
+              "$type": "BattleModel.ThisBuffOwner"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "_duration": 1,
+  "_maxLevel": 99,
+  "_orderTable": [
+    {
+      "Key": 2,
+      "Value": {
+        "Order": 0
+      }
+    }
+  ],
+  "_tag": 65
+}

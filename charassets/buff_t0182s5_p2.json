@@ -1,0 +1,98 @@
+{
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+    "FSM_t0182sx_waterspout_trigger"
+  ],
+  "_actionTable": [
+    {
+      "Key": 1024,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.BonusEffectForSkillProperty",
+                  "isPercent": true,
+                  "property": -1,
+                  "value": {
+                    "$type": "BattleModel.MultiplyInt",
+                    "left": {
+                      "$type": "BattleModel.IntBuffField",
+                      "buff": {
+                        "$type": "BattleModel.ThisBuff"
+                      },
+                      "targetField": 1
+                    },
+                    "right": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 90
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.OperateCharacterViewActionTime",
+                    "operation": {
+                      "$type": "BattleModel.AddBuff",
+                      "buffToAdd": {
+                        "BuffId": "FSM_t0182sx_waterspout_trigger",
+                        "Forever": false,
+                        "LevelStack": 1,
+                        "OverwriteDuration": 1,
+                        "UserDefineVariable": {
+                        }
+                      }
+                    },
+                    "viewActionTime": {
+                      "FrameOffset": 0,
+                      "Index": "Every",
+                      "TriggerTime": {
+                        "TagName": "BreakArmor",
+                        "TagType": "SkillProperty"
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                },
+                "right": {
+                  "$type": "BattleModel.ThisSpecifiedTarget"
+                }
+              },
+              {
+                "$type": "BattleModel.ThisSkillEffectTagContains",
+                "containsAll": 16
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 4,
+  "_orderTable": [
+    {
+      "Key": 1024,
+      "Value": {
+        "Order": 0
+      }
+    }
+  ],
+  "_tag": 33792
+}

@@ -1,0 +1,327 @@
+{
+  "$type": "BattleModel.EnemyCharacter",
+  "ReferenceBuffKeys": [
+    "evil",
+    "summon_FSM"
+  ],
+  "ReferenceCharacterKeys": [
+    "e0016c3"
+  ],
+  "ReferenceEffectKeys": [
+    "b0142c4_s2_speed",
+    "b0142c4_s2_hit01",
+    "Common_Smoke03",
+    "b0142c4_s1_star",
+    "b0142c4_s1_noice02",
+    "b0142c4_s1_light",
+    "b0142c4_s1_Slash02",
+    "b0142c4_s1_Slash01",
+    "b0142c4_s1_trail01",
+    "b0142c4_s1_trail02"
+  ],
+  "ReferenceEmoIconKeys": [
+  ],
+  "ReferenceMusicKeys": [
+  ],
+  "ReferenceSFXKeys": [
+    "swoosh_011",
+    "punch_037",
+    "punch_038",
+    "swoosh_124",
+    "music_027",
+    "explode_016",
+    "explode_017",
+    "magic_light_011",
+    "magic_light_017",
+    "magic_light_012"
+  ],
+  "ReferenceVoiceSFXKeys": [
+  ],
+  "_armorCapacity": 125,
+  "_assistantSkill": null,
+  "_bloodCapacity": 100,
+  "_characterAI": {
+    "$type": "BattleModel.SequenceEnemyAI",
+    "Character": null,
+    "OrderList": [
+    ]
+  },
+  "_defaultCoolDown": 3,
+  "_initialCoolDown": 0,
+  "_levelStartBuff": [
+  ],
+  "_mass": 1,
+  "_masterRank": 2,
+  "_passiveBuff": [
+  ],
+  "_pose": "Prone",
+  "_power": 30,
+  "_reviveCount": 0,
+  "_skills": {
+    "Arrive1": {
+      "$type": "BattleModel.BattleSkill",
+      "_isResolveTargetEachUnit": false,
+      "_skillIdentifiers": [
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": false,
+          "multi": null,
+          "single": {
+            "$type": "BattleModel.ThisSkillCaster"
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.ChangeCDSkillEffect",
+              "Tag": 1028,
+              "_keyString": "",
+              "_value": 1
+            }
+          ]
+        }
+      ]
+    },
+    "Retreat1": {
+      "$type": "BattleModel.BattleSkill",
+      "_isResolveTargetEachUnit": false,
+      "_skillIdentifiers": [
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": false,
+          "multi": null,
+          "single": {
+            "$type": "BattleModel.ThisSkillCaster"
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.AmrReduceRatioSkillEffect",
+              "Tag": 2052,
+              "_keyString": "1",
+              "_skillModifier": {
+                "_constant": 0,
+                "_parameter": {
+                  "$type": "BattleModel.SkillCasterPower",
+                  "basePower": false
+                },
+                "_ratio": 1
+              }
+            },
+            {
+              "$type": "BattleModel.HpDamageRatioMaxSkillEffect",
+              "Tag": 9,
+              "_keyString": "1",
+              "_skillModifier": {
+                "_constant": 0,
+                "_parameter": {
+                  "$type": "BattleModel.SkillCasterPower",
+                  "basePower": false
+                },
+                "_ratio": 1
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "S1": {
+      "$type": "BattleModel.BattleSkill",
+      "_isResolveTargetEachUnit": false,
+      "_skillIdentifiers": [
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": false,
+          "multi": null,
+          "single": {
+            "$type": "BattleModel.ThisSkillCaster"
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.AddBuffSkillEffect",
+              "Tag": 132,
+              "_buffData": [
+                {
+                  "BuffId": "evil",
+                  "Forever": false,
+                  "LevelStack": 0,
+                  "OverwriteDuration": 1,
+                  "UserDefineVariable": {
+                  }
+                }
+              ],
+              "_keyString": "1"
+            }
+          ]
+        },
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": true,
+          "multi": {
+            "$type": "BattleModel.SelftTeamEmptySlots",
+            "reference": {
+              "$type": "BattleModel.ThisSkillCaster"
+            }
+          },
+          "single": {
+            "$type": "BattleModel.FrontOfChars",
+            "group": {
+              "$type": "BattleModel.SelftTeamEmptySlots",
+              "reference": {
+                "$type": "BattleModel.ThisSkillCaster"
+              }
+            }
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.AddBuffSkillEffect",
+              "Tag": 132,
+              "_buffData": [
+                {
+                  "BuffId": "summon_FSM",
+                  "Forever": false,
+                  "LevelStack": 0,
+                  "OverwriteDuration": 1,
+                  "UserDefineVariable": {
+                  }
+                }
+              ],
+              "_keyString": "1"
+            },
+            {
+              "$type": "BattleModel.SummonEnemySkillEffect",
+              "IsShowArrive": false,
+              "Reference": {
+                "$type": "BattleModel.SummonCharacter",
+                "CharacterArg": {
+                  "AssetName": "e0016c3",
+                  "State": {
+                    "DisapearAfterDead": true,
+                    "InitArmorRatio": 0,
+                    "InitBloodRatio": 1,
+                    "InitCd": 2,
+                    "LevelAdjustment": 0
+                  },
+                  "SummonCasterLevel": 1
+                }
+              },
+              "Tag": 260,
+              "_keyString": "2"
+            }
+          ]
+        }
+      ]
+    },
+    "S2": {
+      "$type": "BattleModel.BattleSkill",
+      "_isResolveTargetEachUnit": false,
+      "_skillIdentifiers": [
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": false,
+          "multi": null,
+          "single": {
+            "$type": "BattleModel.EnemyAssignee",
+            "reference": {
+              "$type": "BattleModel.ThisSkillCaster"
+            }
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.HpDamageSkillEffect",
+              "Tag": 9,
+              "_keyString": "1",
+              "_skillModifier": {
+                "_constant": 0,
+                "_parameter": {
+                  "$type": "BattleModel.SkillCasterPower",
+                  "basePower": false
+                },
+                "_ratio": 1
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "_skillsetTable": {
+    "S1": {
+      "ComboList": [
+        {
+          "ConditionList": [
+            {
+              "$type": "BattleModel.IntCompare",
+              "left": {
+                "$type": "BattleModel.CountOfCharGroup",
+                "group": {
+                  "$type": "BattleModel.SelftTeamEmptySlots",
+                  "reference": {
+                    "$type": "BattleModel.ThisSkillCaster"
+                  }
+                }
+              },
+              "op": 0,
+              "right": {
+                "$type": "BattleModel.ConstanctInt",
+                "constant": 0
+              }
+            }
+          ],
+          "SkillList": [
+            {
+              "ConditionList": [
+              ],
+              "SkillID": "S2",
+              "_conditionalSequences": [
+              ],
+              "seq": "",
+              "t": {
+                "$type": "BattleModel.FrontOfChars",
+                "group": {
+                  "$type": "BattleModel.PVEPlayerTeam",
+                  "includeDead": false,
+                  "includeEmpty": false
+                }
+              }
+            }
+          ],
+          "_characterCoolDown": 2,
+          "assignTarget": null,
+          "icon": 0
+        },
+        {
+          "ConditionList": [
+          ],
+          "SkillList": [
+            {
+              "ConditionList": [
+              ],
+              "SkillID": "S1",
+              "_conditionalSequences": [
+              ],
+              "seq": "",
+              "t": null
+            }
+          ],
+          "_characterCoolDown": 3,
+          "assignTarget": null,
+          "icon": 0
+        }
+      ],
+      "_isViewSkillSet": false
+    }
+  },
+  "_stoneEraseSetting": [
+    {
+      "Key": 0,
+      "Value": "S1"
+    },
+    {
+      "Key": 1,
+      "Value": "S2"
+    },
+    {
+      "Key": 2,
+      "Value": "S3"
+    }
+  ],
+  "_stoneType": 0
+}

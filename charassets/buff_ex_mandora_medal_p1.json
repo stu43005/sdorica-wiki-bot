@@ -1,0 +1,174 @@
+{
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+    "puggi_badge",
+    "bonusAttackPower",
+    "defense_up_small",
+    "dexterity",
+    "damage_absorption",
+    "ArmorToBlood",
+    "regeneration",
+    "rage",
+    "warfare",
+    "leader",
+    "dexterity_trigger",
+    "dexterity_fightback_0",
+    "dexterity_fightback_1",
+    "dexterity_fightback_2",
+    "dexterity_fightback_3",
+    "dexterity_fightback_4",
+    "b0028sx_dodge",
+    "damage_absorption_trigger",
+    "ArmorToBlood_trigger",
+    "regeneration_trigger",
+    "follower"
+  ],
+  "_actionTable": [
+    {
+      "Key": 1,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": true,
+                    "IsMultiple": false,
+                    "multi": null,
+                    "single": {
+                      "$type": "BattleModel.FrontOfChars",
+                      "group": {
+                        "$type": "BattleModel.PVEPlayerTeam",
+                        "includeDead": true,
+                        "includeEmpty": false
+                      }
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.StoneBuffSkillEffect",
+                        "Tag": 132,
+                        "_keyString": "",
+                        "_stoneBuffAction": {
+                          "BuffFilter": "ExcludeSpecifiedBuffLabel",
+                          "BuffId": "",
+                          "BuffLabel": {
+                            "BuffIdList": [
+                              "bonusAttackPower",
+                              "defense_up_small",
+                              "dexterity",
+                              "damage_absorption",
+                              "ArmorToBlood",
+                              "regeneration",
+                              "rage",
+                              "warfare",
+                              "leader"
+                            ],
+                            "BuffLabel": "generalBuff"
+                          },
+                          "EffectFilter": "Normal",
+                          "StonePositionList": [
+                          ],
+                          "UsePositionSettings": false,
+                          "action": "Add",
+                          "buff": {
+                            "BuffId": "puggi_badge",
+                            "Forever": false,
+                            "LevelStack": 1,
+                            "OverwriteDuration": 1,
+                            "UserDefineVariable": {
+                            }
+                          },
+                          "filter": "IsAnyColor",
+                          "order": "Random",
+                          "targetStoneCount": 1
+                        }
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": false
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CurrentTurnBelongsTo",
+                "character": {
+                  "$type": "BattleModel.FrontOfChars",
+                  "group": {
+                    "$type": "BattleModel.PVEPlayerTeam",
+                    "includeDead": true,
+                    "includeEmpty": false
+                  }
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.ThisTeamExploreItemCount",
+                  "ExploreItemId": "Mandora_Medal"
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 3
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 64,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.ExtraPowerForSkillEffect",
+                  "isPercent": true,
+                  "value": {
+                    "$type": "BattleModel.MultiplyInt",
+                    "left": {
+                      "$type": "BattleModel.ThisTeamExploreItemCount",
+                      "ExploreItemId": "Mandora_Medal"
+                    },
+                    "right": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 3
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterInside",
+                "group": {
+                  "$type": "BattleModel.PVEPlayerTeam",
+                  "includeDead": true,
+                  "includeEmpty": false
+                },
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 99,
+  "_orderTable": {
+  },
+  "_tag": 32833
+}

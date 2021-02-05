@@ -1,0 +1,412 @@
+{
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+    "nerf_damage_small",
+    "weak",
+    "tearing",
+    "poison",
+    "stun",
+    "infection_maintain",
+    "bleeding_maintain",
+    "infection",
+    "frosted",
+    "burn",
+    "xmas20_player_buff",
+    "xmas20_enemy_debuff",
+    "xmas20_player_100hp",
+    "xmas20_player_shield",
+    "xmas20_enemy_0shield",
+    "xmas20_player_taunt",
+    "xmas20_player_fullshield",
+    "xmas20_player_basatk",
+    "xmas20_player_braarm",
+    "xmas20_player_trudma",
+    "xmas20_player_gold",
+    "xmas20_player_black",
+    "xmas20_player_white",
+    "xmas20_player_bonus",
+    "xmas20_player_defense",
+    "xmas20_player_rage",
+    "xmas20_player_warfare",
+    "xmas20_player_dexterity",
+    "xmas20_player_regen",
+    "xmas20_player_dmaasb",
+    "xmas20_player_armtoblood",
+    "xmas20_player_leader",
+    "xmas20_enemy_nerf",
+    "xmas20_enemy_weak",
+    "xmas20_enemy_poison",
+    "xmas20_enemy_tear",
+    "xmas20_enemy_stun",
+    "xmas20_player_2buff",
+    "xmas20_player_3stkbuff",
+    "xmas20_enemy_3stkdebuff",
+    "xmas20_player_4buff",
+    "xmas20_player_S1",
+    "xmas20_player_S2",
+    "xmas20_player_E3",
+    "xmas20_player_S3",
+    "xmas20_player_E6",
+    "tearing_trigger",
+    "tearing_trigger_alert",
+    "poison_trigger",
+    "bonusAttackPower",
+    "defense_up_small",
+    "dexterity",
+    "damage_absorption",
+    "ArmorToBlood",
+    "regeneration",
+    "rage",
+    "warfare",
+    "leader",
+    "dexterity_trigger",
+    "dexterity_fightback_0",
+    "dexterity_fightback_1",
+    "dexterity_fightback_2",
+    "dexterity_fightback_3",
+    "dexterity_fightback_4",
+    "b0028sx_dodge",
+    "damage_absorption_trigger",
+    "ArmorToBlood_trigger",
+    "regeneration_trigger",
+    "follower"
+  ],
+  "_actionTable": [
+    {
+      "Key": 1,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": null,
+                    "single": {
+                      "$type": "BattleModel.ThisBuffOwner"
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.HpHealSkillEffect",
+                        "Tag": 34,
+                        "_keyString": "",
+                        "_skillModifier": {
+                          "_constant": 0,
+                          "_parameter": {
+                            "$type": "BattleModel.IntCharaterField",
+                            "character": {
+                              "$type": "BattleModel.ThisBuffOwner"
+                            },
+                            "targetField": 1
+                          },
+                          "_ratio": 10
+                        }
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": false
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CurrentTurnBelongsTo",
+                "character": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 1024,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": null,
+                    "single": {
+                      "$type": "BattleModel.ThisBuffOwner"
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.ChangeExploreFlagSkillEffect",
+                        "Tag": 16384,
+                        "_flagId": "xmas20_drop",
+                        "_keyString": "",
+                        "_operation": "Change",
+                        "_value": {
+                          "$type": "BattleModel.ConstanctInt",
+                          "constant": 2
+                        }
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": false
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 1
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.RemoveBuff",
+                    "buffId": "xmas20_enemy_2debuff"
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterInside",
+                "group": {
+                  "$type": "BattleModel.PVEPlayerTeam",
+                  "includeDead": false,
+                  "includeEmpty": false
+                },
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              },
+              {
+                "$type": "BattleModel.ThisSkillEffectTagContains",
+                "containsAll": 1
+              },
+              {
+                "$type": "BattleModel.CharacterInside",
+                "group": {
+                  "$type": "BattleModel.ThisSkillEffectTargets"
+                },
+                "left": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.CountOfBuffGroup",
+                  "group": {
+                    "$type": "BattleModel.BuffGroupWhere",
+                    "condition": {
+                      "$type": "BattleModel.CheckBuffBelongLabel",
+                      "BuffLabel": {
+                        "BuffIdList": [
+                          "nerf_damage_small",
+                          "weak",
+                          "tearing",
+                          "poison",
+                          "weak",
+                          "stun",
+                          "infection_maintain",
+                          "bleeding_maintain",
+                          "infection",
+                          "frosted",
+                          "burn"
+                        ],
+                        "BuffLabel": "generalNerf"
+                      }
+                    },
+                    "group": {
+                      "$type": "BattleModel.AllBuffsOnChar",
+                      "character": {
+                        "$type": "BattleModel.ThisBuffOwner"
+                      }
+                    }
+                  }
+                },
+                "op": 4,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 2
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.ThisBuff"
+                  },
+                  "targetField": 4
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 0
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 65536,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": null,
+                    "single": {
+                      "$type": "BattleModel.ThisBuffOwner"
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.AmrReduceRatioSkillEffect",
+                        "Tag": 2052,
+                        "_keyString": "",
+                        "_skillModifier": {
+                          "_constant": 0,
+                          "_parameter": {
+                            "$type": "BattleModel.ConstanctInt",
+                            "constant": 1
+                          },
+                          "_ratio": 1
+                        }
+                      },
+                      {
+                        "$type": "BattleModel.HpDamageRatioMaxSkillEffect",
+                        "Tag": 9,
+                        "_keyString": "",
+                        "_skillModifier": {
+                          "_constant": 0,
+                          "_parameter": {
+                            "$type": "BattleModel.ConstanctInt",
+                            "constant": 1
+                          },
+                          "_ratio": 1
+                        }
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": false
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.BuffEqual",
+                "left": {
+                  "$type": "BattleModel.SpecifiedBuff"
+                },
+                "right": {
+                  "$type": "BattleModel.ThisBuff"
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.CountOfBuffGroup",
+                  "group": {
+                    "$type": "BattleModel.BuffGroupWhere",
+                    "condition": {
+                      "$type": "BattleModel.CheckBuffBelongLabel",
+                      "BuffLabel": {
+                        "BuffIdList": [
+                          "xmas20_player_buff",
+                          "xmas20_enemy_debuff",
+                          "xmas20_player_100hp",
+                          "xmas20_player_shield",
+                          "xmas20_enemy_0shield",
+                          "xmas20_player_taunt",
+                          "xmas20_player_fullshield",
+                          "xmas20_player_basatk",
+                          "xmas20_player_braarm",
+                          "xmas20_player_trudma",
+                          "xmas20_player_gold",
+                          "xmas20_player_black",
+                          "xmas20_player_white",
+                          "xmas20_player_bonus",
+                          "xmas20_player_defense",
+                          "xmas20_player_rage",
+                          "xmas20_player_warfare",
+                          "xmas20_player_dexterity",
+                          "xmas20_player_regen",
+                          "xmas20_player_dmaasb",
+                          "xmas20_player_armtoblood",
+                          "xmas20_player_leader",
+                          "xmas20_enemy_nerf",
+                          "xmas20_enemy_weak",
+                          "xmas20_enemy_poison",
+                          "xmas20_enemy_tear",
+                          "xmas20_enemy_stun",
+                          "xmas20_player_2buff",
+                          "xmas20_enemy_2debuff",
+                          "xmas20_player_3stkbuff",
+                          "xmas20_enemy_3stkdebuff",
+                          "xmas20_player_4buff",
+                          "xmas20_player_S1",
+                          "xmas20_player_S2",
+                          "xmas20_player_E3",
+                          "xmas20_player_S3",
+                          "xmas20_player_E6"
+                        ],
+                        "BuffLabel": "xmas20"
+                      }
+                    },
+                    "group": {
+                      "$type": "BattleModel.AllBuffsOnChar",
+                      "character": {
+                        "$type": "BattleModel.ThisBuffOwner"
+                      }
+                    }
+                  }
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 1
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 0,
+  "_orderTable": {
+  },
+  "_tag": 64
+}

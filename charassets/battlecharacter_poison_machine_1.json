@@ -1,0 +1,380 @@
+{
+  "$type": "BattleModel.FriendCharacter",
+  "ReferenceBuffKeys": [
+    "Grenade_Poison",
+    "poison",
+    "Reaction_Explode",
+    "poison_ground",
+    "poison_smoke",
+    "burn_ground",
+    "oil_ground",
+    "frost_ground",
+    "blood_ground",
+    "wet_ground",
+    "rot_ground",
+    "poison_trigger",
+    "burn",
+    "frosted"
+  ],
+  "ReferenceCharacterKeys": [
+  ],
+  "ReferenceEffectKeys": [
+    "r0034s5_a2_s01_i01_thunder02",
+    "b0072c4_s02_Fire01",
+    "h3177c4_tr_i01_i03_wind03",
+    "n3284c4_hit01"
+  ],
+  "ReferenceEmoIconKeys": [
+  ],
+  "ReferenceMusicKeys": [
+  ],
+  "ReferenceSFXKeys": [
+    "explode_007",
+    "explode_015"
+  ],
+  "ReferenceVoiceSFXKeys": [
+  ],
+  "_armorCapacity": 50,
+  "_assistantSkill": {
+    "$type": "BattleModel.AssistantActiveCastSkill",
+    "Skill": {
+      "ComboList": [
+        {
+          "ConditionList": [
+            {
+              "$type": "BattleModel.CharGroupCondition",
+              "condition": {
+                "$type": "BattleModel.HasBuff",
+                "buffId": "burn_ground"
+              },
+              "everybody": false,
+              "group": {
+                "$type": "BattleModel.PVEPlayerTeam",
+                "includeDead": false,
+                "includeEmpty": false
+              }
+            }
+          ],
+          "SkillList": [
+            {
+              "ConditionList": [
+              ],
+              "SkillID": "coverground_burn",
+              "_conditionalSequences": [
+              ],
+              "seq": "S1_I2",
+              "t": null
+            }
+          ],
+          "_characterCoolDown": 0,
+          "assignTarget": null,
+          "icon": 1
+        },
+        {
+          "ConditionList": [
+          ],
+          "SkillList": [
+            {
+              "ConditionList": [
+              ],
+              "SkillID": "coverground",
+              "_conditionalSequences": [
+              ],
+              "seq": "S1_I2",
+              "t": null
+            }
+          ],
+          "_characterCoolDown": 0,
+          "assignTarget": null,
+          "icon": 1
+        }
+      ],
+      "_isViewSkillSet": false
+    },
+    "_maxCastStack": 1,
+    "_skillCD": 5,
+    "_startCD": 0,
+    "_startCastStack": 0
+  },
+  "_bloodCapacity": 50,
+  "_characterAI": {
+    "$type": "BattleModel.SequenceEnemyAI",
+    "Character": null,
+    "OrderList": [
+    ]
+  },
+  "_defaultCoolDown": 0,
+  "_initialCoolDown": 0,
+  "_levelStartBuff": [
+  ],
+  "_mass": 1,
+  "_masterRank": 0,
+  "_passiveBuff": [
+  ],
+  "_pose": "Stand",
+  "_power": 50,
+  "_reviveCount": 0,
+  "_skills": {
+    "S1": {
+      "$type": "BattleModel.BattleSkill",
+      "_isResolveTargetEachUnit": false,
+      "_skillIdentifiers": [
+        {
+          "CanBeEmpty": true,
+          "IsMultiple": false,
+          "multi": {
+            "$type": "BattleModel.CharGroupWhere",
+            "condition": {
+              "$type": "BattleModel.HasBuff",
+              "buffId": "smoke"
+            },
+            "group": {
+              "$type": "BattleModel.PVEPlayerTeam",
+              "includeDead": false,
+              "includeEmpty": false
+            }
+          },
+          "single": {
+            "$type": "BattleModel.FrontOfChars",
+            "group": {
+              "$type": "BattleModel.PVEPlayerTeam",
+              "includeDead": false,
+              "includeEmpty": false
+            }
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.AddBuffSkillEffect",
+              "Tag": 132,
+              "_buffData": [
+                {
+                  "BuffId": "Grenade_Poison",
+                  "Forever": false,
+                  "LevelStack": 0,
+                  "OverwriteDuration": -1,
+                  "UserDefineVariable": {
+                  }
+                }
+              ],
+              "_keyString": "1"
+            }
+          ]
+        },
+        {
+          "CanBeEmpty": true,
+          "IsMultiple": true,
+          "multi": {
+            "$type": "BattleModel.CharGroupWhere",
+            "condition": {
+              "$type": "BattleModel.HasBuff",
+              "buffId": "burn_ground"
+            },
+            "group": {
+              "$type": "BattleModel.PVEEnemyTeam",
+              "includeDead": false,
+              "includeEmpty": false
+            }
+          },
+          "single": {
+            "$type": "BattleModel.ThisSkillCaster"
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.AddBuffSkillEffect",
+              "Tag": 132,
+              "_buffData": [
+                {
+                  "BuffId": "poison",
+                  "Forever": false,
+                  "LevelStack": 1,
+                  "OverwriteDuration": 1,
+                  "UserDefineVariable": {
+                  }
+                },
+                {
+                  "BuffId": "Reaction_Explode",
+                  "Forever": false,
+                  "LevelStack": 1,
+                  "OverwriteDuration": 1,
+                  "UserDefineVariable": {
+                  }
+                }
+              ],
+              "_keyString": "2"
+            },
+            {
+              "$type": "BattleModel.HpDamageSkillEffect",
+              "Tag": 9,
+              "_keyString": "2",
+              "_skillModifier": {
+                "_constant": 0,
+                "_parameter": {
+                  "$type": "BattleModel.IntCharaterField",
+                  "character": {
+                    "$type": "BattleModel.ThisSpecifiedTarget"
+                  },
+                  "targetField": 1
+                },
+                "_ratio": 0.2
+              }
+            }
+          ]
+        },
+        {
+          "CanBeEmpty": true,
+          "IsMultiple": true,
+          "multi": {
+            "$type": "BattleModel.CharGroupWhere",
+            "condition": {
+              "$type": "BattleModel.InverseC",
+              "condition": {
+                "$type": "BattleModel.HasBuff",
+                "buffId": "burn_ground"
+              }
+            },
+            "group": {
+              "$type": "BattleModel.PVEEnemyTeam",
+              "includeDead": false,
+              "includeEmpty": false
+            }
+          },
+          "single": {
+            "$type": "BattleModel.ThisSkillCaster"
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.RemoveBuffFromGroupedBuffIdSkillEffect",
+              "BuffGroupIds": {
+                "$type": "BattleModel.BuffIdFromLabelList",
+                "BuffLabel": {
+                  "BuffIdList": [
+                    "burn_ground",
+                    "poison_ground",
+                    "oil_ground",
+                    "frost_ground",
+                    "blood_ground",
+                    "wet_ground",
+                    "rot_ground"
+                  ],
+                  "BuffLabel": "generalGround"
+                }
+              },
+              "RandomRemoveCount": 0,
+              "RemoveAllBuff": true,
+              "Tag": 4100,
+              "_keyString": "2"
+            },
+            {
+              "$type": "BattleModel.AddBuffSkillEffect",
+              "Tag": 132,
+              "_buffData": [
+                {
+                  "BuffId": "poison_ground",
+                  "Forever": true,
+                  "LevelStack": 1,
+                  "OverwriteDuration": 1,
+                  "UserDefineVariable": {
+                  }
+                },
+                {
+                  "BuffId": "poison",
+                  "Forever": false,
+                  "LevelStack": 1,
+                  "OverwriteDuration": 1,
+                  "UserDefineVariable": {
+                  }
+                }
+              ],
+              "_keyString": "2"
+            }
+          ]
+        },
+        {
+          "CanBeEmpty": true,
+          "IsMultiple": true,
+          "multi": {
+            "$type": "BattleModel.CharGroupWhere",
+            "condition": {
+              "$type": "BattleModel.HasBuff",
+              "buffId": "smoke"
+            },
+            "group": {
+              "$type": "BattleModel.PVEEnemyTeam",
+              "includeDead": false,
+              "includeEmpty": false
+            }
+          },
+          "single": null,
+          "skillEffects": [
+            {
+              "$type": "BattleModel.RemoveBuffSkillEffect",
+              "Tag": 4100,
+              "_buffID": "smoke",
+              "_keyString": "3"
+            },
+            {
+              "$type": "BattleModel.AddBuffSkillEffect",
+              "Tag": 132,
+              "_buffData": [
+                {
+                  "BuffId": "poison_smoke",
+                  "Forever": true,
+                  "LevelStack": 0,
+                  "OverwriteDuration": -1,
+                  "UserDefineVariable": {
+                  }
+                }
+              ],
+              "_keyString": "3 "
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "_skillsetTable": {
+    "A1": {
+      "ComboList": [
+        {
+          "ConditionList": [
+          ],
+          "SkillList": [
+            {
+              "ConditionList": [
+              ],
+              "SkillID": "S1",
+              "_conditionalSequences": [
+                {
+                  "ConditionList": [
+                  ],
+                  "_sequenceId": "S1"
+                }
+              ],
+              "seq": "S1",
+              "t": null
+            }
+          ],
+          "_characterCoolDown": 0,
+          "assignTarget": null,
+          "icon": 1
+        }
+      ],
+      "_isViewSkillSet": false
+    }
+  },
+  "_stoneEraseSetting": [
+    {
+      "Key": 0,
+      "Value": "S1"
+    },
+    {
+      "Key": 1,
+      "Value": "S2"
+    },
+    {
+      "Key": 2,
+      "Value": "S3"
+    }
+  ],
+  "_stoneType": 0
+}

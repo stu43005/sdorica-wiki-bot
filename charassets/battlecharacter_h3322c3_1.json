@@ -1,0 +1,327 @@
+{
+  "$type": "BattleModel.EnemyCharacter",
+  "ReferenceBuffKeys": [
+    "christmas19_level_buff",
+    "tearing",
+    "tearing_trigger",
+    "tearing_trigger_alert"
+  ],
+  "ReferenceCharacterKeys": [
+    "m0020c1",
+    "m0021c1",
+    "m0022c1"
+  ],
+  "ReferenceEffectKeys": [
+    "h3322c3_s01_slash01",
+    "Common_HitDash01_A",
+    "h3322c3_s01_Bomb01",
+    "h3324c3_s01_smoke01",
+    "h3320c3_s01_floorsmoke01",
+    "h3322c3_s01_Rotation01"
+  ],
+  "ReferenceEmoIconKeys": [
+  ],
+  "ReferenceMusicKeys": [
+  ],
+  "ReferenceSFXKeys": [
+    "Movement_misc_015_comedy_hit",
+    "Whoosh_swing_005set_01_slash_large",
+    "Whoosh_swing_004_small_multi",
+    "Hit_bladed_010_large",
+    "Footsteps_003_comedy_heavy",
+    "movement_comedy_turn_head_01",
+    "Hit_bladed_012_stab_medium",
+    "Hit_smash_031_simple_small",
+    "movement_bubble_pop_02",
+    "sword_002",
+    "step_armour_012",
+    "Whoosh_swing_008_metal"
+  ],
+  "ReferenceVoiceSFXKeys": [
+  ],
+  "_armorCapacity": 150,
+  "_assistantSkill": null,
+  "_bloodCapacity": 150,
+  "_characterAI": {
+    "$type": "BattleModel.SequenceEnemyAI",
+    "Character": null,
+    "OrderList": [
+      "S1"
+    ]
+  },
+  "_defaultCoolDown": 3,
+  "_initialCoolDown": 3,
+  "_levelStartBuff": [
+  ],
+  "_mass": 1,
+  "_masterRank": 0,
+  "_passiveBuff": [
+    {
+      "BuffId": "christmas19_level_buff",
+      "Forever": true,
+      "LevelStack": 1,
+      "OverwriteDuration": -1,
+      "UserDefineVariable": {
+      }
+    }
+  ],
+  "_pose": "Stand",
+  "_power": 50,
+  "_reviveCount": 0,
+  "_skills": {
+    "Arrive1": {
+      "$type": "BattleModel.BattleSkill",
+      "_isResolveTargetEachUnit": false,
+      "_skillIdentifiers": [
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": false,
+          "multi": null,
+          "single": {
+            "$type": "BattleModel.ThisSkillCaster"
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.ChangeCDSkillEffect",
+              "Tag": 1028,
+              "_keyString": "",
+              "_value": 1
+            }
+          ]
+        }
+      ]
+    },
+    "Retreat1": {
+      "$type": "BattleModel.BattleSkill",
+      "_isResolveTargetEachUnit": false,
+      "_skillIdentifiers": [
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": false,
+          "multi": null,
+          "single": {
+            "$type": "BattleModel.ThisSkillCaster"
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.AmrReduceRatioSkillEffect",
+              "Tag": 2052,
+              "_keyString": "1",
+              "_skillModifier": {
+                "_constant": 0,
+                "_parameter": {
+                  "$type": "BattleModel.SkillCasterPower",
+                  "basePower": false
+                },
+                "_ratio": 1
+              }
+            },
+            {
+              "$type": "BattleModel.HpDamageRatioMaxSkillEffect",
+              "Tag": 9,
+              "_keyString": "1",
+              "_skillModifier": {
+                "_constant": 0,
+                "_parameter": {
+                  "$type": "BattleModel.SkillCasterPower",
+                  "basePower": false
+                },
+                "_ratio": 1
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "S1": {
+      "$type": "BattleModel.BattleSkill",
+      "_isResolveTargetEachUnit": false,
+      "_skillIdentifiers": [
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": false,
+          "multi": null,
+          "single": {
+            "$type": "BattleModel.EnemyAssignee",
+            "reference": {
+              "$type": "BattleModel.ThisSkillCaster"
+            }
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.HpDamageSkillEffect",
+              "Tag": 9,
+              "_keyString": "1",
+              "_skillModifier": {
+                "_constant": 0,
+                "_parameter": {
+                  "$type": "BattleModel.SkillCasterPower",
+                  "basePower": false
+                },
+                "_ratio": 2
+              }
+            },
+            {
+              "$type": "BattleModel.AddBuffSkillEffect",
+              "Tag": 132,
+              "_buffData": [
+                {
+                  "BuffId": "tearing",
+                  "Forever": false,
+                  "LevelStack": 3,
+                  "OverwriteDuration": 1,
+                  "UserDefineVariable": {
+                  }
+                }
+              ],
+              "_keyString": "1"
+            }
+          ]
+        }
+      ]
+    },
+    "S4": {
+      "$type": "BattleModel.BattleSkill",
+      "_isResolveTargetEachUnit": false,
+      "_skillIdentifiers": [
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": true,
+          "multi": {
+            "$type": "BattleModel.SelftTeamEmptySlots",
+            "reference": {
+              "$type": "BattleModel.ThisSkillCaster"
+            }
+          },
+          "single": {
+            "$type": "BattleModel.FriendAssignee",
+            "reference": {
+              "$type": "BattleModel.ThisSkillCaster"
+            }
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.SummonEnemySkillEffect",
+              "IsShowArrive": false,
+              "Reference": {
+                "$type": "BattleModel.SummonCharacterInPreset",
+                "WeightedCharacterArgs": [
+                  {
+                    "CharacterArg": {
+                      "AssetName": "m0020c1",
+                      "State": {
+                        "DisapearAfterDead": true,
+                        "InitArmorRatio": 0,
+                        "InitBloodRatio": 1,
+                        "InitCd": 2,
+                        "LevelAdjustment": 0
+                      },
+                      "SummonCasterLevel": 1
+                    },
+                    "Weight": 5
+                  },
+                  {
+                    "CharacterArg": {
+                      "AssetName": "m0021c1",
+                      "State": {
+                        "DisapearAfterDead": true,
+                        "InitArmorRatio": 0,
+                        "InitBloodRatio": 1,
+                        "InitCd": 2,
+                        "LevelAdjustment": 0
+                      },
+                      "SummonCasterLevel": 1
+                    },
+                    "Weight": 5
+                  },
+                  {
+                    "CharacterArg": {
+                      "AssetName": "m0022c1",
+                      "State": {
+                        "DisapearAfterDead": true,
+                        "InitArmorRatio": 0,
+                        "InitBloodRatio": 1,
+                        "InitCd": 2,
+                        "LevelAdjustment": 0
+                      },
+                      "SummonCasterLevel": 1
+                    },
+                    "Weight": 5
+                  }
+                ]
+              },
+              "Tag": 260,
+              "_keyString": ""
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "_skillsetTable": {
+    "S1": {
+      "ComboList": [
+        {
+          "ConditionList": [
+          ],
+          "SkillList": [
+            {
+              "ConditionList": [
+              ],
+              "SkillID": "S1",
+              "_conditionalSequences": [
+              ],
+              "seq": "",
+              "t": null
+            }
+          ],
+          "_characterCoolDown": 3,
+          "assignTarget": {
+            "$type": "BattleModel.FrontOfChars",
+            "group": {
+              "$type": "BattleModel.OppositeTeamChars",
+              "includeDead": false,
+              "includeEmpty": false,
+              "reference": {
+                "$type": "BattleModel.ThisSkillCaster"
+              }
+            }
+          },
+          "icon": 0
+        }
+      ],
+      "_isViewSkillSet": false
+    },
+    "S4": {
+      "ComboList": [
+        {
+          "ConditionList": [
+          ],
+          "SkillList": [
+            {
+              "ConditionList": [
+              ],
+              "SkillID": "S4",
+              "_conditionalSequences": [
+                {
+                  "ConditionList": [
+                  ],
+                  "_sequenceId": "S1"
+                }
+              ],
+              "seq": "",
+              "t": null
+            }
+          ],
+          "_characterCoolDown": 0,
+          "assignTarget": null,
+          "icon": 0
+        }
+      ],
+      "_isViewSkillSet": false
+    }
+  },
+  "_stoneEraseSetting": {
+  },
+  "_stoneType": 0
+}

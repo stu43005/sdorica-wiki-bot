@@ -1,0 +1,92 @@
+{
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+    "tearing",
+    "tearing_trigger",
+    "tearing_trigger_alert"
+  ],
+  "_actionTable": [
+    {
+      "Key": 8,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "tearing",
+                      "Forever": false,
+                      "LevelStack": 2,
+                      "OverwriteDuration": 1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.OrConditions",
+                "cond1": {
+                  "$type": "BattleModel.CharacterEqual",
+                  "left": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "right": {
+                    "$type": "BattleModel.ThisSpecifiedTarget"
+                  }
+                },
+                "cond2": {
+                  "$type": "BattleModel.CharacterInside",
+                  "group": {
+                    "$type": "BattleModel.ThisSkillEffectTargets"
+                  },
+                  "left": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  }
+                }
+              },
+              {
+                "$type": "BattleModel.ThisSkillEffectTagContains",
+                "containsAll": 1
+              },
+              {
+                "$type": "BattleModel.Inverse",
+                "condition": {
+                  "$type": "BattleModel.CharacterEqual",
+                  "left": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "right": {
+                    "$type": "BattleModel.ThisSkillCaster"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 1,
+  "_maxLevel": 99,
+  "_orderTable": [
+    {
+      "Key": 8,
+      "Value": {
+        "Order": 0
+      }
+    }
+  ],
+  "_tag": 64
+}

@@ -1,0 +1,126 @@
+{
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+    "taunt"
+  ],
+  "_actionTable": [
+    {
+      "Key": 1,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "taunt",
+                      "Forever": false,
+                      "LevelStack": 1,
+                      "OverwriteDuration": 1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CurrentTurnBelongsTo",
+                "character": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 1024,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.BonusEffectForSkillProperty",
+                  "isPercent": true,
+                  "property": 96,
+                  "value": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": -100000
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+            ]
+          }
+        ],
+        "Conditions": [
+          {
+            "$type": "BattleModel.CharacterEqual",
+            "left": {
+              "$type": "BattleModel.ThisBuffOwner"
+            },
+            "right": {
+              "$type": "BattleModel.ThisSpecifiedTarget"
+            }
+          },
+          {
+            "$type": "BattleModel.OrConditions",
+            "cond1": {
+              "$type": "BattleModel.ThisSkillEffectTagContains",
+              "containsAll": 32
+            },
+            "cond2": {
+              "$type": "BattleModel.ThisSkillEffectTagContains",
+              "containsAll": 64
+            }
+          },
+          {
+            "$type": "BattleModel.CharacterInside",
+            "group": {
+              "$type": "BattleModel.SelfTeamChars",
+              "excludeSelf": false,
+              "includeDead": false,
+              "includeEmpty": false,
+              "reference": {
+                "$type": "BattleModel.ThisBuffOwner"
+              }
+            },
+            "left": {
+              "$type": "BattleModel.ThisSkillCaster"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 0,
+  "_orderTable": [
+    {
+      "Key": 1,
+      "Value": {
+        "Order": 0
+      }
+    },
+    {
+      "Key": 1024,
+      "Value": {
+        "Order": 0
+      }
+    }
+  ],
+  "_tag": 32768
+}

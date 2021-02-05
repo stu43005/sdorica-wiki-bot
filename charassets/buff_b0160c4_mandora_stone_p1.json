@@ -1,0 +1,179 @@
+{
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+  ],
+  "_actionTable": [
+    {
+      "Key": 1024,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": null,
+                    "single": {
+                      "$type": "BattleModel.ThisBuffOwner"
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.ChangeExploreFlagSkillEffect",
+                        "Tag": 16384,
+                        "_flagId": "Mandora_Stone_Energy",
+                        "_keyString": "",
+                        "_operation": "Change",
+                        "_value": {
+                          "$type": "BattleModel.ConstanctInt",
+                          "constant": -1
+                        }
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": false
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterInside",
+                "group": {
+                  "$type": "BattleModel.PVEPlayerTeam",
+                  "includeDead": false,
+                  "includeEmpty": false
+                },
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              },
+              {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                },
+                "right": {
+                  "$type": "BattleModel.ThisSpecifiedTarget"
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 131072,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": true,
+                    "IsMultiple": false,
+                    "multi": null,
+                    "single": {
+                      "$type": "BattleModel.FrontOfChars",
+                      "group": {
+                        "$type": "BattleModel.PVEPlayerTeam",
+                        "includeDead": true,
+                        "includeEmpty": false
+                      }
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.ChangeExploreFlagSkillEffect",
+                        "Tag": 16384,
+                        "_flagId": "Mandora_Stone_RandomBattle",
+                        "_keyString": "",
+                        "_operation": "Set",
+                        "_value": {
+                          "$type": "BattleModel.ConstanctInt",
+                          "constant": 20
+                        }
+                      },
+                      {
+                        "$type": "BattleModel.ChangeExploreFlagSkillEffect",
+                        "Tag": 16384,
+                        "_flagId": "Mandora_Stone_Game",
+                        "_keyString": "",
+                        "_operation": "Change",
+                        "_value": {
+                          "$type": "BattleModel.ConstanctInt",
+                          "constant": 30
+                        }
+                      },
+                      {
+                        "$type": "BattleModel.ChangeExploreFlagSkillEffect",
+                        "Tag": 16384,
+                        "_flagId": "Mandora_Stone_Total",
+                        "_keyString": "",
+                        "_operation": "Change",
+                        "_value": {
+                          "$type": "BattleModel.ConstanctInt",
+                          "constant": 30
+                        }
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": false
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.ThisTeamExploreFlagValue",
+                  "ExploreFlagId": "Mandora_Stone_Energy"
+                },
+                "op": 5,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 0
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.ThisBuff"
+                  },
+                  "targetField": 4
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 0
+                }
+              },
+              {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.DeadOrReviveTarget"
+                },
+                "right": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 99,
+  "_orderTable": {
+  },
+  "_tag": 32833
+}

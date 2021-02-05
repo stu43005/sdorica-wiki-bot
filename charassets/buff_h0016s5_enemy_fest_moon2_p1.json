@@ -1,0 +1,751 @@
+{
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+    "moon2_show",
+    "moon2_player_buff",
+    "moon2_enemy_debuff",
+    "moon2_player_white",
+    "moon2_enemy_tear",
+    "moon2_player_bonus",
+    "moon2_player_100hp",
+    "moon2_player_shield",
+    "moon2_enemy_0shield",
+    "moon2_player_basatk",
+    "moon2_player_braarm",
+    "moon2_player_trudma",
+    "moon2_player_gold",
+    "moon2_player_black",
+    "moon2_player_defense",
+    "moon2_player_rage",
+    "moon2_player_warfare",
+    "moon2_enemy_nerf",
+    "moon2_enemy_weak",
+    "moon2_enemy_poison",
+    "moon2_player_2buff",
+    "moon2_enemy_2debuff",
+    "moon2_player_S1",
+    "moon2_player_S2",
+    "moon2_player_S3",
+    "bonusAttackPower",
+    "defense_up_small",
+    "dexterity",
+    "damage_absorption",
+    "ArmorToBlood",
+    "regeneration",
+    "rage",
+    "warfare",
+    "leader",
+    "nerf_damage_small",
+    "weak",
+    "tearing",
+    "poison",
+    "stun",
+    "infection_maintain",
+    "bleeding_maintain",
+    "infection",
+    "frosted",
+    "burn",
+    "dexterity_trigger",
+    "dexterity_fightback_0",
+    "dexterity_fightback_1",
+    "dexterity_fightback_2",
+    "dexterity_fightback_3",
+    "dexterity_fightback_4",
+    "b0028sx_dodge",
+    "damage_absorption_trigger",
+    "ArmorToBlood_trigger",
+    "regeneration_trigger",
+    "follower",
+    "tearing_trigger",
+    "tearing_trigger_alert",
+    "poison_trigger"
+  ],
+  "_actionTable": [
+    {
+      "Key": 2,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 1,
+                    "targetField": 1,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 1
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CurrentTurnBelongsTo",
+                "character": {
+                  "$type": "BattleModel.FrontOfChars",
+                  "group": {
+                    "$type": "BattleModel.PVEPlayerTeam",
+                    "includeDead": false,
+                    "includeEmpty": false
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.ReplaceBuffTag",
+                    "newTag": 64
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": true,
+                    "multi": {
+                      "$type": "BattleModel.PVEEnemyTeam",
+                      "includeDead": false,
+                      "includeEmpty": false
+                    },
+                    "single": {
+                      "$type": "BattleModel.ThisBuffOwner"
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.AmrReduceRatioSkillEffect",
+                        "Tag": 2052,
+                        "_keyString": "",
+                        "_skillModifier": {
+                          "_constant": 0,
+                          "_parameter": {
+                            "$type": "BattleModel.ConstanctInt",
+                            "constant": 1
+                          },
+                          "_ratio": 1
+                        }
+                      },
+                      {
+                        "$type": "BattleModel.HpDamageRatioMaxSkillEffect",
+                        "Tag": 9,
+                        "_keyString": "",
+                        "_skillModifier": {
+                          "_constant": 0,
+                          "_parameter": {
+                            "$type": "BattleModel.ConstanctInt",
+                            "constant": 1
+                          },
+                          "_ratio": 1
+                        }
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": false
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.ThisBuff"
+                  },
+                  "targetField": 1
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 10
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": null,
+                    "single": {
+                      "$type": "BattleModel.ThisBuffOwner"
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.HpHealSkillEffect",
+                        "Tag": 34,
+                        "_keyString": "",
+                        "_skillModifier": {
+                          "_constant": 0,
+                          "_parameter": {
+                            "$type": "BattleModel.IntCharaterField",
+                            "character": {
+                              "$type": "BattleModel.ThisBuffOwner"
+                            },
+                            "targetField": 1
+                          },
+                          "_ratio": 10
+                        }
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": true
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.ThisBuff"
+                  },
+                  "targetField": 1
+                },
+                "op": 1,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 10
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 524288,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": null,
+                    "single": {
+                      "$type": "BattleModel.ThisSummonedTarget"
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.AddBuffFromGroupedBuffIdSkillEffect",
+                        "AddAllBuff": false,
+                        "BuffGroupIds": {
+                          "$type": "BattleModel.BuffIdFromLabelList",
+                          "BuffLabel": {
+                            "BuffIdList": [
+                              "moon2_player_buff",
+                              "moon2_enemy_debuff",
+                              "moon2_player_white",
+                              "moon2_enemy_tear",
+                              "moon2_player_bonus"
+                            ],
+                            "BuffLabel": "moon2_neko"
+                          }
+                        },
+                        "Forever": true,
+                        "LevelStack": 0,
+                        "NotRepeatSameBuffId": false,
+                        "OverwriteDuration": 0,
+                        "RandomAddCount": 1,
+                        "Tag": 132,
+                        "_keyString": ""
+                      },
+                      {
+                        "$type": "BattleModel.AddBuffSkillEffect",
+                        "Tag": 132,
+                        "_buffData": [
+                          {
+                            "BuffId": "moon2_show",
+                            "Forever": true,
+                            "LevelStack": 0,
+                            "OverwriteDuration": -1,
+                            "UserDefineVariable": {
+                            }
+                          }
+                        ],
+                        "_keyString": ""
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": false
+                }
+              }
+            ],
+            "Conditions": [
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 1,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": true,
+                    "multi": {
+                      "$type": "BattleModel.CharGroupWhere",
+                      "condition": {
+                        "$type": "BattleModel.InverseC",
+                        "condition": {
+                          "$type": "BattleModel.HasAnyConditionalBuff",
+                          "buffCondition": {
+                            "$type": "BattleModel.CheckBuffBelongLabel",
+                            "BuffLabel": {
+                              "BuffIdList": [
+                                "moon2_player_buff",
+                                "moon2_enemy_debuff",
+                                "moon2_player_100hp",
+                                "moon2_player_shield",
+                                "moon2_enemy_0shield",
+                                "moon2_player_basatk",
+                                "moon2_player_braarm",
+                                "moon2_player_trudma",
+                                "moon2_player_gold",
+                                "moon2_player_black",
+                                "moon2_player_white",
+                                "moon2_player_bonus",
+                                "moon2_player_defense",
+                                "moon2_player_rage",
+                                "moon2_player_warfare",
+                                "moon2_enemy_nerf",
+                                "moon2_enemy_weak",
+                                "moon2_enemy_poison",
+                                "moon2_enemy_tear",
+                                "moon2_player_2buff",
+                                "moon2_enemy_2debuff",
+                                "moon2_player_S1",
+                                "moon2_player_S2",
+                                "moon2_player_S3"
+                              ],
+                              "BuffLabel": "moon2"
+                            }
+                          }
+                        }
+                      },
+                      "group": {
+                        "$type": "BattleModel.SelfTeamChars",
+                        "excludeSelf": true,
+                        "includeDead": false,
+                        "includeEmpty": false,
+                        "reference": {
+                          "$type": "BattleModel.ThisBuffOwner"
+                        }
+                      }
+                    },
+                    "single": {
+                      "$type": "BattleModel.ThisSummonedTarget"
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.AddBuffFromGroupedBuffIdSkillEffect",
+                        "AddAllBuff": false,
+                        "BuffGroupIds": {
+                          "$type": "BattleModel.BuffIdFromLabelList",
+                          "BuffLabel": {
+                            "BuffIdList": [
+                              "moon2_player_buff",
+                              "moon2_enemy_debuff",
+                              "moon2_player_white",
+                              "moon2_enemy_tear",
+                              "moon2_player_bonus"
+                            ],
+                            "BuffLabel": "moon2_neko"
+                          }
+                        },
+                        "Forever": true,
+                        "LevelStack": 0,
+                        "NotRepeatSameBuffId": false,
+                        "OverwriteDuration": 0,
+                        "RandomAddCount": 1,
+                        "Tag": 132,
+                        "_keyString": ""
+                      },
+                      {
+                        "$type": "BattleModel.AddBuffSkillEffect",
+                        "Tag": 132,
+                        "_buffData": [
+                          {
+                            "BuffId": "moon2_show",
+                            "Forever": true,
+                            "LevelStack": 0,
+                            "OverwriteDuration": -1,
+                            "UserDefineVariable": {
+                            }
+                          }
+                        ],
+                        "_keyString": ""
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": false
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharGroupCondition",
+                "condition": {
+                  "$type": "BattleModel.InverseC",
+                  "condition": {
+                    "$type": "BattleModel.HasAnyConditionalBuff",
+                    "buffCondition": {
+                      "$type": "BattleModel.CheckBuffBelongLabel",
+                      "BuffLabel": {
+                        "BuffIdList": [
+                          "moon2_player_buff",
+                          "moon2_enemy_debuff",
+                          "moon2_player_100hp",
+                          "moon2_player_shield",
+                          "moon2_enemy_0shield",
+                          "moon2_player_basatk",
+                          "moon2_player_braarm",
+                          "moon2_player_trudma",
+                          "moon2_player_gold",
+                          "moon2_player_black",
+                          "moon2_player_white",
+                          "moon2_player_bonus",
+                          "moon2_player_defense",
+                          "moon2_player_rage",
+                          "moon2_player_warfare",
+                          "moon2_enemy_nerf",
+                          "moon2_enemy_weak",
+                          "moon2_enemy_poison",
+                          "moon2_enemy_tear",
+                          "moon2_player_2buff",
+                          "moon2_enemy_2debuff",
+                          "moon2_player_S1",
+                          "moon2_player_S2",
+                          "moon2_player_S3"
+                        ],
+                        "BuffLabel": "moon2"
+                      }
+                    }
+                  }
+                },
+                "everybody": false,
+                "group": {
+                  "$type": "BattleModel.SelfTeamChars",
+                  "excludeSelf": true,
+                  "includeDead": false,
+                  "includeEmpty": false,
+                  "reference": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 131072,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.ReplaceBuffTag",
+                    "newTag": 64
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": null,
+                    "single": {
+                      "$type": "BattleModel.ThisBuffOwner"
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.ChangeExploreFlagSkillEffect",
+                        "Tag": 16384,
+                        "_flagId": "fest_moon2_drop",
+                        "_keyString": "",
+                        "_operation": "Change",
+                        "_value": {
+                          "$type": "BattleModel.ConstanctInt",
+                          "constant": 5
+                        }
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": false
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                },
+                "right": {
+                  "$type": "BattleModel.ThisSpecifiedTarget"
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 262144,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": true,
+                    "multi": {
+                      "$type": "BattleModel.CharGroupWhere",
+                      "condition": {
+                        "$type": "BattleModel.InverseC",
+                        "condition": {
+                          "$type": "BattleModel.HasAnyConditionalBuff",
+                          "buffCondition": {
+                            "$type": "BattleModel.CheckBuffBelongLabel",
+                            "BuffLabel": {
+                              "BuffIdList": [
+                                "moon2_player_buff",
+                                "moon2_enemy_debuff",
+                                "moon2_player_100hp",
+                                "moon2_player_shield",
+                                "moon2_enemy_0shield",
+                                "moon2_player_basatk",
+                                "moon2_player_braarm",
+                                "moon2_player_trudma",
+                                "moon2_player_gold",
+                                "moon2_player_black",
+                                "moon2_player_white",
+                                "moon2_player_bonus",
+                                "moon2_player_defense",
+                                "moon2_player_rage",
+                                "moon2_player_warfare",
+                                "moon2_enemy_nerf",
+                                "moon2_enemy_weak",
+                                "moon2_enemy_poison",
+                                "moon2_enemy_tear",
+                                "moon2_player_2buff",
+                                "moon2_enemy_2debuff",
+                                "moon2_player_S1",
+                                "moon2_player_S2",
+                                "moon2_player_S3"
+                              ],
+                              "BuffLabel": "moon2"
+                            }
+                          }
+                        }
+                      },
+                      "group": {
+                        "$type": "BattleModel.SelfTeamChars",
+                        "excludeSelf": true,
+                        "includeDead": false,
+                        "includeEmpty": false,
+                        "reference": {
+                          "$type": "BattleModel.ThisBuffOwner"
+                        }
+                      }
+                    },
+                    "single": {
+                      "$type": "BattleModel.ThisSummonedTarget"
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.AddBuffFromGroupedBuffIdSkillEffect",
+                        "AddAllBuff": false,
+                        "BuffGroupIds": {
+                          "$type": "BattleModel.BuffIdFromLabelList",
+                          "BuffLabel": {
+                            "BuffIdList": [
+                              "moon2_player_buff",
+                              "moon2_enemy_debuff",
+                              "moon2_player_white",
+                              "moon2_enemy_tear",
+                              "moon2_player_bonus"
+                            ],
+                            "BuffLabel": "moon2_neko"
+                          }
+                        },
+                        "Forever": true,
+                        "LevelStack": 0,
+                        "NotRepeatSameBuffId": false,
+                        "OverwriteDuration": 0,
+                        "RandomAddCount": 1,
+                        "Tag": 132,
+                        "_keyString": ""
+                      },
+                      {
+                        "$type": "BattleModel.AddBuffSkillEffect",
+                        "Tag": 132,
+                        "_buffData": [
+                          {
+                            "BuffId": "moon2_show",
+                            "Forever": true,
+                            "LevelStack": 0,
+                            "OverwriteDuration": -1,
+                            "UserDefineVariable": {
+                            }
+                          }
+                        ],
+                        "_keyString": ""
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": false
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharGroupCondition",
+                "condition": {
+                  "$type": "BattleModel.InverseC",
+                  "condition": {
+                    "$type": "BattleModel.HasAnyConditionalBuff",
+                    "buffCondition": {
+                      "$type": "BattleModel.CheckBuffBelongLabel",
+                      "BuffLabel": {
+                        "BuffIdList": [
+                          "moon2_player_buff",
+                          "moon2_enemy_debuff",
+                          "moon2_player_100hp",
+                          "moon2_player_shield",
+                          "moon2_enemy_0shield",
+                          "moon2_player_basatk",
+                          "moon2_player_braarm",
+                          "moon2_player_trudma",
+                          "moon2_player_gold",
+                          "moon2_player_black",
+                          "moon2_player_white",
+                          "moon2_player_bonus",
+                          "moon2_player_defense",
+                          "moon2_player_rage",
+                          "moon2_player_warfare",
+                          "moon2_enemy_nerf",
+                          "moon2_enemy_weak",
+                          "moon2_enemy_poison",
+                          "moon2_enemy_tear",
+                          "moon2_player_2buff",
+                          "moon2_enemy_2debuff",
+                          "moon2_player_S1",
+                          "moon2_player_S2",
+                          "moon2_player_S3"
+                        ],
+                        "BuffLabel": "moon2"
+                      }
+                    }
+                  }
+                },
+                "everybody": false,
+                "group": {
+                  "$type": "BattleModel.SelfTeamChars",
+                  "excludeSelf": true,
+                  "includeDead": false,
+                  "includeEmpty": false,
+                  "reference": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  }
+                }
+              },
+              {
+                "$type": "BattleModel.CharacterInside",
+                "group": {
+                  "$type": "BattleModel.PVEEnemyTeam",
+                  "includeDead": false,
+                  "includeEmpty": false
+                },
+                "left": {
+                  "$type": "BattleModel.DeadOrReviveTarget"
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 10,
+  "_orderTable": [
+    {
+      "Key": 2,
+      "Value": {
+        "Order": 0
+      }
+    },
+    {
+      "Key": 524288,
+      "Value": {
+        "Order": 0
+      }
+    },
+    {
+      "Key": 1,
+      "Value": {
+        "Order": 0
+      }
+    },
+    {
+      "Key": 131072,
+      "Value": {
+        "Order": 0
+      }
+    },
+    {
+      "Key": 262144,
+      "Value": {
+        "Order": 0
+      }
+    }
+  ],
+  "_tag": 192
+}

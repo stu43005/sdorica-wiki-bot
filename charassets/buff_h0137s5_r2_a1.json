@@ -1,0 +1,203 @@
+{
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+  ],
+  "_actionTable": [
+    {
+      "Key": 2,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacterGroup",
+                  "group": {
+                    "$type": "BattleModel.CharGroupWhere",
+                    "condition": {
+                      "$type": "BattleModel.AssetIdHasSubString",
+                      "subString": "h0137s"
+                    },
+                    "group": {
+                      "$type": "BattleModel.PVEAssistant"
+                    }
+                  },
+                  "operation": {
+                    "$type": "BattleModel.CastSkillSet",
+                    "resetCasterCD": false,
+                    "skillsetId": "A1"
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.BuffCondition",
+                "buff": {
+                  "$type": "BattleModel.ThisBuff"
+                },
+                "condition": {
+                  "$type": "BattleModel.IntCompareB",
+                  "left": {
+                    "$type": "BattleModel.IntFieldB",
+                    "targetField": 1
+                  },
+                  "op": 4,
+                  "right": {
+                    "$type": "BattleModel.ConstantIntB",
+                    "constant": 1
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 1,
+                    "targetField": 1,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 1
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+            ]
+          }
+        ],
+        "Conditions": [
+          {
+            "$type": "BattleModel.CurrentTurnBelongsTo",
+            "character": {
+              "$type": "BattleModel.EnemyAssignee",
+              "reference": {
+                "$type": "BattleModel.ThisBuffOwner"
+              }
+            }
+          },
+          {
+            "$type": "BattleModel.CharacterCondition",
+            "character": {
+              "$type": "BattleModel.ThisBuffOwner"
+            },
+            "condition": {
+              "$type": "BattleModel.IntCompareC",
+              "left": {
+                "$type": "BattleModel.IntFieldC",
+                "targetField": 0
+              },
+              "op": 2,
+              "right": {
+                "$type": "BattleModel.ConstantIntC",
+                "constant": 0
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "Key": 1024,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 1,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+            ]
+          }
+        ],
+        "Conditions": [
+          {
+            "$type": "BattleModel.CharacterEqual",
+            "left": {
+              "$type": "BattleModel.ThisSpecifiedTarget"
+            },
+            "right": {
+              "$type": "BattleModel.ThisBuffOwner"
+            }
+          },
+          {
+            "$type": "BattleModel.ThisSkillEffectTagContains",
+            "containsAll": 1
+          },
+          {
+            "$type": "BattleModel.Inverse",
+            "condition": {
+              "$type": "BattleModel.CharacterEqual",
+              "left": {
+                "$type": "BattleModel.ThisSkillCaster"
+              },
+              "right": {
+                "$type": "BattleModel.ThisBuffOwner"
+              }
+            }
+          },
+          {
+            "$type": "BattleModel.OrConditions",
+            "cond1": {
+              "$type": "BattleModel.BuffCondition",
+              "buff": {
+                "$type": "BattleModel.BuffOnCharater",
+                "buffId": "dexterity",
+                "character": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                }
+              },
+              "condition": {
+                "$type": "BattleModel.IntCompareB",
+                "left": {
+                  "$type": "BattleModel.IntFieldB",
+                  "targetField": 4
+                },
+                "op": 5,
+                "right": {
+                  "$type": "BattleModel.ConstantIntB",
+                  "constant": 1
+                }
+              }
+            },
+            "cond2": {
+              "$type": "BattleModel.Inverse",
+              "condition": {
+                "$type": "BattleModel.CharacterHasBuff",
+                "buffId": "dexterity",
+                "character": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 99,
+  "_orderTable": {
+  },
+  "_tag": 69
+}

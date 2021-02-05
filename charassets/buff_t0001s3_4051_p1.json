@@ -1,0 +1,112 @@
+{
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+  ],
+  "_actionTable": [
+    {
+      "Key": 1024,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.BonusEffectForSkillProperty",
+                  "isPercent": true,
+                  "property": 32,
+                  "value": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": -100000
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.ThisSkillEffectTagContains",
+                "containsAll": 32
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.BonusEffectForSkillProperty",
+                  "isPercent": true,
+                  "property": 64,
+                  "value": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": -100000
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.ThisSkillEffectTagContains",
+                "containsAll": 64
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+          {
+            "$type": "BattleModel.CharacterInside",
+            "group": {
+              "$type": "BattleModel.PVEPlayerTeam",
+              "includeDead": false,
+              "includeEmpty": false
+            },
+            "left": {
+              "$type": "BattleModel.ThisSkillCaster"
+            }
+          },
+          {
+            "$type": "BattleModel.CharacterEqual",
+            "left": {
+              "$type": "BattleModel.ThisBuffOwner"
+            },
+            "right": {
+              "$type": "BattleModel.ThisSpecifiedTarget"
+            }
+          },
+          {
+            "$type": "BattleModel.OrConditions",
+            "cond1": {
+              "$type": "BattleModel.ThisSkillEffectTagContains",
+              "containsAll": 32
+            },
+            "cond2": {
+              "$type": "BattleModel.ThisSkillEffectTagContains",
+              "containsAll": 64
+            }
+          },
+          {
+            "$type": "BattleModel.Inverse",
+            "condition": {
+              "$type": "BattleModel.CharacterEqual",
+              "left": {
+                "$type": "BattleModel.ThisSkillCaster"
+              },
+              "right": {
+                "$type": "BattleModel.ThisSpecifiedTarget"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 1,
+  "_orderTable": [
+    {
+      "Key": 1024,
+      "Value": {
+        "Order": 0
+      }
+    }
+  ],
+  "_tag": 32837
+}

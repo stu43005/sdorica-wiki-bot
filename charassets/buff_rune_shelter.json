@@ -1,0 +1,135 @@
+{
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+    "CD_increase",
+    "nerf_damage_small",
+    "weak",
+    "tearing",
+    "poison",
+    "stun",
+    "infection_maintain",
+    "bleeding_maintain",
+    "infection",
+    "frosted",
+    "burn",
+    "tearing_trigger",
+    "tearing_trigger_alert",
+    "poison_trigger"
+  ],
+  "_actionTable": [
+    {
+      "Key": 1024,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.ImmediatelySkillEffect",
+                  "SkillEffect": [
+                    {
+                      "$type": "BattleModel.ChangeCDSkillEffect",
+                      "Tag": 1028,
+                      "_keyString": "",
+                      "_value": 1
+                    },
+                    {
+                      "$type": "BattleModel.RemoveBuffSkillEffect",
+                      "Tag": 4100,
+                      "_buffID": "CD_increase",
+                      "_keyString": ""
+                    },
+                    {
+                      "$type": "BattleModel.AddBuffSkillEffect",
+                      "Tag": 132,
+                      "_buffData": [
+                        {
+                          "BuffId": "CD_increase",
+                          "Forever": false,
+                          "LevelStack": 0,
+                          "OverwriteDuration": 1,
+                          "UserDefineVariable": {
+                          }
+                        }
+                      ],
+                      "_keyString": ""
+                    }
+                  ]
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.CountOfBuffGroup",
+                  "group": {
+                    "$type": "BattleModel.BuffGroupWhere",
+                    "condition": {
+                      "$type": "BattleModel.CheckBuffBelongLabel",
+                      "BuffLabel": {
+                        "BuffIdList": [
+                          "nerf_damage_small",
+                          "weak",
+                          "tearing",
+                          "poison",
+                          "weak",
+                          "stun",
+                          "infection_maintain",
+                          "bleeding_maintain",
+                          "infection",
+                          "frosted",
+                          "burn"
+                        ],
+                        "BuffLabel": "generalNerf"
+                      }
+                    },
+                    "group": {
+                      "$type": "BattleModel.AllBuffsOnChar",
+                      "character": {
+                        "$type": "BattleModel.ThisSkillCaster"
+                      }
+                    }
+                  }
+                },
+                "op": 4,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 3
+                }
+              },
+              {
+                "$type": "BattleModel.CharacterInside",
+                "group": {
+                  "$type": "BattleModel.PVEPlayerTeam",
+                  "includeDead": false,
+                  "includeEmpty": false
+                },
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              },
+              {
+                "$type": "BattleModel.ThisSkillEffectTagContains",
+                "containsAll": 1
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 99,
+  "_orderTable": [
+    {
+      "Key": 1024,
+      "Value": {
+        "Order": 0
+      }
+    }
+  ],
+  "_tag": 65
+}

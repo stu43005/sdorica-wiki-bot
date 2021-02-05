@@ -1,0 +1,301 @@
+{
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+    "h0193s5_P11",
+    "h0193s5_P12"
+  ],
+  "_actionTable": [
+    {
+      "Key": 8,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.AssignParameterSkillEffect",
+                  "AssignValue": {
+                    "$type": "BattleModel.PlusInt",
+                    "left": {
+                      "$type": "BattleModel.TransitionResultValue",
+                      "ResultValue": {
+                        "$type": "BattleModel.TotalResultsValueOfCharacter",
+                        "CharType": "Target",
+                        "Character": {
+                          "$type": "BattleModel.ThisBuffOwner"
+                        },
+                        "Results": {
+                          "$type": "BattleModel.ThisSkillSetResult"
+                        },
+                        "ValueType": "HpDamage"
+                      }
+                    },
+                    "right": {
+                      "$type": "BattleModel.TransitionResultValue",
+                      "ResultValue": {
+                        "$type": "BattleModel.TotalResultsValueOfCharacter",
+                        "CharType": "Target",
+                        "Character": {
+                          "$type": "BattleModel.ThisBuffOwner"
+                        },
+                        "Results": {
+                          "$type": "BattleModel.ThisSkillSetResult"
+                        },
+                        "ValueType": "ArmorReduce"
+                      }
+                    }
+                  },
+                  "SkillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": {
+                      "$type": "BattleModel.OppositeTeamChars",
+                      "includeDead": false,
+                      "includeEmpty": false,
+                      "reference": {
+                        "$type": "BattleModel.ThisSkillCaster"
+                      }
+                    },
+                    "single": {
+                      "$type": "BattleModel.ThisBuffCaster"
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.HpDamageSkillEffect",
+                        "Tag": 9,
+                        "_keyString": "",
+                        "_skillModifier": {
+                          "_constant": 0,
+                          "_parameter": {
+                            "$type": "BattleModel.AssignedValue"
+                          },
+                          "_ratio": 1
+                        }
+                      }
+                    ]
+                  },
+                  "WillTriggerBuff": false
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.OperateCharacterViewActionTime",
+                    "operation": {
+                      "$type": "BattleModel.AddBuff",
+                      "buffToAdd": {
+                        "BuffId": "h0193s5_P11",
+                        "Forever": false,
+                        "LevelStack": 0,
+                        "OverwriteDuration": 1,
+                        "UserDefineVariable": {
+                        }
+                      }
+                    },
+                    "viewActionTime": {
+                      "FrameOffset": 0,
+                      "Index": "First",
+                      "TriggerTime": {
+                        "TagName": "AddBuff",
+                        "TagType": "SkillProperty"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffCaster"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.OperateCharacterViewActionTime",
+                    "operation": {
+                      "$type": "BattleModel.AddBuff",
+                      "buffToAdd": {
+                        "BuffId": "h0193s5_P12",
+                        "Forever": false,
+                        "LevelStack": 0,
+                        "OverwriteDuration": 1,
+                        "UserDefineVariable": {
+                        }
+                      }
+                    },
+                    "viewActionTime": {
+                      "FrameOffset": 5,
+                      "Index": "First",
+                      "TriggerTime": {
+                        "TagName": "AddBuff",
+                        "TagType": "SkillProperty"
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.PlusInt",
+                  "left": {
+                    "$type": "BattleModel.TransitionResultValue",
+                    "ResultValue": {
+                      "$type": "BattleModel.TotalResultsValueOfCharacter",
+                      "CharType": "Target",
+                      "Character": {
+                        "$type": "BattleModel.ThisBuffOwner"
+                      },
+                      "Results": {
+                        "$type": "BattleModel.ThisSkillSetResult"
+                      },
+                      "ValueType": "HpDamage"
+                    }
+                  },
+                  "right": {
+                    "$type": "BattleModel.TransitionResultValue",
+                    "ResultValue": {
+                      "$type": "BattleModel.TotalResultsValueOfCharacter",
+                      "CharType": "Target",
+                      "Character": {
+                        "$type": "BattleModel.ThisBuffOwner"
+                      },
+                      "Results": {
+                        "$type": "BattleModel.ThisSkillSetResult"
+                      },
+                      "ValueType": "ArmorReduce"
+                    }
+                  }
+                },
+                "op": 2,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 0
+                }
+              },
+              {
+                "$type": "BattleModel.Inverse",
+                "condition": {
+                  "$type": "BattleModel.CharacterCondition",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffCaster"
+                  },
+                  "condition": {
+                    "$type": "BattleModel.IsCharacterDead"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 1024,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.BonusEffectForSkillProperty",
+                  "isPercent": true,
+                  "property": 1,
+                  "value": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": -50
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                },
+                "right": {
+                  "$type": "BattleModel.ThisSpecifiedTarget"
+                }
+              },
+              {
+                "$type": "BattleModel.Inverse",
+                "condition": {
+                  "$type": "BattleModel.CharacterCondition",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffCaster"
+                  },
+                  "condition": {
+                    "$type": "BattleModel.IsCharacterDead"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 1048576,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.RemoveBuff",
+                    "buffId": "h0193s5_P1"
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+            ]
+          }
+        ],
+        "Conditions": [
+          {
+            "$type": "BattleModel.CharacterEqual",
+            "left": {
+              "$type": "BattleModel.DeadOrReviveTarget"
+            },
+            "right": {
+              "$type": "BattleModel.ThisBuffCaster"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 99,
+  "_orderTable": [
+    {
+      "Key": 8,
+      "Value": {
+        "Order": 0
+      }
+    },
+    {
+      "Key": 1024,
+      "Value": {
+        "Order": 0
+      }
+    }
+  ],
+  "_tag": 0
+}

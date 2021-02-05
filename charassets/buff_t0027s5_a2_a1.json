@@ -1,0 +1,144 @@
+{
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+    "bonusAttackPower",
+    "defense_up_small",
+    "dexterity",
+    "damage_absorption",
+    "ArmorToBlood",
+    "regeneration",
+    "rage",
+    "warfare",
+    "leader",
+    "dexterity_trigger",
+    "dexterity_fightback_0",
+    "dexterity_fightback_1",
+    "dexterity_fightback_2",
+    "dexterity_fightback_3",
+    "dexterity_fightback_4",
+    "b0028sx_dodge",
+    "damage_absorption_trigger",
+    "ArmorToBlood_trigger",
+    "regeneration_trigger",
+    "follower"
+  ],
+  "_actionTable": [
+    {
+      "Key": 1,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffCaster"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.CastSkillSet",
+                    "resetCasterCD": false,
+                    "skillsetId": "A1"
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.CastSkillSet",
+                    "resetCasterCD": false,
+                    "skillsetId": "S2"
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterCondition",
+                "character": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                },
+                "condition": {
+                  "$type": "BattleModel.HasAnyConditionalBuff",
+                  "buffCondition": {
+                    "$type": "BattleModel.AndConditionsB",
+                    "cond1": {
+                      "$type": "BattleModel.CheckBuffBelongLabel",
+                      "BuffLabel": {
+                        "BuffIdList": [
+                          "bonusAttackPower",
+                          "defense_up_small",
+                          "dexterity",
+                          "damage_absorption",
+                          "ArmorToBlood",
+                          "regeneration",
+                          "rage",
+                          "warfare",
+                          "leader"
+                        ],
+                        "BuffLabel": "generalBuff"
+                      }
+                    },
+                    "cond2": {
+                      "$type": "BattleModel.IntCompareB",
+                      "left": {
+                        "$type": "BattleModel.IntFieldB",
+                        "targetField": 1
+                      },
+                      "op": 0,
+                      "right": {
+                        "$type": "BattleModel.ConstantIntB",
+                        "constant": 3
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+          {
+            "$type": "BattleModel.CurrentTurnBelongsTo",
+            "character": {
+              "$type": "BattleModel.ThisBuffOwner"
+            }
+          },
+          {
+            "$type": "BattleModel.CharacterEqual",
+            "left": {
+              "$type": "BattleModel.ThisBuffOwner"
+            },
+            "right": {
+              "$type": "BattleModel.FrontOfChars",
+              "group": {
+                "$type": "BattleModel.SelfTeamChars",
+                "excludeSelf": false,
+                "includeDead": false,
+                "includeEmpty": false,
+                "reference": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "_duration": 1,
+  "_maxLevel": 99,
+  "_orderTable": [
+    {
+      "Key": 1,
+      "Value": {
+        "Order": 0
+      }
+    }
+  ],
+  "_tag": 77
+}

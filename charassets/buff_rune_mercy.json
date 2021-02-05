@@ -1,0 +1,106 @@
+{
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+    "nerf_damage_small",
+    "weak",
+    "tearing",
+    "poison",
+    "stun",
+    "infection_maintain",
+    "bleeding_maintain",
+    "infection",
+    "frosted",
+    "burn",
+    "tearing_trigger",
+    "tearing_trigger_alert",
+    "poison_trigger"
+  ],
+  "_actionTable": [
+    {
+      "Key": 1024,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.BonusEffectForSkillProperty",
+                  "isPercent": true,
+                  "property": 2,
+                  "value": {
+                    "$type": "BattleModel.MultiplyInt",
+                    "left": {
+                      "$type": "BattleModel.CountOfBuffGroup",
+                      "group": {
+                        "$type": "BattleModel.BuffGroupWhere",
+                        "condition": {
+                          "$type": "BattleModel.CheckBuffBelongLabel",
+                          "BuffLabel": {
+                            "BuffIdList": [
+                              "nerf_damage_small",
+                              "weak",
+                              "tearing",
+                              "poison",
+                              "weak",
+                              "stun",
+                              "infection_maintain",
+                              "bleeding_maintain",
+                              "infection",
+                              "frosted",
+                              "burn"
+                            ],
+                            "BuffLabel": "generalNerf"
+                          }
+                        },
+                        "group": {
+                          "$type": "BattleModel.AllBuffsOnChar",
+                          "character": {
+                            "$type": "BattleModel.ThisSpecifiedTarget"
+                          }
+                        }
+                      }
+                    },
+                    "right": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 40
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.ThisSkillEffectTagContains",
+                "containsAll": 2
+              },
+              {
+                "$type": "BattleModel.CharacterInside",
+                "group": {
+                  "$type": "BattleModel.PVEPlayerTeam",
+                  "includeDead": false,
+                  "includeEmpty": false
+                },
+                "left": {
+                  "$type": "BattleModel.ThisSpecifiedTarget"
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 99,
+  "_orderTable": [
+    {
+      "Key": 1024,
+      "Value": {
+        "Order": 0
+      }
+    }
+  ],
+  "_tag": 65
+}

@@ -1,0 +1,172 @@
+{
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+  ],
+  "_actionTable": [
+    {
+      "Key": 1,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffCaster"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.CastSkillSet",
+                    "resetCasterCD": false,
+                    "skillsetId": "A1"
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.FrontOfChars",
+                    "group": {
+                      "$type": "BattleModel.SelfTeamChars",
+                      "excludeSelf": false,
+                      "includeDead": true,
+                      "includeEmpty": true,
+                      "reference": {
+                        "$type": "BattleModel.ThisBuffOwner"
+                      }
+                    }
+                  },
+                  "operation": {
+                    "$type": "BattleModel.CastSkillSet",
+                    "resetCasterCD": false,
+                    "skillsetId": "S2"
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.Inverse",
+                "condition": {
+                  "$type": "BattleModel.CharacterCondition",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "condition": {
+                    "$type": "BattleModel.IsCharacterDead"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+          {
+            "$type": "BattleModel.CharacterCondition",
+            "character": {
+              "$type": "BattleModel.IndexOfChars",
+              "backward": false,
+              "group": {
+                "$type": "BattleModel.PVEPlayerTeam",
+                "includeDead": true,
+                "includeEmpty": false
+              },
+              "index": {
+                "$type": "BattleModel.ConstanctInt",
+                "constant": 0
+              }
+            },
+            "condition": {
+              "$type": "BattleModel.AndConditionsC",
+              "cond1": {
+                "$type": "BattleModel.IntCompareC",
+                "left": {
+                  "$type": "BattleModel.IntFieldC",
+                  "targetField": 2
+                },
+                "op": 2,
+                "right": {
+                  "$type": "BattleModel.ConstantIntC",
+                  "constant": 50
+                }
+              },
+              "cond2": {
+                "$type": "BattleModel.IntCompareC",
+                "left": {
+                  "$type": "BattleModel.IntFieldC",
+                  "targetField": 6
+                },
+                "op": 2,
+                "right": {
+                  "$type": "BattleModel.ConstantIntC",
+                  "constant": 50
+                }
+              }
+            }
+          },
+          {
+            "$type": "BattleModel.CharacterCondition",
+            "character": {
+              "$type": "BattleModel.IndexOfChars",
+              "backward": false,
+              "group": {
+                "$type": "BattleModel.PVEPlayerTeam",
+                "includeDead": true,
+                "includeEmpty": false
+              },
+              "index": {
+                "$type": "BattleModel.ConstanctInt",
+                "constant": 1
+              }
+            },
+            "condition": {
+              "$type": "BattleModel.AndConditionsC",
+              "cond1": {
+                "$type": "BattleModel.IntCompareC",
+                "left": {
+                  "$type": "BattleModel.IntFieldC",
+                  "targetField": 2
+                },
+                "op": 2,
+                "right": {
+                  "$type": "BattleModel.ConstantIntC",
+                  "constant": 50
+                }
+              },
+              "cond2": {
+                "$type": "BattleModel.IntCompareC",
+                "left": {
+                  "$type": "BattleModel.IntFieldC",
+                  "targetField": 6
+                },
+                "op": 2,
+                "right": {
+                  "$type": "BattleModel.ConstantIntC",
+                  "constant": 50
+                }
+              }
+            }
+          },
+          {
+            "$type": "BattleModel.CurrentTurnBelongsTo",
+            "character": {
+              "$type": "BattleModel.ThisBuffOwner"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 99,
+  "_orderTable": [
+    {
+      "Key": 1,
+      "Value": {
+        "Order": 0
+      }
+    }
+  ],
+  "_tag": 68
+}

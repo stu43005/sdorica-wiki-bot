@@ -1,0 +1,96 @@
+{
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+  ],
+  "_actionTable": [
+    {
+      "Key": 8,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.CastSkillSet",
+                    "resetCasterCD": false,
+                    "skillsetId": "S1"
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+            ]
+          }
+        ],
+        "Conditions": [
+          {
+            "$type": "BattleModel.Inverse",
+            "condition": {
+              "$type": "BattleModel.CharacterInside",
+              "group": {
+                "$type": "BattleModel.SelfTeamChars",
+                "excludeSelf": false,
+                "includeDead": false,
+                "includeEmpty": false,
+                "reference": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                }
+              },
+              "left": {
+                "$type": "BattleModel.ThisSkillCaster"
+              }
+            }
+          },
+          {
+            "$type": "BattleModel.ThisSkillSetIdEqual",
+            "id": "S2"
+          },
+          {
+            "$type": "BattleModel.IntCompare",
+            "left": {
+              "$type": "BattleModel.IntCharaterField",
+              "character": {
+                "$type": "BattleModel.ThisBuffOwner"
+              },
+              "targetField": 0
+            },
+            "op": 5,
+            "right": {
+              "$type": "BattleModel.ConstanctInt",
+              "constant": 0
+            }
+          },
+          {
+            "$type": "BattleModel.CharacterInside",
+            "group": {
+              "$type": "BattleModel.ThisSkillEffectTargets"
+            },
+            "left": {
+              "$type": "BattleModel.ThisBuffOwner"
+            }
+          },
+          {
+            "$type": "BattleModel.ThisSkillEffectTagContains",
+            "containsAll": 1
+          }
+        ]
+      }
+    }
+  ],
+  "_duration": 1,
+  "_maxLevel": 99,
+  "_orderTable": [
+    {
+      "Key": 8,
+      "Value": {
+        "Order": 0
+      }
+    }
+  ],
+  "_tag": 64
+}
