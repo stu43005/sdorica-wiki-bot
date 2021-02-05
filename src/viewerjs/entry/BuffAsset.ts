@@ -100,7 +100,7 @@ function buffActions(actionTable: Dictionary<BuffActiveTiming, BuffEffect>): Rec
 	return out;
 }
 
-function interpreted(name: string, data: Buff) {
+export function interpreted(name: string, data: Buff) {
 	const out: InterpretedBuffAsset = {
 		"Localization": localizationString("Buff")(name),
 		"標籤": BuffTag.toString(data._tag),

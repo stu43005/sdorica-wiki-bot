@@ -198,7 +198,6 @@ function assistantSkill(a1: AssistantSkill) {
 	if (a1.$type != "BattleModel.AssistantSkill") {
 		out.類型 = JSON.stringify(a1);
 		console.error(`Unknown assistant skill: ${a1.$type}`);
-		debugger;
 	}
 	return out;
 }
@@ -214,7 +213,7 @@ function stoneEraseSetting(setting: Dictionary<StoneEraseType, string>): Record<
 	return out;
 }
 
-function interpreted(name: string, data: BattleCharacter, level: number) {
+export function interpreted(name: string, data: BattleCharacter, level: number) {
 	const out: InterpretedBattleCharacter = {
 		"Localization": localizationCharacterNameWithDefault()(name),
 		"攻擊力": data._power,

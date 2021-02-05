@@ -13,7 +13,10 @@ import { fsSerializer } from './lib/FullSerializer/fsSerializer';
 import { localizationBuffName, localizationCharacterName } from "./localization";
 import { Logger } from './logger';
 import { fsExists, outJson, rpFile } from './out';
+import { conditionStringify } from './sdorica/BattleModel/condition/ConditionStringify';
 import { sortByCharacterModelNo } from "./utils";
+import { interpreted as battleCharacterInterpreted } from './viewerjs/entry/BattleCharacterAsset';
+import { interpreted as buffInterpreted } from './viewerjs/entry/BuffAsset';
 import { siJsonParse } from './viewerjs/utils';
 
 const doUnzip = promisify(unzip);
@@ -136,6 +139,7 @@ export async function downloadCharAssetsZip(asset: AssetDataRaw, force?: boolean
 		const serializer = new fsSerializer();
 		for (const zipEntry of Object.values(zip.files)) {
 			try {
+				const info = getCharAssetEntryInfo(zipEntry.name);
 				const content = await zipEntry.async('nodebuffer');
 				const jsonBuffer = await doUnzip(content);
 				const jsonString = jsonBuffer.toString('utf8');
@@ -143,30 +147,42 @@ export async function downloadCharAssetsZip(asset: AssetDataRaw, force?: boolean
 				let data = json;
 				try {
 					data = serializer.TryDeserialize(json);
+
+					switch (info.type) {
+						case CharAssetEntryType.BATTLECHARACTOR:
+							data.$interpreted = battleCharacterInterpreted(info.modelName, data, 0);
+							break;
+						case CharAssetEntryType.BUFF:
+							data.$interpreted = buffInterpreted(info.modelName, data);
+							break;
+						case CharAssetEntryType.CONDITION:
+							data.$interpreted = conditionStringify(data);
+							break;
+					}
 				} catch (error) {
 				}
 
-				const jsonFileName = zipEntry.name.replace(/\.[^\.]+$/, '.json');
-				const jsonFilePath = path.join(CHARASSETS_PATH, jsonFileName);
+				const jsonFilePath = path.join(CHARASSETS_PATH, info.outJsonName);
 				await outJson(jsonFilePath, data);
 
-				if (jsonFileName === 'Manifest.json') {
+				if (info.modelName === 'Manifest') {
 					try {
-						function findKeys(keys: string[], prefix: string) {
-							const arr = keys.filter(name => name.startsWith(prefix));
-							_.pull(keys, ...arr);
-							return arr.map(name => name.replace(prefix, ''));
+						function findKeys(infos: CharAssetEntryInfo[], type: CharAssetEntryType) {
+							const arr = infos.filter(info => info.type === type);
+							_.pull(infos, ...arr);
+							return arr.map(info => info.modelName);
 						}
-						const keys = Object.keys(data).map(name => name.replace(/\.[^\.]+$/, ''));
-						const battleCharacters = findKeys(keys, 'battlecharacter_');
-						const buffs = findKeys(keys, 'buff_');
+
+						const infos = Object.keys(data).map(name => getCharAssetEntryInfo(name));
+						const battleCharacters = findKeys(infos, CharAssetEntryType.BATTLECHARACTOR);
+						const buffs = findKeys(infos, CharAssetEntryType.BUFF);
 						const keysJson = {
 							BattleCharacters: battleCharacters.sort(sortByCharacterModelNo).map(k => {
 								const name = localizationCharacterName()(k);
 								return `${k}${name ? ` (${name})` : ""}`;
 							}),
 							Buffs: buffs.sort(sortByCharacterModelNo).map(k => localizationBuffName(true)(k)),
-							Others: keys.sort((a, b) => a.localeCompare(b)),
+							Others: infos.map(info => info.fileName).sort((a, b) => a.localeCompare(b)),
 						};
 						await outJson(keysFilePath, keysJson);
 
@@ -190,4 +206,38 @@ export async function downloadCharAssetsZip(asset: AssetDataRaw, force?: boolean
 		return false;
 	}
 	return true;
+}
+
+enum CharAssetEntryType {
+	UNKNOWN = 'unknown',
+	BATTLECHARACTOR = 'battlecharacter_',
+	BUFF = 'buff_',
+	CONDITION = 'condition_',
+}
+
+interface CharAssetEntryInfo {
+	fileName: string;
+	modelName: string;
+	type: CharAssetEntryType;
+	outJsonName: string;
+}
+
+function getCharAssetEntryInfo(filename: string): CharAssetEntryInfo {
+	const name = filename.replace(/\.[^\.]+$/, '');
+
+	let type = CharAssetEntryType.UNKNOWN;
+	if (name.startsWith(CharAssetEntryType.BATTLECHARACTOR)) {
+		type = CharAssetEntryType.BATTLECHARACTOR;
+	} else if (name.startsWith(CharAssetEntryType.BUFF)) {
+		type = CharAssetEntryType.BUFF;
+	} else if (name.startsWith(CharAssetEntryType.CONDITION)) {
+		type = CharAssetEntryType.CONDITION;
+	}
+
+	return {
+		fileName: name,
+		modelName: name.replace(type, ''),
+		type,
+		outJsonName: `${name}.json`,
+	};
 }
