@@ -18,6 +18,7 @@ const TABLE_KEYS: Record<string, string[]> = {
 		"giveType3", "giveLinkId3", "giveAmount3",
 		"giveType4", "giveLinkId4", "giveAmount4",
 	],
+	AvgFlagUI: ["id", "flagId", "type", "effectValue", "titleKey", "localizationKey", "iconKey", "order", "fractionAnimation"],
 	BuildInAssetBundle: ["type", "effectValue"],
 	Chapters: [
 		"id", "enable", "isLock",

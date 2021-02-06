@@ -660,6 +660,11 @@ export const gamedataTeanslateSettings: GamedataRef[] = [
 			return item?.name ?? '';
 		},
 	},
+	{
+		table: "AvgFlagUI",
+		column: "titleKey,localizationKey",
+		func: localizationString("FlagUI"),
+	},
 ];
 
 export function doGamedataTranslation() {
