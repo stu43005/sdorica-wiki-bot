@@ -92,9 +92,9 @@ export class ExploreItem extends ItemBase {
 		return params;
 	}
 
-	getWikiTreasureList() {
+	getWikiTreasureList(heading = '== 開啟寶箱獲得道具 ==') {
 		if (this.category == ExploreItemsCategory.Treasure) {
-			return "== 開啟寶箱獲得道具 ==" + treasureList(+this.effectValue);
+			return heading + treasureList(+this.effectValue);
 		}
 		return '';
 	}
