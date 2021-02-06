@@ -25,7 +25,7 @@ const logger = new Logger('charassets-downloader');
 const metadataFilePath = path.join(CHARASSETS_PATH, 'metadata.json');
 const keysFilePath = path.join(CHARASSETS_PATH, 'charAssets-keys.json');
 
-export async function charAssetsDownloader(force?: boolean) {
+export async function charAssetsDownloader(force = false) {
 	const charAssets = ImperiumData.fromCharAssets();
 	const bsonAsset = charAssets.getAsset("charAssets.bson");
 	const zipAsset = charAssets.getAsset("CharAssets.zip");
@@ -59,6 +59,7 @@ async function checkNeedDownload(asset: AssetDataRaw, force?: boolean) {
 		if (await fsExists(metadataFilePath)) {
 			const meta = inputJsonSync<AssetDataRaw>(metadataFilePath);
 			if (meta.I === asset.I) {
+				logger.log(`charAssets not changed. skip`);
 				return false;
 			}
 		}
@@ -71,7 +72,7 @@ export async function downloadCharAssetsBson(asset: AssetDataRaw, force?: boolea
 	const bsonFilePath = path.join(CHARASSETS_PATH, 'charAssets.bson');
 	const jsonFilePath = path.join(CHARASSETS_PATH, 'charAssets.json');
 
-	if (!checkNeedDownload(asset, force)) {
+	if (!await checkNeedDownload(asset, force)) {
 		return false;
 	}
 
@@ -120,7 +121,7 @@ export async function downloadCharAssetsBson(asset: AssetDataRaw, force?: boolea
 export async function downloadCharAssetsZip(asset: AssetDataRaw, force?: boolean) {
 	const zipFilePath = path.join(CHARASSETS_PATH, 'CharAssets.zip');
 
-	if (!checkNeedDownload(asset, force)) {
+	if (!await checkNeedDownload(asset, force)) {
 		return false;
 	}
 
