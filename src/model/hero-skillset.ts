@@ -43,6 +43,13 @@ export class HeroSkillSet implements IHeroSkillSet {
 		return HeroSkillSet.find(s => s.model == skillSet);
 	}
 
+	public static getList(list: string | string[]): (HeroSkillSet | string)[] {
+		if (typeof list === 'string') {
+			list = list.split(';');
+		}
+		return list.map(str => this.get(str) ?? str);
+	}
+
 	private static find(predicate: (value: HeroSkillSet, index: number) => boolean): HeroSkillSet | undefined {
 		const item = HeroSkillsTable.find((row, index) => {
 			const item2 = HeroSkillSet.get(row);

@@ -17,6 +17,7 @@ import wikiCharVoice from "./wiki/CharVoice";
 import wikiExploreBuilding from "./wiki/ExploreBuilding";
 import wikiExploreComposite from "./wiki/ExploreComposite";
 import wikiExploreItems from "./wiki/ExploreItems";
+import wikiFreeHeroes from "./wiki/FreeHeroes";
 import wikiGashapons, { wikiGashaponsJson } from "./wiki/Gashapons";
 import wikiHeroes, { wikiHeroesJson } from "./wiki/Heroes";
 import wikiHomelandBuilding from "./wiki/HomelandBuilding";
@@ -105,6 +106,7 @@ export async function wikiMain() {
 	await outWiki(bot, 'ExploreBuilding', wikiExploreBuilding());
 	await outWiki(bot, 'ExploreComposite', wikiExploreComposite());
 	await outWiki(bot, 'ExploreItems', wikiExploreItems());
+	await outWiki(bot, 'FreeHeroes', wikiFreeHeroes());
 	// await outWiki(bot, 'Gashapons', wikiGashapons());
 	// await outWikiJson(bot, 'Gashapons', wikiGashaponsJson());
 	await outWiki(bot, 'Heroes', wikiHeroes());
