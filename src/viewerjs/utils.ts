@@ -4,10 +4,13 @@ import * as idb from "idb";
 import JSZip from "jszip";
 import { ImperiumData } from "../imperium-data";
 import { fsSerializer } from "../lib/FullSerializer/fsSerializer";
+import { Logger } from "../logger";
 import { objectEach } from "../utils";
 import { SdoricaInspectorApi } from './si-api';
 import { SiContainer } from "./types/containers";
 import { ViewerJSHelper } from "./viewerjs-helper";
+
+const logger = new Logger('viewerjs/utils');
 
 export function siJsonParse(text: string) {
 	return JSON.parse(text.replace(/\:(-?)\.(\d)/g, ":$10.$2"));
@@ -56,7 +59,7 @@ export async function containerSearchAuto(helper: ViewerJSHelper, path: string) 
 						});
 					}
 					catch (error) {
-						console.error(error);
+						logger.error(error);
 						debugger;
 						queue2.forEach((entry) => {
 							entry.reject(error);
@@ -75,7 +78,7 @@ export async function containerSearch(helper: ViewerJSHelper, path: string) {
 	const searchResult = await api.containerSearch(path);
 	const resultMatch = searchResult.find(r => r.name.toLowerCase() == path.toLowerCase());
 	if (!resultMatch) {
-		console.error(`Not found: ${path}`);
+		logger.error(`Not found: ${path}`);
 		debugger;
 		throw `Not found: ${path}`;
 	}
@@ -89,7 +92,7 @@ export async function containerSearch(helper: ViewerJSHelper, path: string) {
 		}
 	});
 	if (!pathId) {
-		console.error(`No pathId: ${path}`);
+		logger.error(`No pathId: ${path}`);
 		debugger;
 		throw `No pathId: ${path}`;
 	}
@@ -112,7 +115,7 @@ export async function containerSearchData(helper: ViewerJSHelper, path: string) 
 	const searchResult = await api.containerSearch(path);
 	const resultMatch = searchResult.find(r => r.name.toLowerCase() == path.toLowerCase());
 	if (!resultMatch) {
-		console.error(`Not found: ${path}`);
+		logger.error(`Not found: ${path}`);
 		debugger;
 		throw `Not found: ${path}`;
 	}
@@ -126,7 +129,7 @@ export async function containerSearchData(helper: ViewerJSHelper, path: string) 
 		}
 	});
 	if (!pathId) {
-		console.error(`No pathId: ${path}`);
+		logger.error(`No pathId: ${path}`);
 		debugger;
 		throw `No pathId: ${path}`;
 	}
@@ -156,7 +159,7 @@ export async function containerSearchMulti(helper: ViewerJSHelper, ql: string[])
 		const path = ql[index];
 		const resultMatch = curr.find(r => r.name.toLowerCase() == path.toLowerCase());
 		if (!resultMatch) {
-			console.error(`Not found: ${path}`);
+			logger.error(`Not found: ${path}`);
 			debugger;
 			throw `Not found: ${path}`;
 		}
@@ -179,7 +182,7 @@ export async function containerSearchMulti(helper: ViewerJSHelper, ql: string[])
 			}
 		});
 		if (!qlpathid[index]) {
-			console.error(`No pathId: ${path}`);
+			logger.error(`No pathId: ${path}`);
 			debugger;
 			throw `No pathId: ${path}`;
 		}
@@ -220,7 +223,7 @@ export async function getDataFromCache<T>(key: string, fallback: () => Promise<T
 	const db = await getDb();
 	let result: T = await db.get('cache', key);
 	if (result) {
-		console.log('hit cache:', key);
+		logger.log('hit cache:', key);
 	} else {
 		result = await fallback();
 		await db.put('cache', result, key);

@@ -9,6 +9,5 @@ export default async function (helper: ViewerJSHelper, data: LevelEventAsset) {
 	await ImperiumData.fromLocalization().loadData();
 
 	data.$interpreted = tarnsEvent(data.Model);
-	console.log("$interpreted", data.$interpreted);
 	return data;
 }

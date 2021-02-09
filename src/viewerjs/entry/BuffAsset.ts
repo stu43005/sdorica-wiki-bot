@@ -1,6 +1,6 @@
 import JSZip from "jszip";
-import { CharAssetsRaw } from "../../data-raw-type";
 import { localizationBuffName, localizationString } from "../../localization";
+import { Logger } from "../../logger";
 import { Buff } from "../../sdorica/BattleModel/Buff";
 import { BuffActiveTiming } from "../../sdorica/BattleModel/BuffActiveTiming";
 import { BuffEffect } from "../../sdorica/BattleModel/BuffEffect";
@@ -10,7 +10,9 @@ import { BuffAsset, InterpretedBuffAsset, InterpretedBuffEffect, InterpretedBuff
 import { Dictionary } from "../../sdorica/Dictionary";
 import { sortByCharacterModelNo } from "../../utils";
 import { ViewerJSHelper } from "../viewerjs-helper";
-import { conditionStringify, fsSerializer, getCharAsset, getCharAssets, ImperiumData, operationStringify, siJsonParse } from "./$ViewerInit";
+import { conditionStringify, getCharAsset, getCharAssets, ImperiumData, operationStringify } from "./$ViewerInit";
+
+const logger = new Logger('BuffAsset');
 
 export default async function (helper: ViewerJSHelper, data: BuffAsset) {
 	// load imperium data
@@ -20,13 +22,13 @@ export default async function (helper: ViewerJSHelper, data: BuffAsset) {
 	if (!data.Model) {
 		const loadFromCharAssets = prompt("loadFromCharAssets");
 		const prefix = "buff_";
-		const filename = `${prefix}${loadFromCharAssets}`;
+		const filename = `${prefix}${loadFromCharAssets?.toLocaleLowerCase()}`;
 
 		let zip: JSZip;
 		try {
 			zip = await getCharAssets(helper);
 		} catch (error) {
-			console.log(`CharAssets.zip fetch error.`);
+			logger.log(`CharAssets.zip fetch error.`);
 			debugger;
 			return {
 				result: `CharAssets.zip fetch error.`,
@@ -43,7 +45,7 @@ export default async function (helper: ViewerJSHelper, data: BuffAsset) {
 					Model: buff,
 				};
 			} catch (error) {
-				console.log(`${loadFromCharAssets} parse error`);
+				logger.log(`${loadFromCharAssets} parse error`);
 				debugger;
 				return {
 					result: `${loadFromCharAssets} parse error`,
@@ -52,13 +54,14 @@ export default async function (helper: ViewerJSHelper, data: BuffAsset) {
 			}
 		}
 		else {
-			console.log(`${loadFromCharAssets ?? ""} not found.`);
+			logger.log(`${loadFromCharAssets ?? ""} not found.`);
 			debugger;
 			return {
 				result: `${loadFromCharAssets ?? ""} not found.`,
 				"可用的buff清單": Object.keys(zip.files)
 					.filter(k => k.startsWith(prefix))
 					.map(k => k.replace(prefix, ''))
+					.map(k => k.replace(/\.[^\.]+$/, ''))
 					.sort(sortByCharacterModelNo)
 					.map(k => localizationBuffName(true)(k)),
 			};
@@ -66,7 +69,7 @@ export default async function (helper: ViewerJSHelper, data: BuffAsset) {
 	}
 
 	if (!data.Model) {
-		console.error(`No Model.`);
+		logger.error(`No Model.`);
 		debugger;
 		return {
 			result: `No Model.`

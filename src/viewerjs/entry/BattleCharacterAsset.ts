@@ -1,5 +1,6 @@
 import JSZip from 'jszip';
 import { localizationCharacterName, localizationCharacterNameWithDefault } from '../../localization';
+import { Logger } from '../../logger';
 import { BattleCharacterAsset } from '../../sdorica/BattleCharacterAsset';
 import { AssistantActiveCastSkill } from '../../sdorica/BattleModel/AssistantActiveCastSkill';
 import { AssistantActiveCastSkillWithPassiveBuff } from '../../sdorica/BattleModel/AssistantActiveCastSkillWithPassiveBuff';
@@ -21,6 +22,8 @@ import { InterpretedAssistantActiveCastSkill, InterpretedAssistantActiveCastSkil
 import { ViewerJSHelper } from '../viewerjs-helper';
 import { addBuff, conditionStringify, getCharAsset, getCharAssets, ImperiumData, singleTargetStringify, skillUnitStringify, targetResolve } from './$ViewerInit';
 
+const logger = new Logger('BattleCharacterAsset');
+
 export default async function (helper: ViewerJSHelper, data: BattleCharacterAsset) {
 	// load imperium data
 	await ImperiumData.fromGamedata().loadData();
@@ -29,13 +32,13 @@ export default async function (helper: ViewerJSHelper, data: BattleCharacterAsse
 	if (!data.character) {
 		const loadFromCharAssets = prompt("loadFromCharAssets");
 		const prefix = "battlecharacter_";
-		const filename = `${prefix}${loadFromCharAssets}`;
+		const filename = `${prefix}${loadFromCharAssets?.toLocaleLowerCase()}`;
 
 		let zip: JSZip;
 		try {
 			zip = await getCharAssets(helper);
 		} catch (error) {
-			console.log(`CharAssets.zip fetch error.`);
+			logger.log(`CharAssets.zip fetch error.`);
 			debugger;
 			return {
 				result: `CharAssets.zip fetch error.`,
@@ -52,7 +55,7 @@ export default async function (helper: ViewerJSHelper, data: BattleCharacterAsse
 					character: character,
 				};
 			} catch (error) {
-				console.log(`${loadFromCharAssets} parse error`);
+				logger.log(`${loadFromCharAssets} parse error`);
 				debugger;
 				return {
 					result: `${loadFromCharAssets} parse error`,
@@ -61,13 +64,14 @@ export default async function (helper: ViewerJSHelper, data: BattleCharacterAsse
 			}
 		}
 		else {
-			console.log(`${loadFromCharAssets ?? ""} not found.`);
+			logger.log(`${loadFromCharAssets ?? ""} not found.`);
 			debugger;
 			return {
 				result: `${loadFromCharAssets ?? ""} not found.`,
 				"可用的char清單": Object.keys(zip.files)
 					.filter(k => k.startsWith(prefix))
 					.map(k => k.replace(prefix, ''))
+					.map(k => k.replace(/\.[^\.]+$/, ''))
 					.sort(sortByCharacterModelNo)
 					.map(k => {
 						const name = localizationCharacterName()(k);
@@ -78,7 +82,7 @@ export default async function (helper: ViewerJSHelper, data: BattleCharacterAsse
 	}
 
 	if (!data.character) {
-		console.log(`No character.`);
+		logger.log(`No character.`);
 		debugger;
 		return {
 			result: `No character.`
@@ -105,7 +109,7 @@ function enemyAi(ai: EnemyAI): string {
 		const seqAI = ai as SequenceEnemyAI;
 		return seqAI.OrderList.join(' -> ');
 	}
-	console.error(`Unknown enemy AI: ${ai.$type}`);
+	logger.error(`Unknown enemy AI: ${ai.$type}`);
 	debugger;
 	return JSON.stringify(ai);
 }
@@ -199,7 +203,7 @@ function assistantSkill(a1: AssistantSkill) {
 	};
 	if (a1.$type != "BattleModel.AssistantSkill") {
 		out.類型 = JSON.stringify(a1);
-		console.error(`Unknown assistant skill: ${a1.$type}`);
+		logger.error(`Unknown assistant skill: ${a1.$type}`);
 	}
 	return out;
 }
