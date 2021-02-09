@@ -1,7 +1,9 @@
-import bson from "bson";
+import { decode as base64ToArrayBuffer, encode as arrayBufferToBase64 } from "base64-arraybuffer";
+import { unzip } from "gzip-js";
 import * as idb from "idb";
-import { CharAssetsRaw } from "../data-raw-type";
+import JSZip from "jszip";
 import { ImperiumData } from "../imperium-data";
+import { fsSerializer } from "../lib/FullSerializer/fsSerializer";
 import { objectEach } from "../utils";
 import { SdoricaInspectorApi } from './si-api';
 import { SiContainer } from "./types/containers";
@@ -214,9 +216,16 @@ export function getDb() {
 	});
 }
 
-export async function getDataFromCache(key: string) {
+export async function getDataFromCache<T>(key: string, fallback: () => Promise<T>): Promise<T> {
 	const db = await getDb();
-	return await db.get('cache', key);
+	let result: T = await db.get('cache', key);
+	if (result) {
+		console.log('hit cache:', key);
+	} else {
+		result = await fallback();
+		await db.put('cache', result, key);
+	}
+	return result;
 }
 
 export async function addDataToCache(key: string, value: any) {
@@ -224,38 +233,34 @@ export async function addDataToCache(key: string, value: any) {
 	await db.put('cache', value, key);
 }
 
-function _base64ToArrayBuffer(base64: string) {
-	const binary_string = window.atob(base64);
-	const len = binary_string.length;
-	const bytes = new Uint8Array(len);
-	for (let i = 0; i < len; i++) {
-		bytes[i] = binary_string.charCodeAt(i);
-	}
-	return bytes;
-}
-
 export async function downloadFileCors(url: string) {
 	const corsurl = `https://cors-anywhere.herokuapp.com/${url}`;
 	const res = await window.fetch(corsurl);
-	const text = await res.text();
+	const text = await res.arrayBuffer();
 	return text;
 }
 
-export async function getCharAssets(helper: ViewerJSHelper): Promise<CharAssetsRaw> {
+export async function getCharAssets(helper: ViewerJSHelper): Promise<JSZip> {
 	const charAssets = ImperiumData.fromCharAssets();
 	await charAssets.loadData();
-	const asset = charAssets.getAsset("charAssets.bson");
 
-	const json = await getDataFromCache(asset.L);
-	if (json) {
-		console.log('hit cache:', asset.L);
-		return json;
-	} else {
-		helper.toastMsg("正在下載 charAssets.bson，請稍等大約1分鐘。。。");
-		const b64content = await downloadFileCors(asset.L);
-		const buf = _base64ToArrayBuffer(b64content);
-		const data = bson.deserialize(buf as Buffer) as CharAssetsRaw;
-		await addDataToCache(asset.L, data);
-		return data;
-	}
+	const asset = charAssets.getAsset("CharAssets.zip");
+	const base64 = await getDataFromCache(asset.L, async () => {
+		helper.toastMsg("正在下載 CharAssets.zip，請稍等大約1分鐘。。。");
+		const buffer = await downloadFileCors(asset.L);
+		return arrayBufferToBase64(buffer);
+	});
+	const buffer = base64ToArrayBuffer(base64);
+	const zip = await JSZip.loadAsync(buffer);
+	return zip;
+}
+
+export async function getCharAsset(zipEntry: JSZip.JSZipObject) {
+	const content = await zipEntry.async('uint8array');
+	const jsonBuffer = new Uint8Array(unzip(content));
+	const jsonString = new TextDecoder("utf-8").decode(jsonBuffer);
+	const json = siJsonParse(jsonString);
+	const serializer = new fsSerializer();
+	const deserialized = serializer.TryDeserialize(json);
+	return deserialized;
 }

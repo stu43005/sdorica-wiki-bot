@@ -1,5 +1,4 @@
-import { CharAssetsRaw } from '../../data-raw-type';
-import { fsSerializer } from '../../lib/FullSerializer/fsSerializer';
+import JSZip from 'jszip';
 import { localizationCharacterName, localizationCharacterNameWithDefault } from '../../localization';
 import { BattleCharacterAsset } from '../../sdorica/BattleCharacterAsset';
 import { AssistantActiveCastSkill } from '../../sdorica/BattleModel/AssistantActiveCastSkill';
@@ -20,7 +19,7 @@ import { objectEach, sortByCharacterModelNo } from '../../utils';
 import { toLevel } from '../../wiki-hero';
 import { InterpretedAssistantActiveCastSkill, InterpretedAssistantActiveCastSkillWithPassiveBuff, InterpretedAssistantPassiveBuffSkill, InterpretedAssistantSkill, InterpretedBattleCharacter, InterpretedSkillSet } from '../interpreted-battle-character';
 import { ViewerJSHelper } from '../viewerjs-helper';
-import { addBuff, conditionStringify, getCharAssets, ImperiumData, siJsonParse, singleTargetStringify, skillUnitStringify, targetResolve } from './$ViewerInit';
+import { addBuff, conditionStringify, getCharAsset, getCharAssets, ImperiumData, singleTargetStringify, skillUnitStringify, targetResolve } from './$ViewerInit';
 
 export default async function (helper: ViewerJSHelper, data: BattleCharacterAsset) {
 	// load imperium data
@@ -29,29 +28,28 @@ export default async function (helper: ViewerJSHelper, data: BattleCharacterAsse
 
 	if (!data.character) {
 		const loadFromCharAssets = prompt("loadFromCharAssets");
+		const prefix = "battlecharacter_";
+		const filename = `${prefix}${loadFromCharAssets}`;
 
-		let charAssets: CharAssetsRaw;
+		let zip: JSZip;
 		try {
-			charAssets = await getCharAssets(helper);
+			zip = await getCharAssets(helper);
 		} catch (error) {
-			console.log(`charAssets.json fetch error.`);
+			console.log(`CharAssets.zip fetch error.`);
 			debugger;
 			return {
-				result: `charAssets.json fetch error.`,
+				result: `CharAssets.zip fetch error.`,
 				error: String(error),
 			};
 		}
 
-		if (loadFromCharAssets && charAssets.BattleCharacters[loadFromCharAssets]) {
+		const zipEntry = zip.files[`${filename}.bson`];
+		if (loadFromCharAssets && zipEntry) {
 			try {
-				const row = charAssets.BattleCharacters[loadFromCharAssets];
-				const json = siJsonParse(row);
-
-				const serializer = new fsSerializer();
-				const deserialized = serializer.TryDeserialize(json) as BattleCharacter;
+				const character: BattleCharacter = await getCharAsset(zipEntry);
 				data = {
 					m_Name: loadFromCharAssets,
-					character: deserialized,
+					character: character,
 				};
 			} catch (error) {
 				console.log(`${loadFromCharAssets} parse error`);
@@ -67,10 +65,14 @@ export default async function (helper: ViewerJSHelper, data: BattleCharacterAsse
 			debugger;
 			return {
 				result: `${loadFromCharAssets ?? ""} not found.`,
-				"可用的char清單": Object.keys(charAssets.BattleCharacters).sort(sortByCharacterModelNo).map(k => {
-					const name = localizationCharacterName()(k);
-					return `${k}${name ? ` (${name})` : ""}`;
-				}),
+				"可用的char清單": Object.keys(zip.files)
+					.filter(k => k.startsWith(prefix))
+					.map(k => k.replace(prefix, ''))
+					.sort(sortByCharacterModelNo)
+					.map(k => {
+						const name = localizationCharacterName()(k);
+						return `${k}${name ? ` (${name})` : ""}`;
+					}),
 			};
 		}
 	}
