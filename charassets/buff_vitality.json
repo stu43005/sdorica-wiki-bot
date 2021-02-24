@@ -8,7 +8,8 @@
             "效果": [
               "對本角色賦予1回合1層h0016s5_Sweet",
               "對本角色移除狀態vitality(元氣)",
-              "對本角色觸發S3"
+              "對本角色觸發S3",
+              "對本角色賦予1回合1層vitality_locked"
             ],
             "條件": [
               "本角色 的AssetId包含＂h0016s5＂字串"
@@ -18,7 +19,8 @@
             "效果": [
               "對本角色賦予1回合1層h0016s5_Ganbade",
               "對本角色移除狀態vitality(元氣)",
-              "對本角色觸發S3"
+              "對本角色觸發S3",
+              "對本角色賦予1回合1層vitality_locked"
             ],
             "條件": [
               "本角色 的AssetId不包含＂h0016s5＂字串"
@@ -34,7 +36,8 @@
           }
         ],
         "條件": [
-          "本狀態 符合條件 層數 >= 3"
+          "本狀態 符合條件 層數 >= 3",
+          "本角色沒有vitality_locked狀態"
         ]
       }
     },
@@ -45,6 +48,7 @@
   "$type": "BattleModel.Buff",
   "ReferenceBuffKeys": [
     "h0016s5_Sweet",
+    "vitality_locked",
     "h0016s5_Ganbade",
     "h0016s5_egg_trigger",
     "h0016s5_egg"
@@ -97,6 +101,25 @@
                     "$type": "BattleModel.CastSkillSet",
                     "resetCasterCD": false,
                     "skillsetId": "S3"
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "vitality_locked",
+                      "Forever": false,
+                      "LevelStack": 1,
+                      "OverwriteDuration": 1,
+                      "UserDefineVariable": {
+                      }
+                    }
                   }
                 }
               }
@@ -157,6 +180,25 @@
                     "$type": "BattleModel.CastSkillSet",
                     "resetCasterCD": false,
                     "skillsetId": "S3"
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "vitality_locked",
+                      "Forever": false,
+                      "LevelStack": 1,
+                      "OverwriteDuration": 1,
+                      "UserDefineVariable": {
+                      }
+                    }
                   }
                 }
               }
@@ -238,6 +280,16 @@
               "right": {
                 "$type": "BattleModel.ConstantIntB",
                 "constant": 3
+              }
+            }
+          },
+          {
+            "$type": "BattleModel.Inverse",
+            "condition": {
+              "$type": "BattleModel.CharacterHasBuff",
+              "buffId": "vitality_locked",
+              "character": {
+                "$type": "BattleModel.ThisBuffOwner"
               }
             }
           }

@@ -16,6 +16,22 @@
           "當前事件的狀態 是＂h0016s5_fireCover(支援)＂"
         ]
       },
+      "OnEachSkillSetStart": {
+        "效果": [
+          {
+            "效果": [
+              "對本狀態的持續時間增加6"
+            ],
+            "條件": [
+              "施展的技能組是S2",
+              "施術者是本角色",
+              "本角色 的AssetId包含＂h0016s5_r2＂字串"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
       "OnEachSkillTargetEffect": {
         "效果": [
           {
@@ -137,6 +153,59 @@
               "subString": "h0016s5_fireCover"
             }
           }
+        ]
+      }
+    },
+    {
+      "Key": 4,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 1,
+                    "targetField": 0,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 6
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.ThisSkillSetIdEqual",
+                "id": "S2"
+              },
+              {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                },
+                "right": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                }
+              },
+              {
+                "$type": "BattleModel.CharacterCondition",
+                "character": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                },
+                "condition": {
+                  "$type": "BattleModel.AssetIdHasSubString",
+                  "subString": "h0016s5_r2"
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
         ]
       }
     }

@@ -1,6 +1,14 @@
 {
   "$interpreted": {
-    "Localization": "h0179s5",
+    "Localization": "艾斯",
+    "參謀技能": {
+      "_maxCastStack": 1,
+      "_startCastStack": 0,
+      "動作": "賦予永久1層",
+      "技能CD": 1,
+      "起始CD": 0,
+      "類型": "被動參謀"
+    },
     "復活魂芯數": 0,
     "技能": {
       "Arrive1": [
@@ -81,7 +89,8 @@
     "血量": 300,
     "血量等級調整後": 283,
     "被動Buff": [
-      "賦予永久h0179s5_P1"
+      "賦予永久h0179s5_P1(本角色被隊友賦予目前沒有的正面狀態時，延長該狀態2回合。)",
+      "賦予永久h0179s5_FSM2"
     ],
     "起始CD": 0,
     "預設CD": 0
@@ -89,6 +98,7 @@
   "$type": "BattleModel.FriendCharacter",
   "ReferenceBuffKeys": [
     "h0179s5_P1",
+    "h0179s5_FSM2",
     "defense_up_small",
     "dexterity",
     "bonusAttackPower",
@@ -108,6 +118,7 @@
     "infection",
     "frosted",
     "burn",
+    "h0179s5_FSM",
     "dexterity_trigger",
     "dexterity_fightback_0",
     "dexterity_fightback_1",
@@ -258,7 +269,53 @@
     "h0179s5_skill_tr_i1_oi1"
   ],
   "_armorCapacity": 300,
-  "_assistantSkill": null,
+  "_assistantSkill": {
+    "$type": "BattleModel.AssistantPassiveBuffSkill",
+    "BuffData": {
+      "BuffId": "",
+      "Forever": false,
+      "LevelStack": 1,
+      "OverwriteDuration": -1,
+      "UserDefineVariable": {
+      }
+    },
+    "PassiveBuffDatas": [
+      {
+        "BuffData": {
+          "BuffId": "h0179s5_P1",
+          "Forever": true,
+          "LevelStack": 0,
+          "OverwriteDuration": -1,
+          "UserDefineVariable": {
+          }
+        },
+        "TargetSelector": {
+          "IsMultiple": true,
+          "multi": {
+            "$type": "BattleModel.CharGroupWhere",
+            "condition": {
+              "$type": "BattleModel.StoneTypeIs",
+              "type": 2
+            },
+            "group": {
+              "$type": "BattleModel.PVEPlayerTeam",
+              "includeDead": true,
+              "includeEmpty": false
+            }
+          }
+        }
+      }
+    ],
+    "TargetSelector": {
+      "IsMultiple": false,
+      "single": null
+    },
+    "_maxCastStack": 1,
+    "_skillCD": 1,
+    "_skillIcon": 32,
+    "_startCD": 0,
+    "_startCastStack": 0
+  },
   "_bloodCapacity": 300,
   "_characterAI": {
     "$type": "BattleModel.SequenceEnemyAI",
@@ -275,6 +332,14 @@
   "_passiveBuff": [
     {
       "BuffId": "h0179s5_P1",
+      "Forever": true,
+      "LevelStack": 0,
+      "OverwriteDuration": -1,
+      "UserDefineVariable": {
+      }
+    },
+    {
+      "BuffId": "h0179s5_FSM2",
       "Forever": true,
       "LevelStack": 0,
       "OverwriteDuration": -1,

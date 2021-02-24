@@ -2,6 +2,21 @@
   "$interpreted": {
     "Localization": "",
     "動作": {
+      "OnBuffAdd": {
+        "效果": [
+          {
+            "效果": [
+              "對本角色觸發S3",
+              "對本角色移除狀態playerImmediateS3"
+            ],
+            "條件": [
+            ]
+          }
+        ],
+        "條件": [
+          "當前事件的狀態是本狀態"
+        ]
+      },
       "OnEachSkillSetEnd": {
         "效果": [
           {
@@ -62,6 +77,55 @@
           }
         ],
         "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 16384,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.CastSkillSet",
+                    "resetCasterCD": false,
+                    "skillsetId": "S3"
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.RemoveBuff",
+                    "buffId": "playerImmediateS3"
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+            ]
+          }
+        ],
+        "Conditions": [
+          {
+            "$type": "BattleModel.BuffEqual",
+            "left": {
+              "$type": "BattleModel.SpecifiedBuff"
+            },
+            "right": {
+              "$type": "BattleModel.ThisBuff"
+            }
+          }
         ]
       }
     }

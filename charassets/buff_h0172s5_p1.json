@@ -86,6 +86,19 @@
               "本角色擁有h0172s5_fullmoon(夜楓．望。本角色對血量最大值50%以下敵方攻擊時，技能效果增加50%。)狀態",
               "本角色是施術者"
             ]
+          },
+          {
+            "效果": [
+              "技能的(Attack)屬性效果增加(50)%"
+            ],
+            "條件": [
+              "本角色 的AssetId包含＂h0172s5_r2＂字串",
+              "指定目標是本角色的對方的一員",
+              "指定目標的HP% <= 80",
+              "指定目標的HP% > 50",
+              "本角色擁有h0172s5_fullmoon(夜楓．望。本角色對血量最大值50%以下敵方攻擊時，技能效果增加50%。)狀態",
+              "本角色是施術者"
+            ]
           }
         ],
         "條件": [
@@ -315,6 +328,93 @@
                   "targetField": 2
                 },
                 "op": 3,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 50
+                }
+              },
+              {
+                "$type": "BattleModel.CharacterHasBuff",
+                "buffId": "h0172s5_fullmoon",
+                "character": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                }
+              },
+              {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                },
+                "right": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.BonusEffectForSkillProperty",
+                  "isPercent": true,
+                  "property": 1,
+                  "value": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 50
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterCondition",
+                "character": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                },
+                "condition": {
+                  "$type": "BattleModel.AssetIdHasSubString",
+                  "subString": "h0172s5_r2"
+                }
+              },
+              {
+                "$type": "BattleModel.CharacterInside",
+                "group": {
+                  "$type": "BattleModel.OppositeTeamChars",
+                  "includeDead": false,
+                  "includeEmpty": false,
+                  "reference": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  }
+                },
+                "left": {
+                  "$type": "BattleModel.ThisSpecifiedTarget"
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntCharaterField",
+                  "character": {
+                    "$type": "BattleModel.ThisSpecifiedTarget"
+                  },
+                  "targetField": 2
+                },
+                "op": 3,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 80
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntCharaterField",
+                  "character": {
+                    "$type": "BattleModel.ThisSpecifiedTarget"
+                  },
+                  "targetField": 2
+                },
+                "op": 2,
                 "right": {
                   "$type": "BattleModel.ConstanctInt",
                   "constant": 50
