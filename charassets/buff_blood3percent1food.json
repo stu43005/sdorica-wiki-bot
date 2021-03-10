@@ -1,0 +1,142 @@
+{
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "OnTurnEnd": {
+        "效果": [
+          {
+            "效果": [
+              "立即施展技能：對玩家首位飽食度+(floor((玩家中的失去的HP%)的總和 * -0.3333) * 1)"
+            ],
+            "條件": [
+              "敵人中的所有角色皆 符合條件 HP == 0",
+              "探索Flag\"exploreEquip_where\"的數值 == 14"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 99,
+    "標籤": "Hidden | NotRemoveAfterBattle | NotRemoveWhenDie"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+  ],
+  "_actionTable": [
+    {
+      "Key": 2,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": {
+                      "$type": "BattleModel.PVEPlayerTeam",
+                      "includeDead": false,
+                      "includeEmpty": false
+                    },
+                    "single": {
+                      "$type": "BattleModel.FrontOfChars",
+                      "group": {
+                        "$type": "BattleModel.PVEPlayerTeam",
+                        "includeDead": false,
+                        "includeEmpty": false
+                      }
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.ChangeHungerSkillEffect",
+                        "Tag": 16384,
+                        "_keyString": "",
+                        "_value": {
+                          "$type": "BattleModel.MultiplyInt",
+                          "left": {
+                            "$type": "BattleModel.MultiplyFloat",
+                            "left": {
+                              "$type": "BattleModel.SumOfInts",
+                              "group": {
+                                "$type": "BattleModel.IntsOnCharGroup",
+                                "group": {
+                                  "$type": "BattleModel.PVEPlayerTeam",
+                                  "includeDead": true,
+                                  "includeEmpty": false
+                                },
+                                "targetField": 3
+                              }
+                            },
+                            "ratio": -0.3333
+                          },
+                          "right": {
+                            "$type": "BattleModel.ConstanctInt",
+                            "constant": 1
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": false
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharGroupCondition",
+                "condition": {
+                  "$type": "BattleModel.IntCompareC",
+                  "left": {
+                    "$type": "BattleModel.IntFieldC",
+                    "targetField": 0
+                  },
+                  "op": 0,
+                  "right": {
+                    "$type": "BattleModel.ConstantIntC",
+                    "constant": 0
+                  }
+                },
+                "everybody": true,
+                "group": {
+                  "$type": "BattleModel.PVEEnemyTeam",
+                  "includeDead": false,
+                  "includeEmpty": false
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.ThisTeamExploreFlagValue",
+                  "ExploreFlagId": "exploreEquip_where"
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 14
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 99,
+  "_orderTable": [
+    {
+      "Key": 131072,
+      "Value": {
+        "Order": 0
+      }
+    }
+  ],
+  "_tag": 7
+}

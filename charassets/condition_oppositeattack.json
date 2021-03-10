@@ -1,0 +1,34 @@
+{
+  "$interpreted": "(施術者是本角色的對方的一員) 且 ((指定目標是本角色) 且 (施展的技能效果中包含(Attack)屬性))",
+  "$type": "BattleModel.AndConditions",
+  "cond1": {
+    "$type": "BattleModel.CharacterInside",
+    "group": {
+      "$type": "BattleModel.OppositeTeamChars",
+      "includeDead": true,
+      "includeEmpty": false,
+      "reference": {
+        "$type": "BattleModel.ThisBuffOwner"
+      }
+    },
+    "left": {
+      "$type": "BattleModel.ThisSkillCaster"
+    }
+  },
+  "cond2": {
+    "$type": "BattleModel.AndConditions",
+    "cond1": {
+      "$type": "BattleModel.CharacterEqual",
+      "left": {
+        "$type": "BattleModel.ThisSpecifiedTarget"
+      },
+      "right": {
+        "$type": "BattleModel.ThisBuffOwner"
+      }
+    },
+    "cond2": {
+      "$type": "BattleModel.ThisSkillEffectTagContains",
+      "containsAll": 1
+    }
+  }
+}

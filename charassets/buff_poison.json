@@ -6,10 +6,10 @@
         "效果": [
           {
             "效果": [
-              "對本狀態覆蓋標籤為(NotRemoveAfterBattle | TriggerOncePerTurn | StackIndependent | InfinityTrigger)"
+              "對本狀態覆蓋標籤為(NotRemoveAfterBattle | StackIndependent | InfinityTrigger)"
             ],
             "條件": [
-              "本角色擁有long_term(長效)狀態"
+              "當前事件的狀態 是＂long_term(長效)＂"
             ]
           }
         ],
@@ -20,7 +20,7 @@
         "效果": [
           {
             "效果": [
-              "對本狀態覆蓋標籤為(NotRemoveAfterBattle | TriggerOncePerTurn | StackIndependent | InfinityTrigger)"
+              "對本狀態覆蓋標籤為(NotRemoveAfterBattle | StackIndependent | InfinityTrigger)"
             ],
             "條件": [
               "本角色擁有long_term(長效)狀態"
@@ -34,7 +34,7 @@
         "效果": [
           {
             "效果": [
-              "對本角色移除狀態poison(中毒)"
+              "對本角色{\"operation\":{\"buffId\":\"poison\",\"$type\":\"BattleModel.RemoveBuff\"},\"viewActionTime\":{\"TriggerTime\":{\"TagName\":\"Heal\",\"TagType\":\"SkillProperty\"},\"Index\":\"First\",\"FrameOffset\":-5},\"$type\":\"BattleModel.OperateCharacterViewActionTime\"}"
             ],
             "條件": [
               "本角色是此技能效果目標的一員",
@@ -49,7 +49,7 @@
         "效果": [
           {
             "效果": [
-              "對本狀態覆蓋標籤為(NotRemoveAfterBattle | TriggerOncePerTurn | StackIndependent | InfinityTrigger)"
+              "對本狀態覆蓋標籤為(NotRemoveAfterBattle | StackIndependent | InfinityTrigger)"
             ],
             "條件": [
               "本角色擁有long_term(長效)狀態"
@@ -78,7 +78,7 @@
     },
     "持續時間": 1,
     "最高層數": 3,
-    "標籤": "TriggerOncePerTurn | StackIndependent | InfinityTrigger"
+    "標籤": "StackIndependent | InfinityTrigger"
   },
   "$type": "BattleModel.Buff",
   "ReferenceBuffKeys": [
@@ -210,8 +210,19 @@
                     "$type": "BattleModel.ThisBuffOwner"
                   },
                   "operation": {
-                    "$type": "BattleModel.RemoveBuff",
-                    "buffId": "poison"
+                    "$type": "BattleModel.OperateCharacterViewActionTime",
+                    "operation": {
+                      "$type": "BattleModel.RemoveBuff",
+                      "buffId": "poison"
+                    },
+                    "viewActionTime": {
+                      "FrameOffset": -5,
+                      "Index": "First",
+                      "TriggerTime": {
+                        "TagName": "Heal",
+                        "TagType": "SkillProperty"
+                      }
+                    }
                   }
                 }
               }
@@ -248,17 +259,20 @@
                   "$type": "BattleModel.OperateThisBuff",
                   "operation": {
                     "$type": "BattleModel.ReplaceBuffTag",
-                    "newTag": 33802
+                    "newTag": 33794
                   }
                 }
               }
             ],
             "Conditions": [
               {
-                "$type": "BattleModel.CharacterHasBuff",
-                "buffId": "long_term",
-                "character": {
-                  "$type": "BattleModel.ThisBuffOwner"
+                "$type": "BattleModel.BuffCondition",
+                "buff": {
+                  "$type": "BattleModel.SpecifiedBuff"
+                },
+                "condition": {
+                  "$type": "BattleModel.CheckBuffMatchBuffId",
+                  "subString": "long_term"
                 }
               }
             ]
@@ -279,7 +293,7 @@
                   "$type": "BattleModel.OperateThisBuff",
                   "operation": {
                     "$type": "BattleModel.ReplaceBuffTag",
-                    "newTag": 33802
+                    "newTag": 33794
                   }
                 }
               }
@@ -310,7 +324,7 @@
                   "$type": "BattleModel.OperateThisBuff",
                   "operation": {
                     "$type": "BattleModel.ReplaceBuffTag",
-                    "newTag": 33802
+                    "newTag": 33794
                   }
                 }
               }
@@ -365,5 +379,5 @@
       }
     }
   ],
-  "_tag": 33800
+  "_tag": 33792
 }

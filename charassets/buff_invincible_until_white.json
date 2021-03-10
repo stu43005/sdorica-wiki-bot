@@ -1,0 +1,129 @@
+{
+  "$interpreted": {
+    "Localization": "本角色不會受到任何技能傷害，被白位攻擊後解除此狀態。",
+    "動作": {
+      "OnEachSkillTargetEffect": {
+        "效果": [
+          {
+            "效果": [
+              "技能的(Attack)屬性效果增加(-100000000)"
+            ],
+            "條件": [
+            ]
+          },
+          {
+            "效果": [
+              "對本角色移除狀態invincible_until_white(本角色不會受到任何技能傷害，被白位攻擊後解除此狀態。)"
+            ],
+            "條件": [
+              "施術者 是白位"
+            ]
+          }
+        ],
+        "條件": [
+          "(施術者是本角色的對方的一員) 且 ((指定目標是本角色) 且 (施展的技能效果中包含(Attack)屬性))"
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 99,
+    "標籤": "InfinityTrigger"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+  ],
+  "_actionTable": [
+    {
+      "Key": 1024,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.BonusEffectForSkillProperty",
+                  "isPercent": false,
+                  "property": 1,
+                  "value": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": -100000000
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.RemoveBuff",
+                    "buffId": "invincible_until_white"
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterCondition",
+                "character": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                },
+                "condition": {
+                  "$type": "BattleModel.StoneTypeIs",
+                  "type": 4
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+          {
+            "$type": "BattleModel.AndConditions",
+            "cond1": {
+              "$type": "BattleModel.CharacterInside",
+              "group": {
+                "$type": "BattleModel.OppositeTeamChars",
+                "includeDead": true,
+                "includeEmpty": false,
+                "reference": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                }
+              },
+              "left": {
+                "$type": "BattleModel.ThisSkillCaster"
+              }
+            },
+            "cond2": {
+              "$type": "BattleModel.AndConditions",
+              "cond1": {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.ThisSpecifiedTarget"
+                },
+                "right": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                }
+              },
+              "cond2": {
+                "$type": "BattleModel.ThisSkillEffectTagContains",
+                "containsAll": 1
+              }
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 99,
+  "_orderTable": {
+  },
+  "_tag": 32768
+}

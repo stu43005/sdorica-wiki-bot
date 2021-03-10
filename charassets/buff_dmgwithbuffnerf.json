@@ -1,21 +1,20 @@
 {
   "$interpreted": {
-    "Localization": "我方角色身上同時有通用正、負面狀態，才能造成傷害。",
+    "Localization": "若我方角色身上未同時有正、負面狀態時，攻擊技能效果降低90%。",
     "動作": {
-      "OnEachSkillTargetEffect": {
+      "OnTurnBegin": {
         "效果": [
           {
             "效果": [
-              "技能的(Attack)屬性效果增加(-1000)%"
+              "對{\"$type\":\"BattleModel.PVEField\"}首位賦予永久dmgwithbuffnerf_1",
+              "對本狀態的變數一改為1"
             ],
             "條件": [
+              "本狀態的變數一 == 0"
             ]
           }
         ],
         "條件": [
-          "施術者是玩家的一員",
-          "指定目標是敵人的一員",
-          "相反((施術者 擁有任何一個 有在generalBuff[強化, 減傷, 靈巧, 轉盾, 盾轉, 再生, 怒氣, 戰意, 領袖]列表內 的狀態) 且 (施術者 擁有任何一個 有在generalNerf[弱化, 易傷, 撕裂, 中毒, 易傷, 暈眩, 汙染, 出血, 汙染, 寒冷, 燃燒]列表內 的狀態))"
         ]
       }
     },
@@ -25,6 +24,7 @@
   },
   "$type": "BattleModel.Buff",
   "ReferenceBuffKeys": [
+    "dmgwithbuffnerf_1",
     "bonusAttackPower",
     "defense_up_small",
     "dexterity",
@@ -61,110 +61,69 @@
   ],
   "_actionTable": [
     {
-      "Key": 1024,
+      "Key": 1,
       "Value": {
         "Actions": [
           {
             "Actions": [
               {
                 "TargetField": {
-                  "$type": "BattleModel.BonusEffectForSkillProperty",
-                  "isPercent": true,
-                  "property": 1,
-                  "value": {
-                    "$type": "BattleModel.ConstanctInt",
-                    "constant": -1000
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.FrontOfChars",
+                    "group": {
+                      "$type": "BattleModel.PVEField"
+                    }
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "dmgwithbuffnerf_1",
+                      "Forever": true,
+                      "LevelStack": 0,
+                      "OverwriteDuration": -1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 1
+                    }
                   }
                 }
               }
             ],
             "Conditions": [
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.ThisBuff"
+                  },
+                  "targetField": 4
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 0
+                }
+              }
             ]
           }
         ],
         "Conditions": [
-          {
-            "$type": "BattleModel.CharacterInside",
-            "group": {
-              "$type": "BattleModel.PVEPlayerTeam",
-              "includeDead": true,
-              "includeEmpty": false
-            },
-            "left": {
-              "$type": "BattleModel.ThisSkillCaster"
-            }
-          },
-          {
-            "$type": "BattleModel.CharacterInside",
-            "group": {
-              "$type": "BattleModel.PVEEnemyTeam",
-              "includeDead": false,
-              "includeEmpty": false
-            },
-            "left": {
-              "$type": "BattleModel.ThisSpecifiedTarget"
-            }
-          },
-          {
-            "$type": "BattleModel.Inverse",
-            "condition": {
-              "$type": "BattleModel.AndConditions",
-              "cond1": {
-                "$type": "BattleModel.CharacterCondition",
-                "character": {
-                  "$type": "BattleModel.ThisSkillCaster"
-                },
-                "condition": {
-                  "$type": "BattleModel.HasAnyConditionalBuff",
-                  "buffCondition": {
-                    "$type": "BattleModel.CheckBuffBelongLabel",
-                    "BuffLabel": {
-                      "BuffIdList": [
-                        "bonusAttackPower",
-                        "defense_up_small",
-                        "dexterity",
-                        "damage_absorption",
-                        "ArmorToBlood",
-                        "regeneration",
-                        "rage",
-                        "warfare",
-                        "leader"
-                      ],
-                      "BuffLabel": "generalBuff"
-                    }
-                  }
-                }
-              },
-              "cond2": {
-                "$type": "BattleModel.CharacterCondition",
-                "character": {
-                  "$type": "BattleModel.ThisSkillCaster"
-                },
-                "condition": {
-                  "$type": "BattleModel.HasAnyConditionalBuff",
-                  "buffCondition": {
-                    "$type": "BattleModel.CheckBuffBelongLabel",
-                    "BuffLabel": {
-                      "BuffIdList": [
-                        "nerf_damage_small",
-                        "weak",
-                        "tearing",
-                        "poison",
-                        "weak",
-                        "stun",
-                        "infection_maintain",
-                        "bleeding_maintain",
-                        "infection",
-                        "frosted",
-                        "burn"
-                      ],
-                      "BuffLabel": "generalNerf"
-                    }
-                  }
-                }
-              }
-            }
-          }
         ]
       }
     }

@@ -1,0 +1,374 @@
+{
+  "$interpreted": {
+    "Localization": "永劫回歸：每回合減少1層；層數歸零時，回復雙方隊伍血量、重整操作區並移除所有正負面狀態。",
+    "動作": {
+      "OnTurnBegin": {
+        "效果": [
+          {
+            "效果": [
+              "對本狀態的變數一改為本狀態的層數"
+            ],
+            "條件": [
+              "本狀態的變數一 == 0"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnTurnEnd": {
+        "效果": [
+          {
+            "效果": [
+              "對本狀態的層數增加-1"
+            ],
+            "條件": [
+            ]
+          },
+          {
+            "效果": [
+              "對本狀態的層數改為本狀態的變數一",
+              "立即施展技能：對敵人及玩家中符合(已經死亡)的角色全體復活(體力:1%;疊盾:0%)",
+              "立即施展技能：對敵人及玩家全體破甲(1 x1000%)、治療(指定目標的最大HP x9)、移除在ex_generalBuffNerf[強化, 弱化, 減傷, 易傷, 靈巧, 撕裂, 中毒, 轉盾, 盾轉, 再生, 暈眩, 怒氣, 戰意, 領袖, 汙染, 出血, 汙染, 延命, 寒冷, 燃燒]列表的Buff",
+              "立即施展技能：對本角色將99個魂芯消除"
+            ],
+            "條件": [
+              "本狀態的層數 == 0"
+            ]
+          }
+        ],
+        "條件": [
+          "目前回合輪到本角色"
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 99,
+    "標籤": "Forever"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+    "bonusAttackPower",
+    "nerf_damage_small",
+    "defense_up_small",
+    "weak",
+    "dexterity",
+    "tearing",
+    "poison",
+    "damage_absorption",
+    "ArmorToBlood",
+    "regeneration",
+    "stun",
+    "rage",
+    "warfare",
+    "leader",
+    "infection_maintain",
+    "bleeding_maintain",
+    "infection",
+    "undead2",
+    "frosted",
+    "burn",
+    "dexterity_trigger",
+    "dexterity_fightback_0",
+    "dexterity_fightback_1",
+    "dexterity_fightback_2",
+    "dexterity_fightback_3",
+    "dexterity_fightback_4",
+    "b0028sx_dodge",
+    "tearing_trigger",
+    "tearing_trigger_alert",
+    "poison_trigger",
+    "damage_absorption_trigger",
+    "ArmorToBlood_trigger",
+    "regeneration_trigger",
+    "follower",
+    "FSM_Undead_Trigger"
+  ],
+  "_actionTable": [
+    {
+      "Key": 1,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.ThisBuffLevel"
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.ThisBuff"
+                  },
+                  "targetField": 4
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 0
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 2,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 1,
+                    "targetField": 1,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": -1
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 1,
+                    "value": {
+                      "$type": "BattleModel.IntBuffField",
+                      "buff": {
+                        "$type": "BattleModel.ThisBuff"
+                      },
+                      "targetField": 4
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": true,
+                    "multi": {
+                      "$type": "BattleModel.CharGroupWhere",
+                      "condition": {
+                        "$type": "BattleModel.IsCharacterDead"
+                      },
+                      "group": {
+                        "$type": "BattleModel.UnionCharGroup",
+                        "group1": {
+                          "$type": "BattleModel.PVEEnemyTeam",
+                          "includeDead": true,
+                          "includeEmpty": false
+                        },
+                        "group2": {
+                          "$type": "BattleModel.PVEPlayerTeam",
+                          "includeDead": true,
+                          "includeEmpty": false
+                        }
+                      }
+                    },
+                    "single": null,
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.ReviveSkillEffect",
+                        "RecoverArmorInPercentage": true,
+                        "RecoverBloodInPercentage": true,
+                        "ReviveTargetArmor": 0,
+                        "ReviveTargetBlood": 1,
+                        "Tag": 4,
+                        "_keyString": ""
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": false
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": true,
+                    "multi": {
+                      "$type": "BattleModel.UnionCharGroup",
+                      "group1": {
+                        "$type": "BattleModel.PVEEnemyTeam",
+                        "includeDead": false,
+                        "includeEmpty": false
+                      },
+                      "group2": {
+                        "$type": "BattleModel.PVEPlayerTeam",
+                        "includeDead": false,
+                        "includeEmpty": false
+                      }
+                    },
+                    "single": null,
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.AmrReduceRatioSkillEffect",
+                        "Tag": 2052,
+                        "_keyString": "",
+                        "_skillModifier": {
+                          "_constant": 0,
+                          "_parameter": {
+                            "$type": "BattleModel.ConstanctInt",
+                            "constant": 1
+                          },
+                          "_ratio": 10
+                        }
+                      },
+                      {
+                        "$type": "BattleModel.HpHealSkillEffect",
+                        "Tag": 34,
+                        "_keyString": "",
+                        "_skillModifier": {
+                          "_constant": 0,
+                          "_parameter": {
+                            "$type": "BattleModel.IntCharaterField",
+                            "character": {
+                              "$type": "BattleModel.ThisSpecifiedTarget"
+                            },
+                            "targetField": 1
+                          },
+                          "_ratio": 10
+                        }
+                      },
+                      {
+                        "$type": "BattleModel.RemoveBuffFromGroupedBuffIdSkillEffect",
+                        "BuffGroupIds": {
+                          "$type": "BattleModel.BuffIdFromLabelList",
+                          "BuffLabel": {
+                            "BuffIdList": [
+                              "bonusAttackPower",
+                              "nerf_damage_small",
+                              "defense_up_small",
+                              "weak",
+                              "dexterity",
+                              "tearing",
+                              "poison",
+                              "damage_absorption",
+                              "ArmorToBlood",
+                              "regeneration",
+                              "stun",
+                              "rage",
+                              "warfare",
+                              "leader",
+                              "infection_maintain",
+                              "bleeding_maintain",
+                              "infection",
+                              "undead2",
+                              "frosted",
+                              "burn"
+                            ],
+                            "BuffLabel": "ex_generalBuffNerf"
+                          }
+                        },
+                        "RandomRemoveCount": 0,
+                        "RemoveAllBuff": true,
+                        "Tag": 4100,
+                        "_keyString": ""
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": false
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": null,
+                    "single": {
+                      "$type": "BattleModel.ThisBuffOwner"
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.StoneActionSkillEffect",
+                        "Tag": 516,
+                        "_keyString": "",
+                        "_stoneAction": {
+                          "BuffFilter": "Normal",
+                          "BuffId": "",
+                          "BuffLabel": null,
+                          "EffectFilter": "Normal",
+                          "StonePositionList": [
+                          ],
+                          "UsePositionSettings": false,
+                          "changeTo": "Erase",
+                          "filter": "IsAnyColor",
+                          "order": "LeftToRight",
+                          "targetStoneCount": 99
+                        }
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": false
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.ThisBuffLevel"
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 0
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+          {
+            "$type": "BattleModel.CurrentTurnBelongsTo",
+            "character": {
+              "$type": "BattleModel.ThisBuffOwner"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 99,
+  "_orderTable": {
+  },
+  "_tag": 64
+}

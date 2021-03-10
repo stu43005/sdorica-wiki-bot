@@ -6,12 +6,29 @@
         "效果": [
           {
             "效果": [
-              "對賦予者觸發A1",
-              "對本角色{\"value\":{\"constant\":2,\"$type\":\"BattleModel.ConstanctInt\"},\"$type\":\"BattleModel.ChangeCharacterReviveCount\"}"
+              "對賦予者觸發A1_r2_g"
             ],
             "條件": [
               "賦予者 的AssetId包含＂h0154s5_r2＂字串",
-              "死亡或復活的角色是本角色"
+              "死亡或復活的角色 是金位"
+            ]
+          },
+          {
+            "效果": [
+              "對賦予者觸發A1_r2_b"
+            ],
+            "條件": [
+              "賦予者 的AssetId包含＂h0154s5_r2＂字串",
+              "死亡或復活的角色 是黑位"
+            ]
+          },
+          {
+            "效果": [
+              "對賦予者觸發A1_r2_w"
+            ],
+            "條件": [
+              "賦予者 的AssetId包含＂h0154s5_r2＂字串",
+              "死亡或復活的角色 是白位"
             ]
           }
         ],
@@ -172,22 +189,7 @@
                   "operation": {
                     "$type": "BattleModel.CastSkillSet",
                     "resetCasterCD": false,
-                    "skillsetId": "A1"
-                  }
-                }
-              },
-              {
-                "TargetField": {
-                  "$type": "BattleModel.OperateCharacter",
-                  "character": {
-                    "$type": "BattleModel.ThisBuffOwner"
-                  },
-                  "operation": {
-                    "$type": "BattleModel.ChangeCharacterReviveCount",
-                    "value": {
-                      "$type": "BattleModel.ConstanctInt",
-                      "constant": 2
-                    }
+                    "skillsetId": "A1_r2_g"
                   }
                 }
               }
@@ -204,12 +206,91 @@
                 }
               },
               {
-                "$type": "BattleModel.CharacterEqual",
-                "left": {
+                "$type": "BattleModel.CharacterCondition",
+                "character": {
                   "$type": "BattleModel.DeadOrReviveTarget"
                 },
-                "right": {
-                  "$type": "BattleModel.ThisBuffOwner"
+                "condition": {
+                  "$type": "BattleModel.StoneTypeIs",
+                  "type": 1
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffCaster"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.CastSkillSet",
+                    "resetCasterCD": false,
+                    "skillsetId": "A1_r2_b"
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterCondition",
+                "character": {
+                  "$type": "BattleModel.ThisBuffCaster"
+                },
+                "condition": {
+                  "$type": "BattleModel.AssetIdHasSubString",
+                  "subString": "h0154s5_r2"
+                }
+              },
+              {
+                "$type": "BattleModel.CharacterCondition",
+                "character": {
+                  "$type": "BattleModel.DeadOrReviveTarget"
+                },
+                "condition": {
+                  "$type": "BattleModel.StoneTypeIs",
+                  "type": 2
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffCaster"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.CastSkillSet",
+                    "resetCasterCD": false,
+                    "skillsetId": "A1_r2_w"
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterCondition",
+                "character": {
+                  "$type": "BattleModel.ThisBuffCaster"
+                },
+                "condition": {
+                  "$type": "BattleModel.AssetIdHasSubString",
+                  "subString": "h0154s5_r2"
+                }
+              },
+              {
+                "$type": "BattleModel.CharacterCondition",
+                "character": {
+                  "$type": "BattleModel.DeadOrReviveTarget"
+                },
+                "condition": {
+                  "$type": "BattleModel.StoneTypeIs",
+                  "type": 4
                 }
               }
             ]
