@@ -6,7 +6,7 @@
         "效果": [
           {
             "效果": [
-              "對賦予者觸發A1_r2_g"
+              "對本狀態的變數一改為1"
             ],
             "條件": [
               "賦予者 的AssetId包含＂h0154s5_r2＂字串",
@@ -16,7 +16,7 @@
           },
           {
             "效果": [
-              "對賦予者觸發A1_r2_b"
+              "對本狀態的變數一改為2"
             ],
             "條件": [
               "賦予者 的AssetId包含＂h0154s5_r2＂字串",
@@ -26,7 +26,7 @@
           },
           {
             "效果": [
-              "對賦予者觸發A1_r2_w"
+              "對本狀態的變數一改為3"
             ],
             "條件": [
               "賦予者 的AssetId包含＂h0154s5_r2＂字串",
@@ -50,6 +50,45 @@
             "條件": [
               "本角色是死亡或復活的角色",
               "本角色 是金位"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnEachSkillSetEnd": {
+        "效果": [
+          {
+            "效果": [
+              "對賦予者觸發A1_r2_g",
+              "對本狀態的變數一改為0"
+            ],
+            "條件": [
+              "{\"Condition\":{\"left\":{\"group\":{\"includeDead\":false,\"includeEmpty\":false,\"$type\":\"BattleModel.PVEPlayerTeam\"},\"$type\":\"BattleModel.CountOfCharGroup\"},\"op\":2,\"right\":{\"constant\":0,\"$type\":\"BattleModel.ConstanctInt\"},\"$type\":\"BattleModel.IntCompare\"},\"LogString\":\"G_AliveCount_Over0\",\"$type\":\"BattleModel.DebugLogCondition\"}",
+              "本狀態的變數一 == 1",
+              "玩家的角色數量 > 0"
+            ]
+          },
+          {
+            "效果": [
+              "對賦予者觸發A1_r2_b",
+              "對本狀態的變數一改為0"
+            ],
+            "條件": [
+              "{\"Condition\":{\"left\":{\"group\":{\"includeDead\":false,\"includeEmpty\":false,\"$type\":\"BattleModel.PVEPlayerTeam\"},\"$type\":\"BattleModel.CountOfCharGroup\"},\"op\":2,\"right\":{\"constant\":0,\"$type\":\"BattleModel.ConstanctInt\"},\"$type\":\"BattleModel.IntCompare\"},\"LogString\":\"B_AliveCount_Over0\",\"$type\":\"BattleModel.DebugLogCondition\"}",
+              "本狀態的變數一 == 2",
+              "玩家的角色數量 > 0"
+            ]
+          },
+          {
+            "效果": [
+              "對賦予者觸發A1_r2_w",
+              "對本狀態的變數一改為0"
+            ],
+            "條件": [
+              "{\"Condition\":{\"left\":{\"group\":{\"includeDead\":false,\"includeEmpty\":false,\"$type\":\"BattleModel.PVEPlayerTeam\"},\"$type\":\"BattleModel.CountOfCharGroup\"},\"op\":2,\"right\":{\"constant\":0,\"$type\":\"BattleModel.ConstanctInt\"},\"$type\":\"BattleModel.IntCompare\"},\"LogString\":\"W_AliveCount_Over0\",\"$type\":\"BattleModel.DebugLogCondition\"}",
+              "本狀態的變數一 == 3",
+              "玩家的角色數量 > 0"
             ]
           }
         ],
@@ -196,14 +235,16 @@
             "Actions": [
               {
                 "TargetField": {
-                  "$type": "BattleModel.OperateCharacter",
-                  "character": {
-                    "$type": "BattleModel.ThisBuffCaster"
-                  },
+                  "$type": "BattleModel.OperateThisBuff",
                   "operation": {
-                    "$type": "BattleModel.CastSkillSet",
-                    "resetCasterCD": false,
-                    "skillsetId": "A1_r2_g"
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 1
+                    }
                   }
                 }
               }
@@ -244,14 +285,16 @@
             "Actions": [
               {
                 "TargetField": {
-                  "$type": "BattleModel.OperateCharacter",
-                  "character": {
-                    "$type": "BattleModel.ThisBuffCaster"
-                  },
+                  "$type": "BattleModel.OperateThisBuff",
                   "operation": {
-                    "$type": "BattleModel.CastSkillSet",
-                    "resetCasterCD": false,
-                    "skillsetId": "A1_r2_b"
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 2
+                    }
                   }
                 }
               }
@@ -292,14 +335,16 @@
             "Actions": [
               {
                 "TargetField": {
-                  "$type": "BattleModel.OperateCharacter",
-                  "character": {
-                    "$type": "BattleModel.ThisBuffCaster"
-                  },
+                  "$type": "BattleModel.OperateThisBuff",
                   "operation": {
-                    "$type": "BattleModel.CastSkillSet",
-                    "resetCasterCD": false,
-                    "skillsetId": "A1_r2_w"
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 3
+                    }
                   }
                 }
               }
@@ -332,6 +377,270 @@
                 },
                 "right": {
                   "$type": "BattleModel.DeadOrReviveTarget"
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 8,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffCaster"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.CastSkillSet",
+                    "resetCasterCD": false,
+                    "skillsetId": "A1_r2_g"
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.DebugLogCondition",
+                "Condition": {
+                  "$type": "BattleModel.IntCompare",
+                  "left": {
+                    "$type": "BattleModel.CountOfCharGroup",
+                    "group": {
+                      "$type": "BattleModel.PVEPlayerTeam",
+                      "includeDead": false,
+                      "includeEmpty": false
+                    }
+                  },
+                  "op": 2,
+                  "right": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 0
+                  }
+                },
+                "LogString": "G_AliveCount_Over0"
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.ThisBuff"
+                  },
+                  "targetField": 4
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 1
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.CountOfCharGroup",
+                  "group": {
+                    "$type": "BattleModel.PVEPlayerTeam",
+                    "includeDead": false,
+                    "includeEmpty": false
+                  }
+                },
+                "op": 2,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 0
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffCaster"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.CastSkillSet",
+                    "resetCasterCD": false,
+                    "skillsetId": "A1_r2_b"
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.DebugLogCondition",
+                "Condition": {
+                  "$type": "BattleModel.IntCompare",
+                  "left": {
+                    "$type": "BattleModel.CountOfCharGroup",
+                    "group": {
+                      "$type": "BattleModel.PVEPlayerTeam",
+                      "includeDead": false,
+                      "includeEmpty": false
+                    }
+                  },
+                  "op": 2,
+                  "right": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 0
+                  }
+                },
+                "LogString": "B_AliveCount_Over0"
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.ThisBuff"
+                  },
+                  "targetField": 4
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 2
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.CountOfCharGroup",
+                  "group": {
+                    "$type": "BattleModel.PVEPlayerTeam",
+                    "includeDead": false,
+                    "includeEmpty": false
+                  }
+                },
+                "op": 2,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 0
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffCaster"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.CastSkillSet",
+                    "resetCasterCD": false,
+                    "skillsetId": "A1_r2_w"
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.DebugLogCondition",
+                "Condition": {
+                  "$type": "BattleModel.IntCompare",
+                  "left": {
+                    "$type": "BattleModel.CountOfCharGroup",
+                    "group": {
+                      "$type": "BattleModel.PVEPlayerTeam",
+                      "includeDead": false,
+                      "includeEmpty": false
+                    }
+                  },
+                  "op": 2,
+                  "right": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 0
+                  }
+                },
+                "LogString": "W_AliveCount_Over0"
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.ThisBuff"
+                  },
+                  "targetField": 4
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 3
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.CountOfCharGroup",
+                  "group": {
+                    "$type": "BattleModel.PVEPlayerTeam",
+                    "includeDead": false,
+                    "includeEmpty": false
+                  }
+                },
+                "op": 2,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 0
                 }
               }
             ]
