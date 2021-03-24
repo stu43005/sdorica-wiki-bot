@@ -33,7 +33,7 @@
         "對施術者{\"Tag\":0,\"_keyString\":\"\",\"$type\":\"BattleModel.EmptyBuffSkillEffect\"}"
       ],
       "S1_trigger": [
-        "對施術者的友方指定對象賦予永久playerImmediateS1"
+        "對施術者的友方指定對象賦予永久h0186s5_S1_trigger"
       ],
       "S2": [
         "對施術者的隊伍全體治療((攻擊力 * 在指定目標的h0186s5_money(【金錢】)狀態的層數) x0.45)",
@@ -42,14 +42,15 @@
         "對玩家中符合(是金位)的角色全體{\"Tag\":0,\"_keyString\":\"4\",\"$type\":\"BattleModel.EmptyBuffSkillEffect\"}"
       ],
       "S2_trigger": [
-        "對施術者的隊伍全體賦予永久1層playerImmediateS1"
+        "對施術者的隊伍全體賦予永久1層h0186s5_S1_trigger"
       ],
       "S3": [
         "對敵人全體破甲((攻擊力 * 在施術者的h0186s5_money(【金錢】)狀態的層數) x0.375)",
-        "對施術者移除狀態h0186s5_money(【金錢】)"
+        "對施術者移除狀態h0186s5_money(【金錢】)、移除狀態h0186s5_money_FSM",
+        "對施術者{\"Tag\":0,\"_keyString\":\"\",\"$type\":\"BattleModel.EmptyBuffSkillEffect\"}"
       ],
       "S3_nomoney": [
-        "對施術者賦予永久6層h0186s5_money(【金錢】)"
+        "對施術者賦予永久6層h0186s5_money(【金錢】)、賦予永久6層h0186s5_money_FSM、將4個魂芯轉為白色魂芯"
       ],
       "S4": [
         "對施術者{\"Tag\":0,\"_keyString\":\"1\",\"$type\":\"BattleModel.EmptyBuffSkillEffect\"}"
@@ -262,11 +263,12 @@
     "h0186s5_P3",
     "h0186s5_A1",
     "bonusAttackPower",
-    "playerImmediateS1",
+    "h0186s5_S1_trigger",
     "defense_up_small",
     "dexterity",
     "damage_absorption",
     "h0186s5_money",
+    "h0186s5_money_FSM",
     "h0186s5_P2",
     "h0186s5_A2",
     "dexterity_trigger",
@@ -360,6 +362,8 @@
     "h0186s5_s03_i01_HitDa01",
     "h0186s5_s03_i01_BGline01",
     "h0186s5_Tr_I1_ol1_Boom04",
+    "h0186s4_FSM_Merchandise01",
+    "h0186s4_FSM_MerchandiseMain01",
     "h3470c3_cabinet_Tr_I1_OI1_spine",
     "h3470c3_Run1_Tr_spine",
     "h3470c3_Tr_I1_OI1_Push_spine",
@@ -775,7 +779,7 @@
               "Tag": 132,
               "_buffData": [
                 {
-                  "BuffId": "playerImmediateS1",
+                  "BuffId": "h0186s5_S1_trigger",
                   "Forever": true,
                   "LevelStack": 0,
                   "OverwriteDuration": -1,
@@ -944,7 +948,7 @@
               "Tag": 132,
               "_buffData": [
                 {
-                  "BuffId": "playerImmediateS1",
+                  "BuffId": "h0186s5_S1_trigger",
                   "Forever": true,
                   "LevelStack": 1,
                   "OverwriteDuration": -1,
@@ -1016,6 +1020,27 @@
               "Tag": 4100,
               "_buffID": "h0186s5_money",
               "_keyString": "2"
+            },
+            {
+              "$type": "BattleModel.RemoveBuffSkillEffect",
+              "Tag": 4100,
+              "_buffID": "h0186s5_money_FSM",
+              "_keyString": "2"
+            }
+          ]
+        },
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": false,
+          "multi": null,
+          "single": {
+            "$type": "BattleModel.ThisSkillCaster"
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.EmptyBuffSkillEffect",
+              "Tag": 0,
+              "_keyString": ""
             }
           ]
         }
@@ -1044,9 +1069,35 @@
                   "OverwriteDuration": -1,
                   "UserDefineVariable": {
                   }
+                },
+                {
+                  "BuffId": "h0186s5_money_FSM",
+                  "Forever": true,
+                  "LevelStack": 6,
+                  "OverwriteDuration": -1,
+                  "UserDefineVariable": {
+                  }
                 }
               ],
               "_keyString": "1"
+            },
+            {
+              "$type": "BattleModel.StoneActionSkillEffect",
+              "Tag": 516,
+              "_keyString": "1",
+              "_stoneAction": {
+                "BuffFilter": "Normal",
+                "BuffId": "",
+                "BuffLabel": null,
+                "EffectFilter": "Normal",
+                "StonePositionList": [
+                ],
+                "UsePositionSettings": false,
+                "changeTo": "ToWhite",
+                "filter": "IsAnyColor",
+                "order": "UpperRightToLowerRight",
+                "targetStoneCount": 4
+              }
             }
           ]
         }

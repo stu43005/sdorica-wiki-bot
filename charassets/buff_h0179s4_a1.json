@@ -1,0 +1,240 @@
+{
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "OnBuffAdd": {
+        "效果": [
+          {
+            "效果": [
+              "{\"buff\":{\"$type\":\"BattleModel.SpecifiedBuff\"},\"operation\":{\"targetField\":0,\"setOperator\":1,\"value\":{\"constant\":2,\"$type\":\"BattleModel.ConstanctInt\"},\"lastIndepedentStack\":true,\"$type\":\"BattleModel.SetBuffField\"},\"$type\":\"BattleModel.OperateSingleBuff\"}"
+            ],
+            "條件": [
+              "當前事件的狀態 (有在generalBuff[強化, 減傷, 靈巧, 轉盾, 盾轉, 再生, 怒氣, 戰意, 領袖]列表內) 或 (有在generalNerf[弱化, 易傷, 撕裂, 中毒, 易傷, 暈眩, 汙染, 出血, 汙染, 寒冷, 燃燒]列表內)",
+              "{\"Buff\":{\"$type\":\"BattleModel.SpecifiedBuff\"},\"$type\":\"BattleModel.CasterOfSingleBuff\"}是本角色的隊伍的一員"
+            ]
+          },
+          {
+            "效果": [
+              "對本角色賦予1回合1層h0179s4_A1_FSM"
+            ],
+            "條件": [
+              "當前事件的狀態 有在generalBuff[強化, 減傷, 靈巧, 轉盾, 盾轉, 再生, 怒氣, 戰意, 領袖]列表內",
+              "{\"Buff\":{\"$type\":\"BattleModel.SpecifiedBuff\"},\"$type\":\"BattleModel.CasterOfSingleBuff\"}是本角色的隊伍的一員"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 0,
+    "標籤": "NotRemoveWhenDie | Forever"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+    "h0179s4_A1_FSM",
+    "bonusAttackPower",
+    "defense_up_small",
+    "dexterity",
+    "damage_absorption",
+    "ArmorToBlood",
+    "regeneration",
+    "rage",
+    "warfare",
+    "leader",
+    "nerf_damage_small",
+    "weak",
+    "tearing",
+    "poison",
+    "stun",
+    "infection_maintain",
+    "bleeding_maintain",
+    "infection",
+    "frosted",
+    "burn",
+    "dexterity_trigger",
+    "dexterity_fightback_0",
+    "dexterity_fightback_1",
+    "dexterity_fightback_2",
+    "dexterity_fightback_3",
+    "dexterity_fightback_4",
+    "b0028sx_dodge",
+    "damage_absorption_trigger",
+    "ArmorToBlood_trigger",
+    "regeneration_trigger",
+    "follower",
+    "tearing_trigger",
+    "tearing_trigger_alert",
+    "poison_trigger"
+  ],
+  "_actionTable": [
+    {
+      "Key": 16384,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateSingleBuff",
+                  "buff": {
+                    "$type": "BattleModel.SpecifiedBuff"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": true,
+                    "setOperator": 1,
+                    "targetField": 0,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 2
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.BuffCondition",
+                "buff": {
+                  "$type": "BattleModel.SpecifiedBuff"
+                },
+                "condition": {
+                  "$type": "BattleModel.OrConditionsB",
+                  "cond1": {
+                    "$type": "BattleModel.CheckBuffBelongLabel",
+                    "BuffLabel": {
+                      "BuffIdList": [
+                        "bonusAttackPower",
+                        "defense_up_small",
+                        "dexterity",
+                        "damage_absorption",
+                        "ArmorToBlood",
+                        "regeneration",
+                        "rage",
+                        "warfare",
+                        "leader"
+                      ],
+                      "BuffLabel": "generalBuff"
+                    }
+                  },
+                  "cond2": {
+                    "$type": "BattleModel.CheckBuffBelongLabel",
+                    "BuffLabel": {
+                      "BuffIdList": [
+                        "nerf_damage_small",
+                        "weak",
+                        "tearing",
+                        "poison",
+                        "weak",
+                        "stun",
+                        "infection_maintain",
+                        "bleeding_maintain",
+                        "infection",
+                        "frosted",
+                        "burn"
+                      ],
+                      "BuffLabel": "generalNerf"
+                    }
+                  }
+                }
+              },
+              {
+                "$type": "BattleModel.CharacterInside",
+                "group": {
+                  "$type": "BattleModel.SelfTeamChars",
+                  "excludeSelf": true,
+                  "includeDead": false,
+                  "includeEmpty": false,
+                  "reference": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  }
+                },
+                "left": {
+                  "$type": "BattleModel.CasterOfSingleBuff",
+                  "Buff": {
+                    "$type": "BattleModel.SpecifiedBuff"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "h0179s4_A1_FSM",
+                      "Forever": false,
+                      "LevelStack": 1,
+                      "OverwriteDuration": 1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.BuffCondition",
+                "buff": {
+                  "$type": "BattleModel.SpecifiedBuff"
+                },
+                "condition": {
+                  "$type": "BattleModel.CheckBuffBelongLabel",
+                  "BuffLabel": {
+                    "BuffIdList": [
+                      "bonusAttackPower",
+                      "defense_up_small",
+                      "dexterity",
+                      "damage_absorption",
+                      "ArmorToBlood",
+                      "regeneration",
+                      "rage",
+                      "warfare",
+                      "leader"
+                    ],
+                    "BuffLabel": "generalBuff"
+                  }
+                }
+              },
+              {
+                "$type": "BattleModel.CharacterInside",
+                "group": {
+                  "$type": "BattleModel.SelfTeamChars",
+                  "excludeSelf": true,
+                  "includeDead": false,
+                  "includeEmpty": false,
+                  "reference": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  }
+                },
+                "left": {
+                  "$type": "BattleModel.CasterOfSingleBuff",
+                  "Buff": {
+                    "$type": "BattleModel.SpecifiedBuff"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 0,
+  "_orderTable": {
+  },
+  "_tag": 68
+}

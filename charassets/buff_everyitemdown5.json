@@ -25,7 +25,8 @@
             "條件": [
               "施術者是玩家的一員",
               "本狀態的變數一 == 0",
-              "探索Flag\"exploreEquip_where\"的數值 == 5"
+              "探索Flag\"exploreEquip_where\"的數值 == 5",
+              "相反(((施展的技能效果中包含(Attack)屬性) 或 (施展的技能效果中包含(Special)屬性)) 且 (指定目標是玩家的一員))"
             ]
           }
         ],
@@ -123,6 +124,34 @@
                 "right": {
                   "$type": "BattleModel.ConstanctInt",
                   "constant": 5
+                }
+              },
+              {
+                "$type": "BattleModel.Inverse",
+                "condition": {
+                  "$type": "BattleModel.AndConditions",
+                  "cond1": {
+                    "$type": "BattleModel.OrConditions",
+                    "cond1": {
+                      "$type": "BattleModel.ThisSkillEffectTagContains",
+                      "containsAll": 1
+                    },
+                    "cond2": {
+                      "$type": "BattleModel.ThisSkillEffectTagContains",
+                      "containsAll": 4
+                    }
+                  },
+                  "cond2": {
+                    "$type": "BattleModel.CharacterInside",
+                    "group": {
+                      "$type": "BattleModel.PVEPlayerTeam",
+                      "includeDead": false,
+                      "includeEmpty": false
+                    },
+                    "left": {
+                      "$type": "BattleModel.ThisSpecifiedTarget"
+                    }
+                  }
                 }
               }
             ]

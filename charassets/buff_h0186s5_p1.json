@@ -2,6 +2,20 @@
   "$interpreted": {
     "Localization": "",
     "動作": {
+      "AfterAnyoneRevive": {
+        "效果": [
+          {
+            "效果": [
+              "對本狀態的變數一改為0"
+            ],
+            "條件": [
+              "本角色是死亡或復活的角色"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
       "OnTurnBegin": {
         "效果": [
           {
@@ -85,7 +99,8 @@
   "$type": "BattleModel.Buff",
   "ReferenceBuffKeys": [
     "h0186s5_P2",
-    "h0186s5_money"
+    "h0186s5_money",
+    "h0186s5_money_FSM"
   ],
   "_actionTable": [
     {
@@ -617,6 +632,45 @@
                 "right": {
                   "$type": "BattleModel.ConstanctInt",
                   "constant": 3
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 262144,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                },
+                "right": {
+                  "$type": "BattleModel.DeadOrReviveTarget"
                 }
               }
             ]

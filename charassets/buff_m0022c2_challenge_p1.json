@@ -1,0 +1,168 @@
+{
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "OnEachSkillTargetEffect": {
+        "效果": [
+          {
+            "效果": [
+              "技能的(Attack)屬性效果增加(10000)%"
+            ],
+            "條件": [
+              "本角色是施術者",
+              "(在玩家首位的Cytustwo_hz(【頻率】)狀態 符合條件 層數 != 2) 或 ((在玩家的倒數第2個角色的Cytustwo_hz(【頻率】)狀態 符合條件 層數 != 2) 或 (在玩家後排的Cytustwo_hz(【頻率】)狀態 符合條件 層數 != 2))"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 99,
+    "標籤": "Forever"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+  ],
+  "_actionTable": [
+    {
+      "Key": 1024,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.BonusEffectForSkillProperty",
+                  "isPercent": true,
+                  "property": 1,
+                  "value": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 10000
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                },
+                "right": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              },
+              {
+                "$type": "BattleModel.OrConditions",
+                "cond1": {
+                  "$type": "BattleModel.BuffCondition",
+                  "buff": {
+                    "$type": "BattleModel.BuffOnCharater",
+                    "buffId": "Cytustwo_hz",
+                    "character": {
+                      "$type": "BattleModel.FrontOfChars",
+                      "group": {
+                        "$type": "BattleModel.PVEPlayerTeam",
+                        "includeDead": false,
+                        "includeEmpty": false
+                      }
+                    }
+                  },
+                  "condition": {
+                    "$type": "BattleModel.IntCompareB",
+                    "left": {
+                      "$type": "BattleModel.IntFieldB",
+                      "targetField": 1
+                    },
+                    "op": 5,
+                    "right": {
+                      "$type": "BattleModel.ConstantIntB",
+                      "constant": 2
+                    }
+                  }
+                },
+                "cond2": {
+                  "$type": "BattleModel.OrConditions",
+                  "cond1": {
+                    "$type": "BattleModel.BuffCondition",
+                    "buff": {
+                      "$type": "BattleModel.BuffOnCharater",
+                      "buffId": "Cytustwo_hz",
+                      "character": {
+                        "$type": "BattleModel.IndexOfChars",
+                        "backward": false,
+                        "group": {
+                          "$type": "BattleModel.PVEPlayerTeam",
+                          "includeDead": false,
+                          "includeEmpty": false
+                        },
+                        "index": {
+                          "$type": "BattleModel.ConstanctInt",
+                          "constant": 1
+                        }
+                      }
+                    },
+                    "condition": {
+                      "$type": "BattleModel.IntCompareB",
+                      "left": {
+                        "$type": "BattleModel.IntFieldB",
+                        "targetField": 1
+                      },
+                      "op": 5,
+                      "right": {
+                        "$type": "BattleModel.ConstantIntB",
+                        "constant": 2
+                      }
+                    }
+                  },
+                  "cond2": {
+                    "$type": "BattleModel.BuffCondition",
+                    "buff": {
+                      "$type": "BattleModel.BuffOnCharater",
+                      "buffId": "Cytustwo_hz",
+                      "character": {
+                        "$type": "BattleModel.BackOfChars",
+                        "group": {
+                          "$type": "BattleModel.PVEPlayerTeam",
+                          "includeDead": false,
+                          "includeEmpty": false
+                        }
+                      }
+                    },
+                    "condition": {
+                      "$type": "BattleModel.IntCompareB",
+                      "left": {
+                        "$type": "BattleModel.IntFieldB",
+                        "targetField": 1
+                      },
+                      "op": 5,
+                      "right": {
+                        "$type": "BattleModel.ConstantIntB",
+                        "constant": 2
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 99,
+  "_orderTable": [
+    {
+      "Key": 1024,
+      "Value": {
+        "Order": 0
+      }
+    }
+  ],
+  "_tag": 64
+}
