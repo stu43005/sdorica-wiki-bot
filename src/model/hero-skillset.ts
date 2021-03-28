@@ -3,6 +3,7 @@ import { localizationString } from "../localization";
 import { HeroRankParams, heroRankTemplate } from "../templates/hero-rank";
 import { heroSkinTemplate } from "../templates/hero-skin";
 import { HeroRank } from "./enums/hero-rank.enum";
+import { HeroSkillType } from "./enums/hero-skill-type.enum";
 import { ItemCategory } from "./enums/item-category.enum";
 import { SkillId } from "./enums/skill-id.enum";
 import { SkillType } from "./enums/skill-type.enum";
@@ -65,7 +66,8 @@ export class HeroSkillSet implements IHeroSkillSet {
 	get model(): string { return this.row.get('skillSet'); }
 	name: string;
 
-	rank: HeroRank;
+	get type(): HeroSkillType { return this.row.get('heroSkillType'); }
+	get rank(): HeroRank { return this.getRank(); }
 	get rankPlus(): string { return this.rank; }
 	get isBook(): boolean { return this.isAlt || this.isSkin; }
 	get isAlt(): boolean { return this.rank === HeroRank.Alt; }
@@ -102,7 +104,6 @@ export class HeroSkillSet implements IHeroSkillSet {
 
 	constructor(private row: RowWrapper) {
 		this.name = localizationString("HeroSkills", "skill_set_")(this.id);
-		this.rank = this.getRank();
 
 		this.P1 = new HeroSkill(this, SkillId.P1, SkillType.P1, StoneEraseShape.None, this.tipsP1);
 		this.A1 = new HeroSkill(this, SkillId.A1, SkillType.A1, StoneEraseShape.None, this.tipsA1);
@@ -117,6 +118,12 @@ export class HeroSkillSet implements IHeroSkillSet {
 			case 3: return HeroRank.R;
 			case 4: return HeroRank.SR;
 			case 5: return HeroRank.SSR;
+		}
+		switch (this.type) {
+			case HeroSkillType.SkillBook:
+				return HeroRank.Alt;
+			case HeroSkillType.Skin:
+				return HeroRank.Skin;
 		}
 		const bookItemName = this.getBookItem()?.name.replace(/【.*】/, "");
 		switch (bookItemName) {

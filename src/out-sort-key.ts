@@ -20,6 +20,7 @@ const TABLE_KEYS: Record<string, string[]> = {
 	],
 	AvgFlagUI: ["id", "flagId", "type", "effectValue", "titleKey", "localizationKey", "iconKey", "order", "fractionAnimation"],
 	BuildInAssetBundle: ["type", "effectValue"],
+	ChapterCount: ["id", "name", "dynamicRate", "initial", "max", "regainType", "regainValue", "itemIcon", "payType", "linkId", "amount"],
 	Chapters: [
 		"id", "enable", "isLock",
 		"category", "group", "volume", /* 分類 */
@@ -158,11 +159,11 @@ const TABLE_KEYS: Record<string, string[]> = {
 	],
 	TavernMissionDrop: ["groupId", "choiceNum", "missionId", "type", "param1", "param2", "param3", "weight"],
 	TeamLimits: ["id", "maxLevelBy",
-		"idW", "typeW", "rankW", "skillW", "lvW",
-		"idB", "typeB", "rankB", "skillB", "lvB",
-		"idG", "typeG", "rankG", "skillG", "lvG",
-		"idSP1", "typeSP1", "rankSP1", "skillSP1", "lvSP1",
-		"idSP2", "typeSP2", "rankSP2", "skillSP2", "lvSP2",
+		"idW", "typeW", "rankW", "subrankW", "skillW", "skillLevelW", "lvW",
+		"idB", "typeB", "rankB", "subrankB", "skillB", "skillLevelB", "lvB",
+		"idG", "typeG", "rankG", "subrankG", "skillG", "skillLevelG", "lvG",
+		"idSP1", "typeSP1", "rankSP1", "subrankSP1", "skillSP1", "skillLevelSP1", "lvSP1",
+		"idSP2", "typeSP2", "rankSP2", "subrankSP2", "skillSP2", "skillLevelSP2", "lvSP2",
 	],
 	SignInReward: ["id", "category", "groupId", "param1", "param2", "giveType", "giveLinkId", "giveAmount"],
 	Volume: ["order", "volume", "enable", "name", "title",
@@ -239,6 +240,7 @@ const TABLE_KEYS_BLACKLIST: Record<string, string[]> = {
 	CharaInfoVoice: ["id"],
 	CharaSelectVoice: ["id"],
 	CharaVictoryVoice: ["id"],
+	CharaRankUpVoice: ["id"],
 	ChinaBlacklist: ["id"],
 	DisableWords: ["id"],
 	DropItems: ["id", "itemId", "itemCount"],
@@ -249,7 +251,6 @@ const TABLE_KEYS_BLACKLIST: Record<string, string[]> = {
 	Missions: ["reward", "itemId", "rewardCount"],
 	RankUpItemRefs: ["id"],
 	RewardGroups: ["rewardType", "rewardItemId", "rewardCount"],
-	SkillLevel: ["id"],
 	TavernMissionDrop: ["id"],
 };
 

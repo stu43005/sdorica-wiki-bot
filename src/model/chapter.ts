@@ -107,6 +107,7 @@ export class Chapter {
 	get countDisplay(): boolean { return !!this.row.get('countDisplay'); }
 	get dailyCount(): number { return +this.row.get('dailyCount'); }
 	extraCountItem: ItemPayRef[];
+	// TODO: chapterCountId
 
 	/**
 	 * 活動累積道具獎勵

@@ -132,22 +132,27 @@ export const gamedataTeanslateSettings: GamedataRef[] = [
 	{
 		table: "CharaInfoVoice",
 		column: "prefabId",
-		func: call2(gamedataString("HeroSkills", "skillSet", "heroId"), gamedataString("Heroes", "id", "name")),
+		func: localizationCharacterName(),
 	},
 	{
 		table: "CharaSelectVoice",
 		column: "prefabId",
-		func: call2(gamedataString("HeroSkills", "skillSet", "heroId"), gamedataString("Heroes", "id", "name")),
+		func: localizationCharacterName(),
 	},
 	{
 		table: "CharaVictoryVoice",
 		column: "prefabId",
-		func: call2(gamedataString("HeroSkills", "skillSet", "heroId"), gamedataString("Heroes", "id", "name")),
+		func: localizationCharacterName(),
+	},
+	{
+		table: "CharaRankUpVoice",
+		column: "prefabId",
+		func: localizationCharacterName(),
 	},
 	{
 		table: "Quests",
 		column: "requireQuestId",
-		func: call2(gamedataString("Quests", "id", "levelId"), localizationString("QuestName")),
+		func: localizationQuestName(),
 	},
 	{
 		table: "Quests",
@@ -357,6 +362,11 @@ export const gamedataTeanslateSettings: GamedataRef[] = [
 		table: "TeamLimits",
 		column: "rankW,rankB,rankG,rankSP1,rankSP2",
 		func: rank(),
+	},
+	{
+		table: "TeamLimits",
+		column: "skillW,skillB,skillG,skillSP1,skillSP2",
+		func: localizationString("HeroSkills", "skill_set_"),
 	},
 	{
 		table: "ExtraProducts",
@@ -664,6 +674,11 @@ export const gamedataTeanslateSettings: GamedataRef[] = [
 		table: "AvgFlagUI",
 		column: "titleKey,localizationKey",
 		func: localizationString("FlagUI"),
+	},
+	{
+		table: "ChapterCount",
+		column: "linkId:payType",
+		func: localizationItemNameWithType(),
 	},
 ];
 

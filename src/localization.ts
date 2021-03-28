@@ -17,11 +17,14 @@ export function something(): Func1 {
 	};
 }
 
-export function call2(cb1: Func1, cb2: Func1): Func1 {
+export function call2(...cbs: Func1[]): Func1 {
 	return (str) => {
-		const res = cb1(str);
-		if (!res) return EMPTY;
-		return cb2(res);
+		let result = str;
+		for (const cb of cbs) {
+			result = cb(result);
+			if (!result) return EMPTY;
+		}
+		return result;
 	};
 }
 
@@ -209,16 +212,22 @@ export function localizationCharacterNameByHeroId(): Func1 {
 	return call2(gamedataString("Heroes", "id", "model"), localizationCharacterName(false));
 }
 
-export function localizationCharacterName(includeSkillset = true): Func1 {
+/**
+ * `t0033s5` => `碎牙`
+ *
+ * `t0033s5_a2` => `碎牙`
+ */
+export function localizationCharacterName(includeSkillset = true, includeNoteName = true): Func1 {
 	return call2(
 		ifor(
-			localizationString("CharacterName"),
-			localizationString("Default"),
 			includeSkillset ? call2(
 				gamedataString("HeroSkills", "skillSet", "heroId"),
-				localizationCharacterNameByHeroId()
+				gamedataString("Heroes", "id", "model"),
+				localizationCharacterName(false, false),
 			) : nothing(),
-			gamedataString("Heroes", "model", "name")
+			localizationString("CharacterName"),
+			localizationString("Default"),
+			includeNoteName ? gamedataString("Heroes", "model", "name") : nothing(),
 		),
 		(str) => characterNameNormalization(str)
 	);
@@ -372,6 +381,9 @@ export function white(): Func1 {
 	};
 }
 
+/**
+ * `main_001_201` => `1-1 王國治安官`
+ */
 export function localizationQuestName(): Func1 {
 	return call2(gamedataString("Quests", "id", "levelId"), localizationString("QuestName"));
 }
