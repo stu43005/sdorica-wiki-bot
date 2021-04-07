@@ -458,6 +458,7 @@ export interface ChapterMetadata {
 	imageName: string;
 }
 
+// TODO: move to chapter model
 export function chapterMetadata(chapter: RowWrapper): ChapterMetadata {
 	const out: ChapterMetadata = {
 		group: getChapterType(chapter),

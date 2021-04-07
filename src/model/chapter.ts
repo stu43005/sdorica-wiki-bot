@@ -1,6 +1,7 @@
 import { ImperiumData, RowWrapper } from "../imperium-data";
 import { localizationString } from "../localization";
 import { wikiTitleEscape } from '../wiki-utils';
+import { ChapterCount } from "./chapter-count";
 import { chapterTitleRename } from './config/chapter';
 import { ChapterCategory } from "./enums/chapter-category.enum";
 import { ChapterGroup } from "./enums/chapter-group.enum";
@@ -104,10 +105,23 @@ export class Chapter {
 	get weekday(): number { return +this.row.get('weekday'); }
 	get isShowCountdown(): boolean { return !!this.row.get('isShowCountdown'); }
 
+	/**
+	 * @deprecated 改用 chapterCount
+	 */
 	get countDisplay(): boolean { return !!this.row.get('countDisplay'); }
+	/**
+	 * @deprecated 改用 chapterCount.regainValue
+	 */
 	get dailyCount(): number { return +this.row.get('dailyCount'); }
+	/**
+	 * @deprecated 改用 chapterCount.payItem
+	 */
 	extraCountItem: ItemPayRef[];
-	// TODO: chapterCountId
+
+	#chapterCount: ChapterCount | null = null;
+	get chapterCount(): ChapterCount {
+		return this.#chapterCount ?? (this.#chapterCount = ChapterCount.get(this.row.get('chapterCountId')));
+	}
 
 	/**
 	 * 活動累積道具獎勵

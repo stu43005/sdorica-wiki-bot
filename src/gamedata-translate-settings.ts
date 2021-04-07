@@ -677,6 +677,11 @@ export const gamedataTeanslateSettings: GamedataRef[] = [
 	},
 	{
 		table: "ChapterCount",
+		column: "name",
+		func: localizationString("ChapterCount"),
+	},
+	{
+		table: "ChapterCount",
 		column: "linkId:payType",
 		func: localizationItemNameWithType(),
 	},

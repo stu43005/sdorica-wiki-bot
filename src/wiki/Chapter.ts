@@ -4,6 +4,7 @@ import { objectEach } from "../utils";
 import { item2wiki, item2wikiWithType, treasureList } from "../wiki-item";
 import { chapterMetadata, questMetadata } from "../wiki-quest";
 import { titleparts } from "../wiki-utils";
+import { Chapter } from './../model/chapter';
 
 const ChaptersTable = ImperiumData.fromGamedata().getTable("Chapters");
 const QuestsTable = ImperiumData.fromGamedata().getTable("Quests");
@@ -27,15 +28,16 @@ export default function wikiChapter() {
 	const chapterGroupOut: Record<string, string[]> = {};
 	for (let i = 0; i < ChaptersTable.length; i++) {
 		const row = ChaptersTable.get(i);
-		const chID = row.get("id");
-		const quests = QuestsTable.filter(q => q.get("chapter") == chID && q.get("enable"));
+		const chapter = Chapter.get(row);
+		const quests = QuestsTable.filter(q => q.get("chapter") == chapter.id && q.get("enable"));
 		const { name, title, imageName, group } = chapterMetadata(row);
 		let str = `===${name}：${title}===
-* 章節可見條件：${stateCondition(row.get("visibleCondition"), row.get("param1"))}
-* 章節解鎖條件：${stateCondition(row.get("unlockCondition"), row.get("param2"))}${row.get("countDisplay") ? `
-* 每日可通關次數：${row.get("dailyCount")}
-* 增加可完成次數消耗：${!row.get("extraCountCurrency") ? item2wiki(row.get("extraCountItem"), row.get("extraCountItemCount")) : item2wikiWithType(row.get("extraCountCurrency"), "", row.get("extraCountPrice"))}` : ''}
-* 章節完成獎勵：${treasureList(row.get('dropGroupID'), '*')}
+* 章節可見條件：${stateCondition(chapter.visibleCondition, chapter.visibleConditionParam)}
+* 章節解鎖條件：${stateCondition(chapter.unlockCondition, chapter.unlockConditionParam)}${chapter.chapterCount ? `
+* 累積最大關卡次數：${chapter.chapterCount.max}
+* 自動恢復關卡次數：${chapter.chapterCount.regainValue}/${chapter.chapterCount.regainType}
+* 增加可完成次數消耗：${chapter.chapterCount.payItem.toWiki()}` : ''}
+* 章節完成獎勵：${treasureList(chapter.dropGroupID, '*')}
 {{旅途表格|${imageName}}}`;
 		for (let j = 0; j < quests.length; j++) {
 			const quest = quests[j];
@@ -44,7 +46,7 @@ export default function wikiChapter() {
 			str += `\n{{旅途|${localizationQuestSubtitle()(quest.get("subtitle"))}|${quest.get("recommendLevel")}|${prefix}|${ch}${ch2 ? "-" + ch2 : ""}|${wikilink}${wikilinkLastPart != questName ? `|${questName}` : ""}}}`;
 		}
 		str += `\n{{旅途表格結束}}`;
-		if (!row.get("enable")) {
+		if (!chapter.enable) {
 			str = `<!--\n${str}\n-->`;
 		}
 		if (!chapterGroupOut[group]) chapterGroupOut[group] = [];
