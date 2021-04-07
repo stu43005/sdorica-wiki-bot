@@ -32,6 +32,7 @@ export class ChapterCount {
 
 	get regainType(): ChapteCountType { return this.row.get('regainType'); }
 	get regainValue(): number { return +this.row.get('regainValue'); }
+	regainString: string;
 
 	get itemIcon(): boolean { return !!this.row.get('itemIcon'); }
 	payItem: ItemPayRef;
@@ -39,5 +40,18 @@ export class ChapterCount {
 	constructor(private row: RowWrapper) {
 		this.name = new TemplateString(localizationString('ChapterCount')(row.get('name')));
 		this.payItem = new ItemPayRef(row.get('payType'), row.get('linkId'), row.get('amount'));
+
+		let regainStringKey = '';
+		switch (this.regainType) {
+			case ChapteCountType.Daily:
+				regainStringKey = 'chapter_revive_time';
+				break;
+			case ChapteCountType.Weekly:
+				regainStringKey = 'chapter_revive_time_week';
+				break;
+		}
+		this.regainString = new TemplateString(localizationString('Metagame')(regainStringKey)).apply({
+			revive: this.regainValue,
+		});
 	}
 }
