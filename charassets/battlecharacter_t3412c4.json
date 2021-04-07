@@ -8,13 +8,41 @@
       ],
       "Retreat1": [
         "對施術者破甲(攻擊力 x100%)、攻擊(最大血量的攻擊力 x100%)"
+      ],
+      "S1": [
+        "對敵人全體賦予5回合1層defense_up_small(減傷)"
+      ],
+      "S2": [
+        "對敵人全體賦予5回合1層nerf_damage_small(弱化)"
       ]
     },
     "技能組": {
+      "S1": [
+        {
+          "CoolDown": 2,
+          "技能列表": [
+            "施展S1"
+          ],
+          "條件": [
+          ],
+          "目標": ""
+        }
+      ],
+      "S2": [
+        {
+          "CoolDown": 2,
+          "技能列表": [
+            "施展S2"
+          ],
+          "條件": [
+          ],
+          "目標": ""
+        }
+      ]
     },
     "攻擊力": 25,
     "攻擊力等級調整後": 23,
-    "敵人AI": "",
+    "敵人AI": "S1 -> S2",
     "消魂設置": {
       "Type1": "S1",
       "Type2": "S2",
@@ -33,11 +61,20 @@
   },
   "$type": "BattleModel.EnemyCharacter",
   "ReferenceBuffKeys": [
-    "changeIdle"
+    "changeIdle",
+    "defense_up_small",
+    "nerf_damage_small"
   ],
   "ReferenceCharacterKeys": [
   ],
   "ReferenceEffectKeys": [
+    "t3412c4_s01_Slash01",
+    "t3412c4_s01_Word01",
+    "t3412c4_s02_Slash01",
+    "t3412c4_s02_Word01",
+    "t3412c4_s02_Water01",
+    "Common_emo_Mad01",
+    "Common_emo_Confuse"
   ],
   "ReferenceEmoIconKeys": [
   ],
@@ -54,6 +91,8 @@
     "$type": "BattleModel.SequenceEnemyAI",
     "Character": null,
     "OrderList": [
+      "S1",
+      "S2"
     ]
   },
   "_defaultCoolDown": 0,
@@ -139,9 +178,125 @@
           ]
         }
       ]
+    },
+    "S1": {
+      "$type": "BattleModel.BattleSkill",
+      "_isResolveTargetEachUnit": false,
+      "_skillIdentifiers": [
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": true,
+          "multi": {
+            "$type": "BattleModel.PVEEnemyTeam",
+            "includeDead": false,
+            "includeEmpty": false
+          },
+          "single": {
+            "$type": "BattleModel.ThisSkillCaster"
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.AddBuffSkillEffect",
+              "Tag": 132,
+              "_buffData": [
+                {
+                  "BuffId": "defense_up_small",
+                  "Forever": false,
+                  "LevelStack": 1,
+                  "OverwriteDuration": 5,
+                  "UserDefineVariable": {
+                  }
+                }
+              ],
+              "_keyString": "1"
+            }
+          ]
+        }
+      ]
+    },
+    "S2": {
+      "$type": "BattleModel.BattleSkill",
+      "_isResolveTargetEachUnit": false,
+      "_skillIdentifiers": [
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": true,
+          "multi": {
+            "$type": "BattleModel.PVEEnemyTeam",
+            "includeDead": false,
+            "includeEmpty": false
+          },
+          "single": {
+            "$type": "BattleModel.ThisSkillCaster"
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.AddBuffSkillEffect",
+              "Tag": 132,
+              "_buffData": [
+                {
+                  "BuffId": "nerf_damage_small",
+                  "Forever": false,
+                  "LevelStack": 1,
+                  "OverwriteDuration": 5,
+                  "UserDefineVariable": {
+                  }
+                }
+              ],
+              "_keyString": "1"
+            }
+          ]
+        }
+      ]
     }
   },
   "_skillsetTable": {
+    "S1": {
+      "ComboList": [
+        {
+          "ConditionList": [
+          ],
+          "SkillList": [
+            {
+              "ConditionList": [
+              ],
+              "SkillID": "S1",
+              "_conditionalSequences": [
+              ],
+              "seq": "",
+              "t": null
+            }
+          ],
+          "_characterCoolDown": 2,
+          "assignTarget": null,
+          "icon": 0
+        }
+      ],
+      "_isViewSkillSet": false
+    },
+    "S2": {
+      "ComboList": [
+        {
+          "ConditionList": [
+          ],
+          "SkillList": [
+            {
+              "ConditionList": [
+              ],
+              "SkillID": "S2",
+              "_conditionalSequences": [
+              ],
+              "seq": "",
+              "t": null
+            }
+          ],
+          "_characterCoolDown": 2,
+          "assignTarget": null,
+          "icon": 0
+        }
+      ],
+      "_isViewSkillSet": false
+    }
   },
   "_stoneEraseSetting": [
     {
