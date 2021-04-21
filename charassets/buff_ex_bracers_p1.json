@@ -37,12 +37,22 @@
         "效果": [
           {
             "效果": [
+              "對玩家中符合(是黑位)的角色所有角色賦予永久long_term(長效)",
               "對玩家中符合(是黑位)的角色所有角色賦予永久1層defense_up_small(減傷)",
               "對本狀態的變數二改為1"
             ],
             "條件": [
               "本狀態的變數二 == 0",
-              "玩家中符合(是黑位)的角色中的任意角色 沒有defense_up_small(減傷)狀態"
+              "玩家中符合(是黑位)的角色中的任意角色 擁有ex_furgloves_P2(戰鬥開始時，獲得永久長效、\n2個黑色魂芯與1點精神值。)狀態"
+            ]
+          },
+          {
+            "效果": [
+              "對玩家中符合(是黑位)的角色所有角色賦予永久1層defense_up_small(減傷)",
+              "對本狀態的變數二改為1"
+            ],
+            "條件": [
+              "本狀態的變數二 == 0"
             ]
           }
         ],
@@ -56,6 +66,7 @@
   },
   "$type": "BattleModel.Buff",
   "ReferenceBuffKeys": [
+    "long_term",
     "defense_up_small",
     "CD_increase"
   ],
@@ -66,6 +77,34 @@
         "Actions": [
           {
             "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacterGroup",
+                  "group": {
+                    "$type": "BattleModel.CharGroupWhere",
+                    "condition": {
+                      "$type": "BattleModel.StoneTypeIs",
+                      "type": 2
+                    },
+                    "group": {
+                      "$type": "BattleModel.PVEPlayerTeam",
+                      "includeDead": true,
+                      "includeEmpty": false
+                    }
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "long_term",
+                      "Forever": true,
+                      "LevelStack": 0,
+                      "OverwriteDuration": -1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              },
               {
                 "TargetField": {
                   "$type": "BattleModel.OperateCharacterGroup",
@@ -127,14 +166,32 @@
                 }
               },
               {
-                "$type": "BattleModel.Inverse",
+                "$type": "BattleModel.CharGroupCondition",
                 "condition": {
-                  "$type": "BattleModel.CharGroupCondition",
+                  "$type": "BattleModel.HasBuff",
+                  "buffId": "ex_furgloves_P2"
+                },
+                "everybody": false,
+                "group": {
+                  "$type": "BattleModel.CharGroupWhere",
                   "condition": {
-                    "$type": "BattleModel.HasBuff",
-                    "buffId": "defense_up_small"
+                    "$type": "BattleModel.StoneTypeIs",
+                    "type": 2
                   },
-                  "everybody": false,
+                  "group": {
+                    "$type": "BattleModel.PVEPlayerTeam",
+                    "includeDead": true,
+                    "includeEmpty": false
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacterGroup",
                   "group": {
                     "$type": "BattleModel.CharGroupWhere",
                     "condition": {
@@ -146,7 +203,50 @@
                       "includeDead": true,
                       "includeEmpty": false
                     }
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "defense_up_small",
+                      "Forever": true,
+                      "LevelStack": 1,
+                      "OverwriteDuration": -1,
+                      "UserDefineVariable": {
+                      }
+                    }
                   }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 8,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 1
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.ThisBuff"
+                  },
+                  "targetField": 8
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 0
                 }
               }
             ]
