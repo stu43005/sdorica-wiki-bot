@@ -1,6 +1,6 @@
 {
   "$interpreted": {
-    "Localization": "b0045c4_6",
+    "Localization": "t3442c3_2",
     "復活魂芯數": 0,
     "技能": {
       "Arrive1": [
@@ -9,85 +9,111 @@
       "Retreat1": [
         "對施術者破甲(攻擊力 x100%)、攻擊(最大血量的攻擊力 x100%)"
       ],
+      "S1": [
+        "對施術者的目標攻擊(攻擊力 x1)、賦予3回合1層nerf_damage_small(弱化)"
+      ],
       "S2": [
-        "對施術者的目標攻擊(攻擊力 x1)、賦予2回合stun(暈眩)"
+        "對施術者治療(攻擊力 x0.9)"
       ]
     },
     "技能組": {
       "S1": [
         {
-          "CoolDown": 3,
+          "CoolDown": 2,
+          "技能列表": [
+            "施展S1"
+          ],
+          "條件": [
+          ],
+          "目標": ""
+        }
+      ],
+      "S2": [
+        {
+          "CoolDown": 1,
           "技能列表": [
             "施展S2"
           ],
           "條件": [
           ],
-          "目標": "施術者的對方後排"
+          "目標": ""
         }
       ]
     },
     "攻擊力": 60,
     "攻擊力等級調整後": 56,
-    "敵人AI": "S1",
+    "敵人AI": "S1 -> S2",
     "消魂設置": {
       "Type1": "S1",
       "Type2": "S2",
       "Type4": "S3"
     },
-    "疊盾": 500,
-    "疊盾等級調整後": 471,
+    "疊盾": 400,
+    "疊盾等級調整後": 377,
     "站位": "無",
-    "血量": 500,
-    "血量等級調整後": 471,
+    "血量": 400,
+    "血量等級調整後": 377,
     "被動Buff": [
     ],
-    "起始CD": 1,
-    "預設CD": 3
+    "起始CD": 0,
+    "預設CD": 0
   },
   "$type": "BattleModel.EnemyCharacter",
   "ReferenceBuffKeys": [
-    "stun"
+    "nerf_damage_small"
   ],
   "ReferenceCharacterKeys": [
   ],
   "ReferenceEffectKeys": [
-    "b0001s4_s03_Dust",
-    "b0001s4_s03_Rock",
-    "Common_Hit04_C",
-    "Common_MaskCharacter01"
+    "t3442c3_s01_Trail01",
+    "t3442c3_s01_Hit02",
+    "t3442c3_s02_Trail01",
+    "t3442c3_s02_WaterFall01",
+    "Common_Heal01",
+    "t3442c3_s02_WaterHit01"
   ],
   "ReferenceEmoIconKeys": [
   ],
   "ReferenceMusicKeys": [
   ],
   "ReferenceSFXKeys": [
-    "movment_035",
-    "voice_009",
-    "rock_501",
-    "rock_001"
+    "Movement_cloth_010set_04_rough_scratch",
+    "Whoosh_swing_003_large",
+    "movment_083",
+    "Effect_splash_019set_02_liquid_blood_sticky_short",
+    "Movement_misc_061_wood_bamboo_stick_porcelain_hit_tiny",
+    "Creature_misc_005set_02_eat_splash",
+    "bullet_hit_mud_impact_01",
+    "Effect_splash_014_spill_drip",
+    "Movement_natural_021set_03_rock_porcelain_scratch_slide",
+    "liquid_waterfall_long_01",
+    "Movement_natural_017set_02_sand_soft_scratch_rustle_sizzle",
+    "water_splash_heavy_lapping",
+    "Effect_flash_055set_02_general_heal_medium",
+    "Effect_special_004_weather_rain_wash_short"
   ],
   "ReferenceVoiceSFXKeys": [
-    "b0001s4_hit01_jpd"
   ],
-  "_armorCapacity": 500,
+  "_armorCapacity": 400,
   "_assistantSkill": null,
-  "_bloodCapacity": 500,
+  "_bloodCapacity": 400,
   "_characterAI": {
     "$type": "BattleModel.SequenceEnemyAI",
     "Character": null,
     "OrderList": [
-      "S1"
+      "S1",
+      "S2"
     ]
   },
-  "_defaultCoolDown": 3,
-  "_initialCoolDown": 1,
+  "_defaultCoolDown": 0,
+  "_initialCoolDown": 0,
   "_levelStartBuff": [
   ],
   "_mass": 1,
-  "_masterRank": 1,
+  "_masterRank": 0,
   "_passiveBuff": [
   ],
-  "_pose": "Prone",
+  "_pose": "Stand",
   "_power": 60,
   "_reviveCount": 0,
   "_skills": {
@@ -155,7 +181,7 @@
         }
       ]
     },
-    "S2": {
+    "S1": {
       "$type": "BattleModel.BattleSkill",
       "_isResolveTargetEachUnit": false,
       "_skillIdentifiers": [
@@ -188,15 +214,48 @@
               "Tag": 132,
               "_buffData": [
                 {
-                  "BuffId": "stun",
+                  "BuffId": "nerf_damage_small",
                   "Forever": false,
-                  "LevelStack": 0,
-                  "OverwriteDuration": 2,
+                  "LevelStack": 1,
+                  "OverwriteDuration": 3,
                   "UserDefineVariable": {
                   }
                 }
               ],
               "_keyString": "1"
+            }
+          ]
+        }
+      ]
+    },
+    "S2": {
+      "$type": "BattleModel.BattleSkill",
+      "_isResolveTargetEachUnit": false,
+      "_skillIdentifiers": [
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": false,
+          "multi": {
+            "$type": "BattleModel.PVEEnemyTeam",
+            "includeDead": false,
+            "includeEmpty": false
+          },
+          "single": {
+            "$type": "BattleModel.ThisSkillCaster"
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.HpHealSkillEffect",
+              "Tag": 34,
+              "_keyString": "1",
+              "_skillModifier": {
+                "_constant": 0,
+                "_parameter": {
+                  "$type": "BattleModel.SkillCasterPower",
+                  "basePower": false
+                },
+                "_ratio": 1
+              }
             }
           ]
         }
@@ -213,6 +272,29 @@
             {
               "ConditionList": [
               ],
+              "SkillID": "S1",
+              "_conditionalSequences": [
+              ],
+              "seq": "",
+              "t": null
+            }
+          ],
+          "_characterCoolDown": 2,
+          "assignTarget": null,
+          "icon": 0
+        }
+      ],
+      "_isViewSkillSet": false
+    },
+    "S2": {
+      "ComboList": [
+        {
+          "ConditionList": [
+          ],
+          "SkillList": [
+            {
+              "ConditionList": [
+              ],
               "SkillID": "S2",
               "_conditionalSequences": [
               ],
@@ -220,18 +302,8 @@
               "t": null
             }
           ],
-          "_characterCoolDown": 3,
-          "assignTarget": {
-            "$type": "BattleModel.BackOfChars",
-            "group": {
-              "$type": "BattleModel.OppositeTeamChars",
-              "includeDead": false,
-              "includeEmpty": false,
-              "reference": {
-                "$type": "BattleModel.ThisSkillCaster"
-              }
-            }
-          },
+          "_characterCoolDown": 1,
+          "assignTarget": null,
           "icon": 0
         }
       ],

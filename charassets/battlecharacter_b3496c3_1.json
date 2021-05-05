@@ -1,6 +1,6 @@
 {
   "$interpreted": {
-    "Localization": "b0045c4_6",
+    "Localization": "b3496c3_1",
     "復活魂芯數": 0,
     "技能": {
       "Arrive1": [
@@ -9,86 +9,116 @@
       "Retreat1": [
         "對施術者破甲(攻擊力 x100%)、攻擊(最大血量的攻擊力 x100%)"
       ],
+      "S1": [
+        "對玩家全體攻擊(攻擊力 x1)、賦予3回合1層weak(易傷)"
+      ],
       "S2": [
-        "對施術者的目標攻擊(攻擊力 x1)、賦予2回合stun(暈眩)"
+        "對施術者的目標攻擊(攻擊力 x2.5)"
       ]
     },
     "技能組": {
       "S1": [
         {
-          "CoolDown": 3,
+          "CoolDown": 2,
+          "技能列表": [
+            "施展S1"
+          ],
+          "條件": [
+          ],
+          "目標": "玩家首位"
+        }
+      ],
+      "S2": [
+        {
+          "CoolDown": 2,
           "技能列表": [
             "施展S2"
           ],
           "條件": [
           ],
-          "目標": "施術者的對方後排"
+          "目標": "玩家首位"
         }
       ]
     },
-    "攻擊力": 60,
-    "攻擊力等級調整後": 56,
-    "敵人AI": "S1",
+    "攻擊力": 80,
+    "攻擊力等級調整後": 75,
+    "敵人AI": "S1 -> S2",
     "消魂設置": {
       "Type1": "S1",
       "Type2": "S2",
       "Type4": "S3"
     },
-    "疊盾": 500,
-    "疊盾等級調整後": 471,
+    "疊盾": 800,
+    "疊盾等級調整後": 754,
     "站位": "無",
-    "血量": 500,
-    "血量等級調整後": 471,
+    "血量": 800,
+    "血量等級調整後": 754,
     "被動Buff": [
     ],
     "起始CD": 1,
-    "預設CD": 3
+    "預設CD": 4
   },
   "$type": "BattleModel.EnemyCharacter",
   "ReferenceBuffKeys": [
-    "stun"
+    "weak"
   ],
   "ReferenceCharacterKeys": [
   ],
   "ReferenceEffectKeys": [
-    "b0001s4_s03_Dust",
-    "b0001s4_s03_Rock",
-    "Common_Hit04_C",
-    "Common_MaskCharacter01"
+    "b3496c3_s01_RadiaShoot01",
+    "b3496c3_s01_Charge01",
+    "b3496c3_s01_Hit01",
+    "b3496c3_s01_HitGun01",
+    "Common_Smoke03",
+    "b3496c3_s02_SmokeWalk01",
+    "b3496c3_s02_Slash01",
+    "Common_HitDash02_C"
   ],
   "ReferenceEmoIconKeys": [
   ],
   "ReferenceMusicKeys": [
   ],
   "ReferenceSFXKeys": [
-    "movment_035",
-    "voice_009",
-    "rock_501",
-    "rock_001"
+    "Creature_humanoid_013_absorb_balloon_air",
+    "Hit_explosion_004set_02_smoke_short_air",
+    "Hit_smash_033_glass_medium_short",
+    "Movement_misc_030_smash_glass_crystal_break",
+    "Hit_smash_030_large_short_splash",
+    "Whoosh_physical_037_air",
+    "Effect_beam_001set_02_liquid_spit_splash_fail_balloon_release",
+    "movement_giant_vines_shrink_01",
+    "Movement_natural_001_plant_vine_grow_burst",
+    "Movement_misc_043_bone_creak_squeak",
+    "Effect_splash_026_eat_chew_sticky_long",
+    "Creature_monster_023set_01_small_vocal_dark_whoosh",
+    "Whoosh_swing_006",
+    "Creature_monster_023set_03_small_vocal_dark_whoosh",
+    "Hit_smash_041_general_large_rush_whoosh",
+    "Hit_smash_009set_01_general"
   ],
   "ReferenceVoiceSFXKeys": [
-    "b0001s4_hit01_jpd"
   ],
-  "_armorCapacity": 500,
+  "_armorCapacity": 800,
   "_assistantSkill": null,
-  "_bloodCapacity": 500,
+  "_bloodCapacity": 800,
   "_characterAI": {
     "$type": "BattleModel.SequenceEnemyAI",
     "Character": null,
     "OrderList": [
-      "S1"
+      "S1",
+      "S2"
     ]
   },
-  "_defaultCoolDown": 3,
+  "_defaultCoolDown": 4,
   "_initialCoolDown": 1,
   "_levelStartBuff": [
   ],
-  "_mass": 1,
-  "_masterRank": 1,
+  "_mass": 3,
+  "_masterRank": 0,
   "_passiveBuff": [
   ],
   "_pose": "Prone",
-  "_power": 60,
+  "_power": 80,
   "_reviveCount": 0,
   "_skills": {
     "Arrive1": {
@@ -155,6 +185,59 @@
         }
       ]
     },
+    "S1": {
+      "$type": "BattleModel.BattleSkill",
+      "_isResolveTargetEachUnit": false,
+      "_skillIdentifiers": [
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": true,
+          "multi": {
+            "$type": "BattleModel.PVEPlayerTeam",
+            "includeDead": false,
+            "includeEmpty": false
+          },
+          "single": {
+            "$type": "BattleModel.FrontOfChars",
+            "group": {
+              "$type": "BattleModel.PVEPlayerTeam",
+              "includeDead": false,
+              "includeEmpty": false
+            }
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.HpDamageSkillEffect",
+              "Tag": 9,
+              "_keyString": "1",
+              "_skillModifier": {
+                "_constant": 0,
+                "_parameter": {
+                  "$type": "BattleModel.SkillCasterPower",
+                  "basePower": false
+                },
+                "_ratio": 1
+              }
+            },
+            {
+              "$type": "BattleModel.AddBuffSkillEffect",
+              "Tag": 132,
+              "_buffData": [
+                {
+                  "BuffId": "weak",
+                  "Forever": false,
+                  "LevelStack": 1,
+                  "OverwriteDuration": 3,
+                  "UserDefineVariable": {
+                  }
+                }
+              ],
+              "_keyString": "1"
+            }
+          ]
+        }
+      ]
+    },
     "S2": {
       "$type": "BattleModel.BattleSkill",
       "_isResolveTargetEachUnit": false,
@@ -180,23 +263,8 @@
                   "$type": "BattleModel.SkillCasterPower",
                   "basePower": false
                 },
-                "_ratio": 1
+                "_ratio": 2.5
               }
-            },
-            {
-              "$type": "BattleModel.AddBuffSkillEffect",
-              "Tag": 132,
-              "_buffData": [
-                {
-                  "BuffId": "stun",
-                  "Forever": false,
-                  "LevelStack": 0,
-                  "OverwriteDuration": 2,
-                  "UserDefineVariable": {
-                  }
-                }
-              ],
-              "_keyString": "1"
             }
           ]
         }
@@ -213,6 +281,36 @@
             {
               "ConditionList": [
               ],
+              "SkillID": "S1",
+              "_conditionalSequences": [
+              ],
+              "seq": "",
+              "t": null
+            }
+          ],
+          "_characterCoolDown": 2,
+          "assignTarget": {
+            "$type": "BattleModel.FrontOfChars",
+            "group": {
+              "$type": "BattleModel.PVEPlayerTeam",
+              "includeDead": false,
+              "includeEmpty": false
+            }
+          },
+          "icon": 0
+        }
+      ],
+      "_isViewSkillSet": false
+    },
+    "S2": {
+      "ComboList": [
+        {
+          "ConditionList": [
+          ],
+          "SkillList": [
+            {
+              "ConditionList": [
+              ],
               "SkillID": "S2",
               "_conditionalSequences": [
               ],
@@ -220,16 +318,13 @@
               "t": null
             }
           ],
-          "_characterCoolDown": 3,
+          "_characterCoolDown": 2,
           "assignTarget": {
-            "$type": "BattleModel.BackOfChars",
+            "$type": "BattleModel.FrontOfChars",
             "group": {
-              "$type": "BattleModel.OppositeTeamChars",
+              "$type": "BattleModel.PVEPlayerTeam",
               "includeDead": false,
-              "includeEmpty": false,
-              "reference": {
-                "$type": "BattleModel.ThisSkillCaster"
-              }
+              "includeEmpty": false
             }
           },
           "icon": 0
