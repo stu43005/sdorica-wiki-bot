@@ -2,14 +2,14 @@
   "$interpreted": {
     "Localization": "",
     "動作": {
-      "OnTurnBegin": {
+      "OnEachSkillSetEnd": {
         "效果": [
           {
             "效果": [
-              "對玩家中符合(是黑位)的角色所有角色賦予永久ex_bracers_P2"
+              "對玩家所有角色賦予永久check_win"
             ],
             "條件": [
-              "玩家中的任意角色 沒有ex_bracers_P2狀態"
+              "玩家中的任意角色 符合條件 HP% <= 50"
             ]
           }
         ],
@@ -17,19 +17,17 @@
         ]
       }
     },
-    "持續時間": 1,
+    "持續時間": 0,
     "最高層數": 99,
-    "標籤": "Hidden | NotRemoveWhenDie | Forever | InfinityTrigger"
+    "標籤": "Hidden"
   },
   "$type": "BattleModel.Buff",
   "ReferenceBuffKeys": [
-    "ex_bracers_P2",
-    "defense_up_small",
-    "CD_increase"
+    "check_win"
   ],
   "_actionTable": [
     {
-      "Key": 1,
+      "Key": 8,
       "Value": {
         "Actions": [
           {
@@ -38,21 +36,14 @@
                 "TargetField": {
                   "$type": "BattleModel.OperateCharacterGroup",
                   "group": {
-                    "$type": "BattleModel.CharGroupWhere",
-                    "condition": {
-                      "$type": "BattleModel.StoneTypeIs",
-                      "type": 2
-                    },
-                    "group": {
-                      "$type": "BattleModel.PVEPlayerTeam",
-                      "includeDead": true,
-                      "includeEmpty": false
-                    }
+                    "$type": "BattleModel.PVEPlayerTeam",
+                    "includeDead": false,
+                    "includeEmpty": false
                   },
                   "operation": {
                     "$type": "BattleModel.AddBuff",
                     "buffToAdd": {
-                      "BuffId": "ex_bracers_P2",
+                      "BuffId": "check_win",
                       "Forever": true,
                       "LevelStack": 0,
                       "OverwriteDuration": -1,
@@ -67,10 +58,15 @@
               {
                 "$type": "BattleModel.CharGroupCondition",
                 "condition": {
-                  "$type": "BattleModel.InverseC",
-                  "condition": {
-                    "$type": "BattleModel.HasBuff",
-                    "buffId": "ex_bracers_P2"
+                  "$type": "BattleModel.IntCompareC",
+                  "left": {
+                    "$type": "BattleModel.IntFieldC",
+                    "targetField": 2
+                  },
+                  "op": 3,
+                  "right": {
+                    "$type": "BattleModel.ConstantIntC",
+                    "constant": 50
                   }
                 },
                 "everybody": false,
@@ -88,27 +84,9 @@
       }
     }
   ],
-  "_duration": 1,
+  "_duration": 0,
   "_maxLevel": 99,
-  "_orderTable": [
-    {
-      "Key": 1,
-      "Value": {
-        "Order": 0
-      }
-    },
-    {
-      "Key": 1024,
-      "Value": {
-        "Order": 0
-      }
-    },
-    {
-      "Key": 8,
-      "Value": {
-        "Order": 0
-      }
-    }
-  ],
-  "_tag": 32837
+  "_orderTable": {
+  },
+  "_tag": 1
 }
