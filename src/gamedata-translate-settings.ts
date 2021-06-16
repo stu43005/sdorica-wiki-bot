@@ -396,7 +396,7 @@ export const gamedataTeanslateSettings: GamedataRef[] = [
 	{
 		table: "ExploreComposite",
 		column: "requireBuildingId",
-		func: gamedataString("ExploreBuilding", "id", "type:level"),
+		func: gamedataString("ExploreBuilding", "id", "type:level", undefined, false),
 	},
 	// TODO:
 	// {

@@ -53,7 +53,7 @@ export function ifor(...cbs: Func1[]): Func1 {
 	};
 }
 
-export function gamedataString(tablename: string, key: string | number, value: string | number, keyPrefix: string | ((key: string) => string) = "", originValue = false): Func1 {
+export function gamedataString(tablename: string, key: string | number, value: string | number, keyPrefix: string | ((key: string) => string) = "", originValue = true): Func1 {
 	return (str) => {
 		if (str) {
 			const table = ImperiumData.fromGamedata().getTable(tablename);
