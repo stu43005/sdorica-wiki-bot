@@ -1,6 +1,6 @@
 {
   "$interpreted": {
-    "Localization": "聯邦豹族武士",
+    "Localization": "t3565c4_1",
     "復活魂芯數": 0,
     "技能": {
       "Arrive1": [
@@ -10,10 +10,10 @@
         "對施術者破甲(攻擊力 x100%)、攻擊(最大血量的攻擊力 x100%)"
       ],
       "S1": [
-        "對施術者賦予3回合1層dexterity(靈巧)"
+        "對施術者的隊伍全體治療(攻擊力 x0.9)"
       ],
       "S2": [
-        "對施術者的目標攻擊(攻擊力 x1)"
+        "對玩家全體破甲(攻擊力 x0.9)、賦予2回合1層weak(易傷)"
       ]
     },
     "技能組": {
@@ -30,7 +30,7 @@
       ],
       "S2": [
         {
-          "CoolDown": 3,
+          "CoolDown": 2,
           "技能列表": [
             "施展S2"
           ],
@@ -40,19 +40,19 @@
         }
       ]
     },
-    "攻擊力": 80,
-    "攻擊力等級調整後": 75,
-    "敵人AI": "S1 -> S2",
+    "攻擊力": 100,
+    "攻擊力等級調整後": 94,
+    "敵人AI": "S2 -> S1",
     "消魂設置": {
       "Type1": "S1",
       "Type2": "S2",
       "Type4": "S3"
     },
-    "疊盾": 400,
-    "疊盾等級調整後": 377,
+    "疊盾": 600,
+    "疊盾等級調整後": 566,
     "站位": "無",
-    "血量": 400,
-    "血量等級調整後": 377,
+    "血量": 600,
+    "血量等級調整後": 566,
     "被動Buff": [
     ],
     "起始CD": 0,
@@ -60,60 +60,55 @@
   },
   "$type": "BattleModel.EnemyCharacter",
   "ReferenceBuffKeys": [
-    "dexterity",
-    "dexterity_trigger",
-    "dexterity_fightback_0",
-    "dexterity_fightback_1",
-    "dexterity_fightback_2",
-    "dexterity_fightback_3",
-    "dexterity_fightback_4",
-    "b0028sx_dodge"
+    "weak"
   ],
   "ReferenceCharacterKeys": [
   ],
   "ReferenceEffectKeys": [
-    "t3426c4_s01_Slash",
-    "Common_SmokeDash01_A",
-    "Common_SmokeDash02_A",
-    "t3426c4_s02_SpeedLine",
-    "Common_SmokeDash01_B",
-    "t3426c4_s02_Slash",
-    "Common_HitDash01_A",
-    "Common_Smoke10"
+    "t3565c4_s01_Powder01",
+    "Common_Heal01",
+    "t3565c4_s01_HandSlash01",
+    "t3565c4_s02_Slash01",
+    "Common_HitSlash01_C",
+    "Common_SmokeRun01_B",
+    "Common_SmokeDown02_A",
+    "Common_Smoke01_L"
   ],
   "ReferenceEmoIconKeys": [
   ],
   "ReferenceMusicKeys": [
   ],
   "ReferenceSFXKeys": [
-    "step_armour_005",
-    "step_armour_011",
-    "whoosh_sword_short_fast_01",
-    "sword_012",
-    "Movement_arms_004_bladed_draw",
-    "sword_scarpe_twist_01",
-    "Whoosh_physical_037_air",
-    "Whoosh_physical_034_discharge_short",
-    "Movement_arms_001set_02_bladed_draw_thin",
-    "knife_002",
-    "Hit_bladed_027set_01_katana_slash_swing_short",
-    "Hit_bladed_004set_01_slash_thin",
-    "Hit_bladed_020_metal_slash_small",
-    "Movement_cloth_003_flag",
-    "Movement_arms_006"
+    "step_armour_012",
+    "movement_potion_pickup_01",
+    "swoosh_070",
+    "movment_516",
+    "Effect_flash_055set_01_general_heal_small",
+    "swoosh_008",
+    "swoosh_016",
+    "step_armour_004",
+    "step_armour_014",
+    "Whoosh_swing_008_metal",
+    "movment_012",
+    "Hit_smash_047set_03_metal_bass_large_arms",
+    "metal_019",
+    "movment_052",
+    "movment_003",
+    "step_armour_009",
+    "movment_011",
+    "Movement_arms_013_parry"
   ],
   "ReferenceVoiceSFXKeys": [
-    "human_female_middle_08"
   ],
-  "_armorCapacity": 400,
+  "_armorCapacity": 600,
   "_assistantSkill": null,
-  "_bloodCapacity": 400,
+  "_bloodCapacity": 600,
   "_characterAI": {
     "$type": "BattleModel.SequenceEnemyAI",
     "Character": null,
     "OrderList": [
-      "S1",
-      "S2"
+      "S2",
+      "S1"
     ]
   },
   "_defaultCoolDown": 3,
@@ -125,7 +120,7 @@
   "_passiveBuff": [
   ],
   "_pose": "Stand",
-  "_power": 80,
+  "_power": 100,
   "_reviveCount": 0,
   "_skills": {
     "Arrive1": {
@@ -198,26 +193,30 @@
       "_skillIdentifiers": [
         {
           "CanBeEmpty": false,
-          "IsMultiple": false,
-          "multi": null,
-          "single": {
-            "$type": "BattleModel.ThisSkillCaster"
+          "IsMultiple": true,
+          "multi": {
+            "$type": "BattleModel.SelfTeamChars",
+            "excludeSelf": false,
+            "includeDead": false,
+            "includeEmpty": false,
+            "reference": {
+              "$type": "BattleModel.ThisSkillCaster"
+            }
           },
+          "single": null,
           "skillEffects": [
             {
-              "$type": "BattleModel.AddBuffSkillEffect",
-              "Tag": 132,
-              "_buffData": [
-                {
-                  "BuffId": "dexterity",
-                  "Forever": false,
-                  "LevelStack": 1,
-                  "OverwriteDuration": 3,
-                  "UserDefineVariable": {
-                  }
-                }
-              ],
-              "_keyString": "1"
+              "$type": "BattleModel.HpHealSkillEffect",
+              "Tag": 34,
+              "_keyString": "1",
+              "_skillModifier": {
+                "_constant": 0,
+                "_parameter": {
+                  "$type": "BattleModel.SkillCasterPower",
+                  "basePower": false
+                },
+                "_ratio": 1
+              }
             }
           ]
         }
@@ -229,18 +228,19 @@
       "_skillIdentifiers": [
         {
           "CanBeEmpty": false,
-          "IsMultiple": false,
-          "multi": null,
+          "IsMultiple": true,
+          "multi": {
+            "$type": "BattleModel.PVEPlayerTeam",
+            "includeDead": false,
+            "includeEmpty": false
+          },
           "single": {
-            "$type": "BattleModel.EnemyAssignee",
-            "reference": {
-              "$type": "BattleModel.ThisSkillCaster"
-            }
+            "$type": "BattleModel.ThisSkillCaster"
           },
           "skillEffects": [
             {
-              "$type": "BattleModel.HpDamageSkillEffect",
-              "Tag": 9,
+              "$type": "BattleModel.AmrBreakSkillEffect",
+              "Tag": 17,
               "_keyString": "1",
               "_skillModifier": {
                 "_constant": 0,
@@ -248,8 +248,23 @@
                   "$type": "BattleModel.SkillCasterPower",
                   "basePower": false
                 },
-                "_ratio": 1
+                "_ratio": 1.2
               }
+            },
+            {
+              "$type": "BattleModel.AddBuffSkillEffect",
+              "Tag": 132,
+              "_buffData": [
+                {
+                  "BuffId": "weak",
+                  "Forever": false,
+                  "LevelStack": 1,
+                  "OverwriteDuration": 2,
+                  "UserDefineVariable": {
+                  }
+                }
+              ],
+              "_keyString": "1"
             }
           ]
         }
@@ -296,7 +311,7 @@
               "t": null
             }
           ],
-          "_characterCoolDown": 3,
+          "_characterCoolDown": 2,
           "assignTarget": null,
           "icon": 0
         }

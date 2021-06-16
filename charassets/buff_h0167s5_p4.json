@@ -7,10 +7,11 @@
           {
             "效果": [
               "對本角色觸發S4",
+              "對本角色觸發S4",
               "對本角色觸發S4"
             ],
             "條件": [
-              "當前事件的狀態 是＂defense_up_small(減傷)＂"
+              "(當前事件的狀態 是＂defense_up_small(減傷)＂) 或 (當前事件的狀態 是＂bonusAttackPower(強化)＂)"
             ]
           }
         ],
@@ -22,10 +23,11 @@
           {
             "效果": [
               "對本角色觸發S4",
+              "對本角色觸發S4",
               "對本角色觸發S4"
             ],
             "條件": [
-              "當前事件的狀態 是＂defense_up_small(減傷)＂"
+              "(當前事件的狀態 是＂defense_up_small(減傷)＂) 或 (當前事件的狀態 是＂bonusAttackPower(強化)＂)"
             ]
           }
         ],
@@ -36,6 +38,7 @@
         "效果": [
           {
             "效果": [
+              "對本角色觸發S4",
               "對本角色觸發S4",
               "對本角色觸發S4"
             ],
@@ -52,6 +55,7 @@
         "效果": [
           {
             "效果": [
+              "對本角色觸發S4",
               "對本角色觸發S4",
               "對本角色觸發S4"
             ],
@@ -118,6 +122,19 @@
         "Actions": [
           {
             "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.CastSkillSet",
+                    "resetCasterCD": false,
+                    "skillsetId": "S4"
+                  }
+                }
+              },
               {
                 "TargetField": {
                   "$type": "BattleModel.OperateCharacter",
@@ -410,6 +427,19 @@
                     "skillsetId": "S4"
                   }
                 }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.CastSkillSet",
+                    "resetCasterCD": false,
+                    "skillsetId": "S4"
+                  }
+                }
               }
             ],
             "Conditions": [
@@ -464,17 +494,43 @@
                     "skillsetId": "S4"
                   }
                 }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.CastSkillSet",
+                    "resetCasterCD": false,
+                    "skillsetId": "S4"
+                  }
+                }
               }
             ],
             "Conditions": [
               {
-                "$type": "BattleModel.BuffCondition",
-                "buff": {
-                  "$type": "BattleModel.SpecifiedBuff"
+                "$type": "BattleModel.OrConditions",
+                "cond1": {
+                  "$type": "BattleModel.BuffCondition",
+                  "buff": {
+                    "$type": "BattleModel.SpecifiedBuff"
+                  },
+                  "condition": {
+                    "$type": "BattleModel.CheckBuffMatchBuffId",
+                    "subString": "defense_up_small"
+                  }
                 },
-                "condition": {
-                  "$type": "BattleModel.CheckBuffMatchBuffId",
-                  "subString": "defense_up_small"
+                "cond2": {
+                  "$type": "BattleModel.BuffCondition",
+                  "buff": {
+                    "$type": "BattleModel.SpecifiedBuff"
+                  },
+                  "condition": {
+                    "$type": "BattleModel.CheckBuffMatchBuffId",
+                    "subString": "bonusAttackPower"
+                  }
                 }
               }
             ]
@@ -515,17 +571,43 @@
                     "skillsetId": "S4"
                   }
                 }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.CastSkillSet",
+                    "resetCasterCD": false,
+                    "skillsetId": "S4"
+                  }
+                }
               }
             ],
             "Conditions": [
               {
-                "$type": "BattleModel.BuffCondition",
-                "buff": {
-                  "$type": "BattleModel.SpecifiedBuff"
+                "$type": "BattleModel.OrConditions",
+                "cond1": {
+                  "$type": "BattleModel.BuffCondition",
+                  "buff": {
+                    "$type": "BattleModel.SpecifiedBuff"
+                  },
+                  "condition": {
+                    "$type": "BattleModel.CheckBuffMatchBuffId",
+                    "subString": "defense_up_small"
+                  }
                 },
-                "condition": {
-                  "$type": "BattleModel.CheckBuffMatchBuffId",
-                  "subString": "defense_up_small"
+                "cond2": {
+                  "$type": "BattleModel.BuffCondition",
+                  "buff": {
+                    "$type": "BattleModel.SpecifiedBuff"
+                  },
+                  "condition": {
+                    "$type": "BattleModel.CheckBuffMatchBuffId",
+                    "subString": "bonusAttackPower"
+                  }
                 }
               }
             ]
@@ -546,7 +628,7 @@
       }
     },
     {
-      "Key": 16384,
+      "Key": 1024,
       "Value": {
         "Order": 0
       }
@@ -558,7 +640,7 @@
       }
     },
     {
-      "Key": 1024,
+      "Key": 16384,
       "Value": {
         "Order": 0
       }

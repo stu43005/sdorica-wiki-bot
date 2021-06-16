@@ -18,7 +18,7 @@
         "對施術者破甲(攻擊力 x100%)、攻擊(最大血量的攻擊力 x100%)"
       ],
       "S1_I1": [
-        "對施術者的友方指定對象破甲(1 x100%)、攻擊(最大血量的1 x100%)、賦予5回合undead2(延命)、移除狀態taunt(嘲諷)"
+        "對施術者的隊伍中符合(符合條件 HP > 0)的角色首位破甲(1 x100%)、攻擊(最大血量的1 x100%)、賦予5回合undead2(延命)、移除狀態taunt(嘲諷)"
       ],
       "S3_I1": [
         "對施術者的目標破甲吸血攻擊(攻擊力 x75)"
@@ -38,7 +38,7 @@
         {
           "CoolDown": 2,
           "技能列表": [
-            "對施術者的隊伍中符合(沒有undead2(延命)狀態)的角色首位施展S1_I1"
+            "施展S1_I1"
           ],
           "條件": [
             "施術者的隊伍中的任意角色 符合條件 HP > 0"
@@ -62,7 +62,6 @@
             "施展S3_I1"
           ],
           "條件": [
-            "施術者的隊伍中的任意角色 符合條件 HP > 0"
           ],
           "目標": "玩家中疊盾最低的角色"
         }
@@ -340,9 +339,30 @@
           "IsMultiple": false,
           "multi": null,
           "single": {
-            "$type": "BattleModel.FriendAssignee",
-            "reference": {
-              "$type": "BattleModel.ThisSkillCaster"
+            "$type": "BattleModel.FrontOfChars",
+            "group": {
+              "$type": "BattleModel.CharGroupWhere",
+              "condition": {
+                "$type": "BattleModel.IntCompareC",
+                "left": {
+                  "$type": "BattleModel.IntFieldC",
+                  "targetField": 0
+                },
+                "op": 2,
+                "right": {
+                  "$type": "BattleModel.ConstantIntC",
+                  "constant": 0
+                }
+              },
+              "group": {
+                "$type": "BattleModel.SelfTeamChars",
+                "excludeSelf": true,
+                "includeDead": false,
+                "includeEmpty": false,
+                "reference": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              }
             }
           },
           "skillEffects": [
@@ -577,28 +597,7 @@
               "_conditionalSequences": [
               ],
               "seq": "",
-              "t": {
-                "$type": "BattleModel.FrontOfChars",
-                "group": {
-                  "$type": "BattleModel.CharGroupWhere",
-                  "condition": {
-                    "$type": "BattleModel.InverseC",
-                    "condition": {
-                      "$type": "BattleModel.HasBuff",
-                      "buffId": "undead2"
-                    }
-                  },
-                  "group": {
-                    "$type": "BattleModel.SelfTeamChars",
-                    "excludeSelf": true,
-                    "includeDead": false,
-                    "includeEmpty": false,
-                    "reference": {
-                      "$type": "BattleModel.ThisSkillCaster"
-                    }
-                  }
-                }
-              }
+              "t": null
             }
           ],
           "_characterCoolDown": 2,
@@ -630,31 +629,6 @@
       "ComboList": [
         {
           "ConditionList": [
-            {
-              "$type": "BattleModel.CharGroupCondition",
-              "condition": {
-                "$type": "BattleModel.IntCompareC",
-                "left": {
-                  "$type": "BattleModel.IntFieldC",
-                  "targetField": 0
-                },
-                "op": 2,
-                "right": {
-                  "$type": "BattleModel.ConstantIntC",
-                  "constant": 0
-                }
-              },
-              "everybody": false,
-              "group": {
-                "$type": "BattleModel.SelfTeamChars",
-                "excludeSelf": true,
-                "includeDead": false,
-                "includeEmpty": false,
-                "reference": {
-                  "$type": "BattleModel.ThisSkillCaster"
-                }
-              }
-            }
           ],
           "SkillList": [
             {

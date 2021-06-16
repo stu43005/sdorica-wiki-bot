@@ -1,6 +1,6 @@
 {
   "$interpreted": {
-    "Localization": "【水壓】：初始10層，最高20層，過高會使水槍爆炸並移除我方全體角色負面狀態，水壓減少3層。水壓為0層時，本角色使用技能失敗。",
+    "Localization": "【水壓】：初始10層，最高20層，過高會使水槍爆炸移除我方全體角色負面狀態，水壓減少3層並觸發本角色二魂技能。水壓為0層時，本角色使用技能失敗。",
     "動作": {
       "OnEachSkillSetEnd": {
         "效果": [
@@ -15,7 +15,7 @@
           },
           {
             "效果": [
-              "對本狀態的層數增加-8",
+              "對本狀態的層數增加-6",
               "對本狀態的變數二改為1"
             ],
             "條件": [
@@ -33,7 +33,7 @@
             "條件": [
               "施術者是本角色",
               "施展的技能組是E3",
-              "本狀態的層數 < 8",
+              "本狀態的層數 < 6",
               "本狀態的變數二 == 0"
             ]
           },
@@ -69,7 +69,7 @@
         "效果": [
           {
             "效果": [
-              "技能係數增加(((本狀態的層數 + -10) * 10))%",
+              "技能係數增加(((本狀態的層數 + -10) * 15))%",
               "對本狀態的變數一改為1"
             ],
             "條件": [
@@ -80,7 +80,7 @@
           },
           {
             "效果": [
-              "技能係數增加(((本狀態的層數 + -10) * 5))%",
+              "技能係數增加(((本狀態的層數 + -10) * 3))%",
               "對本狀態的變數一改為1"
             ],
             "條件": [
@@ -102,195 +102,6 @@
   "ReferenceBuffKeys": [
   ],
   "_actionTable": [
-    {
-      "Key": 1024,
-      "Value": {
-        "Actions": [
-          {
-            "Actions": [
-              {
-                "TargetField": {
-                  "$type": "BattleModel.ExtraPowerForSkillEffect",
-                  "isPercent": true,
-                  "value": {
-                    "$type": "BattleModel.MultiplyInt",
-                    "left": {
-                      "$type": "BattleModel.PlusInt",
-                      "left": {
-                        "$type": "BattleModel.IntBuffField",
-                        "buff": {
-                          "$type": "BattleModel.ThisBuff"
-                        },
-                        "targetField": 1
-                      },
-                      "right": {
-                        "$type": "BattleModel.ConstanctInt",
-                        "constant": -10
-                      }
-                    },
-                    "right": {
-                      "$type": "BattleModel.ConstanctInt",
-                      "constant": 10
-                    }
-                  }
-                }
-              },
-              {
-                "TargetField": {
-                  "$type": "BattleModel.OperateThisBuff",
-                  "operation": {
-                    "$type": "BattleModel.SetBuffField",
-                    "lastIndepedentStack": false,
-                    "setOperator": 0,
-                    "targetField": 4,
-                    "value": {
-                      "$type": "BattleModel.ConstanctInt",
-                      "constant": 1
-                    }
-                  }
-                }
-              }
-            ],
-            "Conditions": [
-              {
-                "$type": "BattleModel.CharacterEqual",
-                "left": {
-                  "$type": "BattleModel.ThisBuffOwner"
-                },
-                "right": {
-                  "$type": "BattleModel.ThisSkillCaster"
-                }
-              },
-              {
-                "$type": "BattleModel.IntCompare",
-                "left": {
-                  "$type": "BattleModel.IntBuffField",
-                  "buff": {
-                    "$type": "BattleModel.ThisBuff"
-                  },
-                  "targetField": 4
-                },
-                "op": 0,
-                "right": {
-                  "$type": "BattleModel.ConstanctInt",
-                  "constant": 0
-                }
-              },
-              {
-                "$type": "BattleModel.BuffCondition",
-                "buff": {
-                  "$type": "BattleModel.ThisBuff"
-                },
-                "condition": {
-                  "$type": "BattleModel.IntCompareB",
-                  "left": {
-                    "$type": "BattleModel.IntFieldB",
-                    "targetField": 1
-                  },
-                  "op": 4,
-                  "right": {
-                    "$type": "BattleModel.ConstantIntB",
-                    "constant": 10
-                  }
-                }
-              }
-            ]
-          },
-          {
-            "Actions": [
-              {
-                "TargetField": {
-                  "$type": "BattleModel.ExtraPowerForSkillEffect",
-                  "isPercent": true,
-                  "value": {
-                    "$type": "BattleModel.MultiplyInt",
-                    "left": {
-                      "$type": "BattleModel.PlusInt",
-                      "left": {
-                        "$type": "BattleModel.IntBuffField",
-                        "buff": {
-                          "$type": "BattleModel.ThisBuff"
-                        },
-                        "targetField": 1
-                      },
-                      "right": {
-                        "$type": "BattleModel.ConstanctInt",
-                        "constant": -10
-                      }
-                    },
-                    "right": {
-                      "$type": "BattleModel.ConstanctInt",
-                      "constant": 5
-                    }
-                  }
-                }
-              },
-              {
-                "TargetField": {
-                  "$type": "BattleModel.OperateThisBuff",
-                  "operation": {
-                    "$type": "BattleModel.SetBuffField",
-                    "lastIndepedentStack": false,
-                    "setOperator": 0,
-                    "targetField": 4,
-                    "value": {
-                      "$type": "BattleModel.ConstanctInt",
-                      "constant": 1
-                    }
-                  }
-                }
-              }
-            ],
-            "Conditions": [
-              {
-                "$type": "BattleModel.CharacterEqual",
-                "left": {
-                  "$type": "BattleModel.ThisBuffOwner"
-                },
-                "right": {
-                  "$type": "BattleModel.ThisSkillCaster"
-                }
-              },
-              {
-                "$type": "BattleModel.IntCompare",
-                "left": {
-                  "$type": "BattleModel.IntBuffField",
-                  "buff": {
-                    "$type": "BattleModel.ThisBuff"
-                  },
-                  "targetField": 4
-                },
-                "op": 0,
-                "right": {
-                  "$type": "BattleModel.ConstanctInt",
-                  "constant": 0
-                }
-              },
-              {
-                "$type": "BattleModel.BuffCondition",
-                "buff": {
-                  "$type": "BattleModel.ThisBuff"
-                },
-                "condition": {
-                  "$type": "BattleModel.IntCompareB",
-                  "left": {
-                    "$type": "BattleModel.IntFieldB",
-                    "targetField": 1
-                  },
-                  "op": 1,
-                  "right": {
-                    "$type": "BattleModel.ConstantIntB",
-                    "constant": 10
-                  }
-                }
-              }
-            ]
-          }
-        ],
-        "Conditions": [
-        ]
-      }
-    },
     {
       "Key": 8,
       "Value": {
@@ -352,7 +163,7 @@
                     "targetField": 1,
                     "value": {
                       "$type": "BattleModel.ConstanctInt",
-                      "constant": -8
+                      "constant": -6
                     }
                   }
                 }
@@ -478,7 +289,7 @@
                 "op": 1,
                 "right": {
                   "$type": "BattleModel.ConstanctInt",
-                  "constant": 8
+                  "constant": 6
                 }
               },
               {
@@ -660,19 +471,208 @@
         "Conditions": [
         ]
       }
+    },
+    {
+      "Key": 1024,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.ExtraPowerForSkillEffect",
+                  "isPercent": true,
+                  "value": {
+                    "$type": "BattleModel.MultiplyInt",
+                    "left": {
+                      "$type": "BattleModel.PlusInt",
+                      "left": {
+                        "$type": "BattleModel.IntBuffField",
+                        "buff": {
+                          "$type": "BattleModel.ThisBuff"
+                        },
+                        "targetField": 1
+                      },
+                      "right": {
+                        "$type": "BattleModel.ConstanctInt",
+                        "constant": -10
+                      }
+                    },
+                    "right": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 15
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 1
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                },
+                "right": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.ThisBuff"
+                  },
+                  "targetField": 4
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 0
+                }
+              },
+              {
+                "$type": "BattleModel.BuffCondition",
+                "buff": {
+                  "$type": "BattleModel.ThisBuff"
+                },
+                "condition": {
+                  "$type": "BattleModel.IntCompareB",
+                  "left": {
+                    "$type": "BattleModel.IntFieldB",
+                    "targetField": 1
+                  },
+                  "op": 4,
+                  "right": {
+                    "$type": "BattleModel.ConstantIntB",
+                    "constant": 10
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.ExtraPowerForSkillEffect",
+                  "isPercent": true,
+                  "value": {
+                    "$type": "BattleModel.MultiplyInt",
+                    "left": {
+                      "$type": "BattleModel.PlusInt",
+                      "left": {
+                        "$type": "BattleModel.IntBuffField",
+                        "buff": {
+                          "$type": "BattleModel.ThisBuff"
+                        },
+                        "targetField": 1
+                      },
+                      "right": {
+                        "$type": "BattleModel.ConstanctInt",
+                        "constant": -10
+                      }
+                    },
+                    "right": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 3
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 1
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                },
+                "right": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.ThisBuff"
+                  },
+                  "targetField": 4
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 0
+                }
+              },
+              {
+                "$type": "BattleModel.BuffCondition",
+                "buff": {
+                  "$type": "BattleModel.ThisBuff"
+                },
+                "condition": {
+                  "$type": "BattleModel.IntCompareB",
+                  "left": {
+                    "$type": "BattleModel.IntFieldB",
+                    "targetField": 1
+                  },
+                  "op": 1,
+                  "right": {
+                    "$type": "BattleModel.ConstantIntB",
+                    "constant": 10
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
     }
   ],
   "_duration": 0,
   "_maxLevel": 21,
   "_orderTable": [
     {
-      "Key": 1024,
+      "Key": 8,
       "Value": {
         "Order": 0
       }
     },
     {
-      "Key": 8,
+      "Key": 1024,
       "Value": {
         "Order": 0
       }
