@@ -445,8 +445,10 @@ export function getChapterType(chapter: RowWrapper) {
 		}
 		case "SideStory":
 			return "角色故事";
+		case "Battlefield":
+			return "戰場";
 	}
-	logger.error(`Unknown main chapter: ${chapterTitle}`);
+	logger.error(`Unknown main chapter: ${chapterCategory}`);
 	debugger;
 	return "Unknown";
 }

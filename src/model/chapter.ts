@@ -196,6 +196,7 @@ export class Chapter {
 				return ChapterWikiGroup.Event;
 
 			case VolumeEnum.Test: return ChapterWikiGroup.Test;
+			case VolumeEnum.Battlefield: return ChapterWikiGroup.Battlefield;
 		}
 	}
 

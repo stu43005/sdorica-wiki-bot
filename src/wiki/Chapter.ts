@@ -1,5 +1,5 @@
 import { ImperiumData } from "../imperium-data";
-import { localizationQuestName, localizationQuestSubtitle, localizationString } from "../localization";
+import { localizationQuestName, localizationQuestSubtitle, localizationString, localizationVolumeNameById } from "../localization";
 import { objectEach } from "../utils";
 import { item2wiki, item2wikiWithType, treasureList } from "../wiki-item";
 import { chapterMetadata, questMetadata } from "../wiki-quest";
@@ -16,6 +16,8 @@ function stateCondition(cond: string, param1: string): string {
 			return `諦視者等級 ${param1}`;
 		case "QuestComplete":
 			return `通過關卡 ${localizationQuestName()(param1)}`;
+		case "VolumeExist":
+			return `已開啟卷 ${localizationVolumeNameById()(param1)}`;
 		case "FlagCondition":
 			return `Flag: ${param1}`;
 	}

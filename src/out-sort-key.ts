@@ -19,6 +19,13 @@ const TABLE_KEYS: Record<string, string[]> = {
 		"giveType4", "giveLinkId4", "giveAmount4",
 	],
 	AvgFlagUI: ["id", "flagId", "type", "effectValue", "titleKey", "localizationKey", "iconKey", "order", "fractionAnimation"],
+	BattlefieldDropItems: [
+		"groupId", "questLv", "bossLv",
+		"chance1", "giveType1", "giveLinkId1", "giveAmount1",
+		"chance2", "giveType2", "giveLinkId2", "giveAmount2",
+		"chance3", "giveType3", "giveLinkId3", "giveAmount3",
+		"chance4", "giveType4", "giveLinkId4", "giveAmount4",
+	],
 	BuildInAssetBundle: ["type", "effectValue"],
 	ChapterCount: ["id", "name", "dynamicRate", "initial", "max", "regainType", "regainValue", "itemIcon", "payType", "linkId", "amount"],
 	Chapters: [

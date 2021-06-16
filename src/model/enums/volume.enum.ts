@@ -7,4 +7,5 @@ export enum VolumeEnum {
 	Test = 'Test',
 	SideStory = 'SideStory',
 	Explore = 'Explore',
+	Battlefield = 'Battlefield',
 }

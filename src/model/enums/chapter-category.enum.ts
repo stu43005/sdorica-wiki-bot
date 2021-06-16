@@ -7,4 +7,5 @@ export enum ChapterCategory {
 	Test = 'Test',
 	SideStory = 'SideStory',
 	Explore = 'Explore',
+	Battlefield = 'Battlefield',
 }

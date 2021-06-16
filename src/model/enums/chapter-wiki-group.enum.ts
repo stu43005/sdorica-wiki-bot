@@ -18,6 +18,7 @@ export enum ChapterWikiGroup {
 	Adventure = '幻境試煉',
 	Multiplayer = '與夥伴合奏',
 	Event = '活動關卡',
+	Battlefield = '戰場',
 
 	Test = 'Test',
 }

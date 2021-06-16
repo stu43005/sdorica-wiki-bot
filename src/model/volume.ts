@@ -34,6 +34,11 @@ export class Volume {
 		}
 	}
 
+	/**
+	 * @alias {@link Volume.order}
+	 */
+	get id(): number { return this.order; }
+
 	get volume(): VolumeEnum { return this.row.get('volume'); }
 	get enable(): boolean { return !!this.row.get('enable'); }
 	get order(): number { return +this.row.get('order'); }

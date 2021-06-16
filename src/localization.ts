@@ -381,11 +381,31 @@ export function white(): Func1 {
 	};
 }
 
+export function localizationVolumeNameById(): Func1 {
+	return ifor(
+		call2(
+			gamedataString("Volume", "order", "name", undefined, true),
+			localizationString("Metagame")
+		),
+		gamedataString("Volume", "order", "title"),
+	);
+}
+
+export function localizationChapterName(): Func1 {
+	return call2(
+		gamedataString("Chapters", "id", "title", undefined, true),
+		localizationString("RegionName")
+	);
+}
+
 /**
  * `main_001_201` => `1-1 王國治安官`
  */
 export function localizationQuestName(): Func1 {
-	return call2(gamedataString("Quests", "id", "levelId"), localizationString("QuestName"));
+	return call2(
+		gamedataString("Quests", "id", "levelId", undefined, true),
+		localizationString("QuestName")
+	);
 }
 
 export function localizationQuestSubtitle(): Func1 {

@@ -1,5 +1,5 @@
 import { ImperiumData } from "./imperium-data";
-import { black, call2, colonFirst, Func1, gamedataString, gold, ifor, localizationCharacterName, localizationCharacterNameByHeroId, localizationCharacterNameWithDefault, localizationExploreBuildingName, localizationHomelandBuildingName, localizationItemName, localizationItemNameWithType, localizationMonsterName, localizationMonsterSkillName, localizationMonsterSpecialityName, localizationQuestName, localizationString, localizationStringAuto, localizationTavernMissionName, localizationUnlockCondition, rank, semicolon, weekday, white } from "./localization";
+import { black, call2, colonFirst, Func1, gamedataString, gold, ifor, localizationChapterName, localizationCharacterName, localizationCharacterNameByHeroId, localizationCharacterNameWithDefault, localizationExploreBuildingName, localizationHomelandBuildingName, localizationItemName, localizationItemNameWithType, localizationMonsterName, localizationMonsterSkillName, localizationMonsterSpecialityName, localizationQuestName, localizationString, localizationStringAuto, localizationTavernMissionName, localizationUnlockCondition, rank, semicolon, weekday, white } from "./localization";
 import { Logger } from "./logger";
 import { ItemCategory } from './model/enums/item-category.enum';
 import { Item } from './model/item';
@@ -600,10 +600,7 @@ export const gamedataTeanslateSettings: GamedataRef[] = [
 			const strings = str.split(":");
 			switch (strings[1]) {
 				case "Chapter":
-					return call2(
-						gamedataString("Chapters", "id", "title", undefined, true),
-						localizationString("RegionName")
-					)(strings[0]);
+					return localizationChapterName()(strings[0]);
 				case "Hero":
 					return localizationCharacterNameByHeroId()(strings[0]);
 			}
@@ -684,6 +681,21 @@ export const gamedataTeanslateSettings: GamedataRef[] = [
 		table: "ChapterCount",
 		column: "linkId:payType",
 		func: localizationItemNameWithType(),
+	},
+	{
+		table: "BattlefieldDropItems",
+		column: "giveLinkId1:giveType1,giveLinkId2:giveType2,giveLinkId3:giveType3,giveLinkId4:giveType4",
+		func: localizationItemNameWithType(),
+	},
+	{
+		table: "LevelTriggerChapters",
+		column: "titleKey,localizationKey",
+		func: localizationString("LevelTriggerChapters"),
+	},
+	{
+		table: "LevelTriggerChapters",
+		column: "chapterId",
+		func: localizationChapterName(),
 	},
 ];
 
