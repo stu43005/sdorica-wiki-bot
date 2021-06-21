@@ -3,7 +3,7 @@ import express from "express";
 import http from "http";
 import { createProxyMiddleware } from "http-proxy-middleware";
 import https from "https";
-import { ORIGIN_PATH } from "./config";
+import { DATA_PATH, ORIGIN_PATH } from "./config";
 import { discordWebhook } from "./discord-webhook";
 import { inputJsonSync } from "./input";
 import { Logger } from "./logger";
@@ -11,6 +11,9 @@ import { fsExists, outJson } from "./out";
 import { scriptMain } from "./script";
 import { jsonBlock } from "./utils";
 import { wikiMain } from "./wiki";
+import execSh from "exec-sh";
+
+const exec = execSh.promise;
 
 const logger = new Logger('origin-proxy');
 
@@ -19,6 +22,7 @@ const androidKeys = ['android', 'androidExp'];
 const iosKeys = ['ios', 'iosExp'];
 
 let latestUUID: Record<string, string> = {};
+let inProcess = false;
 
 async function onProxyReq(proxyReq: http.ClientRequest, req: express.Request, res: express.Response) {
 	logger.debug('[onProxyReq]', req.path);
@@ -67,12 +71,17 @@ async function onProxyReq(proxyReq: http.ClientRequest, req: express.Request, re
 			"content": 'new origin <:MisaDa:586572564399259669>' + jsonBlock(latestUUID),
 		});
 
-		await outJson(ORIGIN_PATH, Object.assign({}, oldJson, latestUUID));
+		if (inProcess) return;
+		inProcess = true;
 
+		await exec("git reset --hard && git pull", { cwd: DATA_PATH });
+
+		await outJson(ORIGIN_PATH, Object.assign({}, oldJson, latestUUID));
 		latestUUID = {};
 
-		await scriptMain();
-		await wikiMain();
+		await exec("git add origin.json && git commit -m 更新origin.json && git push", { cwd: DATA_PATH });
+
+		inProcess = false;
 	}
 }
 
