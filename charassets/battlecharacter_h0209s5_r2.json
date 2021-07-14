@@ -12,13 +12,13 @@
     "復活魂芯數": 10,
     "技能": {
       "A1": [
-        "對玩家的倒數第1個角色{\"Tag\":0,\"_keyString\":\"1\",\"$type\":\"BattleModel.EmptyBuffSkillEffect\"}"
+        "對玩家中符合(是白位)的角色全體{\"Tag\":0,\"_keyString\":\"1\",\"$type\":\"BattleModel.EmptyBuffSkillEffect\"}"
       ],
       "Arrive1": [
         "對施術者冷卻時間加1"
       ],
       "Retreat1": [
-        "對施術者破甲(攻擊力 x100%)、攻擊(最大血量的攻擊力 x100%)"
+        "對施術者{\"Tag\":65540,\"_keyString\":\"1\",\"$type\":\"BattleModel.DirectKillSkillEffect\"}"
       ],
       "S1": [
         "對施術者賦予6回合1層bonusAttackPower(強化)",
@@ -318,8 +318,19 @@
       "_skillIdentifiers": [
         {
           "CanBeEmpty": true,
-          "IsMultiple": false,
-          "multi": null,
+          "IsMultiple": true,
+          "multi": {
+            "$type": "BattleModel.CharGroupWhere",
+            "condition": {
+              "$type": "BattleModel.StoneTypeIs",
+              "type": 4
+            },
+            "group": {
+              "$type": "BattleModel.PVEPlayerTeam",
+              "includeDead": false,
+              "includeEmpty": false
+            }
+          },
           "single": {
             "$type": "BattleModel.IndexOfChars",
             "backward": false,
@@ -378,30 +389,9 @@
           },
           "skillEffects": [
             {
-              "$type": "BattleModel.AmrReduceRatioSkillEffect",
-              "Tag": 34820,
-              "_keyString": "1",
-              "_skillModifier": {
-                "_constant": 0,
-                "_parameter": {
-                  "$type": "BattleModel.SkillCasterPower",
-                  "basePower": false
-                },
-                "_ratio": 1
-              }
-            },
-            {
-              "$type": "BattleModel.HpDamageRatioMaxSkillEffect",
-              "Tag": 32777,
-              "_keyString": "1",
-              "_skillModifier": {
-                "_constant": 0,
-                "_parameter": {
-                  "$type": "BattleModel.SkillCasterPower",
-                  "basePower": false
-                },
-                "_ratio": 1
-              }
+              "$type": "BattleModel.DirectKillSkillEffect",
+              "Tag": 65540,
+              "_keyString": "1"
             }
           ]
         }

@@ -8,6 +8,7 @@
             "效果": [
               "對本角色觸發S1",
               "對本角色觸發S2",
+              "對本角色的對方中符合((的AssetId包含＂b0037s＂字串) 或 (的AssetId包含＂b0202s＂字串))的角色所有角色賦予永久h0138s5_equip_egg",
               "對本狀態的變數一改為1"
             ],
             "條件": [
@@ -26,6 +27,9 @@
   },
   "$type": "BattleModel.Buff",
   "ReferenceBuffKeys": [
+    "h0138s5_equip_egg",
+    "dexterity_trigger",
+    "joy"
   ],
   "_actionTable": [
     {
@@ -93,6 +97,44 @@
                     "UseAssignParameter": false,
                     "resetCasterCD": false,
                     "skillsetId": "S2"
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacterGroup",
+                  "group": {
+                    "$type": "BattleModel.CharGroupWhere",
+                    "condition": {
+                      "$type": "BattleModel.OrConditionsC",
+                      "cond1": {
+                        "$type": "BattleModel.AssetIdHasSubString",
+                        "subString": "b0037s"
+                      },
+                      "cond2": {
+                        "$type": "BattleModel.AssetIdHasSubString",
+                        "subString": "b0202s"
+                      }
+                    },
+                    "group": {
+                      "$type": "BattleModel.OppositeTeamChars",
+                      "includeDead": false,
+                      "includeEmpty": false,
+                      "reference": {
+                        "$type": "BattleModel.ThisBuffOwner"
+                      }
+                    }
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "h0138s5_equip_egg",
+                      "Forever": true,
+                      "LevelStack": 0,
+                      "OverwriteDuration": -1,
+                      "UserDefineVariable": {
+                      }
+                    }
                   }
                 }
               },

@@ -18,7 +18,7 @@
         "對施術者冷卻時間加1"
       ],
       "Retreat1": [
-        "對施術者破甲(攻擊力 x100%)、攻擊(最大血量的攻擊力 x100%)"
+        "對施術者{\"Tag\":65540,\"_keyString\":\"1\",\"$type\":\"BattleModel.DirectKillSkillEffect\"}"
       ],
       "S1": [
         "對敵人全體賦予6回合1層weak(易傷)",
@@ -34,7 +34,8 @@
       ],
       "S3_2": [
         "對敵人全體攻擊(攻擊力 x4)",
-        "對玩家中符合(是金位)的角色全體賦予1回合1層t0207s5_S2_trigger、賦予3回合1層bonusAttackPower(強化)"
+        "對玩家中符合(是金位)的角色全體賦予1回合1層t0207s5_S2_trigger",
+        "對施術者的隊伍全體賦予3回合1層bonusAttackPower(強化)"
       ]
     },
     "技能組": {
@@ -80,7 +81,7 @@
           "條件": [
             "施術者擁有rage(怒氣)狀態",
             "施術者擁有leader(領袖)狀態",
-            "玩家中符合(是黑位)的角色中的任意角色 沒有死亡"
+            "玩家中符合(是金位)的角色中的任意角色 沒有死亡"
           ],
           "目標": ""
         },
@@ -371,30 +372,9 @@
           },
           "skillEffects": [
             {
-              "$type": "BattleModel.AmrReduceRatioSkillEffect",
-              "Tag": 34820,
-              "_keyString": "1",
-              "_skillModifier": {
-                "_constant": 0,
-                "_parameter": {
-                  "$type": "BattleModel.SkillCasterPower",
-                  "basePower": false
-                },
-                "_ratio": 1
-              }
-            },
-            {
-              "$type": "BattleModel.HpDamageRatioMaxSkillEffect",
-              "Tag": 32777,
-              "_keyString": "1",
-              "_skillModifier": {
-                "_constant": 0,
-                "_parameter": {
-                  "$type": "BattleModel.SkillCasterPower",
-                  "basePower": false
-                },
-                "_ratio": 1
-              }
+              "$type": "BattleModel.DirectKillSkillEffect",
+              "Tag": 65540,
+              "_keyString": "1"
             }
           ]
         }
@@ -760,7 +740,23 @@
                 }
               ],
               "_keyString": "1"
-            },
+            }
+          ]
+        },
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": true,
+          "multi": {
+            "$type": "BattleModel.SelfTeamChars",
+            "excludeSelf": false,
+            "includeDead": false,
+            "includeEmpty": false,
+            "reference": {
+              "$type": "BattleModel.ThisSkillCaster"
+            }
+          },
+          "single": null,
+          "skillEffects": [
             {
               "$type": "BattleModel.AddBuffSkillEffect",
               "Tag": 132,
@@ -881,7 +877,7 @@
                   "$type": "BattleModel.CharGroupWhere",
                   "condition": {
                     "$type": "BattleModel.StoneTypeIs",
-                    "type": 2
+                    "type": 1
                   },
                   "group": {
                     "$type": "BattleModel.PVEPlayerTeam",

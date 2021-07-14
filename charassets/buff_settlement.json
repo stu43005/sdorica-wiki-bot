@@ -92,7 +92,7 @@
         "效果": [
           {
             "效果": [
-              "立即施展技能：對本角色的對方全體攻擊((在此回合的施術者中，玩家及{\"$type\":\"BattleModel.PVEAssistant\"}的減少體力 + 在此回合的施術者中，玩家及{\"$type\":\"BattleModel.PVEAssistant\"}的減少疊盾) x1)、賦予0回合1層FSM_MagicalCircle04_trigger",
+              "立即施展技能：對本角色的對方全體攻擊({\"$type\":\"BattleModel.BuffAssignedInteger\"} x1)、賦予0回合1層FSM_MagicalCircle04_trigger",
               "對本狀態的變數一改為0"
             ],
             "條件": [
@@ -140,8 +140,52 @@
                       "$type": "BattleModel.NoneCharacters"
                     },
                     "AssignInteger": {
-                      "$type": "BattleModel.ConstanctInt",
-                      "constant": 0
+                      "$id": "29",
+                      "$type": "BattleModel.PlusInt",
+                      "left": {
+                        "$type": "BattleModel.TransitionResultValue",
+                        "ResultValue": {
+                          "$type": "BattleModel.TotalResultsValueOfCharacterGroup",
+                          "CharType": "Sender",
+                          "Group": {
+                            "$type": "BattleModel.UnionCharGroup",
+                            "group1": {
+                              "$type": "BattleModel.PVEPlayerTeam",
+                              "includeDead": true,
+                              "includeEmpty": true
+                            },
+                            "group2": {
+                              "$type": "BattleModel.PVEAssistant"
+                            }
+                          },
+                          "Results": {
+                            "$type": "BattleModel.ThisTurnResult"
+                          },
+                          "ValueType": "HpDamage"
+                        }
+                      },
+                      "right": {
+                        "$type": "BattleModel.TransitionResultValue",
+                        "ResultValue": {
+                          "$type": "BattleModel.TotalResultsValueOfCharacterGroup",
+                          "CharType": "Sender",
+                          "Group": {
+                            "$type": "BattleModel.UnionCharGroup",
+                            "group1": {
+                              "$type": "BattleModel.PVEPlayerTeam",
+                              "includeDead": true,
+                              "includeEmpty": true
+                            },
+                            "group2": {
+                              "$type": "BattleModel.PVEAssistant"
+                            }
+                          },
+                          "Results": {
+                            "$type": "BattleModel.ThisTurnResult"
+                          },
+                          "ValueType": "ArmorReduce"
+                        }
+                      }
                     },
                     "AssignIntegerGroup": {
                       "$type": "BattleModel.ConstanctIntegerGroup",
@@ -150,6 +194,7 @@
                     }
                   },
                   "AssignValue": {
+                    "$id": "29",
                     "$type": "BattleModel.PlusInt",
                     "left": {
                       "$type": "BattleModel.TransitionResultValue",
@@ -218,54 +263,7 @@
                         "_skillModifier": {
                           "_constant": 0,
                           "_parameter": {
-                            "$type": "BattleModel.AssignedValue",
-                            "_value": {
-                              "$type": "BattleModel.PlusInt",
-                              "left": {
-                                "$type": "BattleModel.TransitionResultValue",
-                                "ResultValue": {
-                                  "$type": "BattleModel.TotalResultsValueOfCharacterGroup",
-                                  "CharType": "Sender",
-                                  "Group": {
-                                    "$type": "BattleModel.UnionCharGroup",
-                                    "group1": {
-                                      "$type": "BattleModel.PVEPlayerTeam",
-                                      "includeDead": true,
-                                      "includeEmpty": true
-                                    },
-                                    "group2": {
-                                      "$type": "BattleModel.PVEAssistant"
-                                    }
-                                  },
-                                  "Results": {
-                                    "$type": "BattleModel.ThisTurnResult"
-                                  },
-                                  "ValueType": "HpDamage"
-                                }
-                              },
-                              "right": {
-                                "$type": "BattleModel.TransitionResultValue",
-                                "ResultValue": {
-                                  "$type": "BattleModel.TotalResultsValueOfCharacterGroup",
-                                  "CharType": "Sender",
-                                  "Group": {
-                                    "$type": "BattleModel.UnionCharGroup",
-                                    "group1": {
-                                      "$type": "BattleModel.PVEPlayerTeam",
-                                      "includeDead": true,
-                                      "includeEmpty": true
-                                    },
-                                    "group2": {
-                                      "$type": "BattleModel.PVEAssistant"
-                                    }
-                                  },
-                                  "Results": {
-                                    "$type": "BattleModel.ThisTurnResult"
-                                  },
-                                  "ValueType": "ArmorReduce"
-                                }
-                              }
-                            }
+                            "$type": "BattleModel.BuffAssignedInteger"
                           },
                           "_ratio": 1
                         }
@@ -287,7 +285,7 @@
                       }
                     ]
                   },
-                  "UseAssignParameter": false,
+                  "UseAssignParameter": true,
                   "WillTriggerBuff": false
                 }
               },

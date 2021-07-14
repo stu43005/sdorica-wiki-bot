@@ -64,7 +64,7 @@
           {
             "效果": [
               "對本角色賦予1回合1層poison_trigger",
-              "立即施展技能：對本角色穿透((本角色的HP * 本狀態的層數) x0.1)"
+              "立即施展技能：對本角色穿透({\"$type\":\"BattleModel.BuffAssignedInteger\"} x0.1)"
             ],
             "條件": [
             ]
@@ -122,8 +122,22 @@
                       "$type": "BattleModel.NoneCharacters"
                     },
                     "AssignInteger": {
-                      "$type": "BattleModel.ConstanctInt",
-                      "constant": 0
+                      "$id": "30",
+                      "$type": "BattleModel.MultiplyInt",
+                      "left": {
+                        "$type": "BattleModel.IntCharaterField",
+                        "character": {
+                          "$type": "BattleModel.ThisBuffOwner"
+                        },
+                        "targetField": 0
+                      },
+                      "right": {
+                        "$type": "BattleModel.IntBuffField",
+                        "buff": {
+                          "$type": "BattleModel.ThisBuff"
+                        },
+                        "targetField": 1
+                      }
                     },
                     "AssignIntegerGroup": {
                       "$type": "BattleModel.ConstanctIntegerGroup",
@@ -132,6 +146,7 @@
                     }
                   },
                   "AssignValue": {
+                    "$id": "30",
                     "$type": "BattleModel.MultiplyInt",
                     "left": {
                       "$type": "BattleModel.IntCharaterField",
@@ -163,31 +178,14 @@
                         "_skillModifier": {
                           "_constant": 0,
                           "_parameter": {
-                            "$type": "BattleModel.AssignedValue",
-                            "_value": {
-                              "$type": "BattleModel.MultiplyInt",
-                              "left": {
-                                "$type": "BattleModel.IntCharaterField",
-                                "character": {
-                                  "$type": "BattleModel.ThisBuffOwner"
-                                },
-                                "targetField": 0
-                              },
-                              "right": {
-                                "$type": "BattleModel.IntBuffField",
-                                "buff": {
-                                  "$type": "BattleModel.ThisBuff"
-                                },
-                                "targetField": 1
-                              }
-                            }
+                            "$type": "BattleModel.BuffAssignedInteger"
                           },
                           "_ratio": 0.1
                         }
                       }
                     ]
                   },
-                  "UseAssignParameter": false,
+                  "UseAssignParameter": true,
                   "WillTriggerBuff": false
                 }
               }

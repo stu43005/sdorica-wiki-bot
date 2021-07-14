@@ -65,7 +65,7 @@
           {
             "效果": [
               "對本角色賦予1回合1層regeneration_trigger",
-              "立即施展技能：對本角色治療((本角色的最大HP * 本狀態的層數) x0.099999)"
+              "立即施展技能：對本角色治療({\"$type\":\"BattleModel.BuffAssignedInteger\"} x0.099999)"
             ],
             "條件": [
             ]
@@ -121,8 +121,22 @@
                       "$type": "BattleModel.NoneCharacters"
                     },
                     "AssignInteger": {
-                      "$type": "BattleModel.ConstanctInt",
-                      "constant": 0
+                      "$id": "24",
+                      "$type": "BattleModel.MultiplyInt",
+                      "left": {
+                        "$type": "BattleModel.IntCharaterField",
+                        "character": {
+                          "$type": "BattleModel.ThisBuffOwner"
+                        },
+                        "targetField": 1
+                      },
+                      "right": {
+                        "$type": "BattleModel.IntBuffField",
+                        "buff": {
+                          "$type": "BattleModel.ThisBuff"
+                        },
+                        "targetField": 1
+                      }
                     },
                     "AssignIntegerGroup": {
                       "$type": "BattleModel.ConstanctIntegerGroup",
@@ -131,6 +145,7 @@
                     }
                   },
                   "AssignValue": {
+                    "$id": "24",
                     "$type": "BattleModel.MultiplyInt",
                     "left": {
                       "$type": "BattleModel.IntCharaterField",
@@ -162,31 +177,14 @@
                         "_skillModifier": {
                           "_constant": 0,
                           "_parameter": {
-                            "$type": "BattleModel.AssignedValue",
-                            "_value": {
-                              "$type": "BattleModel.MultiplyInt",
-                              "left": {
-                                "$type": "BattleModel.IntCharaterField",
-                                "character": {
-                                  "$type": "BattleModel.ThisBuffOwner"
-                                },
-                                "targetField": 1
-                              },
-                              "right": {
-                                "$type": "BattleModel.IntBuffField",
-                                "buff": {
-                                  "$type": "BattleModel.ThisBuff"
-                                },
-                                "targetField": 1
-                              }
-                            }
+                            "$type": "BattleModel.BuffAssignedInteger"
                           },
                           "_ratio": 0.11111
                         }
                       }
                     ]
                   },
-                  "UseAssignParameter": false,
+                  "UseAssignParameter": true,
                   "WillTriggerBuff": true
                 }
               }
