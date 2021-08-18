@@ -2,6 +2,72 @@
   "$interpreted": {
     "Localization": "",
     "動作": {
+      "OnBuffAdd": {
+        "效果": [
+          {
+            "效果": [
+              "對本角色移除狀態changeIdle_notRemoveWhenDie",
+              "對本角色賦予永久changeIdle_1_notRemoveWhenDie"
+            ],
+            "條件": [
+              "當前事件的狀態 是＂t0188s5_black(【千夜】)＂"
+            ]
+          },
+          {
+            "效果": [
+              "對本角色移除狀態changeIdle_1_notRemoveWhenDie",
+              "對本角色賦予永久changeIdle_notRemoveWhenDie"
+            ],
+            "條件": [
+              "當前事件的狀態 是＂t0188s5_gold(【煦陽】)＂"
+            ]
+          },
+          {
+            "效果": [
+              "對本角色移除狀態changeIdle_1_notRemoveWhenDie",
+              "對本角色移除狀態changeIdle_notRemoveWhenDie"
+            ],
+            "條件": [
+              "當前事件的狀態 是＂t0188s5_white(【細雪】)＂"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnBuffStack": {
+        "效果": [
+          {
+            "效果": [
+              "對本角色移除狀態changeIdle_notRemoveWhenDie",
+              "對本角色賦予永久changeIdle_1_notRemoveWhenDie"
+            ],
+            "條件": [
+              "當前事件的狀態 是＂t0188s5_black(【千夜】)＂"
+            ]
+          },
+          {
+            "效果": [
+              "對本角色移除狀態changeIdle_1_notRemoveWhenDie",
+              "對本角色賦予永久changeIdle_notRemoveWhenDie"
+            ],
+            "條件": [
+              "當前事件的狀態 是＂t0188s5_gold(【煦陽】)＂"
+            ]
+          },
+          {
+            "效果": [
+              "對本角色移除狀態changeIdle_1_notRemoveWhenDie",
+              "對本角色移除狀態changeIdle_notRemoveWhenDie"
+            ],
+            "條件": [
+              "當前事件的狀態 是＂t0188s5_white(【細雪】)＂"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
       "OnTurnBegin": {
         "效果": [
           {
@@ -10,7 +76,7 @@
             ],
             "條件": [
               "目前回合輪到本角色",
-              "本角色擁有t0188s5_gold狀態"
+              "本角色擁有t0188s5_gold(【煦陽】)狀態"
             ]
           },
           {
@@ -19,7 +85,7 @@
             ],
             "條件": [
               "目前回合輪到本角色",
-              "本角色擁有t0188s5_black狀態"
+              "本角色擁有t0188s5_black(【千夜】)狀態"
             ]
           },
           {
@@ -28,8 +94,17 @@
             ],
             "條件": [
               "目前回合輪到本角色",
-              "本角色沒有t0188s5_gold狀態",
-              "本角色沒有t0188s5_black狀態"
+              "本角色沒有t0188s5_gold(【煦陽】)狀態",
+              "本角色沒有t0188s5_black(【千夜】)狀態"
+            ]
+          },
+          {
+            "效果": [
+              "對本角色賦予永久t0188s5_white(【細雪】)"
+            ],
+            "條件": [
+              "相反((本角色擁有t0188s5_gold(【煦陽】)狀態) 或 (本角色擁有t0188s5_black(【千夜】)狀態))",
+              "本角色沒有t0188s5_white(【細雪】)狀態"
             ]
           }
         ],
@@ -43,6 +118,9 @@
   },
   "$type": "BattleModel.Buff",
   "ReferenceBuffKeys": [
+    "t0188s5_white",
+    "changeIdle_1_notRemoveWhenDie",
+    "changeIdle_notRemoveWhenDie"
   ],
   "_actionTable": [
     {
@@ -247,6 +325,347 @@
                   "character": {
                     "$type": "BattleModel.ThisBuffOwner"
                   }
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "t0188s5_white",
+                      "Forever": true,
+                      "LevelStack": 0,
+                      "OverwriteDuration": -1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.Inverse",
+                "condition": {
+                  "$type": "BattleModel.OrConditions",
+                  "cond1": {
+                    "$type": "BattleModel.CharacterHasBuff",
+                    "buffId": "t0188s5_gold",
+                    "character": {
+                      "$type": "BattleModel.ThisBuffOwner"
+                    }
+                  },
+                  "cond2": {
+                    "$type": "BattleModel.CharacterHasBuff",
+                    "buffId": "t0188s5_black",
+                    "character": {
+                      "$type": "BattleModel.ThisBuffOwner"
+                    }
+                  }
+                }
+              },
+              {
+                "$type": "BattleModel.Inverse",
+                "condition": {
+                  "$type": "BattleModel.CharacterHasBuff",
+                  "buffId": "t0188s5_white",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 16384,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.RemoveBuff",
+                    "buffId": "changeIdle_notRemoveWhenDie"
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "changeIdle_1_notRemoveWhenDie",
+                      "Forever": true,
+                      "LevelStack": 0,
+                      "OverwriteDuration": -1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.BuffCondition",
+                "buff": {
+                  "$type": "BattleModel.SpecifiedBuff"
+                },
+                "condition": {
+                  "$type": "BattleModel.CheckBuffMatchBuffId",
+                  "subString": "t0188s5_black"
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.RemoveBuff",
+                    "buffId": "changeIdle_1_notRemoveWhenDie"
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "changeIdle_notRemoveWhenDie",
+                      "Forever": true,
+                      "LevelStack": 0,
+                      "OverwriteDuration": -1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.BuffCondition",
+                "buff": {
+                  "$type": "BattleModel.SpecifiedBuff"
+                },
+                "condition": {
+                  "$type": "BattleModel.CheckBuffMatchBuffId",
+                  "subString": "t0188s5_gold"
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.RemoveBuff",
+                    "buffId": "changeIdle_1_notRemoveWhenDie"
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.RemoveBuff",
+                    "buffId": "changeIdle_notRemoveWhenDie"
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.BuffCondition",
+                "buff": {
+                  "$type": "BattleModel.SpecifiedBuff"
+                },
+                "condition": {
+                  "$type": "BattleModel.CheckBuffMatchBuffId",
+                  "subString": "t0188s5_white"
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 8192,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.RemoveBuff",
+                    "buffId": "changeIdle_notRemoveWhenDie"
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "changeIdle_1_notRemoveWhenDie",
+                      "Forever": true,
+                      "LevelStack": 0,
+                      "OverwriteDuration": -1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.BuffCondition",
+                "buff": {
+                  "$type": "BattleModel.SpecifiedBuff"
+                },
+                "condition": {
+                  "$type": "BattleModel.CheckBuffMatchBuffId",
+                  "subString": "t0188s5_black"
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.RemoveBuff",
+                    "buffId": "changeIdle_1_notRemoveWhenDie"
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "changeIdle_notRemoveWhenDie",
+                      "Forever": true,
+                      "LevelStack": 0,
+                      "OverwriteDuration": -1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.BuffCondition",
+                "buff": {
+                  "$type": "BattleModel.SpecifiedBuff"
+                },
+                "condition": {
+                  "$type": "BattleModel.CheckBuffMatchBuffId",
+                  "subString": "t0188s5_gold"
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.RemoveBuff",
+                    "buffId": "changeIdle_1_notRemoveWhenDie"
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.RemoveBuff",
+                    "buffId": "changeIdle_notRemoveWhenDie"
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.BuffCondition",
+                "buff": {
+                  "$type": "BattleModel.SpecifiedBuff"
+                },
+                "condition": {
+                  "$type": "BattleModel.CheckBuffMatchBuffId",
+                  "subString": "t0188s5_white"
                 }
               }
             ]

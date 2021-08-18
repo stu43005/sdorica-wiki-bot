@@ -2,27 +2,30 @@
   "$interpreted": {
     "Localization": "",
     "動作": {
-      "OnTurnBegin": {
+      "OnBuffAddFromAnyone": {
         "效果": [
           {
             "效果": [
-              "對玩家中符合(沒有toxicology_P2狀態)的角色所有角色賦予永久toxicology_P2"
+              "立即施展技能：對玩家首位精神值+1"
             ],
             "條件": [
+              "當前事件的狀態 是＂poison(中毒)＂",
+              "當前事件的狀態 {\"Condition\":{\"Group\":{\"group1\":{\"includeDead\":false,\"includeEmpty\":false,\"$type\":\"BattleModel.PVEPlayerTeam\"},\"group2\":{\"$type\":\"BattleModel.PVEAssistant\"},\"$type\":\"BattleModel.UnionCharGroup\"},\"$type\":\"BattleModel.CharacterInsideC\"},\"CanBeEmpty\":false,\"$type\":\"BattleModel.BuffCasterCondition\"}"
             ]
-          },
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnBuffStackFromAnyone": {
+        "效果": [
           {
             "效果": [
-              "對玩家中符合(沒有toxicology_P3狀態)的角色所有角色賦予永久toxicology_P3"
+              "立即施展技能：對玩家首位精神值+1"
             ],
             "條件": [
-            ]
-          },
-          {
-            "效果": [
-              "對敵人中符合(沒有toxicology_P3狀態)的角色所有角色賦予永久toxicology_P3"
-            ],
-            "條件": [
+              "當前事件的狀態 是＂poison(中毒)＂",
+              "當前事件的狀態 {\"Condition\":{\"Group\":{\"group1\":{\"includeDead\":false,\"includeEmpty\":false,\"$type\":\"BattleModel.PVEPlayerTeam\"},\"group2\":{\"$type\":\"BattleModel.PVEAssistant\"},\"$type\":\"BattleModel.UnionCharGroup\"},\"$type\":\"BattleModel.CharacterInsideC\"},\"CanBeEmpty\":false,\"$type\":\"BattleModel.BuffCasterCondition\"}"
             ]
           }
         ],
@@ -36,123 +39,159 @@
   },
   "$type": "BattleModel.Buff",
   "ReferenceBuffKeys": [
-    "toxicology_P2",
-    "toxicology_P3"
   ],
   "_actionTable": [
     {
-      "Key": 1,
+      "Key": 4194304,
       "Value": {
         "Actions": [
           {
             "Actions": [
               {
                 "TargetField": {
-                  "$type": "BattleModel.OperateCharacterGroup",
-                  "group": {
-                    "$type": "BattleModel.CharGroupWhere",
-                    "condition": {
-                      "$type": "BattleModel.InverseC",
-                      "condition": {
-                        "$type": "BattleModel.HasBuff",
-                        "buffId": "toxicology_P2"
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": null,
+                    "single": {
+                      "$type": "BattleModel.FrontOfChars",
+                      "group": {
+                        "$type": "BattleModel.PVEPlayerTeam",
+                        "includeDead": false,
+                        "includeEmpty": false
                       }
                     },
-                    "group": {
-                      "$type": "BattleModel.PVEPlayerTeam",
-                      "includeDead": false,
-                      "includeEmpty": false
-                    }
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.ChangeTireSkillEffect",
+                        "Tag": 16384,
+                        "_keyString": "",
+                        "_value": {
+                          "$type": "BattleModel.ConstanctInt",
+                          "constant": 1
+                        }
+                      }
+                    ]
                   },
-                  "operation": {
-                    "$type": "BattleModel.AddBuff",
-                    "buffToAdd": {
-                      "BuffId": "toxicology_P2",
-                      "Forever": true,
-                      "LevelStack": 0,
-                      "OverwriteDuration": -1,
-                      "UserDefineVariable": {
+                  "willTriggerBuff": false
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.BuffCondition",
+                "buff": {
+                  "$type": "BattleModel.SpecifiedBuff"
+                },
+                "condition": {
+                  "$type": "BattleModel.CheckBuffMatchBuffId",
+                  "subString": "poison"
+                }
+              },
+              {
+                "$type": "BattleModel.BuffCondition",
+                "buff": {
+                  "$type": "BattleModel.SpecifiedBuff"
+                },
+                "condition": {
+                  "$type": "BattleModel.BuffCasterCondition",
+                  "CanBeEmpty": false,
+                  "Condition": {
+                    "$type": "BattleModel.CharacterInsideC",
+                    "Group": {
+                      "$type": "BattleModel.UnionCharGroup",
+                      "group1": {
+                        "$type": "BattleModel.PVEPlayerTeam",
+                        "includeDead": false,
+                        "includeEmpty": false
+                      },
+                      "group2": {
+                        "$type": "BattleModel.PVEAssistant"
                       }
                     }
                   }
                 }
               }
-            ],
-            "Conditions": [
             ]
-          },
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 2097152,
+      "Value": {
+        "Actions": [
           {
             "Actions": [
               {
                 "TargetField": {
-                  "$type": "BattleModel.OperateCharacterGroup",
-                  "group": {
-                    "$type": "BattleModel.CharGroupWhere",
-                    "condition": {
-                      "$type": "BattleModel.InverseC",
-                      "condition": {
-                        "$type": "BattleModel.HasBuff",
-                        "buffId": "toxicology_P3"
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": null,
+                    "single": {
+                      "$type": "BattleModel.FrontOfChars",
+                      "group": {
+                        "$type": "BattleModel.PVEPlayerTeam",
+                        "includeDead": false,
+                        "includeEmpty": false
                       }
                     },
-                    "group": {
-                      "$type": "BattleModel.PVEPlayerTeam",
-                      "includeDead": false,
-                      "includeEmpty": false
-                    }
-                  },
-                  "operation": {
-                    "$type": "BattleModel.AddBuff",
-                    "buffToAdd": {
-                      "BuffId": "toxicology_P3",
-                      "Forever": true,
-                      "LevelStack": 0,
-                      "OverwriteDuration": -1,
-                      "UserDefineVariable": {
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.ChangeTireSkillEffect",
+                        "Tag": 16384,
+                        "_keyString": "",
+                        "_value": {
+                          "$type": "BattleModel.ConstanctInt",
+                          "constant": 1
+                        }
                       }
-                    }
-                  }
+                    ]
+                  },
+                  "willTriggerBuff": false
                 }
               }
             ],
             "Conditions": [
-            ]
-          },
-          {
-            "Actions": [
               {
-                "TargetField": {
-                  "$type": "BattleModel.OperateCharacterGroup",
-                  "group": {
-                    "$type": "BattleModel.CharGroupWhere",
-                    "condition": {
-                      "$type": "BattleModel.InverseC",
-                      "condition": {
-                        "$type": "BattleModel.HasBuff",
-                        "buffId": "toxicology_P3"
-                      }
-                    },
-                    "group": {
-                      "$type": "BattleModel.PVEEnemyTeam",
-                      "includeDead": false,
-                      "includeEmpty": false
-                    }
-                  },
-                  "operation": {
-                    "$type": "BattleModel.AddBuff",
-                    "buffToAdd": {
-                      "BuffId": "toxicology_P3",
-                      "Forever": true,
-                      "LevelStack": 0,
-                      "OverwriteDuration": -1,
-                      "UserDefineVariable": {
+                "$type": "BattleModel.BuffCondition",
+                "buff": {
+                  "$type": "BattleModel.SpecifiedBuff"
+                },
+                "condition": {
+                  "$type": "BattleModel.CheckBuffMatchBuffId",
+                  "subString": "poison"
+                }
+              },
+              {
+                "$type": "BattleModel.BuffCondition",
+                "buff": {
+                  "$type": "BattleModel.SpecifiedBuff"
+                },
+                "condition": {
+                  "$type": "BattleModel.BuffCasterCondition",
+                  "CanBeEmpty": false,
+                  "Condition": {
+                    "$type": "BattleModel.CharacterInsideC",
+                    "Group": {
+                      "$type": "BattleModel.UnionCharGroup",
+                      "group1": {
+                        "$type": "BattleModel.PVEPlayerTeam",
+                        "includeDead": false,
+                        "includeEmpty": false
+                      },
+                      "group2": {
+                        "$type": "BattleModel.PVEAssistant"
                       }
                     }
                   }
                 }
               }
-            ],
-            "Conditions": [
             ]
           }
         ],

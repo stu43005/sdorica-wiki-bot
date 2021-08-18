@@ -1,0 +1,196 @@
+{
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "OnEachSkillTargetEffect": {
+        "效果": [
+          {
+            "效果": [
+              "技能效果增加((({\"group\":{\"group1\":{\"includeDead\":false,\"includeEmpty\":false,\"$type\":\"BattleModel.PVEEnemyTeam\"},\"group2\":{\"includeDead\":false,\"includeEmpty\":false,\"$type\":\"BattleModel.PVEPlayerTeam\"},\"$type\":\"BattleModel.UnionCharGroup\"},\"buffId\":\"tearing\",\"$type\":\"BattleModel.BuffsOnCharGroup\"}中的層數)的總和 * 15))%"
+            ],
+            "條件": [
+              "施術者是本角色",
+              "({\"group\":{\"group1\":{\"includeDead\":false,\"includeEmpty\":false,\"$type\":\"BattleModel.PVEPlayerTeam\"},\"group2\":{\"includeDead\":false,\"includeEmpty\":false,\"$type\":\"BattleModel.PVEEnemyTeam\"},\"$type\":\"BattleModel.UnionCharGroup\"},\"buffId\":\"tearing\",\"$type\":\"BattleModel.BuffsOnCharGroup\"}中的層數)的總和 < 6"
+            ]
+          },
+          {
+            "效果": [
+              "技能效果增加(90)%"
+            ],
+            "條件": [
+              "施術者是本角色",
+              "({\"group\":{\"group1\":{\"includeDead\":false,\"includeEmpty\":false,\"$type\":\"BattleModel.PVEPlayerTeam\"},\"group2\":{\"includeDead\":false,\"includeEmpty\":false,\"$type\":\"BattleModel.PVEEnemyTeam\"},\"$type\":\"BattleModel.UnionCharGroup\"},\"buffId\":\"tearing\",\"$type\":\"BattleModel.BuffsOnCharGroup\"}中的層數)的總和 >= 6"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 99,
+    "標籤": "Forever"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+  ],
+  "_actionTable": [
+    {
+      "Key": 1024,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.BonusEffectForSkillProperty",
+                  "isPercent": true,
+                  "property": -1,
+                  "value": {
+                    "$type": "BattleModel.MultiplyInt",
+                    "left": {
+                      "$type": "BattleModel.SumOfInts",
+                      "group": {
+                        "$type": "BattleModel.IntsOnBuffGroup",
+                        "group": {
+                          "$type": "BattleModel.BuffsOnCharGroup",
+                          "buffId": "tearing",
+                          "group": {
+                            "$type": "BattleModel.UnionCharGroup",
+                            "group1": {
+                              "$type": "BattleModel.PVEEnemyTeam",
+                              "includeDead": false,
+                              "includeEmpty": false
+                            },
+                            "group2": {
+                              "$type": "BattleModel.PVEPlayerTeam",
+                              "includeDead": false,
+                              "includeEmpty": false
+                            }
+                          }
+                        },
+                        "targetField": 1
+                      }
+                    },
+                    "right": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 15
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                },
+                "right": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.SumOfInts",
+                  "group": {
+                    "$type": "BattleModel.IntsOnBuffGroup",
+                    "group": {
+                      "$type": "BattleModel.BuffsOnCharGroup",
+                      "buffId": "tearing",
+                      "group": {
+                        "$type": "BattleModel.UnionCharGroup",
+                        "group1": {
+                          "$type": "BattleModel.PVEPlayerTeam",
+                          "includeDead": false,
+                          "includeEmpty": false
+                        },
+                        "group2": {
+                          "$type": "BattleModel.PVEEnemyTeam",
+                          "includeDead": false,
+                          "includeEmpty": false
+                        }
+                      }
+                    },
+                    "targetField": 1
+                  }
+                },
+                "op": 1,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 6
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.BonusEffectForSkillProperty",
+                  "isPercent": true,
+                  "property": -1,
+                  "value": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 90
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                },
+                "right": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.SumOfInts",
+                  "group": {
+                    "$type": "BattleModel.IntsOnBuffGroup",
+                    "group": {
+                      "$type": "BattleModel.BuffsOnCharGroup",
+                      "buffId": "tearing",
+                      "group": {
+                        "$type": "BattleModel.UnionCharGroup",
+                        "group1": {
+                          "$type": "BattleModel.PVEPlayerTeam",
+                          "includeDead": false,
+                          "includeEmpty": false
+                        },
+                        "group2": {
+                          "$type": "BattleModel.PVEEnemyTeam",
+                          "includeDead": false,
+                          "includeEmpty": false
+                        }
+                      }
+                    },
+                    "targetField": 1
+                  }
+                },
+                "op": 4,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 6
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 99,
+  "_orderTable": {
+  },
+  "_tag": 64
+}
