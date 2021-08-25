@@ -11,7 +11,9 @@
             "條件": [
               "施展的技能效果中包含(TrueDamage)屬性",
               "施術者是玩家的一員",
-              "指定目標是敵人後排"
+              "指定目標是敵人後排",
+              "本狀態的變數一 == 0",
+              "本狀態的變數二 == 0"
             ]
           },
           {
@@ -27,16 +29,32 @@
         "條件": [
         ]
       },
-      "OnTurnEnd": {
+      "OnTurnBegin": {
+        "效果": [
+          {
+            "效果": [
+              "對本狀態的變數一改為0",
+              "對本狀態的變數二改為0"
+            ],
+            "條件": [
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnTurnBegin | OnEachSkill": {
         "效果": [
           {
             "效果": [
               "立即施展技能：對玩家全體賦予1回合1層warfare(戰意)",
               "立即施展技能：對玩家首位將4個非黑色魂芯轉為黑色魂芯",
+              "對本狀態的變數二改為1",
               "對本狀態的變數一改為0"
             ],
             "條件": [
-              "本狀態的變數一 == 1"
+              "本狀態的變數一 == 1",
+              "本狀態的變數二 == 0"
             ]
           }
         ],
@@ -54,7 +72,7 @@
   ],
   "_actionTable": [
     {
-      "Key": 2,
+      "Key": 65,
       "Value": {
         "Actions": [
           {
@@ -142,6 +160,21 @@
                     "$type": "BattleModel.SetBuffField",
                     "lastIndepedentStack": false,
                     "setOperator": 0,
+                    "targetField": 8,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 1
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
                     "targetField": 4,
                     "value": {
                       "$type": "BattleModel.ConstanctInt",
@@ -165,6 +198,21 @@
                 "right": {
                   "$type": "BattleModel.ConstanctInt",
                   "constant": 1
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.ThisBuff"
+                  },
+                  "targetField": 8
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 0
                 }
               }
             ]
@@ -225,6 +273,36 @@
                     "includeEmpty": false
                   }
                 }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.ThisBuff"
+                  },
+                  "targetField": 4
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 0
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.ThisBuff"
+                  },
+                  "targetField": 8
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 0
+                }
               }
             ]
           },
@@ -258,6 +336,51 @@
                   "$type": "BattleModel.ThisSkillCaster"
                 }
               }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 1,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 0
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 8,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
             ]
           }
         ],
