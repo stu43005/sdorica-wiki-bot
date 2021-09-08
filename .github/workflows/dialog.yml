@@ -1,4 +1,4 @@
-name: "CharAssets"
+name: "DialogAssets"
 
 on:
   workflow_dispatch:
@@ -38,18 +38,18 @@ jobs:
 
     - name: Create local changes
       timeout-minutes: 15
-      run: npm run charassets
+      run: npm run dialog
       env:
         NODE_ENV: production
 
     - name: Commit files
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
-        commit_message: 更新CharAssets資料 ${{ github.event.head_commit.sha }}
+        commit_message: 更新DialogAssets資料 ${{ github.event.head_commit.sha }}
         repository: data
 
     - name: Wiki Workflow Dispatch
       uses: benc-uk/workflow-dispatch@v1
       with:
-        workflow: DialogAssets
+        workflow: Wiki
         token: ${{ secrets.PAT }}

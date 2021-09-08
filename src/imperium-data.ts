@@ -26,6 +26,9 @@ export class ImperiumData {
 	static fromCharAssets() {
 		return this.from("charAssets");
 	}
+	static fromDialog() {
+		return this.from("dialog");
+	}
 
 	data: ImperiumDataRaw | null = null;
 

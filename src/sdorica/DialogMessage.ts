@@ -8,4 +8,5 @@ export interface DialogMessage {
 	IconLocate: DialogIconLocate;
 	Text: string;
 	sfxName: string;
+	sfxVolume: number;
 }

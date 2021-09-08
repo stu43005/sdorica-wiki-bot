@@ -6,7 +6,7 @@ export default async function (helper: ViewerJSHelper, data: DialogAsset) {
 	return data;
 }
 
-function interpreted(data: DialogAsset) {
+export function interpreted(data: DialogAsset) {
 	const out: string[] = [];
 	for (let i = 0; i < data.Model.length; i++) {
 		const content = data.Model[i];
