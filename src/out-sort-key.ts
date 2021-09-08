@@ -39,6 +39,15 @@ const TABLE_KEYS: Record<string, string[]> = {
 		"extraCountCurrency", "extraCountPrice", "extraCountItem", "extraCountItemCount", /* 增加可完成次數消耗 */
 		"progress", "region", "rewardGroupId", "timeDisplay", "weekday",
 	],
+	DiligentGroups: ["id", "chapterId", "diligentId", "diligentAmount", "levelGroup"],
+	Diligents: [
+		"id",
+		"levelGroup",
+		"diligentI2Key", "diligentType",
+		"giveType", "giveLinkId", "giveAmount", // dropExtraItem
+		"abilityIncrease", // hpIncrease, atkIncrease
+		"buffId", "buffLevel", // buffIncrease
+	],
 	DropItems: ["groupId", "subgroupId", "category", "chest", "dropTime", "giveType", "giveLinkId", "giveAmount", "value", "flagOpId"],
 	ExtraProducts: ["id", "category", "enable", "param1", "param2", "param3", "payType", "linkId", "amount"],
 	ExploreBuilding: ["id", "type", "level", "localizationKeyDescription", "effectValue", "iconKey", "item1Id", "item1Count", "item2Id", "item2Count", "item3Id", "item3Count", "item4Id", "item4Count"],

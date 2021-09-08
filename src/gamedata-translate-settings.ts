@@ -1,5 +1,5 @@
 import { ImperiumData } from "./imperium-data";
-import { black, call2, colonFirst, Func1, gamedataString, gold, ifor, localizationChapterName, localizationCharacterName, localizationCharacterNameByHeroId, localizationCharacterNameWithDefault, localizationExploreBuildingName, localizationHomelandBuildingName, localizationItemName, localizationItemNameWithType, localizationMonsterName, localizationMonsterSkillName, localizationMonsterSpecialityName, localizationQuestName, localizationString, localizationStringAuto, localizationTavernMissionName, localizationUnlockCondition, rank, semicolon, weekday, white } from "./localization";
+import { black, call2, colonFirst, Func1, gamedataString, gold, ifor, localizationBuffName, localizationChapterName, localizationCharacterName, localizationCharacterNameByHeroId, localizationCharacterNameWithDefault, localizationExploreBuildingName, localizationHomelandBuildingName, localizationItemName, localizationItemNameWithType, localizationMonsterName, localizationMonsterSkillName, localizationMonsterSpecialityName, localizationQuestName, localizationString, localizationStringAuto, localizationTavernMissionName, localizationUnlockCondition, rank, semicolon, weekday, white } from "./localization";
 import { Logger } from "./logger";
 import { ItemCategory } from './model/enums/item-category.enum';
 import { Item } from './model/item';
@@ -696,6 +696,31 @@ export const gamedataTeanslateSettings: GamedataRef[] = [
 		table: "LevelTriggerChapters",
 		column: "chapterId",
 		func: localizationChapterName(),
+	},
+	{
+		table: "DiligentGroups",
+		column: "chapterId",
+		func: localizationChapterName(),
+	},
+	{
+		table: "DiligentGroups",
+		column: "diligentId",
+		func: localizationItemName(),
+	},
+	{
+		table: "Diligents",
+		column: "diligentI2Key",
+		func: localizationString("Diligents"),
+	},
+	{
+		table: "Diligents",
+		column: "buffId",
+		func: localizationBuffName(),
+	},
+	{
+		table: "Diligents",
+		column: "giveLinkId:giveType",
+		func: localizationItemNameWithType(),
 	},
 ];
 

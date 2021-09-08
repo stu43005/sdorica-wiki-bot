@@ -195,6 +195,8 @@ export function currency2Id(): Func1 {
 			case "andgem":
 			case "dmmgem":
 				return "1008";
+			case "diligent":
+				return "1011";
 			case "monsterexp":
 				return "20038";
 			case "homeexp":

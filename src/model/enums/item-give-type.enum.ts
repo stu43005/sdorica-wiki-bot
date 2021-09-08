@@ -19,4 +19,6 @@ export enum ItemGiveType {
 	MonsterExp = 'MonsterExp',
 	HomeExp = 'HomeExp',
 	Decoration = 'Decoration',
+	Hero = 'Hero',
+	Diligent = 'Diligent',
 }
