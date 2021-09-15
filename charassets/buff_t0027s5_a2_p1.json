@@ -2,12 +2,41 @@
   "$interpreted": {
     "Localization": "",
     "動作": {
+      "OnBuffAdd": {
+        "效果": [
+          {
+            "效果": [
+              "對本角色賦予1回合1層changeIdle"
+            ],
+            "條件": [
+              "本狀態的層數 == 5",
+              "當前事件的狀態 是＂t0027s5_a2_P1(我方回合結束時，真氣滿5層會攻擊敵方全體。若真氣滿5層時，本角色施展一、二、四魂技能會歸零真氣。)＂"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnBuffStack": {
+        "效果": [
+          {
+            "效果": [
+              "對本角色賦予1回合1層changeIdle"
+            ],
+            "條件": [
+              "本狀態的層數 == 5",
+              "當前事件的狀態 是＂t0027s5_a2_P1(我方回合結束時，真氣滿5層會攻擊敵方全體。若真氣滿5層時，本角色施展一、二、四魂技能會歸零真氣。)＂"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
       "OnTurnEnd": {
         "效果": [
           {
             "效果": [
-              "對本角色觸發S4",
-              "對本角色賦予1回合changeIdle"
+              "對本角色觸發S4"
             ],
             "條件": [
               "本狀態的層數 == 5"
@@ -21,7 +50,7 @@
     },
     "持續時間": 1,
     "最高層數": 5,
-    "標籤": "TriggerOncePerTurn | Forever"
+    "標籤": "Forever"
   },
   "$type": "BattleModel.Buff",
   "ReferenceBuffKeys": [
@@ -64,25 +93,6 @@
                     "skillsetId": "S4"
                   }
                 }
-              },
-              {
-                "TargetField": {
-                  "$type": "BattleModel.OperateCharacter",
-                  "character": {
-                    "$type": "BattleModel.ThisBuffOwner"
-                  },
-                  "operation": {
-                    "$type": "BattleModel.AddBuff",
-                    "buffToAdd": {
-                      "BuffId": "changeIdle",
-                      "Forever": false,
-                      "LevelStack": 0,
-                      "OverwriteDuration": 1,
-                      "UserDefineVariable": {
-                      }
-                    }
-                  }
-                }
               }
             ],
             "Conditions": [
@@ -109,6 +119,116 @@
           }
         ]
       }
+    },
+    {
+      "Key": 16384,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "changeIdle",
+                      "Forever": false,
+                      "LevelStack": 1,
+                      "OverwriteDuration": 1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.ThisBuffLevel"
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 5
+                }
+              },
+              {
+                "$type": "BattleModel.BuffCondition",
+                "buff": {
+                  "$type": "BattleModel.SpecifiedBuff"
+                },
+                "condition": {
+                  "$type": "BattleModel.CheckBuffMatchBuffId",
+                  "subString": "t0027s5_a2_P1"
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 8192,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "changeIdle",
+                      "Forever": false,
+                      "LevelStack": 1,
+                      "OverwriteDuration": 1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.ThisBuffLevel"
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 5
+                }
+              },
+              {
+                "$type": "BattleModel.BuffCondition",
+                "buff": {
+                  "$type": "BattleModel.SpecifiedBuff"
+                },
+                "condition": {
+                  "$type": "BattleModel.CheckBuffMatchBuffId",
+                  "subString": "t0027s5_a2_P1"
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
     }
   ],
   "_duration": 1,
@@ -121,5 +241,5 @@
       }
     }
   ],
-  "_tag": 72
+  "_tag": 64
 }

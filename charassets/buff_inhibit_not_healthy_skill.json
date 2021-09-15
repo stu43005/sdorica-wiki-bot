@@ -1,0 +1,62 @@
+{
+  "$interpreted": {
+    "Localization": "本角色不會成為血量未滿角色的技能目標。",
+    "動作": {
+    },
+    "持續時間": 1,
+    "最高層數": 1,
+    "標籤": "InfinityTrigger"
+  },
+  "$type": "BattleModel.InhibitBuff",
+  "_duration": 1,
+  "_inhibitTable": [
+    {
+      "Key": 4,
+      "Value": [
+        {
+          "$type": "BattleModel.CharacterInside",
+          "group": {
+            "$type": "BattleModel.OppositeTeamChars",
+            "includeDead": false,
+            "includeEmpty": false,
+            "reference": {
+              "$type": "BattleModel.ThisBuffOwner"
+            }
+          },
+          "left": {
+            "$type": "BattleModel.ThisSkillCaster"
+          }
+        },
+        {
+          "$type": "BattleModel.CharacterCondition",
+          "character": {
+            "$type": "BattleModel.ThisSkillCaster"
+          },
+          "condition": {
+            "$type": "BattleModel.IntCompareC",
+            "left": {
+              "$type": "BattleModel.IntFieldC",
+              "targetField": 2
+            },
+            "op": 5,
+            "right": {
+              "$type": "BattleModel.ConstantIntC",
+              "constant": 100
+            }
+          }
+        },
+        {
+          "$type": "BattleModel.CharacterEqual",
+          "left": {
+            "$type": "BattleModel.ThisSpecifiedTarget"
+          },
+          "right": {
+            "$type": "BattleModel.ThisBuffOwner"
+          }
+        }
+      ]
+    }
+  ],
+  "_maxLevel": 1,
+  "_tag": 32768
+}
