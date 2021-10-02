@@ -36,6 +36,8 @@ import wikiTavernMissionDrop from "./wiki/TavernMissionDrop";
 import wikiTips from "./wiki/Tips";
 import wikiTreasureItems from "./wiki/TreasureItems";
 
+const enableWikiEdit = false;
+
 function wikiQuestsData() {
 	const questJson = getQuestJsonData();
 	const questsOut: string[] = Object.values(questJson).map((chapter) => {
@@ -72,7 +74,7 @@ function wrapHiddenDiv(content: string) {
 
 async function outWiki(bot: MWBot, title: string, out: string) {
 	await outText(path.join(WIKI_PATH, `${title.replace(/:/, '_')}.txt`), out);
-	if (!isDevMode()) {
+	if (enableWikiEdit && !isDevMode()) {
 		if (title.startsWith('模板:')) {
 			await bot.editOnDifference(title, out);
 		} else {
@@ -83,13 +85,13 @@ async function outWiki(bot: MWBot, title: string, out: string) {
 
 async function outWikiJson(bot: MWBot, title: string, data: any) {
 	await outJson(path.join(WIKI_PATH, `${title}.json`), data);
-	if (!isDevMode()) {
+	if (enableWikiEdit && !isDevMode()) {
 		await bot.editOnDifference(`使用者:小飄飄/bot/${title}.json`, JSON.stringify(data, null, 4));
 	}
 }
 
 async function outWikiConstant(bot: MWBot, title: string, value: string) {
-	if (value && !isDevMode()) {
+	if (value && enableWikiEdit && !isDevMode()) {
 		await bot.editOnDifference(`模板:Constant/${title}`, `${value}<noinclude>{{Documentation}}</noinclude>`);
 	}
 }
@@ -135,7 +137,7 @@ export async function wikiMain() {
 	await outText(path.join(WIKI_PATH, "raw/heroes.txt"), wikiHeroesData());
 	await outText(path.join(WIKI_PATH, "raw/items.txt"), wikiItemsData());
 
-	if (!isDevMode()) {
+	if (enableWikiEdit && !isDevMode()) {
 		await wikiHeroBot(bot);
 		// await wikiMonsterBot(bot);
 		// await wikiRuneRedirectBot(bot);
