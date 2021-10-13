@@ -7,28 +7,31 @@
           {
             "效果": [
               "對本角色觸發S4",
-              "對本狀態的變數一改為0"
+              "對本狀態的變數一增加9"
             ],
             "條件": [
-              "本狀態的變數一 == 1"
+              "(本狀態的變數一 mod 10) == 1",
+              "本狀態的變數一 < 50"
             ]
           },
           {
             "效果": [
               "對本角色觸發S4X",
-              "對本狀態的變數二改為0"
+              "對本狀態的變數二增加9"
             ],
             "條件": [
-              "本狀態的變數二 == 1"
+              "(本狀態的變數二 mod 10) == 1",
+              "本狀態的變數二 < 50"
             ]
           },
           {
             "效果": [
               "對本角色觸發S4Y",
-              "對本狀態的變數三改為0"
+              "對本狀態的變數三增加9"
             ],
             "條件": [
-              "本狀態的變數三 == 1"
+              "(本狀態的變數三 mod 10) == 1",
+              "本狀態的變數三 < 50"
             ]
           }
         ],
@@ -39,29 +42,48 @@
         "效果": [
           {
             "效果": [
-              "對本狀態的變數一改為1"
+              "對本狀態的變數一增加1"
             ],
             "條件": [
               "施展的技能效果中包含(StoneAction)屬性",
-              "施術者是玩家中符合(是金位)的角色的一員"
+              "施術者是玩家中符合(是金位)的角色的一員",
+              "(本狀態的變數一 mod 10) == 0"
             ]
           },
           {
             "效果": [
-              "對本狀態的變數二改為1"
+              "對本狀態的變數二增加1"
             ],
             "條件": [
               "施展的技能效果中包含(StoneAction)屬性",
-              "施術者是玩家中符合(是黑位)的角色的一員"
+              "施術者是玩家中符合(是黑位)的角色的一員",
+              "(本狀態的變數二 mod 10) == 0"
             ]
           },
           {
             "效果": [
-              "對本狀態的變數三改為1"
+              "對本狀態的變數三增加1"
             ],
             "條件": [
               "施展的技能效果中包含(StoneAction)屬性",
-              "施術者是玩家中符合(是白位)的角色的一員"
+              "施術者是玩家中符合(是白位)的角色的一員",
+              "(本狀態的變數三 mod 10) == 0"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnTurnBegin": {
+        "效果": [
+          {
+            "效果": [
+              "對本狀態的變數一改為0",
+              "對本狀態的變數二改為0",
+              "對本狀態的變數三改為0"
+            ],
+            "條件": [
+              "目前回合輪到本角色"
             ]
           }
         ],
@@ -70,7 +92,7 @@
       }
     },
     "持續時間": 1,
-    "最高層數": 99,
+    "最高層數": 999,
     "標籤": "Forever | InfinityTrigger"
   },
   "$type": "BattleModel.Buff",
@@ -78,7 +100,7 @@
   ],
   "_actionTable": [
     {
-      "Key": 1024,
+      "Key": 1,
       "Value": {
         "Actions": [
           {
@@ -93,39 +115,11 @@
                     "targetField": 4,
                     "value": {
                       "$type": "BattleModel.ConstanctInt",
-                      "constant": 1
+                      "constant": 0
                     }
                   }
                 }
-              }
-            ],
-            "Conditions": [
-              {
-                "$type": "BattleModel.ThisSkillEffectTagContains",
-                "containsAll": 512
               },
-              {
-                "$type": "BattleModel.CharacterInside",
-                "group": {
-                  "$type": "BattleModel.CharGroupWhere",
-                  "condition": {
-                    "$type": "BattleModel.StoneTypeIs",
-                    "type": 1
-                  },
-                  "group": {
-                    "$type": "BattleModel.PVEPlayerTeam",
-                    "includeDead": false,
-                    "includeEmpty": false
-                  }
-                },
-                "left": {
-                  "$type": "BattleModel.ThisSkillCaster"
-                }
-              }
-            ]
-          },
-          {
-            "Actions": [
               {
                 "TargetField": {
                   "$type": "BattleModel.OperateThisBuff",
@@ -136,39 +130,11 @@
                     "targetField": 8,
                     "value": {
                       "$type": "BattleModel.ConstanctInt",
-                      "constant": 1
+                      "constant": 0
                     }
                   }
                 }
-              }
-            ],
-            "Conditions": [
-              {
-                "$type": "BattleModel.ThisSkillEffectTagContains",
-                "containsAll": 512
               },
-              {
-                "$type": "BattleModel.CharacterInside",
-                "group": {
-                  "$type": "BattleModel.CharGroupWhere",
-                  "condition": {
-                    "$type": "BattleModel.StoneTypeIs",
-                    "type": 2
-                  },
-                  "group": {
-                    "$type": "BattleModel.PVEPlayerTeam",
-                    "includeDead": false,
-                    "includeEmpty": false
-                  }
-                },
-                "left": {
-                  "$type": "BattleModel.ThisSkillCaster"
-                }
-              }
-            ]
-          },
-          {
-            "Actions": [
               {
                 "TargetField": {
                   "$type": "BattleModel.OperateThisBuff",
@@ -179,7 +145,7 @@
                     "targetField": 16,
                     "value": {
                       "$type": "BattleModel.ConstanctInt",
-                      "constant": 1
+                      "constant": 0
                     }
                   }
                 }
@@ -187,25 +153,9 @@
             ],
             "Conditions": [
               {
-                "$type": "BattleModel.ThisSkillEffectTagContains",
-                "containsAll": 512
-              },
-              {
-                "$type": "BattleModel.CharacterInside",
-                "group": {
-                  "$type": "BattleModel.CharGroupWhere",
-                  "condition": {
-                    "$type": "BattleModel.StoneTypeIs",
-                    "type": 4
-                  },
-                  "group": {
-                    "$type": "BattleModel.PVEPlayerTeam",
-                    "includeDead": false,
-                    "includeEmpty": false
-                  }
-                },
-                "left": {
-                  "$type": "BattleModel.ThisSkillCaster"
+                "$type": "BattleModel.CurrentTurnBelongsTo",
+                "character": {
+                  "$type": "BattleModel.ThisBuffOwner"
                 }
               }
             ]
@@ -258,11 +208,11 @@
                   "operation": {
                     "$type": "BattleModel.SetBuffField",
                     "lastIndepedentStack": false,
-                    "setOperator": 0,
+                    "setOperator": 1,
                     "targetField": 4,
                     "value": {
                       "$type": "BattleModel.ConstanctInt",
-                      "constant": 0
+                      "constant": 9
                     }
                   }
                 }
@@ -272,16 +222,38 @@
               {
                 "$type": "BattleModel.IntCompare",
                 "left": {
+                  "$type": "BattleModel.ModuleInt",
+                  "left": {
+                    "$type": "BattleModel.IntBuffField",
+                    "buff": {
+                      "$type": "BattleModel.ThisBuff"
+                    },
+                    "targetField": 4
+                  },
+                  "right": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 10
+                  }
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 1
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
                   "$type": "BattleModel.IntBuffField",
                   "buff": {
                     "$type": "BattleModel.ThisBuff"
                   },
                   "targetField": 4
                 },
-                "op": 0,
+                "op": 1,
                 "right": {
                   "$type": "BattleModel.ConstanctInt",
-                  "constant": 1
+                  "constant": 50
                 }
               }
             ]
@@ -325,11 +297,11 @@
                   "operation": {
                     "$type": "BattleModel.SetBuffField",
                     "lastIndepedentStack": false,
-                    "setOperator": 0,
+                    "setOperator": 1,
                     "targetField": 8,
                     "value": {
                       "$type": "BattleModel.ConstanctInt",
-                      "constant": 0
+                      "constant": 9
                     }
                   }
                 }
@@ -339,16 +311,38 @@
               {
                 "$type": "BattleModel.IntCompare",
                 "left": {
+                  "$type": "BattleModel.ModuleInt",
+                  "left": {
+                    "$type": "BattleModel.IntBuffField",
+                    "buff": {
+                      "$type": "BattleModel.ThisBuff"
+                    },
+                    "targetField": 8
+                  },
+                  "right": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 10
+                  }
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 1
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
                   "$type": "BattleModel.IntBuffField",
                   "buff": {
                     "$type": "BattleModel.ThisBuff"
                   },
                   "targetField": 8
                 },
-                "op": 0,
+                "op": 1,
                 "right": {
                   "$type": "BattleModel.ConstanctInt",
-                  "constant": 1
+                  "constant": 50
                 }
               }
             ]
@@ -392,11 +386,11 @@
                   "operation": {
                     "$type": "BattleModel.SetBuffField",
                     "lastIndepedentStack": false,
-                    "setOperator": 0,
+                    "setOperator": 1,
                     "targetField": 16,
                     "value": {
                       "$type": "BattleModel.ConstanctInt",
-                      "constant": 0
+                      "constant": 9
                     }
                   }
                 }
@@ -406,16 +400,242 @@
               {
                 "$type": "BattleModel.IntCompare",
                 "left": {
+                  "$type": "BattleModel.ModuleInt",
+                  "left": {
+                    "$type": "BattleModel.IntBuffField",
+                    "buff": {
+                      "$type": "BattleModel.ThisBuff"
+                    },
+                    "targetField": 16
+                  },
+                  "right": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 10
+                  }
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 1
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
                   "$type": "BattleModel.IntBuffField",
                   "buff": {
                     "$type": "BattleModel.ThisBuff"
                   },
                   "targetField": 16
                 },
+                "op": 1,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 50
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 1024,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 1,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 1
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.ThisSkillEffectTagContains",
+                "containsAll": 512
+              },
+              {
+                "$type": "BattleModel.CharacterInside",
+                "group": {
+                  "$type": "BattleModel.CharGroupWhere",
+                  "condition": {
+                    "$type": "BattleModel.StoneTypeIs",
+                    "type": 1
+                  },
+                  "group": {
+                    "$type": "BattleModel.PVEPlayerTeam",
+                    "includeDead": false,
+                    "includeEmpty": false
+                  }
+                },
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.ModuleInt",
+                  "left": {
+                    "$type": "BattleModel.IntBuffField",
+                    "buff": {
+                      "$type": "BattleModel.ThisBuff"
+                    },
+                    "targetField": 4
+                  },
+                  "right": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 10
+                  }
+                },
                 "op": 0,
                 "right": {
                   "$type": "BattleModel.ConstanctInt",
-                  "constant": 1
+                  "constant": 0
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 1,
+                    "targetField": 8,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 1
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.ThisSkillEffectTagContains",
+                "containsAll": 512
+              },
+              {
+                "$type": "BattleModel.CharacterInside",
+                "group": {
+                  "$type": "BattleModel.CharGroupWhere",
+                  "condition": {
+                    "$type": "BattleModel.StoneTypeIs",
+                    "type": 2
+                  },
+                  "group": {
+                    "$type": "BattleModel.PVEPlayerTeam",
+                    "includeDead": false,
+                    "includeEmpty": false
+                  }
+                },
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.ModuleInt",
+                  "left": {
+                    "$type": "BattleModel.IntBuffField",
+                    "buff": {
+                      "$type": "BattleModel.ThisBuff"
+                    },
+                    "targetField": 8
+                  },
+                  "right": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 10
+                  }
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 0
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 1,
+                    "targetField": 16,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 1
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.ThisSkillEffectTagContains",
+                "containsAll": 512
+              },
+              {
+                "$type": "BattleModel.CharacterInside",
+                "group": {
+                  "$type": "BattleModel.CharGroupWhere",
+                  "condition": {
+                    "$type": "BattleModel.StoneTypeIs",
+                    "type": 4
+                  },
+                  "group": {
+                    "$type": "BattleModel.PVEPlayerTeam",
+                    "includeDead": false,
+                    "includeEmpty": false
+                  }
+                },
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.ModuleInt",
+                  "left": {
+                    "$type": "BattleModel.IntBuffField",
+                    "buff": {
+                      "$type": "BattleModel.ThisBuff"
+                    },
+                    "targetField": 16
+                  },
+                  "right": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 10
+                  }
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 0
                 }
               }
             ]
@@ -427,7 +647,7 @@
     }
   ],
   "_duration": 1,
-  "_maxLevel": 99,
+  "_maxLevel": 999,
   "_orderTable": [
     {
       "Key": 1024,
