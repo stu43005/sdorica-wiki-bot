@@ -11,11 +11,12 @@ const logger = new Logger('wiki-quest');
 const ChaptersTable = ImperiumData.fromGamedata().getTable("Chapters");
 const DropItemsTable = ImperiumData.fromGamedata().getTable("DropItems");
 const HeroesTable = ImperiumData.fromGamedata().getTable("Heroes");
-const HeroRanksTable = ImperiumData.fromGamedata().getTable("HeroRanks");
+// const HeroRanksTable = ImperiumData.fromGamedata().getTable("HeroRanks");
 const HeroSkillsTable = ImperiumData.fromGamedata().getTable("HeroSkills");
+const LevelUpsTable = ImperiumData.fromGamedata().getTable("LevelUps");
+const QuestExtraSettingsTable = ImperiumData.fromGamedata().getTable("QuestExtraSettings");
 const QuestsTable = ImperiumData.fromGamedata().getTable("Quests");
 const TeamLimitsTable = ImperiumData.fromGamedata().getTable("TeamLimits");
-const QuestExtraSettingsTable = ImperiumData.fromGamedata().getTable("QuestExtraSettings");
 
 export function getQuestJsonData() {
 	const out: Record<string, Record<string, string>> = {};
@@ -609,9 +610,9 @@ function teamlimitHero(data: TeamLimitData): string {
 		data.P1 = skillinfo(localizationString("SkillInfo")(`${skillSet}_P1`), "P1");
 		data.A1 = skillinfo(localizationString("SkillInfo")(`${skillSet}_A1`), "A1");
 
-		const heroRank = HeroRanksTable.find(r => r.get("heroId") == data.hero!.get("id") && r.get("rank") == data.rank);
-		if (heroRank) {
-			const atk = calcStatistics(data.hero.get("atk"), Number(data.lv), heroRank.get("attrModifier"));
+		const lvData = LevelUpsTable.find(r => r.get("level") == data.rank);
+		if (lvData) {
+			const atk = calcStatistics(data.hero.get("atk"), Number(data.lv), lvData.get("rankAtk"));
 			if (data.S1) data.S1 = applyAtk(data.S1, atk);
 			if (data.S2) data.S2 = applyAtk(data.S2, atk);
 			if (data.E3) data.E3 = applyAtk(data.E3, atk);
