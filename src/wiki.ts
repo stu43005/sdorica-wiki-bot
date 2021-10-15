@@ -1,6 +1,7 @@
 import MWBot from "mwbot";
 import path from "path";
 import { WIKI_PATH } from "./config";
+import { Logger } from "./logger";
 import { outJson, outText } from "./out";
 import { isDevMode, objectEach } from "./utils";
 import { getMWBot } from "./wiki-bot";
@@ -36,7 +37,7 @@ import wikiTavernMissionDrop from "./wiki/TavernMissionDrop";
 import wikiTips from "./wiki/Tips";
 import wikiTreasureItems from "./wiki/TreasureItems";
 
-const enableWikiEdit = false;
+const logger = new Logger('wiki');
 
 function wikiQuestsData() {
 	const questJson = getQuestJsonData();
@@ -72,9 +73,9 @@ function wrapHiddenDiv(content: string) {
 	return `<div class="accountcreator-show">\n${content}\n</div>`;
 }
 
-async function outWiki(bot: MWBot, title: string, out: string) {
+async function outWiki(bot: MWBot | undefined, title: string, out: string) {
 	await outText(path.join(WIKI_PATH, `${title.replace(/:/, '_')}.txt`), out);
-	if (enableWikiEdit && !isDevMode()) {
+	if (bot && !isDevMode()) {
 		if (title.startsWith('模板:')) {
 			await bot.editOnDifference(title, out);
 		} else {
@@ -83,21 +84,26 @@ async function outWiki(bot: MWBot, title: string, out: string) {
 	}
 }
 
-async function outWikiJson(bot: MWBot, title: string, data: any) {
+async function outWikiJson(bot: MWBot | undefined, title: string, data: any) {
 	await outJson(path.join(WIKI_PATH, `${title}.json`), data);
-	if (enableWikiEdit && !isDevMode()) {
+	if (bot && !isDevMode()) {
 		await bot.editOnDifference(`使用者:小飄飄/bot/${title}.json`, JSON.stringify(data, null, 4));
 	}
 }
 
-async function outWikiConstant(bot: MWBot, title: string, value: string) {
-	if (value && enableWikiEdit && !isDevMode()) {
+async function outWikiConstant(bot: MWBot | undefined, title: string, value: string) {
+	if (value && bot && !isDevMode()) {
 		await bot.editOnDifference(`模板:Constant/${title}`, `${value}<noinclude>{{Documentation}}</noinclude>`);
 	}
 }
 
 export async function wikiMain() {
-	const bot = await getMWBot();
+	let bot: MWBot | undefined;
+	try {
+		bot = await getMWBot();
+	} catch (error) {
+		logger.log(`[MWBOT] Login failed: ${error}`);
+	}
 
 	await outWiki(bot, 'AdvAchievements', wikiAdvAchievements());
 	await outWiki(bot, 'Adventure', wikiAdventure());
@@ -137,7 +143,7 @@ export async function wikiMain() {
 	await outText(path.join(WIKI_PATH, "raw/heroes.txt"), wikiHeroesData());
 	await outText(path.join(WIKI_PATH, "raw/items.txt"), wikiItemsData());
 
-	if (enableWikiEdit && !isDevMode()) {
+	if (bot && !isDevMode()) {
 		await wikiHeroBot(bot);
 		// await wikiMonsterBot(bot);
 		// await wikiRuneRedirectBot(bot);
