@@ -2,16 +2,14 @@
   "$interpreted": {
     "Localization": "",
     "動作": {
-      "OnEachSkillSetEnd": {
+      "OnBuffRemove": {
         "效果": [
           {
             "效果": [
-              "立即施展技能：對本角色飽食度+10",
-              "對本狀態的變數一改為1"
+              "立即施展技能：對本角色飽食度+10"
             ],
             "條件": [
-              "本角色擁有changeIdle狀態",
-              "本狀態的變數一 == 0"
+              "當前事件的狀態 是＂t0049s5_bandou(愛妻便當)＂"
             ]
           }
         ],
@@ -77,7 +75,7 @@
       }
     },
     {
-      "Key": 8,
+      "Key": 65536,
       "Value": {
         "Actions": [
           {
@@ -106,44 +104,17 @@
                   },
                   "willTriggerBuff": false
                 }
-              },
-              {
-                "TargetField": {
-                  "$type": "BattleModel.OperateThisBuff",
-                  "operation": {
-                    "$type": "BattleModel.SetBuffField",
-                    "lastIndepedentStack": false,
-                    "setOperator": 0,
-                    "targetField": 4,
-                    "value": {
-                      "$type": "BattleModel.ConstanctInt",
-                      "constant": 1
-                    }
-                  }
-                }
               }
             ],
             "Conditions": [
               {
-                "$type": "BattleModel.CharacterHasBuff",
-                "buffId": "changeIdle",
-                "character": {
-                  "$type": "BattleModel.ThisBuffOwner"
-                }
-              },
-              {
-                "$type": "BattleModel.IntCompare",
-                "left": {
-                  "$type": "BattleModel.IntBuffField",
-                  "buff": {
-                    "$type": "BattleModel.ThisBuff"
-                  },
-                  "targetField": 4
+                "$type": "BattleModel.BuffCondition",
+                "buff": {
+                  "$type": "BattleModel.SpecifiedBuff"
                 },
-                "op": 0,
-                "right": {
-                  "$type": "BattleModel.ConstanctInt",
-                  "constant": 0
+                "condition": {
+                  "$type": "BattleModel.CheckBuffMatchBuffId",
+                  "subString": "t0049s5_bandou"
                 }
               }
             ]

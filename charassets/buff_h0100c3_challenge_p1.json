@@ -2,21 +2,6 @@
   "$interpreted": {
     "Localization": "",
     "動作": {
-      "OnBuffStack": {
-        "效果": [
-          {
-            "效果": [
-              "立即施展技能：對本角色復活(體力:0.5%;疊盾:0%)"
-            ],
-            "條件": [
-              "當前事件的狀態 是＂wakeup(累積達3層時本角色立刻復活。)＂",
-              "當前事件的狀態 符合條件 層數 == 3"
-            ]
-          }
-        ],
-        "條件": [
-        ]
-      },
       "OnTurnBegin": {
         "效果": [
           {
@@ -36,7 +21,9 @@
         "效果": [
           {
             "效果": [
-              "立即施展技能：對本角色復活(體力:0.5%;疊盾:0%)"
+              "立即施展技能：對本角色復活(體力:0.5%;疊盾:0%)",
+              "對本角色移除狀態wakeup(累積達3層時本角色立刻復活。)",
+              "對本角色賦予永久wakeup(累積達3層時本角色立刻復活。)"
             ],
             "條件": [
               "在本角色的wakeup(累積達3層時本角色立刻復活。)狀態 符合條件 層數 == 3"
@@ -53,6 +40,7 @@
   },
   "$type": "BattleModel.Buff",
   "ReferenceBuffKeys": [
+    "wakeup"
   ],
   "_actionTable": [
     {
@@ -111,74 +99,6 @@
       }
     },
     {
-      "Key": 8192,
-      "Value": {
-        "Actions": [
-          {
-            "Actions": [
-              {
-                "TargetField": {
-                  "$type": "BattleModel.DirectSkillEffect",
-                  "skillUnit": {
-                    "CanBeEmpty": false,
-                    "IsMultiple": false,
-                    "multi": null,
-                    "single": {
-                      "$type": "BattleModel.ThisBuffOwner"
-                    },
-                    "skillEffects": [
-                      {
-                        "$type": "BattleModel.ReviveSkillEffect",
-                        "RecoverArmorInPercentage": true,
-                        "RecoverBloodInPercentage": true,
-                        "ReviveTargetArmor": 0,
-                        "ReviveTargetBlood": 0.5,
-                        "Tag": 4,
-                        "_keyString": ""
-                      }
-                    ]
-                  },
-                  "willTriggerBuff": true
-                }
-              }
-            ],
-            "Conditions": [
-              {
-                "$type": "BattleModel.BuffCondition",
-                "buff": {
-                  "$type": "BattleModel.SpecifiedBuff"
-                },
-                "condition": {
-                  "$type": "BattleModel.CheckBuffMatchBuffId",
-                  "subString": "wakeup"
-                }
-              },
-              {
-                "$type": "BattleModel.BuffCondition",
-                "buff": {
-                  "$type": "BattleModel.SpecifiedBuff"
-                },
-                "condition": {
-                  "$type": "BattleModel.IntCompareB",
-                  "left": {
-                    "$type": "BattleModel.IntFieldB",
-                    "targetField": 1
-                  },
-                  "op": 0,
-                  "right": {
-                    "$type": "BattleModel.ConstantIntB",
-                    "constant": 3
-                  }
-                }
-              }
-            ]
-          }
-        ],
-        "Conditions": [
-        ]
-      }
-    },
-    {
       "Key": 2,
       "Value": {
         "Actions": [
@@ -207,6 +127,37 @@
                     ]
                   },
                   "willTriggerBuff": true
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.RemoveBuff",
+                    "buffId": "wakeup"
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "wakeup",
+                      "Forever": true,
+                      "LevelStack": 0,
+                      "OverwriteDuration": -1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
                 }
               }
             ],
