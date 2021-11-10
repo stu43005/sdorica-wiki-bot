@@ -149,6 +149,14 @@
               "施術者是玩家中符合(是白位)的角色首位",
               "本狀態的變數三 < 2"
             ]
+          },
+          {
+            "效果": [
+              "對本狀態的變數四改為0"
+            ],
+            "條件": [
+              "施術者是玩家的一員"
+            ]
           }
         ],
         "條件": [
@@ -172,16 +180,6 @@
       },
       "OnTurnBegin": {
         "效果": [
-          {
-            "效果": [
-              "對本狀態的變數一改為0",
-              "對本狀態的變數二改為0",
-              "對本狀態的變數三改為0"
-            ],
-            "條件": [
-              "(目前回合輪到玩家首位) 且 (目前戰鬥回合數 == 0)"
-            ]
-          },
           {
             "效果": [
               "對本狀態的變數一改為0"
@@ -1293,16 +1291,7 @@
                 }
               }
             ]
-          }
-        ],
-        "Conditions": [
-        ]
-      }
-    },
-    {
-      "Key": 1,
-      "Value": {
-        "Actions": [
+          },
           {
             "Actions": [
               {
@@ -1310,39 +1299,9 @@
                   "$type": "BattleModel.OperateThisBuff",
                   "operation": {
                     "$type": "BattleModel.SetBuffField",
-                    "lastIndepedentStack": false,
+                    "lastIndepedentStack": true,
                     "setOperator": 0,
-                    "targetField": 4,
-                    "value": {
-                      "$type": "BattleModel.ConstanctInt",
-                      "constant": 0
-                    }
-                  }
-                }
-              },
-              {
-                "TargetField": {
-                  "$type": "BattleModel.OperateThisBuff",
-                  "operation": {
-                    "$type": "BattleModel.SetBuffField",
-                    "lastIndepedentStack": false,
-                    "setOperator": 0,
-                    "targetField": 8,
-                    "value": {
-                      "$type": "BattleModel.ConstanctInt",
-                      "constant": 0
-                    }
-                  }
-                }
-              },
-              {
-                "TargetField": {
-                  "$type": "BattleModel.OperateThisBuff",
-                  "operation": {
-                    "$type": "BattleModel.SetBuffField",
-                    "lastIndepedentStack": false,
-                    "setOperator": 0,
-                    "targetField": 16,
+                    "targetField": 32,
                     "value": {
                       "$type": "BattleModel.ConstanctInt",
                       "constant": 0
@@ -1353,35 +1312,27 @@
             ],
             "Conditions": [
               {
-                "$type": "BattleModel.AndConditions",
-                "cond1": {
-                  "$type": "BattleModel.CurrentTurnBelongsTo",
-                  "character": {
-                    "$type": "BattleModel.FrontOfChars",
-                    "group": {
-                      "$type": "BattleModel.PVEPlayerTeam",
-                      "includeDead": false,
-                      "includeEmpty": false
-                    }
-                  }
+                "$type": "BattleModel.CharacterInside",
+                "group": {
+                  "$type": "BattleModel.PVEPlayerTeam",
+                  "includeDead": false,
+                  "includeEmpty": false
                 },
-                "cond2": {
-                  "$type": "BattleModel.IntCompare",
-                  "left": {
-                    "$type": "BattleModel.BattleActionRecordValue",
-                    "RecordValue": {
-                      "$type": "BattleModel.ThisBattleTurnCount"
-                    }
-                  },
-                  "op": 0,
-                  "right": {
-                    "$type": "BattleModel.ConstanctInt",
-                    "constant": 0
-                  }
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
                 }
               }
             ]
-          },
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 1,
+      "Value": {
+        "Actions": [
           {
             "Actions": [
               {

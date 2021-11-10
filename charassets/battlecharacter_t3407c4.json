@@ -10,24 +10,49 @@
         "對施術者{\"Tag\":65540,\"_keyString\":\"1\",\"$type\":\"BattleModel.DirectKillSkillEffect\"}"
       ],
       "S1": [
-        "對施術者的目標"
+        "對施術者賦予2回合2層defense_up_small(減傷)"
+      ],
+      "S2": [
+        "對施術者的目標破甲(攻擊力 x1.65)"
       ]
     },
     "技能組": {
+      "S1": [
+        {
+          "CoolDown": 2,
+          "技能列表": [
+            "施展S1"
+          ],
+          "條件": [
+          ],
+          "目標": ""
+        }
+      ],
+      "S2": [
+        {
+          "CoolDown": 2,
+          "技能列表": [
+            "施展S2"
+          ],
+          "條件": [
+          ],
+          "目標": ""
+        }
+      ]
     },
-    "攻擊力": 0,
-    "攻擊力等級調整後": 0,
-    "敵人AI": "",
+    "攻擊力": 60,
+    "攻擊力等級調整後": 56,
+    "敵人AI": "S2",
     "消魂設置": {
       "Type1": "S1",
       "Type2": "S2",
       "Type4": "S3"
     },
-    "疊盾": 0,
-    "疊盾等級調整後": 0,
+    "疊盾": 800,
+    "疊盾等級調整後": 754,
     "站位": "無",
-    "血量": 0,
-    "血量等級調整後": 0,
+    "血量": 800,
+    "血量等級調整後": 754,
     "被動Buff": [
     ],
     "起始CD": 0,
@@ -35,26 +60,51 @@
   },
   "$type": "BattleModel.EnemyCharacter",
   "ReferenceBuffKeys": [
+    "defense_up_small"
   ],
   "ReferenceCharacterKeys": [
   ],
   "ReferenceEffectKeys": [
+    "t3407c4_s02_Trail01",
+    "t3407c4_s01_Buff01",
+    "t3407c4_s02_Sea01",
+    "t3407c4_s02_Seafloor01",
+    "t3407c4_s02_Hit01"
   ],
   "ReferenceEmoIconKeys": [
   ],
   "ReferenceMusicKeys": [
   ],
   "ReferenceSFXKeys": [
+    "Whoosh_swing_011_small_multi",
+    "Effect_splash_028_bubble_multi_large",
+    "Effect_flash_064set_01_light_buff",
+    "Effect_flash_020set_02_light_awake_small",
+    "Effect_splash_030set_04_spill_stream_fly_ascend",
+    "Effect_splash_018_large_wash_bubble",
+    "Effect_splash_033set_01_underwater_movement_bubble_swing",
+    "Effect_splash_013set_03_spill",
+    "Movement_misc_066set_02_bone_wood_break_crunch_splash_hit",
+    "Hit_smash_030_large_short_splash",
+    "Effect_splash_021set_01_blood_sizzle_spill",
+    "Movement_natural_016set_02_rock_slide_large_whoosh",
+    "Movement_natural_010_ocean_wave_hit_large",
+    "Movement_natural_016set_01_rock_slide_large_whoosh"
   ],
   "ReferenceVoiceSFXKeys": [
+    "t3407c4_battle_charge_1_normal",
+    "t3407c4_battle_attack_2_med",
+    "t3407c4_battle_hit_2_med",
+    "t3407c4_battle_hit_3_strong"
   ],
-  "_armorCapacity": 0,
+  "_armorCapacity": 800,
   "_assistantSkill": null,
-  "_bloodCapacity": 0,
+  "_bloodCapacity": 800,
   "_characterAI": {
     "$type": "BattleModel.SequenceEnemyAI",
     "Character": null,
     "OrderList": [
+      "S2"
     ]
   },
   "_defaultCoolDown": 0,
@@ -66,7 +116,7 @@
   "_passiveBuff": [
   ],
   "_pose": "Stand",
-  "_power": 0,
+  "_power": 60,
   "_reviveCount": 0,
   "_skills": {
     "Arrive1": {
@@ -121,18 +171,108 @@
           "IsMultiple": false,
           "multi": null,
           "single": {
+            "$type": "BattleModel.ThisSkillCaster"
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.AddBuffSkillEffect",
+              "Tag": 132,
+              "_buffData": [
+                {
+                  "BuffId": "defense_up_small",
+                  "Forever": false,
+                  "LevelStack": 2,
+                  "OverwriteDuration": 2,
+                  "UserDefineVariable": {
+                  }
+                }
+              ],
+              "_keyString": "1"
+            }
+          ]
+        }
+      ]
+    },
+    "S2": {
+      "$type": "BattleModel.BattleSkill",
+      "_isResolveTargetEachUnit": false,
+      "_skillIdentifiers": [
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": false,
+          "multi": null,
+          "single": {
             "$type": "BattleModel.EnemyAssignee",
             "reference": {
               "$type": "BattleModel.ThisSkillCaster"
             }
           },
           "skillEffects": [
+            {
+              "$type": "BattleModel.AmrBreakSkillEffect",
+              "Tag": 17,
+              "_keyString": "1",
+              "_skillModifier": {
+                "_constant": 0,
+                "_parameter": {
+                  "$type": "BattleModel.SkillCasterPower",
+                  "basePower": false
+                },
+                "_ratio": 2.2
+              }
+            }
           ]
         }
       ]
     }
   },
   "_skillsetTable": {
+    "S1": {
+      "ComboList": [
+        {
+          "ConditionList": [
+          ],
+          "SkillList": [
+            {
+              "ConditionList": [
+              ],
+              "SkillID": "S1",
+              "_conditionalSequences": [
+              ],
+              "seq": "",
+              "t": null
+            }
+          ],
+          "_characterCoolDown": 2,
+          "assignTarget": null,
+          "icon": 0
+        }
+      ],
+      "_isViewSkillSet": false
+    },
+    "S2": {
+      "ComboList": [
+        {
+          "ConditionList": [
+          ],
+          "SkillList": [
+            {
+              "ConditionList": [
+              ],
+              "SkillID": "S2",
+              "_conditionalSequences": [
+              ],
+              "seq": "",
+              "t": null
+            }
+          ],
+          "_characterCoolDown": 2,
+          "assignTarget": null,
+          "icon": 0
+        }
+      ],
+      "_isViewSkillSet": false
+    }
   },
   "_stoneEraseSetting": [
     {
