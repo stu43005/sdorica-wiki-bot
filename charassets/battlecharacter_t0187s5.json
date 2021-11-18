@@ -61,7 +61,19 @@
             "對敵人中HP最高的角色施展S3_2"
           ],
           "條件": [
-            "敵人中HP最高的角色的最大HP > (施術者的最大HP * 3)"
+            "敵人中HP最高的角色的最大HP > (施術者的最大HP * 3)",
+            "施術者的目標 {\"Pose\":\"Stand\",\"$type\":\"BattleModel.IsCharacterPose\"}"
+          ],
+          "目標": ""
+        },
+        {
+          "CoolDown": 0,
+          "技能列表": [
+            "對敵人中HP最高的角色施展S3_2"
+          ],
+          "條件": [
+            "敵人中HP最高的角色的最大HP > (施術者的最大HP * 3)",
+            "施術者的目標 {\"Pose\":\"Prone\",\"$type\":\"BattleModel.IsCharacterPose\"}"
           ],
           "目標": ""
         },
@@ -679,6 +691,19 @@
                   "constant": 3
                 }
               }
+            },
+            {
+              "$type": "BattleModel.CharacterCondition",
+              "character": {
+                "$type": "BattleModel.EnemyAssignee",
+                "reference": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              },
+              "condition": {
+                "$type": "BattleModel.IsCharacterPose",
+                "Pose": "Stand"
+              }
             }
           ],
           "SkillList": [
@@ -689,37 +714,87 @@
               "_conditionalSequences": [
                 {
                   "ConditionList": [
-                    {
-                      "$type": "BattleModel.CharacterCondition",
-                      "character": {
-                        "$type": "BattleModel.EnemyAssignee",
-                        "reference": {
-                          "$type": "BattleModel.ThisSkillCaster"
-                        }
-                      },
-                      "condition": {
-                        "$type": "BattleModel.IsCharacterPose",
-                        "Pose": "Stand"
-                      }
-                    }
                   ],
                   "_sequenceId": "S3_2_Stand"
+                }
+              ],
+              "seq": "S3_2",
+              "t": {
+                "$type": "BattleModel.FieldMaxChar",
+                "field": {
+                  "$type": "BattleModel.IntFieldC",
+                  "targetField": 0
                 },
+                "group": {
+                  "$type": "BattleModel.PVEEnemyTeam",
+                  "includeDead": false,
+                  "includeEmpty": false
+                }
+              }
+            }
+          ],
+          "_characterCoolDown": 0,
+          "assignTarget": null,
+          "icon": 1
+        },
+        {
+          "ConditionList": [
+            {
+              "$type": "BattleModel.IntCompare",
+              "left": {
+                "$type": "BattleModel.IntCharaterField",
+                "character": {
+                  "$type": "BattleModel.FieldMaxChar",
+                  "field": {
+                    "$type": "BattleModel.IntFieldC",
+                    "targetField": 0
+                  },
+                  "group": {
+                    "$type": "BattleModel.PVEEnemyTeam",
+                    "includeDead": false,
+                    "includeEmpty": false
+                  }
+                },
+                "targetField": 1
+              },
+              "op": 2,
+              "right": {
+                "$type": "BattleModel.MultiplyInt",
+                "left": {
+                  "$type": "BattleModel.IntCharaterField",
+                  "character": {
+                    "$type": "BattleModel.ThisSkillCaster"
+                  },
+                  "targetField": 1
+                },
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 3
+                }
+              }
+            },
+            {
+              "$type": "BattleModel.CharacterCondition",
+              "character": {
+                "$type": "BattleModel.EnemyAssignee",
+                "reference": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              },
+              "condition": {
+                "$type": "BattleModel.IsCharacterPose",
+                "Pose": "Prone"
+              }
+            }
+          ],
+          "SkillList": [
+            {
+              "ConditionList": [
+              ],
+              "SkillID": "S3_2",
+              "_conditionalSequences": [
                 {
                   "ConditionList": [
-                    {
-                      "$type": "BattleModel.CharacterCondition",
-                      "character": {
-                        "$type": "BattleModel.EnemyAssignee",
-                        "reference": {
-                          "$type": "BattleModel.ThisSkillCaster"
-                        }
-                      },
-                      "condition": {
-                        "$type": "BattleModel.IsCharacterPose",
-                        "Pose": "Prone"
-                      }
-                    }
                   ],
                   "_sequenceId": "S3_2_Prone"
                 }
