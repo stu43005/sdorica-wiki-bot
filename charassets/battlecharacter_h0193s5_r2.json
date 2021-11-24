@@ -49,11 +49,11 @@
         "對玩家後排{\"Tag\":0,\"_keyString\":\"1\",\"$type\":\"BattleModel.EmptyBuffSkillEffect\"}"
       ],
       "E3_2B": [
-        "對玩家的倒數第2個角色賦予永久h0193s5_P3",
+        "對玩家中符合(是黑位)的角色首位賦予永久h0193s5_P3",
         "對玩家全體將14個金色魂芯消除"
       ],
       "E3_2W": [
-        "對玩家後排賦予永久h0193s5_P3",
+        "對玩家中符合(是白位)的角色首位賦予永久h0193s5_P3",
         "對玩家全體將14個金色魂芯消除"
       ],
       "Retreat1": [
@@ -976,16 +976,18 @@
             }
           },
           "single": {
-            "$type": "BattleModel.IndexOfChars",
-            "backward": false,
+            "$type": "BattleModel.FrontOfChars",
             "group": {
-              "$type": "BattleModel.PVEPlayerTeam",
-              "includeDead": false,
-              "includeEmpty": false
-            },
-            "index": {
-              "$type": "BattleModel.ConstanctInt",
-              "constant": 1
+              "$type": "BattleModel.CharGroupWhere",
+              "condition": {
+                "$type": "BattleModel.StoneTypeIs",
+                "type": 2
+              },
+              "group": {
+                "$type": "BattleModel.PVEPlayerTeam",
+                "includeDead": false,
+                "includeEmpty": false
+              }
             }
           },
           "skillEffects": [
@@ -1064,11 +1066,18 @@
             }
           },
           "single": {
-            "$type": "BattleModel.BackOfChars",
+            "$type": "BattleModel.FrontOfChars",
             "group": {
-              "$type": "BattleModel.PVEPlayerTeam",
-              "includeDead": false,
-              "includeEmpty": false
+              "$type": "BattleModel.CharGroupWhere",
+              "condition": {
+                "$type": "BattleModel.StoneTypeIs",
+                "type": 4
+              },
+              "group": {
+                "$type": "BattleModel.PVEPlayerTeam",
+                "includeDead": false,
+                "includeEmpty": false
+              }
             }
           },
           "skillEffects": [
