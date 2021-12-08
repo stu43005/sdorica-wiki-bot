@@ -15,6 +15,7 @@ import { wikiHeroBot } from "./wiki/auto/hero";
 import wikiAvatars from "./wiki/Avatars";
 import wikiChapter from "./wiki/Chapter";
 import wikiCharVoice from "./wiki/CharVoice";
+import wikiDiligents from "./wiki/Diligents";
 import wikiExploreBuilding from "./wiki/ExploreBuilding";
 import wikiExploreComposite from "./wiki/ExploreComposite";
 import wikiExploreItems from "./wiki/ExploreItems";
@@ -111,6 +112,7 @@ export async function wikiMain() {
 	await outWiki(bot, 'Avatars', wikiAvatars());
 	await outWiki(bot, 'Chapter', wikiChapter());
 	await outWiki(bot, 'CharVoice', wikiCharVoice());
+	await outWiki(bot, 'Diligents', wikiDiligents());
 	await outWiki(bot, 'ExploreBuilding', wikiExploreBuilding());
 	await outWiki(bot, 'ExploreComposite', wikiExploreComposite());
 	await outWiki(bot, 'ExploreItems', wikiExploreItems());

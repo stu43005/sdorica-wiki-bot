@@ -708,6 +708,11 @@ export const gamedataTeanslateSettings: GamedataRef[] = [
 		func: localizationItemName(),
 	},
 	{
+		table: "DiligentGroups",
+		column: "diligentDescription",
+		func: localizationString("Item"),
+	},
+	{
 		table: "Diligents",
 		column: "diligentI2Key",
 		func: localizationString("Diligents"),
