@@ -1,0 +1,241 @@
+{
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "OnEachSkillTargetEffect": {
+        "效果": [
+          {
+            "效果": [
+              "{\"property\":1,\"value\":{\"constant\":-99999999,\"$type\":\"BattleModel.ConstanctInt\"},\"isPercent\":false,\"$type\":\"BattleModel.ExtraBonusEffectForSkillProperty\"}"
+            ],
+            "條件": [
+              "指定目標是本角色",
+              "施展的技能效果中包含(Attack)屬性",
+              "施術者沒有tearing(撕裂)狀態"
+            ]
+          },
+          {
+            "效果": [
+              "{\"property\":1,\"value\":{\"constant\":-50,\"$type\":\"BattleModel.ConstanctInt\"},\"isPercent\":true,\"$type\":\"BattleModel.ExtraBonusEffectForSkillProperty\"}"
+            ],
+            "條件": [
+              "施展的技能效果中包含(Attack)屬性",
+              "指定目標 的AssetId包含＂t0188＂字串",
+              "施術者是本角色"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnTurnEnd": {
+        "效果": [
+          {
+            "效果": [
+              "對本角色賦予永久changeIdle",
+              "對本角色賦予永久1層rage(怒氣)",
+              "對本角色賦予永久2層defense_up_small(減傷)"
+            ],
+            "條件": [
+              "本角色的HP% <= 50"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 99,
+    "標籤": "Forever"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+    "changeIdle",
+    "rage",
+    "defense_up_small"
+  ],
+  "_actionTable": [
+    {
+      "Key": 1024,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.ExtraBonusEffectForSkillProperty",
+                  "isPercent": false,
+                  "property": 1,
+                  "value": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": -99999999
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.ThisSpecifiedTarget"
+                },
+                "right": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                }
+              },
+              {
+                "$type": "BattleModel.ThisSkillEffectTagContains",
+                "containsAll": 1
+              },
+              {
+                "$type": "BattleModel.Inverse",
+                "condition": {
+                  "$type": "BattleModel.CharacterHasBuff",
+                  "buffId": "tearing",
+                  "character": {
+                    "$type": "BattleModel.ThisSkillCaster"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.ExtraBonusEffectForSkillProperty",
+                  "isPercent": true,
+                  "property": 1,
+                  "value": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": -50
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.ThisSkillEffectTagContains",
+                "containsAll": 1
+              },
+              {
+                "$type": "BattleModel.CharacterCondition",
+                "character": {
+                  "$type": "BattleModel.ThisSpecifiedTarget"
+                },
+                "condition": {
+                  "$type": "BattleModel.AssetIdHasSubString",
+                  "subString": "t0188"
+                }
+              },
+              {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                },
+                "right": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 2,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "changeIdle",
+                      "Forever": true,
+                      "LevelStack": 0,
+                      "OverwriteDuration": -1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "rage",
+                      "Forever": true,
+                      "LevelStack": 1,
+                      "OverwriteDuration": -1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "defense_up_small",
+                      "Forever": true,
+                      "LevelStack": 2,
+                      "OverwriteDuration": -1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntCharaterField",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "targetField": 2
+                },
+                "op": 3,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 50
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 99,
+  "_orderTable": {
+  },
+  "_tag": 64
+}

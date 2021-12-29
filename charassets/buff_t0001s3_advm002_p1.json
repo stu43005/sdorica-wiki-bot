@@ -1,0 +1,595 @@
+{
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "AfterAnyoneDie": {
+        "效果": [
+          {
+            "效果": [
+              "立即施展技能：對玩家首位將6個魂芯轉為金色魂芯"
+            ],
+            "條件": [
+              "施展的技能效果中包含(TrueDamage)屬性",
+              "施術者是玩家的一員",
+              "施術者 是金位"
+            ]
+          },
+          {
+            "效果": [
+              "立即施展技能：對玩家首位將6個魂芯轉為黑色魂芯"
+            ],
+            "條件": [
+              "施展的技能效果中包含(TrueDamage)屬性",
+              "施術者是玩家的一員",
+              "施術者 是黑位"
+            ]
+          },
+          {
+            "效果": [
+              "立即施展技能：對玩家首位將6個魂芯轉為白色魂芯"
+            ],
+            "條件": [
+              "施展的技能效果中包含(TrueDamage)屬性",
+              "施術者是玩家的一員",
+              "施術者 是白位"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnEachSkillSetEnd": {
+        "效果": [
+          {
+            "效果": [
+              "立即施展技能：對玩家首位將2個金色魂芯消除"
+            ],
+            "條件": [
+              "施展的技能效果中不包含(TrueDamage)屬性",
+              "施術者是玩家的一員",
+              "施術者 是金位"
+            ]
+          },
+          {
+            "效果": [
+              "立即施展技能：對玩家首位將2個黑色魂芯消除"
+            ],
+            "條件": [
+              "施展的技能效果中不包含(TrueDamage)屬性",
+              "施術者是玩家的一員",
+              "施術者 是黑位"
+            ]
+          },
+          {
+            "效果": [
+              "立即施展技能：對玩家首位將2個白色魂芯消除"
+            ],
+            "條件": [
+              "施展的技能效果中不包含(TrueDamage)屬性",
+              "施術者是玩家的一員",
+              "施術者 是白位"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnEachSkillTargetEffect": {
+        "效果": [
+          {
+            "效果": [
+              "技能的(TrueDamage)屬性效果增加(30)%"
+            ],
+            "條件": [
+              "施術者是玩家的一員",
+              "施展的技能效果中包含(TrueDamage)屬性"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 99,
+    "標籤": "NotRemoveAfterBattle | NotRemoveWhenDie | Forever"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+  ],
+  "_actionTable": [
+    {
+      "Key": 1024,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.BonusEffectForSkillProperty",
+                  "isPercent": true,
+                  "property": 8192,
+                  "value": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 30
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterInside",
+                "group": {
+                  "$type": "BattleModel.PVEPlayerTeam",
+                  "includeDead": false,
+                  "includeEmpty": false
+                },
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              },
+              {
+                "$type": "BattleModel.ThisSkillEffectTagContains",
+                "containsAll": 8192
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 1048576,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": null,
+                    "single": {
+                      "$type": "BattleModel.FrontOfChars",
+                      "group": {
+                        "$type": "BattleModel.PVEPlayerTeam",
+                        "includeDead": false,
+                        "includeEmpty": false
+                      }
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.StoneActionSkillEffect",
+                        "Tag": 516,
+                        "_keyString": "",
+                        "_stoneAction": {
+                          "BuffFilter": "Normal",
+                          "BuffId": "",
+                          "BuffLabel": null,
+                          "EffectFilter": "Normal",
+                          "StonePositionList": [
+                          ],
+                          "UsePositionSettings": false,
+                          "changeTo": "ToGold",
+                          "filter": "IsAnyColor",
+                          "order": "UpperLeftToLowerLeft",
+                          "targetStoneCount": 6
+                        }
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": true
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.ThisSkillEffectTagContains",
+                "containsAll": 8192
+              },
+              {
+                "$type": "BattleModel.CharacterInside",
+                "group": {
+                  "$type": "BattleModel.PVEPlayerTeam",
+                  "includeDead": false,
+                  "includeEmpty": false
+                },
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              },
+              {
+                "$type": "BattleModel.CharacterCondition",
+                "character": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                },
+                "condition": {
+                  "$type": "BattleModel.StoneTypeIs",
+                  "type": 1
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": null,
+                    "single": {
+                      "$type": "BattleModel.FrontOfChars",
+                      "group": {
+                        "$type": "BattleModel.PVEPlayerTeam",
+                        "includeDead": false,
+                        "includeEmpty": false
+                      }
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.StoneActionSkillEffect",
+                        "Tag": 516,
+                        "_keyString": "",
+                        "_stoneAction": {
+                          "BuffFilter": "Normal",
+                          "BuffId": "",
+                          "BuffLabel": null,
+                          "EffectFilter": "Normal",
+                          "StonePositionList": [
+                          ],
+                          "UsePositionSettings": false,
+                          "changeTo": "ToBlack",
+                          "filter": "IsAnyColor",
+                          "order": "UpperLeftToLowerLeft",
+                          "targetStoneCount": 6
+                        }
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": true
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.ThisSkillEffectTagContains",
+                "containsAll": 8192
+              },
+              {
+                "$type": "BattleModel.CharacterInside",
+                "group": {
+                  "$type": "BattleModel.PVEPlayerTeam",
+                  "includeDead": false,
+                  "includeEmpty": false
+                },
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              },
+              {
+                "$type": "BattleModel.CharacterCondition",
+                "character": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                },
+                "condition": {
+                  "$type": "BattleModel.StoneTypeIs",
+                  "type": 2
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": null,
+                    "single": {
+                      "$type": "BattleModel.FrontOfChars",
+                      "group": {
+                        "$type": "BattleModel.PVEPlayerTeam",
+                        "includeDead": false,
+                        "includeEmpty": false
+                      }
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.StoneActionSkillEffect",
+                        "Tag": 516,
+                        "_keyString": "",
+                        "_stoneAction": {
+                          "BuffFilter": "Normal",
+                          "BuffId": "",
+                          "BuffLabel": null,
+                          "EffectFilter": "Normal",
+                          "StonePositionList": [
+                          ],
+                          "UsePositionSettings": false,
+                          "changeTo": "ToWhite",
+                          "filter": "IsAnyColor",
+                          "order": "UpperLeftToLowerLeft",
+                          "targetStoneCount": 6
+                        }
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": true
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.ThisSkillEffectTagContains",
+                "containsAll": 8192
+              },
+              {
+                "$type": "BattleModel.CharacterInside",
+                "group": {
+                  "$type": "BattleModel.PVEPlayerTeam",
+                  "includeDead": false,
+                  "includeEmpty": false
+                },
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              },
+              {
+                "$type": "BattleModel.CharacterCondition",
+                "character": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                },
+                "condition": {
+                  "$type": "BattleModel.StoneTypeIs",
+                  "type": 4
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 8,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": null,
+                    "single": {
+                      "$type": "BattleModel.FrontOfChars",
+                      "group": {
+                        "$type": "BattleModel.PVEPlayerTeam",
+                        "includeDead": false,
+                        "includeEmpty": false
+                      }
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.StoneActionSkillEffect",
+                        "Tag": 516,
+                        "_keyString": "",
+                        "_stoneAction": {
+                          "BuffFilter": "Normal",
+                          "BuffId": "",
+                          "BuffLabel": null,
+                          "EffectFilter": "Normal",
+                          "StonePositionList": [
+                          ],
+                          "UsePositionSettings": false,
+                          "changeTo": "Erase",
+                          "filter": "IsGold",
+                          "order": "LeftToRight",
+                          "targetStoneCount": 2
+                        }
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": true
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.Inverse",
+                "condition": {
+                  "$type": "BattleModel.ThisSkillEffectTagContains",
+                  "containsAll": 8192
+                }
+              },
+              {
+                "$type": "BattleModel.CharacterInside",
+                "group": {
+                  "$type": "BattleModel.PVEPlayerTeam",
+                  "includeDead": false,
+                  "includeEmpty": false
+                },
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              },
+              {
+                "$type": "BattleModel.CharacterCondition",
+                "character": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                },
+                "condition": {
+                  "$type": "BattleModel.StoneTypeIs",
+                  "type": 1
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": null,
+                    "single": {
+                      "$type": "BattleModel.FrontOfChars",
+                      "group": {
+                        "$type": "BattleModel.PVEPlayerTeam",
+                        "includeDead": false,
+                        "includeEmpty": false
+                      }
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.StoneActionSkillEffect",
+                        "Tag": 516,
+                        "_keyString": "",
+                        "_stoneAction": {
+                          "BuffFilter": "Normal",
+                          "BuffId": "",
+                          "BuffLabel": null,
+                          "EffectFilter": "Normal",
+                          "StonePositionList": [
+                          ],
+                          "UsePositionSettings": false,
+                          "changeTo": "Erase",
+                          "filter": "IsBlack",
+                          "order": "LeftToRight",
+                          "targetStoneCount": 2
+                        }
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": true
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.Inverse",
+                "condition": {
+                  "$type": "BattleModel.ThisSkillEffectTagContains",
+                  "containsAll": 8192
+                }
+              },
+              {
+                "$type": "BattleModel.CharacterInside",
+                "group": {
+                  "$type": "BattleModel.PVEPlayerTeam",
+                  "includeDead": false,
+                  "includeEmpty": false
+                },
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              },
+              {
+                "$type": "BattleModel.CharacterCondition",
+                "character": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                },
+                "condition": {
+                  "$type": "BattleModel.StoneTypeIs",
+                  "type": 2
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": null,
+                    "single": {
+                      "$type": "BattleModel.FrontOfChars",
+                      "group": {
+                        "$type": "BattleModel.PVEPlayerTeam",
+                        "includeDead": false,
+                        "includeEmpty": false
+                      }
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.StoneActionSkillEffect",
+                        "Tag": 516,
+                        "_keyString": "",
+                        "_stoneAction": {
+                          "BuffFilter": "Normal",
+                          "BuffId": "",
+                          "BuffLabel": null,
+                          "EffectFilter": "Normal",
+                          "StonePositionList": [
+                          ],
+                          "UsePositionSettings": false,
+                          "changeTo": "Erase",
+                          "filter": "IsWhite",
+                          "order": "LeftToRight",
+                          "targetStoneCount": 2
+                        }
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": true
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.Inverse",
+                "condition": {
+                  "$type": "BattleModel.ThisSkillEffectTagContains",
+                  "containsAll": 8192
+                }
+              },
+              {
+                "$type": "BattleModel.CharacterInside",
+                "group": {
+                  "$type": "BattleModel.PVEPlayerTeam",
+                  "includeDead": false,
+                  "includeEmpty": false
+                },
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              },
+              {
+                "$type": "BattleModel.CharacterCondition",
+                "character": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                },
+                "condition": {
+                  "$type": "BattleModel.StoneTypeIs",
+                  "type": 4
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 99,
+  "_orderTable": {
+  },
+  "_tag": 70
+}

@@ -1,0 +1,230 @@
+{
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "OnEachSkillTargetEffect": {
+        "效果": [
+          {
+            "效果": [
+              "技能效果增加(20)%"
+            ],
+            "條件": [
+              "施術者是本角色的隊伍的一員",
+              "本角色 已經死亡"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnTurnBegin": {
+        "效果": [
+          {
+            "效果": [
+              "對本角色的隊伍首位賦予3回合1層damage_absorption(轉盾)",
+              "對本角色的隊伍首位賦予1回合1層h0047s5_a2_FSM",
+              "立即施展技能：對玩家首位將1個金色魂芯消除"
+            ],
+            "條件": [
+              "目前回合輪到本角色",
+              "本角色 已經死亡"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 99,
+    "標籤": "NotRemoveWhenDie | Forever"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+    "damage_absorption",
+    "h0047s5_a2_FSM",
+    "damage_absorption_trigger"
+  ],
+  "_actionTable": [
+    {
+      "Key": 1,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.FrontOfChars",
+                    "group": {
+                      "$type": "BattleModel.SelfTeamChars",
+                      "excludeSelf": false,
+                      "includeDead": false,
+                      "includeEmpty": false,
+                      "reference": {
+                        "$type": "BattleModel.ThisBuffOwner"
+                      }
+                    }
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "damage_absorption",
+                      "Forever": false,
+                      "LevelStack": 1,
+                      "OverwriteDuration": 3,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.FrontOfChars",
+                    "group": {
+                      "$type": "BattleModel.SelfTeamChars",
+                      "excludeSelf": false,
+                      "includeDead": false,
+                      "includeEmpty": false,
+                      "reference": {
+                        "$type": "BattleModel.ThisBuffOwner"
+                      }
+                    }
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "h0047s5_a2_FSM",
+                      "Forever": false,
+                      "LevelStack": 1,
+                      "OverwriteDuration": 1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": null,
+                    "single": {
+                      "$type": "BattleModel.FrontOfChars",
+                      "group": {
+                        "$type": "BattleModel.PVEPlayerTeam",
+                        "includeDead": false,
+                        "includeEmpty": false
+                      }
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.StoneActionSkillEffect",
+                        "Tag": 516,
+                        "_keyString": "1",
+                        "_stoneAction": {
+                          "BuffFilter": "Normal",
+                          "BuffId": "",
+                          "BuffLabel": null,
+                          "EffectFilter": "Normal",
+                          "StonePositionList": [
+                          ],
+                          "UsePositionSettings": false,
+                          "changeTo": "Erase",
+                          "filter": "IsGold",
+                          "order": "LeftToRight",
+                          "targetStoneCount": 1
+                        }
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": true
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CurrentTurnBelongsTo",
+                "character": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                }
+              },
+              {
+                "$type": "BattleModel.CharacterCondition",
+                "character": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                },
+                "condition": {
+                  "$type": "BattleModel.IsCharacterDead"
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 1024,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.BonusEffectForSkillProperty",
+                  "isPercent": true,
+                  "property": -1,
+                  "value": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 20
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterInside",
+                "group": {
+                  "$type": "BattleModel.SelfTeamChars",
+                  "excludeSelf": false,
+                  "includeDead": false,
+                  "includeEmpty": false,
+                  "reference": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  }
+                },
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              },
+              {
+                "$type": "BattleModel.CharacterCondition",
+                "character": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                },
+                "condition": {
+                  "$type": "BattleModel.IsCharacterDead"
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 99,
+  "_orderTable": {
+  },
+  "_tag": 68
+}

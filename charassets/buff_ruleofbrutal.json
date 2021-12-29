@@ -1,0 +1,464 @@
+{
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "OnTurnBegin | OnEachSkill": {
+        "效果": [
+          {
+            "效果": [
+              "對本狀態的變數一改為1"
+            ],
+            "條件": [
+              "施術者是玩家的一員",
+              "施術者 是金位"
+            ]
+          },
+          {
+            "效果": [
+              "對本狀態的變數二改為1"
+            ],
+            "條件": [
+              "施術者是玩家的一員",
+              "施術者 是黑位"
+            ]
+          },
+          {
+            "效果": [
+              "對本狀態的變數三改為1"
+            ],
+            "條件": [
+              "施術者是玩家的一員",
+              "施術者 是白位"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnTurnEnd": {
+        "效果": [
+          {
+            "效果": [
+              "對玩家的倒數第3個角色賦予1回合3層tearing(撕裂)",
+              "對本狀態的變數一改為0"
+            ],
+            "條件": [
+              "目前回合輪到玩家後排",
+              "本狀態的變數一 == 1"
+            ]
+          },
+          {
+            "效果": [
+              "對玩家的倒數第2個角色賦予1回合3層tearing(撕裂)",
+              "對本狀態的變數二改為0"
+            ],
+            "條件": [
+              "目前回合輪到玩家後排",
+              "本狀態的變數二 == 1"
+            ]
+          },
+          {
+            "效果": [
+              "對玩家的倒數第1個角色賦予1回合3層tearing(撕裂)",
+              "對本狀態的變數三改為0"
+            ],
+            "條件": [
+              "目前回合輪到玩家後排",
+              "本狀態的變數三 == 1"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 99,
+    "標籤": "NotRemoveAfterBattle | NotRemoveWhenDie | Forever | InfinityTrigger"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+    "tearing",
+    "tearing_trigger",
+    "tearing_trigger_alert"
+  ],
+  "_actionTable": [
+    {
+      "Key": 2,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.IndexOfChars",
+                    "backward": false,
+                    "group": {
+                      "$type": "BattleModel.PVEPlayerTeam",
+                      "includeDead": true,
+                      "includeEmpty": true
+                    },
+                    "index": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 2
+                    }
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "tearing",
+                      "Forever": false,
+                      "LevelStack": 3,
+                      "OverwriteDuration": 1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CurrentTurnBelongsTo",
+                "character": {
+                  "$type": "BattleModel.BackOfChars",
+                  "group": {
+                    "$type": "BattleModel.PVEPlayerTeam",
+                    "includeDead": false,
+                    "includeEmpty": false
+                  }
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.ThisBuff"
+                  },
+                  "targetField": 4
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 1
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.IndexOfChars",
+                    "backward": false,
+                    "group": {
+                      "$type": "BattleModel.PVEPlayerTeam",
+                      "includeDead": true,
+                      "includeEmpty": true
+                    },
+                    "index": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 1
+                    }
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "tearing",
+                      "Forever": false,
+                      "LevelStack": 3,
+                      "OverwriteDuration": 1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 8,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CurrentTurnBelongsTo",
+                "character": {
+                  "$type": "BattleModel.BackOfChars",
+                  "group": {
+                    "$type": "BattleModel.PVEPlayerTeam",
+                    "includeDead": false,
+                    "includeEmpty": false
+                  }
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.ThisBuff"
+                  },
+                  "targetField": 8
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 1
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.IndexOfChars",
+                    "backward": false,
+                    "group": {
+                      "$type": "BattleModel.PVEPlayerTeam",
+                      "includeDead": true,
+                      "includeEmpty": true
+                    },
+                    "index": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 0
+                    }
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "tearing",
+                      "Forever": false,
+                      "LevelStack": 3,
+                      "OverwriteDuration": 1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 16,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CurrentTurnBelongsTo",
+                "character": {
+                  "$type": "BattleModel.BackOfChars",
+                  "group": {
+                    "$type": "BattleModel.PVEPlayerTeam",
+                    "includeDead": false,
+                    "includeEmpty": false
+                  }
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.ThisBuff"
+                  },
+                  "targetField": 16
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 1
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 65,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 1
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterInside",
+                "group": {
+                  "$type": "BattleModel.PVEPlayerTeam",
+                  "includeDead": false,
+                  "includeEmpty": false
+                },
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              },
+              {
+                "$type": "BattleModel.CharacterCondition",
+                "character": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                },
+                "condition": {
+                  "$type": "BattleModel.StoneTypeIs",
+                  "type": 1
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 8,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 1
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterInside",
+                "group": {
+                  "$type": "BattleModel.PVEPlayerTeam",
+                  "includeDead": false,
+                  "includeEmpty": false
+                },
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              },
+              {
+                "$type": "BattleModel.CharacterCondition",
+                "character": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                },
+                "condition": {
+                  "$type": "BattleModel.StoneTypeIs",
+                  "type": 2
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 16,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 1
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterInside",
+                "group": {
+                  "$type": "BattleModel.PVEPlayerTeam",
+                  "includeDead": false,
+                  "includeEmpty": false
+                },
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              },
+              {
+                "$type": "BattleModel.CharacterCondition",
+                "character": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                },
+                "condition": {
+                  "$type": "BattleModel.StoneTypeIs",
+                  "type": 4
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 99,
+  "_orderTable": {
+  },
+  "_tag": 32838
+}

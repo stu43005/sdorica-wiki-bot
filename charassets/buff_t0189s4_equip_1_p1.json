@@ -1,0 +1,149 @@
+{
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "OnEachSkillTargetEffect": {
+        "效果": [
+          {
+            "效果": [
+              "{\"property\":1,\"value\":{\"constant\":-80,\"$type\":\"BattleModel.ConstanctInt\"},\"isPercent\":true,\"$type\":\"BattleModel.ExtraBonusEffectForSkillProperty\"}"
+            ],
+            "條件": [
+              "施展的技能效果中包含(Attack)屬性",
+              "指定目標 的AssetId包含＂t0188＂字串",
+              "施術者是本角色"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnTurnEnd": {
+        "效果": [
+          {
+            "效果": [
+              "對本角色賦予永久changeIdle"
+            ],
+            "條件": [
+              "本角色的HP% <= 40"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 99,
+    "標籤": "Hidden | Forever"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+    "changeIdle"
+  ],
+  "_actionTable": [
+    {
+      "Key": 2,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "changeIdle",
+                      "Forever": true,
+                      "LevelStack": 0,
+                      "OverwriteDuration": -1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntCharaterField",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "targetField": 2
+                },
+                "op": 3,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 40
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 1024,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.ExtraBonusEffectForSkillProperty",
+                  "isPercent": true,
+                  "property": 1,
+                  "value": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": -80
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.ThisSkillEffectTagContains",
+                "containsAll": 1
+              },
+              {
+                "$type": "BattleModel.CharacterCondition",
+                "character": {
+                  "$type": "BattleModel.ThisSpecifiedTarget"
+                },
+                "condition": {
+                  "$type": "BattleModel.AssetIdHasSubString",
+                  "subString": "t0188"
+                }
+              },
+              {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                },
+                "right": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 99,
+  "_orderTable": {
+  },
+  "_tag": 65
+}
