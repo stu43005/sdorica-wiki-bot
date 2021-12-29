@@ -75,6 +75,11 @@ export const gamedataTeanslateSettings: GamedataRef[] = [
 		func: localizationString("ScoreMessage", (s) => s + "_title"),
 	},
 	{
+		table: "ScoreRules",
+		column: "id",
+		func: localizationString("ScoreMessage", (s) => s + "_title"),
+	},
+	{
 		table: "Avatars",
 		column: "id",
 		func: localizationString("Avatars"),
@@ -679,7 +684,7 @@ export const gamedataTeanslateSettings: GamedataRef[] = [
 	},
 	{
 		table: "ChapterCount",
-		column: "linkId:payType",
+		column: "linkId:payType,linkId2:payType2",
 		func: localizationItemNameWithType(),
 	},
 	{
@@ -726,6 +731,36 @@ export const gamedataTeanslateSettings: GamedataRef[] = [
 		table: "Diligents",
 		column: "giveLinkId:giveType",
 		func: localizationItemNameWithType(),
+	},
+	{
+		table: "AdventureDailyRank",
+		column: "giveLinkId1:giveType1,giveLinkId2:giveType2,giveLinkId3:giveType3,giveLinkId4:giveType4",
+		func: localizationItemNameWithType(),
+	},
+	{
+		table: "AdventureWeekPoint",
+		column: "giveLinkId1:giveType1,giveLinkId2:giveType2,giveLinkId3:giveType3,giveLinkId4:giveType4",
+		func: localizationItemNameWithType(),
+	},
+	{
+		table: "AdventureWeekRank",
+		column: "giveLinkId1:giveType1,giveLinkId2:giveType2,giveLinkId3:giveType3,giveLinkId4:giveType4",
+		func: localizationItemNameWithType(),
+	},
+	{
+		table: "BattlefieldRanks",
+		column: "giveLinkId1:giveType1,giveLinkId2:giveType2,giveLinkId3:giveType3,giveLinkId4:giveType4",
+		func: localizationItemNameWithType(),
+	},
+	{
+		table: "RaidChapterSetting",
+		column: "targetItemId",
+		func: localizationItemName(),
+	},
+	{
+		table: "RaidChapterSettings",
+		column: "targetItemId",
+		func: localizationItemName(),
 	},
 ];
 

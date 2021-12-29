@@ -36,10 +36,12 @@ export class ChapterCount {
 
 	get itemIcon(): boolean { return !!this.row.get('itemIcon'); }
 	payItem: ItemPayRef;
+	payItem2: ItemPayRef;
 
 	constructor(private row: RowWrapper) {
 		this.name = new TemplateString(localizationString('ChapterCount')(row.get('name')));
 		this.payItem = new ItemPayRef(row.get('payType'), row.get('linkId'), row.get('amount'));
+		this.payItem2 = new ItemPayRef(row.get('payType2'), row.get('linkId2'), row.get('amount2'));
 
 		let regainStringKey = '';
 		switch (this.regainType) {

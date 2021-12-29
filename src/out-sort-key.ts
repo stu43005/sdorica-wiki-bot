@@ -26,6 +26,14 @@ const TABLE_KEYS: Record<string, string[]> = {
 		"chance3", "giveType3", "giveLinkId3", "giveAmount3",
 		"chance4", "giveType4", "giveLinkId4", "giveAmount4",
 	],
+	BattlefieldRanks: [
+		"id",
+		"groupId", "rankIcon", "rankListIcon",
+		"minRanking", "maxRanking",
+		"giveType1", "giveLinkId1", "giveAmount1",
+		"giveType2", "giveLinkId2", "giveAmount2",
+		"giveType3", "giveLinkId3", "giveAmount3",
+	],
 	BuildInAssetBundle: ["type", "effectValue"],
 	ChapterCount: ["id", "name", "dynamicRate", "initial", "max", "regainType", "regainValue", "itemIcon", "payType", "linkId", "amount"],
 	Chapters: [
@@ -252,6 +260,9 @@ export function sortKeyByTable(tablename?: string) {
 
 const TABLE_KEYS_BLACKLIST: Record<string, string[]> = {
 	AbilityDrop: ["id"],
+	AdventureDailyRank: ["item1Id", "reward1Count", "item2Id", "reward2Count", "item3Id", "reward3Count", "item4Id", "reward4Count"],
+	AdventureWeekPoint: ["item1Id", "reward1Count", "item2Id", "reward2Count", "item3Id", "reward3Count", "item4Id", "reward4Count"],
+	AdventureWeekRank: ["item1Id", "reward1Count", "item2Id", "reward2Count", "item3Id", "reward3Count", "item4Id", "reward4Count"],
 	Chapters: ["requireQuestId"],
 	CharaInfoVoice: ["id"],
 	CharaSelectVoice: ["id"],

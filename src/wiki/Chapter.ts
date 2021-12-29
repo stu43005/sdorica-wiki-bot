@@ -38,7 +38,7 @@ export default function wikiChapter() {
 * 章節解鎖條件：${stateCondition(chapter.unlockCondition, chapter.unlockConditionParam)}${chapter.chapterCount ? `
 * 累積最大關卡次數：${chapter.chapterCount.max}
 * 自動恢復關卡次數：${chapter.chapterCount.regainString}
-* 增加可完成次數消耗：${chapter.chapterCount.payItem.toWiki()}` : ''}
+* 增加可完成次數消耗：${chapter.chapterCount.payItem.toWiki()}${chapter.chapterCount.payItem2.toWiki()}` : ''}
 * 章節完成獎勵：${treasureList(chapter.dropGroupID, '*')}
 {{旅途表格|${imageName}}}`;
 		for (let j = 0; j < quests.length; j++) {

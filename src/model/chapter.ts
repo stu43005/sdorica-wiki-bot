@@ -142,6 +142,8 @@ export class Chapter {
 	 */
 	get dropGroupID(): number { return +this.row.get('dropGroupID'); }
 
+	get battlefieldId(): string { return this.row.get('battlefieldId'); }
+
 	constructor(private row: RowWrapper) {
 		this.name = localizationString("RegionName")(row.get('name'));
 		this.title = localizationString("RegionName")(row.get('title'));

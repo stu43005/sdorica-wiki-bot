@@ -33,10 +33,10 @@ export default function wikiAdventureRank() {
 			const entry = entries[j];
 			str += `\n|-
 | [[File:${dailyRankImage[entry.get("image")]}|64px]] (${entry.get("maxPercentage")}% ~ ${entry.get("minPercentage")}%)
-| ${item2wiki(entry.get("item1Id"), entry.get("reward1Count"))}
-| ${item2wiki(entry.get("item2Id"), entry.get("reward2Count"))}
-| ${item2wiki(entry.get("item3Id"), entry.get("reward3Count"))}
-| ${item2wiki(entry.get("item4Id"), entry.get("reward4Count"))}`;
+| ${item2wikiWithType(entry.get("giveType1"), entry.get("giveLinkId1"), entry.get("giveAmount1"))}
+| ${item2wikiWithType(entry.get("giveType2"), entry.get("giveLinkId2"), entry.get("giveAmount2"))}
+| ${item2wikiWithType(entry.get("giveType3"), entry.get("giveLinkId3"), entry.get("giveAmount3"))}
+| ${item2wikiWithType(entry.get("giveType4"), entry.get("giveLinkId4"), entry.get("giveAmount4"))}`;
 		}
 		str += `\n|}`;
 		out.push(str);
@@ -64,10 +64,10 @@ export default function wikiAdventureRank() {
 			str += `\n|-
 | style="text-align: center;" | [[File:${weekRankImage[entry.get("image")]}|64px]]
 | style="text-align: center;" | No.${entry.get("maxRanking")}<br>｜<br>${entry.get("minRanking") == -1 ? "∞" : `No.${entry.get("minRanking")}`}
-| ${item2wiki(entry.get("item1Id"), entry.get("reward1Count"))}
-| ${item2wiki(entry.get("item2Id"), entry.get("reward2Count"))}
-| ${item2wiki(entry.get("item3Id"), entry.get("reward3Count"))}
-| ${item2wiki(entry.get("item4Id"), entry.get("reward4Count"))}`;
+| ${item2wikiWithType(entry.get("giveType1"), entry.get("giveLinkId1"), entry.get("giveAmount1"))}
+| ${item2wikiWithType(entry.get("giveType2"), entry.get("giveLinkId2"), entry.get("giveAmount2"))}
+| ${item2wikiWithType(entry.get("giveType3"), entry.get("giveLinkId3"), entry.get("giveAmount3"))}
+| ${item2wikiWithType(entry.get("giveType4"), entry.get("giveLinkId4"), entry.get("giveAmount4"))}`;
 		}
 		str += `\n|}`;
 		out.push(str);
@@ -124,10 +124,10 @@ export default function wikiAdventureRank() {
 			const entry = entries[j];
 			str += `\n|-
 | ${numeral(Number(entry.get("points"))).format("0,0")}分
-| ${item2wiki(entry.get("item1Id"), entry.get("reward1Count"))}
-| ${item2wiki(entry.get("item2Id"), entry.get("reward2Count"))}
-| ${item2wiki(entry.get("item3Id"), entry.get("reward3Count"))}
-| ${item2wiki(entry.get("item4Id"), entry.get("reward4Count"))}`;
+| ${item2wikiWithType(entry.get("giveType1"), entry.get("giveLinkId1"), entry.get("giveAmount1"))}
+| ${item2wikiWithType(entry.get("giveType2"), entry.get("giveLinkId2"), entry.get("giveAmount2"))}
+| ${item2wikiWithType(entry.get("giveType3"), entry.get("giveLinkId3"), entry.get("giveAmount3"))}
+| ${item2wikiWithType(entry.get("giveType4"), entry.get("giveLinkId4"), entry.get("giveAmount4"))}`;
 		}
 		str += `\n|}`;
 		out.push(str);
