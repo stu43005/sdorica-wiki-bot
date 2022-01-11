@@ -42,7 +42,7 @@ export function wikitemplate(name: string, params: Record<string, any>, format: 
 	return formatter.getTemplate();
 }
 
-export function titleparts(title: string = '', parts: number = 0, offset: number = 0) {
+export function titleparts(title = '', parts = 0, offset = 0) {
 	title = String(title);
 	const bits = title.split("/");
 	if (bits.length <= 0) {

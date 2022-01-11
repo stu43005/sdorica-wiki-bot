@@ -1,4 +1,3 @@
 import { BattleCharacter } from "./BattleCharacter";
 
-export interface EnemyCharacter extends BattleCharacter {
-}
+export type EnemyCharacter = BattleCharacter

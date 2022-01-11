@@ -60,7 +60,7 @@ function supportedInverse(condition: IConditionOfModel) {
 	return false;
 }
 
-export function conditionStringify(condition: IConditionOfModel, isInverse: boolean = false): string {
+export function conditionStringify(condition: IConditionOfModel, isInverse = false): string {
 	if (!condition) return "";
 	if (condition.$type == "BattleModel.Inverse") {
 		const obj = condition as Inverse;
@@ -168,7 +168,7 @@ function supportedInverseChar(condition: IConditionOfCharacter) {
 	return false;
 }
 
-export function conditionCharStringify(condition: IConditionOfCharacter, isInverse: boolean = false): string {
+export function conditionCharStringify(condition: IConditionOfCharacter, isInverse = false): string {
 	if (!condition) return "";
 	if (condition.$type == "BattleModel.InverseC") {
 		const obj = condition as InverseC;
@@ -227,7 +227,7 @@ function supportedInverseBuff(condition: IConditionOfBuff) {
 	return false;
 }
 
-export function conditionBuffStringify(condition: IConditionOfBuff, isInverse: boolean = false): string {
+export function conditionBuffStringify(condition: IConditionOfBuff, isInverse = false): string {
 	if (!condition) return "";
 	if (condition.$type == "BattleModel.InverseB") {
 		const obj = condition as InverseB;

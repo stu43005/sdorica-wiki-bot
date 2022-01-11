@@ -45,7 +45,7 @@ export class HeroSkill {
 		return StoneEraseShape.None;
 	}
 
-	public static createByEraseType(skillSet: IHeroSkillSet, skillId: SkillId, stoneEraseType: StoneEraseType, tips: boolean = false) {
+	public static createByEraseType(skillSet: IHeroSkillSet, skillId: SkillId, stoneEraseType: StoneEraseType, tips = false) {
 		const type = HeroSkill.getSkillType(stoneEraseType);
 		const shape = HeroSkill.getStoneEraseShape(stoneEraseType);
 		return new HeroSkill(skillSet, skillId, type, shape, tips);
@@ -54,8 +54,8 @@ export class HeroSkill {
 	name: string;
 	info: string;
 
-	triggerLimit: string = '';
-	counterAttackLimit: boolean = false;
+	triggerLimit = '';
+	counterAttackLimit = false;
 	unlockRank?: HeroRank;
 
 	constructor(

@@ -38,7 +38,7 @@ export class TemplateFormatter {
 	}
 
 	setFormat(format: string | TemplateFormatter.FORMAT) {
-		let inlineFormat = '{{_|_=_}}';
+		const inlineFormat = '{{_|_=_}}';
 		if (format === 'inline') {
 			format = inlineFormat;
 		}

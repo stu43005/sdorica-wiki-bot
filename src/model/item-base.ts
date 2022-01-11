@@ -40,7 +40,7 @@ export abstract class ItemBase {
 			description: this.description,
 			iconKey: this.iconKey,
 		};
-		let pageName = this.getWikiPageName();
+		const pageName = this.getWikiPageName();
 		if (pageName !== this.name) {
 			params.imagename = pageName;
 		}

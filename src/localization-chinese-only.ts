@@ -16,7 +16,7 @@ export async function localizationChineseOnly() {
 			if (!table.D) continue;
 			table.D.push(table.T);
 			table.D.push(table.K);
-			let data = flipMatrix(table.D)
+			const data = flipMatrix(table.D)
 				.filter((value: any[]) => ['Key', 'Chinese'].indexOf('' + value[value.length - 1]) != -1)
 				.sort(sortKeyByTable(tablename));
 			const edited = flipMatrix(data);

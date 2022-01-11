@@ -204,7 +204,7 @@ function exploreCategoryName(label: string) {
 export function itemCategoryName(row: RowWrapper, itemName: string, itemDescription: string, isExplore = false) {
 	const id = row.get("id");
 	const iconKey = row.get("iconKey");
-	let category = row.get("category");
+	const category = row.get("category");
 	if (!itemName) {
 		itemName = localizationItemName(isExplore)(id);
 	}
@@ -362,7 +362,7 @@ export interface Item2WikiOptions {
 	M?: string;
 }
 
-export function item2wiki(id: string, count?: number, isExplore: boolean = false, options?: Item2WikiOptions) {
+export function item2wiki(id: string, count?: number, isExplore = false, options?: Item2WikiOptions) {
 	options = options || {};
 	options.text = typeof options.text === 'undefined' ? 'true' : options.text;
 	if (!id || id == "-1") return "";
@@ -467,7 +467,7 @@ export function item2wikiWithType(type: string, id: string, count?: number, opti
 	}
 }
 
-export function itemlist2wiki(list: string, isExplore: boolean = false, options?: Item2WikiOptions, separator: string = "<br/>") {
+export function itemlist2wiki(list: string, isExplore = false, options?: Item2WikiOptions, separator = "<br/>") {
 	return String(list)
 		.split(";")
 		.filter(s => s != "")
@@ -476,7 +476,7 @@ export function itemlist2wiki(list: string, isExplore: boolean = false, options?
 		.join(separator);
 }
 
-export function itemList(row: RowWrapper, count: number = 4, isExplore = true, size: string = "20px") {
+export function itemList(row: RowWrapper, count = 4, isExplore = true, size = "20px") {
 	const items: string[] = [];
 	for (let k = 1; k <= count; k++) {
 		const wiki = item2wiki(row.get(`item${k}Id`), row.get(`item${k}Count`), isExplore, { size });
@@ -485,7 +485,7 @@ export function itemList(row: RowWrapper, count: number = 4, isExplore = true, s
 	return items;
 }
 
-export function itemListWithType(row: RowWrapper, count: number, typeKey: Func1, itemKey: Func1, countKey: Func1, size: string = "20px") {
+export function itemListWithType(row: RowWrapper, count: number, typeKey: Func1, itemKey: Func1, countKey: Func1, size = "20px") {
 	const items: string[] = [];
 	for (let i = 1; i <= count; i++) {
 		const wiki = item2wikiWithType(row.get(typeKey(i.toString())), row.get(itemKey(i.toString())), row.get(countKey(i.toString())), { size });
@@ -494,7 +494,7 @@ export function itemListWithType(row: RowWrapper, count: number, typeKey: Func1,
 	return items;
 }
 
-function isAvatar(id: string, isExplore: boolean = false): boolean {
+function isAvatar(id: string, isExplore = false): boolean {
 	if (isExplore) {
 		if (gamedataString("ExploreItems", "id", "category")(id) == "Transform") {
 			const toItemId = gamedataString("ExploreItems", "id", "effectValue")(id);

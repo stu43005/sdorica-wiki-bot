@@ -131,7 +131,7 @@ export function getQuestJsonData() {
 
 			const teamlimit = TeamLimitsTable.find(t => t.get("id") == quest.get("heroLimitId"));
 			if (teamlimit) {
-				let teamlimitData: Team<TeamLimitData> = {
+				const teamlimitData: Team<TeamLimitData> = {
 					g: {
 						hero: HeroesTable.find(h => h.get("id") == teamlimit.get("idG")),
 						type: teamlimit.get("typeG"),

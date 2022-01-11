@@ -1,4 +1,3 @@
 import { AssistantSkill } from "./AssistantSkill";
 
-export interface AssistantActiveSkill extends AssistantSkill {
-}
+export type AssistantActiveSkill = AssistantSkill

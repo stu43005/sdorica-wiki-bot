@@ -19,7 +19,7 @@ export default function wikiAdventure() {
 ! 詳細內容`;
 	for (let i = 0; i < AdventureRuleTable.length; i++) {
 		const row = AdventureRuleTable.get(i);
-		let descs: string[] = [];
+		const descs: string[] = [];
 		if (row.get("finalArmor")) descs.push(`finalArmor: ${row.get("finalArmor")}`);
 		if (row.get("finalDeathCount")) descs.push(`finalDeathCount: ${row.get("finalDeathCount")}`);
 		if (row.get("finalHp")) descs.push(`finalHp: ${row.get("finalHp")}`);

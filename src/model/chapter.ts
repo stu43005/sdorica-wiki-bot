@@ -142,6 +142,7 @@ export class Chapter {
 	 */
 	get dropGroupID(): number { return +this.row.get('dropGroupID'); }
 
+	// TODO: battlefield model
 	get battlefieldId(): string { return this.row.get('battlefieldId'); }
 
 	constructor(private row: RowWrapper) {

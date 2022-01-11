@@ -1,4 +1,3 @@
 import { LevelEvent } from "./LevelEvent";
 
-export interface LevelEndEventPoint extends LevelEvent {
-}
+export type LevelEndEventPoint = LevelEvent

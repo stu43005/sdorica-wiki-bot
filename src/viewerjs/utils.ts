@@ -85,7 +85,7 @@ export async function containerSearch(helper: ViewerJSHelper, path: string) {
 	const assetBundle = resultMatch.asset_bundles[resultMatch.asset_bundles.length - 1];
 	// step 2: Get AssetBundle
 	const containers = await api.assetbundleContainers(assetBundle.md5);
-	let pathId: string = "";
+	let pathId = "";
 	objectEach(containers, (id, value) => {
 		if (value.name.toLowerCase() == path.toLowerCase()) {
 			pathId = id;
@@ -122,7 +122,7 @@ export async function containerSearchData(helper: ViewerJSHelper, path: string) 
 	const assetBundle = resultMatch.asset_bundles[resultMatch.asset_bundles.length - 1];
 	// step 2: Get AssetBundle
 	const containers = await api.assetbundleContainers(assetBundle.md5);
-	let pathId: string = "";
+	let pathId = "";
 	objectEach(containers, (id, value) => {
 		if (value.name.toLowerCase() == path.toLowerCase()) {
 			pathId = id;

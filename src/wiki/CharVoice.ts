@@ -24,7 +24,7 @@ interface VoiceData {
 export default function wikiCharVoice() {
 	const voiceData: VoiceData[] = [];
 
-	let out: string = `{| class="wikitable" style="word-break: break-all;"
+	let out = `{| class="wikitable" style="word-break: break-all;"
 ! 角色階級 !! 魂冊語音 !! 選擇角色語音 !! 出戰語音 !! 勝利語音 !! 階級提升語音`;
 	for (const infoVoice of CharaInfoVoiceTable) {
 		const model: string = infoVoice.get('prefabId');

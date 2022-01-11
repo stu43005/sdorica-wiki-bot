@@ -44,7 +44,7 @@ const logger = new Logger('wiki');
 function wikiQuestsData() {
 	const questJson = getQuestJsonData();
 	const questsOut: string[] = Object.values(questJson).map((chapter) => {
-		let tempOut: string[] = [];
+		const tempOut: string[] = [];
 		objectEach(chapter, (fullname, quest) => {
 			tempOut.push(`${fullname}\n\n${quest}`);
 		});

@@ -1,4 +1,3 @@
 import { IBattleActionRecordValue } from "./IBattleActionRecordValue";
 
-export interface ThisBattleTurnCount extends IBattleActionRecordValue {
-}
+export type ThisBattleTurnCount = IBattleActionRecordValue

@@ -1,10 +1,10 @@
 import { localizationString } from "../localization";
 
 export class HeroInfo {
-	info1: string = '';
-	age: string = '';
-	height: string = '';
-	cv: string = '';
+	info1 = '';
+	age = '';
+	height = '';
+	cv = '';
 
 	constructor(public key: string) {
 		this.info1 = localizationString("HeroInfo")(key + "_info1");

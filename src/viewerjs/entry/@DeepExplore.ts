@@ -61,7 +61,7 @@ export default async function (helper: ViewerJSHelper) {
 	}
 
 	try {
-		let questNameKey = prompt("Enter quest name key");
+		const questNameKey = prompt("Enter quest name key");
 		if (questNameKey == null) {
 			throw "No input.";
 			// questNameKey = "fest_summer_start";

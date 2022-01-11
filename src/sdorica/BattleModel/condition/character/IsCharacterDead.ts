@@ -1,4 +1,3 @@
 import { IConditionOfCharacter } from "../IConditionOfCharacter";
 
-export interface IsCharacterDead extends IConditionOfCharacter {
-}
+export type IsCharacterDead = IConditionOfCharacter

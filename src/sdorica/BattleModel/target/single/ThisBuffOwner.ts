@@ -1,4 +1,3 @@
 import { ISingleCharacter } from "../ISingleCharacter";
 
-export interface ThisBuffOwner extends ISingleCharacter {
-}
+export type ThisBuffOwner = ISingleCharacter

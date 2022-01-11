@@ -1,4 +1,3 @@
 import { HpDamageSkillEffect } from "./HpDamageSkillEffect";
 
-export interface TrueDamageSkillEffect extends HpDamageSkillEffect {
-}
+export type TrueDamageSkillEffect = HpDamageSkillEffect

@@ -1,4 +1,3 @@
 import { HpDamageRatioMaxSkillEffect } from "./HpDamageRatioMaxSkillEffect";
 
-export interface HpDamageRatioCurrentSkillEffect extends HpDamageRatioMaxSkillEffect {
-}
+export type HpDamageRatioCurrentSkillEffect = HpDamageRatioMaxSkillEffect

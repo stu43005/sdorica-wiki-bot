@@ -1,4 +1,3 @@
 import { ISingleCharacter } from "../ISingleCharacter";
 
-export interface ThisSummonedTarget extends ISingleCharacter {
-}
+export type ThisSummonedTarget = ISingleCharacter

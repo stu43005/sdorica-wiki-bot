@@ -102,8 +102,8 @@ export function inputMonoBehaviour(filepath: string): Promise<Record<string, any
 
 		const raw: Record<string, any[]> = {};
 		const size: Record<string, number> = {};
-		let curKey: string = "";
-		let curIndex: number = -1;
+		let curKey = "";
+		let curIndex = -1;
 
 		rl.on('line', (line) => {
 			const tokens = line.trim().split(" ");

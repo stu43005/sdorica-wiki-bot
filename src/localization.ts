@@ -112,7 +112,7 @@ export function localizationStringAuto(): Func1 {
 /**
  * string: linkId:payType
  */
-export function localizationItemNameWithType(withCurrencyType: boolean = false): Func1 {
+export function localizationItemNameWithType(withCurrencyType = false): Func1 {
 	return (str) => {
 		const strings = str.split(":");
 		switch (strings[1]) {
@@ -267,7 +267,7 @@ export function localizationBuffName(orig?: boolean): Func1 {
 	};
 }
 
-export function localizationTavernMissionName(withRank: boolean = false): Func1 {
+export function localizationTavernMissionName(withRank = false): Func1 {
 	const namer = ifor(
 		call2(
 			gamedataString("TavernMission", "id", "questKeyName", undefined, true),

@@ -9,7 +9,7 @@ const DiligentGroupsTable = ImperiumData.fromGamedata().getTable("DiligentGroups
 const DiligentsTable = ImperiumData.fromGamedata().getTable("Diligents");
 
 export default function wikiDiligents() {
-	let out: string[] = [];
+	const out: string[] = [];
 
 	const diligentGroups = arrayGroupBy(DiligentGroupsTable.rows, (row) => row.get("chapterId"));
 	for (const chapterId of Object.keys(diligentGroups)) {

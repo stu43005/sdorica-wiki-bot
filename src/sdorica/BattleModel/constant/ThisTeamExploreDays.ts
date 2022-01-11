@@ -1,4 +1,3 @@
 import { ISingleInteger } from "./ISingleInteger";
 
-export interface ThisTeamExploreDays extends ISingleInteger {
-}
+export type ThisTeamExploreDays = ISingleInteger

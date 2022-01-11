@@ -57,7 +57,7 @@ export class Avatar {
 			description: this.description,
 			iconKey: this.asset,
 		};
-		let pageName = this.item?.getWikiPageName();
+		const pageName = this.item?.getWikiPageName();
 		if (pageName !== this.item?.name) {
 			params.imagename = pageName;
 		}

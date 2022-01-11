@@ -1,4 +1,3 @@
 import { NumericSkillEffect } from "./NumericSkillEffect";
 
-export interface AmrReduceSkillEffect extends NumericSkillEffect {
-}
+export type AmrReduceSkillEffect = NumericSkillEffect

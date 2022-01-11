@@ -1,4 +1,3 @@
 import { IGroupedCharacter } from "../IGroupedCharacter";
 
-export interface ThisSkillEffectTargets extends IGroupedCharacter {
-}
+export type ThisSkillEffectTargets = IGroupedCharacter

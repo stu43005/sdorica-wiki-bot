@@ -1,4 +1,3 @@
 import { ISingleCharacter } from "../ISingleCharacter";
 
-export interface DeadOrReviveTarget extends ISingleCharacter {
-}
+export type DeadOrReviveTarget = ISingleCharacter

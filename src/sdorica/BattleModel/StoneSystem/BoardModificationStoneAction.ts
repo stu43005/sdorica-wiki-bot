@@ -1,7 +1,6 @@
 import { StoneAction } from "./StoneAction";
 
-export interface BoardModificationStoneAction extends StoneAction {
-}
+export type BoardModificationStoneAction = StoneAction
 
 export namespace BoardModificationStoneAction {
 	export enum ChangeType {

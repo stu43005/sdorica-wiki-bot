@@ -3,7 +3,7 @@ import { ExploreItem } from "../model/explore-item";
 import { wikiNextLine } from "../wiki-utils";
 
 export default function wikiExploreItems() {
-	let out: string = `{| class="wikitable table-responsive-autowrap" style="word-break: break-word;"
+	let out = `{| class="wikitable table-responsive-autowrap" style="word-break: break-word;"
 ! width="10%" | id
 ! width="20%" | 名稱
 ! 說明

@@ -1,4 +1,3 @@
 import { ISingleCharacter } from "../ISingleCharacter";
 
-export interface ThisSkillCaster extends ISingleCharacter {
-}
+export type ThisSkillCaster = ISingleCharacter
