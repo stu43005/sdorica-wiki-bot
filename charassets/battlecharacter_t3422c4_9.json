@@ -1,6 +1,6 @@
 {
   "$interpreted": {
-    "Localization": "賭客",
+    "Localization": "t3422c4_9",
     "復活魂芯數": 0,
     "技能": {
       "Arrive1": [
@@ -10,18 +10,16 @@
         "對施術者{\"Tag\":65540,\"_keyString\":\"1\",\"$type\":\"BattleModel.DirectKillSkillEffect\"}"
       ],
       "S1": [
-        "對施術者的隊伍全體賦予1回合1層bonusAttackPower(強化)",
-        "對施術者的對方全體賦予1回合1層bonusAttackPower(強化)"
+        "對施術者治療(攻擊力 x0.9)、賦予2回合1層rage(怒氣)"
       ],
       "S2": [
-        "對施術者的隊伍全體疊盾(攻擊力 x1.2)",
-        "對施術者的對方全體冷卻時間加0"
+        "對施術者的目標穿透(攻擊力 x1.4)"
       ]
     },
     "技能組": {
       "S1": [
         {
-          "CoolDown": 3,
+          "CoolDown": 2,
           "技能列表": [
             "施展S1"
           ],
@@ -29,21 +27,32 @@
           ],
           "目標": ""
         }
+      ],
+      "S2": [
+        {
+          "CoolDown": 3,
+          "技能列表": [
+            "施展S2"
+          ],
+          "條件": [
+          ],
+          "目標": "施術者的目標"
+        }
       ]
     },
-    "攻擊力": 60,
-    "攻擊力等級調整後": 56,
-    "敵人AI": "S1",
+    "攻擊力": 80,
+    "攻擊力等級調整後": 75,
+    "敵人AI": "S1 -> S2",
     "消魂設置": {
       "Type1": "S1",
       "Type2": "S2",
       "Type4": "S3"
     },
-    "疊盾": 200,
-    "疊盾等級調整後": 188,
+    "疊盾": 300,
+    "疊盾等級調整後": 283,
     "站位": "無",
-    "血量": 200,
-    "血量等級調整後": 188,
+    "血量": 300,
+    "血量等級調整後": 283,
     "被動Buff": [
     ],
     "起始CD": 0,
@@ -51,35 +60,45 @@
   },
   "$type": "BattleModel.EnemyCharacter",
   "ReferenceBuffKeys": [
-    "bonusAttackPower"
+    "rage"
   ],
   "ReferenceCharacterKeys": [
   ],
   "ReferenceEffectKeys": [
-    "t3210c3_s01_PickSmoke01",
-    "t3210c3_s01_Trail01",
-    "Common_HitDash01_A"
+    "t3207c4_s01_i01_down02",
+    "Common_Heal01",
+    "Common_Smoke10LR01",
+    "Common_SmokeRun01_B",
+    "Common_HitGun01_E",
+    "t0158s4_s02_Stab01",
+    "t0158s4_s02_Wind01"
   ],
   "ReferenceEmoIconKeys": [
   ],
   "ReferenceMusicKeys": [
   ],
   "ReferenceSFXKeys": [
-    "Movement_misc_042_card_draw_paper",
-    "Movement_cloth_010set_02_rough_scratch",
-    "Whoosh_swing_011_small_multi",
-    "Whoosh_swing_017_small",
-    "Hit_smash_035_simple_slap"
+    "movment_040",
+    "movment_012",
+    "Movement_arms_025set_01_metal_hit_parry_bladed_smash",
+    "movment_023",
+    "swoosh_003",
+    "step_armour_017",
+    "sword_004",
+    "Movement_arms_025set_02_metal_hit_parry_bladed_smash",
+    "movment_011",
+    "knife_001"
   ],
   "ReferenceVoiceSFXKeys": [
   ],
-  "_armorCapacity": 200,
+  "_armorCapacity": 300,
   "_assistantSkill": null,
-  "_bloodCapacity": 200,
+  "_bloodCapacity": 300,
   "_characterAI": {
     "$type": "BattleModel.SequenceEnemyAI",
     "OrderList": [
-      "S1"
+      "S1",
+      "S2"
     ]
   },
   "_defaultCoolDown": 3,
@@ -91,7 +110,7 @@
   "_passiveBuff": [
   ],
   "_pose": "Stand",
-  "_power": 60,
+  "_power": 80,
   "_reviveCount": 0,
   "_skills": {
     "Arrive1": {
@@ -143,57 +162,34 @@
       "_skillIdentifiers": [
         {
           "CanBeEmpty": false,
-          "IsMultiple": true,
-          "multi": {
-            "$type": "BattleModel.SelfTeamChars",
-            "excludeSelf": false,
-            "includeDead": false,
-            "includeEmpty": false,
-            "reference": {
-              "$type": "BattleModel.ThisSkillCaster"
-            }
+          "IsMultiple": false,
+          "multi": null,
+          "single": {
+            "$type": "BattleModel.ThisSkillCaster"
           },
-          "single": null,
           "skillEffects": [
+            {
+              "$type": "BattleModel.HpHealSkillEffect",
+              "Tag": 34,
+              "_keyString": "1",
+              "_skillModifier": {
+                "_constant": 0,
+                "_parameter": {
+                  "$type": "BattleModel.SkillCasterPower",
+                  "basePower": false
+                },
+                "_ratio": 1
+              }
+            },
             {
               "$type": "BattleModel.AddBuffSkillEffect",
               "Tag": 132,
               "_buffData": [
                 {
-                  "BuffId": "bonusAttackPower",
+                  "BuffId": "rage",
                   "Forever": false,
                   "LevelStack": 1,
-                  "OverwriteDuration": 1,
-                  "UserDefineVariable": {
-                  }
-                }
-              ],
-              "_keyString": "1"
-            }
-          ]
-        },
-        {
-          "CanBeEmpty": false,
-          "IsMultiple": true,
-          "multi": {
-            "$type": "BattleModel.OppositeTeamChars",
-            "includeDead": false,
-            "includeEmpty": false,
-            "reference": {
-              "$type": "BattleModel.ThisSkillCaster"
-            }
-          },
-          "single": null,
-          "skillEffects": [
-            {
-              "$type": "BattleModel.AddBuffSkillEffect",
-              "Tag": 132,
-              "_buffData": [
-                {
-                  "BuffId": "bonusAttackPower",
-                  "Forever": false,
-                  "LevelStack": 1,
-                  "OverwriteDuration": 1,
+                  "OverwriteDuration": 2,
                   "UserDefineVariable": {
                   }
                 }
@@ -210,21 +206,18 @@
       "_skillIdentifiers": [
         {
           "CanBeEmpty": false,
-          "IsMultiple": true,
-          "multi": {
-            "$type": "BattleModel.SelfTeamChars",
-            "excludeSelf": false,
-            "includeDead": false,
-            "includeEmpty": false,
+          "IsMultiple": false,
+          "multi": null,
+          "single": {
+            "$type": "BattleModel.EnemyAssignee",
             "reference": {
               "$type": "BattleModel.ThisSkillCaster"
             }
           },
-          "single": null,
           "skillEffects": [
             {
-              "$type": "BattleModel.AmrGainSkillEffect",
-              "Tag": 66,
+              "$type": "BattleModel.TrueDamageSkillEffect",
+              "Tag": 8193,
               "_keyString": "1",
               "_skillModifier": {
                 "_constant": 0,
@@ -232,29 +225,8 @@
                   "$type": "BattleModel.SkillCasterPower",
                   "basePower": false
                 },
-                "_ratio": 1
+                "_ratio": 1.4
               }
-            }
-          ]
-        },
-        {
-          "CanBeEmpty": false,
-          "IsMultiple": true,
-          "multi": {
-            "$type": "BattleModel.OppositeTeamChars",
-            "includeDead": false,
-            "includeEmpty": false,
-            "reference": {
-              "$type": "BattleModel.ThisSkillCaster"
-            }
-          },
-          "single": null,
-          "skillEffects": [
-            {
-              "$type": "BattleModel.ChangeCDSkillEffect",
-              "Tag": 1028,
-              "_keyString": "",
-              "_value": 0
             }
           ]
         }
@@ -278,8 +250,36 @@
               "t": null
             }
           ],
-          "_characterCoolDown": 3,
+          "_characterCoolDown": 2,
           "assignTarget": null,
+          "icon": 0
+        }
+      ],
+      "_isViewSkillSet": false
+    },
+    "S2": {
+      "ComboList": [
+        {
+          "ConditionList": [
+          ],
+          "SkillList": [
+            {
+              "ConditionList": [
+              ],
+              "SkillID": "S2",
+              "_conditionalSequences": [
+              ],
+              "seq": "",
+              "t": null
+            }
+          ],
+          "_characterCoolDown": 3,
+          "assignTarget": {
+            "$type": "BattleModel.EnemyAssignee",
+            "reference": {
+              "$type": "BattleModel.ThisSkillCaster"
+            }
+          },
           "icon": 0
         }
       ],

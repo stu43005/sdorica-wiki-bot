@@ -10,7 +10,18 @@
             ],
             "條件": [
               "施術者是本角色的隊伍的一員",
-              "本角色擁有h0186s5_money(【金錢】)狀態"
+              "本角色擁有h0186s5_money(【金錢】)狀態",
+              "玩家中的任意角色 的AssetId不包含＂h0186s5_a3＂字串"
+            ]
+          },
+          {
+            "效果": [
+              "技能效果增加((在本角色的h0186s5_a3_money狀態的層數 * 3.5))%"
+            ],
+            "條件": [
+              "玩家中的任意角色 的AssetId包含＂h0186s5_a3＂字串",
+              "施術者是本角色的隊伍的一員",
+              "本角色擁有h0186s5_a3_money狀態"
             ]
           },
           {
@@ -82,6 +93,85 @@
               {
                 "$type": "BattleModel.CharacterHasBuff",
                 "buffId": "h0186s5_money",
+                "character": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                }
+              },
+              {
+                "$type": "BattleModel.Inverse",
+                "condition": {
+                  "$type": "BattleModel.CharGroupCondition",
+                  "condition": {
+                    "$type": "BattleModel.AssetIdHasSubString",
+                    "subString": "h0186s5_a3"
+                  },
+                  "everybody": false,
+                  "group": {
+                    "$type": "BattleModel.PVEPlayerTeam",
+                    "includeDead": true,
+                    "includeEmpty": false
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.BonusEffectForSkillProperty",
+                  "isPercent": true,
+                  "property": -1,
+                  "value": {
+                    "$type": "BattleModel.MultiplyFloat",
+                    "left": {
+                      "$type": "BattleModel.IntBuffField",
+                      "buff": {
+                        "$type": "BattleModel.BuffOnCharater",
+                        "buffId": "h0186s5_a3_money",
+                        "character": {
+                          "$type": "BattleModel.ThisBuffOwner"
+                        }
+                      },
+                      "targetField": 1
+                    },
+                    "ratio": 3.5
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharGroupCondition",
+                "condition": {
+                  "$type": "BattleModel.AssetIdHasSubString",
+                  "subString": "h0186s5_a3"
+                },
+                "everybody": false,
+                "group": {
+                  "$type": "BattleModel.PVEPlayerTeam",
+                  "includeDead": true,
+                  "includeEmpty": false
+                }
+              },
+              {
+                "$type": "BattleModel.CharacterInside",
+                "group": {
+                  "$type": "BattleModel.SelfTeamChars",
+                  "excludeSelf": false,
+                  "includeDead": false,
+                  "includeEmpty": false,
+                  "reference": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  }
+                },
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              },
+              {
+                "$type": "BattleModel.CharacterHasBuff",
+                "buffId": "h0186s5_a3_money",
                 "character": {
                   "$type": "BattleModel.ThisBuffOwner"
                 }
