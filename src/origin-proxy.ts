@@ -1,4 +1,5 @@
 import config from "config";
+import execSh from "exec-sh";
 import express from "express";
 import http from "http";
 import { createProxyMiddleware } from "http-proxy-middleware";
@@ -8,10 +9,7 @@ import { discordWebhook } from "./discord-webhook";
 import { inputJsonSync } from "./input";
 import { Logger } from "./logger";
 import { fsExists, outJson } from "./out";
-import { scriptMain } from "./script";
 import { jsonBlock } from "./utils";
-import { wikiMain } from "./wiki";
-import execSh from "exec-sh";
 
 const exec = execSh.promise;
 
@@ -85,7 +83,7 @@ async function onProxyReq(proxyReq: http.ClientRequest, req: express.Request, re
 	}
 }
 
-export function createOriginProxy() {
+export function createOriginProxy(port = 443) {
 	const credentials = {
 		key: config.get<string>('credentials.key'),
 		cert: config.get<string>('credentials.cert'),
@@ -112,5 +110,10 @@ export function createOriginProxy() {
 	app.use('/', exampleProxy);
 
 	const server = https.createServer(credentials, app);
-	server.listen(443);
+	server.on('close', () => {
+		logger.log('Origin Proxy closed');
+	});
+	server.listen(port, () => {
+		logger.log('Origin Proxy runnig at ' + port);
+	});
 }

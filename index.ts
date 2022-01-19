@@ -1,6 +1,7 @@
 import { CronJob } from "cron";
 import * as path from "path";
 import requireAll from "require-all";
+import { createDnsProxy } from "./src/dns-server";
 import { registerImperiumLocalLoader } from "./src/imperium-data-local";
 import { Logger } from './src/logger';
 import { createOriginProxy } from "./src/origin-proxy";
@@ -26,6 +27,7 @@ process
 
 // init origin-proxy
 createOriginProxy();
+createDnsProxy();
 
 // init cron
 const jobs: Record<string, () => CronJob> = requireAll({
