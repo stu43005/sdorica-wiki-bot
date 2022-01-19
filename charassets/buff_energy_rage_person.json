@@ -1,0 +1,608 @@
+{
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "OnEachSkillSetEnd": {
+        "效果": [
+          {
+            "效果": [
+              "對本狀態的變數一改為(在此技能組的目標中，本角色的減少體力 + 在此技能組的目標中，本角色的減少疊盾)",
+              "對本狀態的變數二增加本狀態的變數一",
+              "對本狀態的變數五改為0"
+            ],
+            "條件": [
+            ]
+          },
+          {
+            "效果": [
+              "{\"buff\":{\"character\":{\"group\":{\"$type\":\"BattleModel.PVEField\"},\"$type\":\"BattleModel.FrontOfChars\"},\"buffId\":\"energy_rage_count\",\"$type\":\"BattleModel.BuffOnCharater\"},\"operation\":{\"targetField\":4,\"setOperator\":1,\"value\":{\"constant\":5,\"$type\":\"BattleModel.ConstanctInt\"},\"lastIndepedentStack\":false,\"$type\":\"BattleModel.SetBuffField\"},\"$type\":\"BattleModel.OperateSingleBuff\"}",
+              "對本狀態的變數五增加1"
+            ],
+            "條件": [
+              "本狀態 {\"left\":{\"targetField\":4,\"$type\":\"BattleModel.IntFieldB\"},\"op\":4,\"right\":{\"left\":{\"character\":{\"$type\":\"BattleModel.ThisBuffOwner\"},\"targetField\":1,\"$type\":\"BattleModel.IntCharaterField\"},\"ratio\":0.5,\"$type\":\"BattleModel.MultiplyFloat\"},\"$type\":\"BattleModel.IntCompareB_Other\"}"
+            ]
+          },
+          {
+            "效果": [
+              "{\"buff\":{\"character\":{\"group\":{\"$type\":\"BattleModel.PVEField\"},\"$type\":\"BattleModel.FrontOfChars\"},\"buffId\":\"energy_rage_count\",\"$type\":\"BattleModel.BuffOnCharater\"},\"operation\":{\"targetField\":4,\"setOperator\":0,\"value\":{\"constant\":100,\"$type\":\"BattleModel.ConstanctInt\"},\"lastIndepedentStack\":false,\"$type\":\"BattleModel.SetBuffField\"},\"$type\":\"BattleModel.OperateSingleBuff\"}"
+            ],
+            "條件": [
+              "在{\"$type\":\"BattleModel.PVEField\"}首位的energy_rage_count狀態的變數一 > 100"
+            ]
+          },
+          {
+            "效果": [
+              "立即施展技能：對本角色將探索flag:energy_rage增加在{\"$type\":\"BattleModel.PVEField\"}首位的energy_rage_count狀態的變數一",
+              "對本狀態的變數五改為0"
+            ],
+            "條件": [
+              "本狀態的變數五 != 0"
+            ]
+          }
+        ],
+        "條件": [
+          "本角色是此技能效果目標的一員",
+          "施術者是本角色的對方的一員",
+          "施展的技能效果中包含(Attack)屬性"
+        ]
+      },
+      "OnTurnBegin": {
+        "效果": [
+          {
+            "效果": [
+              "對本狀態的變數三改為{\"Float\":{\"Dividend\":{\"Integer\":{\"buff\":{\"$type\":\"BattleModel.ThisBuff\"},\"targetField\":8,\"$type\":\"BattleModel.IntBuffField\"},\"$type\":\"BattleModel.IntegerToFloat\"},\"Divisor\":{\"left\":{\"constant\":0.05,\"$type\":\"BattleModel.ConstanctFloat\"},\"right\":{\"Integer\":{\"character\":{\"$type\":\"BattleModel.ThisBuffOwner\"},\"targetField\":1,\"$type\":\"BattleModel.IntCharaterField\"},\"$type\":\"BattleModel.IntegerToFloat\"},\"$type\":\"BattleModel.FloatMultiplyFloat\"},\"$type\":\"BattleModel.DivisionFloat\"},\"$type\":\"BattleModel.FloatToInteger\"}",
+              "對本狀態的變數二改為(本狀態的變數二 mod floor(本角色的最大HP * 0.05))",
+              "{\"buff\":{\"character\":{\"group\":{\"$type\":\"BattleModel.PVEField\"},\"$type\":\"BattleModel.FrontOfChars\"},\"buffId\":\"energy_rage_count\",\"$type\":\"BattleModel.BuffOnCharater\"},\"operation\":{\"targetField\":4,\"setOperator\":1,\"value\":{\"buff\":{\"$type\":\"BattleModel.ThisBuff\"},\"targetField\":16,\"$type\":\"BattleModel.IntBuffField\"},\"lastIndepedentStack\":false,\"$type\":\"BattleModel.SetBuffField\"},\"$type\":\"BattleModel.OperateSingleBuff\"}"
+            ],
+            "條件": [
+              "本狀態 {\"left\":{\"targetField\":8,\"$type\":\"BattleModel.IntFieldB\"},\"op\":4,\"right\":{\"left\":{\"character\":{\"$type\":\"BattleModel.ThisBuffOwner\"},\"targetField\":1,\"$type\":\"BattleModel.IntCharaterField\"},\"ratio\":0.05,\"$type\":\"BattleModel.MultiplyFloat\"},\"$type\":\"BattleModel.IntCompareB_Other\"}"
+            ]
+          },
+          {
+            "效果": [
+              "{\"buff\":{\"character\":{\"group\":{\"$type\":\"BattleModel.PVEField\"},\"$type\":\"BattleModel.FrontOfChars\"},\"buffId\":\"energy_rage_count\",\"$type\":\"BattleModel.BuffOnCharater\"},\"operation\":{\"targetField\":4,\"setOperator\":0,\"value\":{\"constant\":100,\"$type\":\"BattleModel.ConstanctInt\"},\"lastIndepedentStack\":false,\"$type\":\"BattleModel.SetBuffField\"},\"$type\":\"BattleModel.OperateSingleBuff\"}"
+            ],
+            "條件": [
+              "在{\"$type\":\"BattleModel.PVEField\"}首位的energy_rage_count狀態的變數一 > 100"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 99,
+    "標籤": "Hidden | NotRemoveAfterBattle | NotRemoveWhenDie | Forever | InfinityTrigger"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+  ],
+  "_actionTable": [
+    {
+      "Key": 1,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 16,
+                    "value": {
+                      "$type": "BattleModel.FloatToInteger",
+                      "Float": {
+                        "$type": "BattleModel.DivisionFloat",
+                        "Dividend": {
+                          "$type": "BattleModel.IntegerToFloat",
+                          "Integer": {
+                            "$type": "BattleModel.IntBuffField",
+                            "buff": {
+                              "$type": "BattleModel.ThisBuff"
+                            },
+                            "targetField": 8
+                          }
+                        },
+                        "Divisor": {
+                          "$type": "BattleModel.FloatMultiplyFloat",
+                          "left": {
+                            "$type": "BattleModel.ConstanctFloat",
+                            "constant": 0.05
+                          },
+                          "right": {
+                            "$type": "BattleModel.IntegerToFloat",
+                            "Integer": {
+                              "$type": "BattleModel.IntCharaterField",
+                              "character": {
+                                "$type": "BattleModel.ThisBuffOwner"
+                              },
+                              "targetField": 1
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 8,
+                    "value": {
+                      "$type": "BattleModel.ModuleInt",
+                      "left": {
+                        "$type": "BattleModel.IntBuffField",
+                        "buff": {
+                          "$type": "BattleModel.ThisBuff"
+                        },
+                        "targetField": 8
+                      },
+                      "right": {
+                        "$type": "BattleModel.MultiplyFloat",
+                        "left": {
+                          "$type": "BattleModel.IntCharaterField",
+                          "character": {
+                            "$type": "BattleModel.ThisBuffOwner"
+                          },
+                          "targetField": 1
+                        },
+                        "ratio": 0.05
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateSingleBuff",
+                  "buff": {
+                    "$type": "BattleModel.BuffOnCharater",
+                    "buffId": "energy_rage_count",
+                    "character": {
+                      "$type": "BattleModel.FrontOfChars",
+                      "group": {
+                        "$type": "BattleModel.PVEField"
+                      }
+                    }
+                  },
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 1,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.IntBuffField",
+                      "buff": {
+                        "$type": "BattleModel.ThisBuff"
+                      },
+                      "targetField": 16
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.BuffCondition",
+                "buff": {
+                  "$type": "BattleModel.ThisBuff"
+                },
+                "condition": {
+                  "$type": "BattleModel.IntCompareB_Other",
+                  "left": {
+                    "$type": "BattleModel.IntFieldB",
+                    "targetField": 8
+                  },
+                  "op": 4,
+                  "right": {
+                    "$type": "BattleModel.MultiplyFloat",
+                    "left": {
+                      "$type": "BattleModel.IntCharaterField",
+                      "character": {
+                        "$type": "BattleModel.ThisBuffOwner"
+                      },
+                      "targetField": 1
+                    },
+                    "ratio": 0.05
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateSingleBuff",
+                  "buff": {
+                    "$type": "BattleModel.BuffOnCharater",
+                    "buffId": "energy_rage_count",
+                    "character": {
+                      "$type": "BattleModel.FrontOfChars",
+                      "group": {
+                        "$type": "BattleModel.PVEField"
+                      }
+                    }
+                  },
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 100
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.BuffOnCharater",
+                    "buffId": "energy_rage_count",
+                    "character": {
+                      "$type": "BattleModel.FrontOfChars",
+                      "group": {
+                        "$type": "BattleModel.PVEField"
+                      }
+                    }
+                  },
+                  "targetField": 4
+                },
+                "op": 2,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 100
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 8,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.PlusInt",
+                      "left": {
+                        "$type": "BattleModel.TransitionResultValue",
+                        "ResultValue": {
+                          "$type": "BattleModel.TotalResultsValueOfCharacter",
+                          "CharType": "Target",
+                          "Character": {
+                            "$type": "BattleModel.ThisBuffOwner"
+                          },
+                          "Results": {
+                            "$type": "BattleModel.ThisSkillSetResult"
+                          },
+                          "ValueType": "HpDamage"
+                        }
+                      },
+                      "right": {
+                        "$type": "BattleModel.TransitionResultValue",
+                        "ResultValue": {
+                          "$type": "BattleModel.TotalResultsValueOfCharacter",
+                          "CharType": "Target",
+                          "Character": {
+                            "$type": "BattleModel.ThisBuffOwner"
+                          },
+                          "Results": {
+                            "$type": "BattleModel.ThisSkillSetResult"
+                          },
+                          "ValueType": "ArmorReduce"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 1,
+                    "targetField": 8,
+                    "value": {
+                      "$type": "BattleModel.IntBuffField",
+                      "buff": {
+                        "$type": "BattleModel.ThisBuff"
+                      },
+                      "targetField": 4
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 64,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateSingleBuff",
+                  "buff": {
+                    "$type": "BattleModel.BuffOnCharater",
+                    "buffId": "energy_rage_count",
+                    "character": {
+                      "$type": "BattleModel.FrontOfChars",
+                      "group": {
+                        "$type": "BattleModel.PVEField"
+                      }
+                    }
+                  },
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 1,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 5
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 1,
+                    "targetField": 64,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 1
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.BuffCondition",
+                "buff": {
+                  "$type": "BattleModel.ThisBuff"
+                },
+                "condition": {
+                  "$type": "BattleModel.IntCompareB_Other",
+                  "left": {
+                    "$type": "BattleModel.IntFieldB",
+                    "targetField": 4
+                  },
+                  "op": 4,
+                  "right": {
+                    "$type": "BattleModel.MultiplyFloat",
+                    "left": {
+                      "$type": "BattleModel.IntCharaterField",
+                      "character": {
+                        "$type": "BattleModel.ThisBuffOwner"
+                      },
+                      "targetField": 1
+                    },
+                    "ratio": 0.5
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateSingleBuff",
+                  "buff": {
+                    "$type": "BattleModel.BuffOnCharater",
+                    "buffId": "energy_rage_count",
+                    "character": {
+                      "$type": "BattleModel.FrontOfChars",
+                      "group": {
+                        "$type": "BattleModel.PVEField"
+                      }
+                    }
+                  },
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 100
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.BuffOnCharater",
+                    "buffId": "energy_rage_count",
+                    "character": {
+                      "$type": "BattleModel.FrontOfChars",
+                      "group": {
+                        "$type": "BattleModel.PVEField"
+                      }
+                    }
+                  },
+                  "targetField": 4
+                },
+                "op": 2,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 100
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": null,
+                    "single": {
+                      "$type": "BattleModel.ThisBuffOwner"
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.ChangeExploreFlagSkillEffect",
+                        "Tag": 16384,
+                        "_flagId": "energy_rage",
+                        "_keyString": "",
+                        "_operation": "Change",
+                        "_value": {
+                          "$type": "BattleModel.IntBuffField",
+                          "buff": {
+                            "$type": "BattleModel.BuffOnCharater",
+                            "buffId": "energy_rage_count",
+                            "character": {
+                              "$type": "BattleModel.FrontOfChars",
+                              "group": {
+                                "$type": "BattleModel.PVEField"
+                              }
+                            }
+                          },
+                          "targetField": 4
+                        }
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": false
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 64,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.Inverse",
+                "condition": {
+                  "$type": "BattleModel.IntCompare",
+                  "left": {
+                    "$type": "BattleModel.IntBuffField",
+                    "buff": {
+                      "$type": "BattleModel.ThisBuff"
+                    },
+                    "targetField": 64
+                  },
+                  "op": 0,
+                  "right": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 0
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+          {
+            "$type": "BattleModel.CharacterInside",
+            "group": {
+              "$type": "BattleModel.ThisSkillEffectTargets"
+            },
+            "left": {
+              "$type": "BattleModel.ThisBuffOwner"
+            }
+          },
+          {
+            "$type": "BattleModel.CharacterInside",
+            "group": {
+              "$type": "BattleModel.OppositeTeamChars",
+              "includeDead": false,
+              "includeEmpty": false,
+              "reference": {
+                "$type": "BattleModel.ThisBuffOwner"
+              }
+            },
+            "left": {
+              "$type": "BattleModel.ThisSkillCaster"
+            }
+          },
+          {
+            "$type": "BattleModel.ThisSkillEffectTagContains",
+            "containsAll": 1
+          }
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 99,
+  "_orderTable": [
+    {
+      "Key": 1,
+      "Value": {
+        "Order": 100
+      }
+    }
+  ],
+  "_tag": 32839
+}

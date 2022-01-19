@@ -1,0 +1,341 @@
+{
+  "$interpreted": {
+    "Localization": "acid_machine",
+    "參謀技能": {
+      "_maxCastStack": 1,
+      "_startCastStack": 0,
+      "技能CD": 5,
+      "技能組": [
+        {
+          "CoolDown": 0,
+          "技能列表": [
+            "施展coverground"
+          ],
+          "條件": [
+          ],
+          "目標": ""
+        }
+      ],
+      "起始CD": 0,
+      "類型": "技能參謀"
+    },
+    "復活魂芯數": 0,
+    "技能": {
+      "Arrive1": [
+        "對施術者冷卻時間加1"
+      ],
+      "Retreat1": [
+        "對施術者破甲(攻擊力 x100%)、攻擊(最大血量的攻擊力 x100%)"
+      ],
+      "coverground": [
+        "對玩家中符合(擁有blood_ground(血漿地板)狀態)的角色及玩家中符合(擁有wet_ground(鹹水地板)狀態)的角色全體攻擊(指定目標的HP% x0.2)",
+        "對玩家全體攻擊(指定目標的最大HP x0.1)、移除在generalGround[燃燒地板, 毒液地板, 油漬地板, 冰凍地板, 血漿地板, 鹹水地板, 腐蝕地板]列表的Buff、賦予永久rot_ground(腐蝕地板)"
+      ]
+    },
+    "技能組": {
+    },
+    "攻擊力": 50,
+    "攻擊力等級調整後": 47,
+    "敵人AI": "",
+    "消魂設置": {
+      "Type1": "S1",
+      "Type2": "S2",
+      "Type4": "S3"
+    },
+    "疊盾": 50,
+    "疊盾等級調整後": 47,
+    "站位": "無",
+    "血量": 50,
+    "血量等級調整後": 47,
+    "被動Buff": [
+    ],
+    "起始CD": 0,
+    "預設CD": 0
+  },
+  "$type": "BattleModel.FriendCharacter",
+  "ReferenceBuffKeys": [
+    "rot_ground",
+    "burn_ground",
+    "poison_ground",
+    "oil_ground",
+    "frost_ground",
+    "blood_ground",
+    "wet_ground",
+    "burn",
+    "poison",
+    "poison_trigger",
+    "frosted"
+  ],
+  "ReferenceCharacterKeys": [
+  ],
+  "ReferenceEffectKeys": [
+    "b0001s5_idle_light"
+  ],
+  "ReferenceEmoIconKeys": [
+  ],
+  "ReferenceMusicKeys": [
+  ],
+  "ReferenceSFXKeys": [
+  ],
+  "ReferenceVoiceSFXKeys": [
+    "b0001s4_hit01_jpd",
+    "b0001_die_01"
+  ],
+  "_armorCapacity": 50,
+  "_assistantSkill": {
+    "$type": "BattleModel.AssistantActiveCastSkill",
+    "Skill": {
+      "ComboList": [
+        {
+          "ConditionList": [
+          ],
+          "SkillList": [
+            {
+              "ConditionList": [
+              ],
+              "SkillID": "coverground",
+              "_conditionalSequences": [
+              ],
+              "seq": "S1_I2",
+              "t": null
+            }
+          ],
+          "_characterCoolDown": 0,
+          "assignTarget": null,
+          "icon": 1
+        }
+      ],
+      "_isViewSkillSet": false
+    },
+    "_maxCastStack": 1,
+    "_skillCD": 5,
+    "_startCD": 0,
+    "_startCastStack": 0
+  },
+  "_bloodCapacity": 50,
+  "_characterAI": {
+    "$type": "BattleModel.SequenceEnemyAI",
+    "OrderList": [
+    ]
+  },
+  "_defaultCoolDown": 0,
+  "_initialCoolDown": 0,
+  "_levelStartBuff": [
+  ],
+  "_mass": 3,
+  "_masterRank": 0,
+  "_passiveBuff": [
+  ],
+  "_pose": "Prone",
+  "_power": 50,
+  "_reviveCount": 0,
+  "_skills": {
+    "Arrive1": {
+      "$type": "BattleModel.BattleSkill",
+      "_isFallBackIfEmptyTarget": false,
+      "_isResolveTargetEachUnit": false,
+      "_skillIdentifiers": [
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": false,
+          "multi": null,
+          "single": {
+            "$type": "BattleModel.ThisSkillCaster"
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.ChangeCDSkillEffect",
+              "Tag": 1028,
+              "_keyString": "",
+              "_value": 1
+            }
+          ]
+        }
+      ]
+    },
+    "Retreat1": {
+      "$type": "BattleModel.BattleSkill",
+      "_isFallBackIfEmptyTarget": false,
+      "_isResolveTargetEachUnit": false,
+      "_skillIdentifiers": [
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": false,
+          "multi": null,
+          "single": {
+            "$type": "BattleModel.ThisSkillCaster"
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.AmrReduceRatioSkillEffect",
+              "Tag": 34820,
+              "_keyString": "1",
+              "_skillModifier": {
+                "_constant": 0,
+                "_parameter": {
+                  "$type": "BattleModel.SkillCasterPower",
+                  "basePower": false
+                },
+                "_ratio": 1
+              }
+            },
+            {
+              "$type": "BattleModel.HpDamageRatioMaxSkillEffect",
+              "Tag": 32777,
+              "_keyString": "1",
+              "_skillModifier": {
+                "_constant": 0,
+                "_parameter": {
+                  "$type": "BattleModel.SkillCasterPower",
+                  "basePower": false
+                },
+                "_ratio": 1
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "coverground": {
+      "$type": "BattleModel.BattleSkill",
+      "_isFallBackIfEmptyTarget": false,
+      "_isResolveTargetEachUnit": false,
+      "_skillIdentifiers": [
+        {
+          "CanBeEmpty": true,
+          "IsMultiple": true,
+          "multi": {
+            "$type": "BattleModel.UnionCharGroup",
+            "group1": {
+              "$type": "BattleModel.CharGroupWhere",
+              "condition": {
+                "$type": "BattleModel.HasBuff",
+                "buffId": "blood_ground"
+              },
+              "group": {
+                "$type": "BattleModel.PVEPlayerTeam",
+                "includeDead": false,
+                "includeEmpty": false
+              }
+            },
+            "group2": {
+              "$type": "BattleModel.CharGroupWhere",
+              "condition": {
+                "$type": "BattleModel.HasBuff",
+                "buffId": "wet_ground"
+              },
+              "group": {
+                "$type": "BattleModel.PVEPlayerTeam",
+                "includeDead": false,
+                "includeEmpty": false
+              }
+            }
+          },
+          "single": null,
+          "skillEffects": [
+            {
+              "$type": "BattleModel.HpDamageSkillEffect",
+              "Tag": 9,
+              "_keyString": "",
+              "_skillModifier": {
+                "_constant": 0,
+                "_parameter": {
+                  "$type": "BattleModel.IntCharaterField",
+                  "character": {
+                    "$type": "BattleModel.ThisSpecifiedTarget"
+                  },
+                  "targetField": 2
+                },
+                "_ratio": 0.2
+              }
+            }
+          ]
+        },
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": true,
+          "multi": {
+            "$type": "BattleModel.PVEPlayerTeam",
+            "includeDead": false,
+            "includeEmpty": false
+          },
+          "single": {
+            "$type": "BattleModel.ThisSkillCaster"
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.HpDamageSkillEffect",
+              "Tag": 9,
+              "_keyString": "",
+              "_skillModifier": {
+                "_constant": 0,
+                "_parameter": {
+                  "$type": "BattleModel.IntCharaterField",
+                  "character": {
+                    "$type": "BattleModel.ThisSpecifiedTarget"
+                  },
+                  "targetField": 1
+                },
+                "_ratio": 0.1
+              }
+            },
+            {
+              "$type": "BattleModel.RemoveBuffFromGroupedBuffIdSkillEffect",
+              "BuffGroupIds": {
+                "$type": "BattleModel.BuffIdFromLabelList",
+                "BuffLabel": {
+                  "BuffIdList": [
+                    "burn_ground",
+                    "poison_ground",
+                    "oil_ground",
+                    "frost_ground",
+                    "blood_ground",
+                    "wet_ground",
+                    "rot_ground"
+                  ],
+                  "BuffLabel": "generalGround"
+                }
+              },
+              "RandomRemoveCount": 0,
+              "RemoveAllBuff": true,
+              "Tag": 4100,
+              "_keyString": ""
+            },
+            {
+              "$type": "BattleModel.AddBuffSkillEffect",
+              "Tag": 132,
+              "_buffData": [
+                {
+                  "BuffId": "rot_ground",
+                  "Forever": true,
+                  "LevelStack": 0,
+                  "OverwriteDuration": 1,
+                  "UserDefineVariable": {
+                  }
+                }
+              ],
+              "_keyString": ""
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "_skillsetTable": {
+  },
+  "_stoneEraseSetting": [
+    {
+      "Key": 0,
+      "Value": "S1"
+    },
+    {
+      "Key": 1,
+      "Value": "S2"
+    },
+    {
+      "Key": 2,
+      "Value": "S3"
+    }
+  ],
+  "_stoneType": 0
+}

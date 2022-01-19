@@ -1,0 +1,176 @@
+{
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "OnEachSkillSetEnd": {
+        "效果": [
+          {
+            "效果": [
+              "立即施展技能：對本角色的對方全體穿透({\"$type\":\"BattleModel.BuffAssignedInteger\"} x1)",
+              "對本角色賦予永久1層Reflect_trigger"
+            ],
+            "條件": [
+            ]
+          }
+        ],
+        "條件": [
+          "(本角色是此技能效果目標的一員) 且 (施展的技能效果中包含(Attack)屬性)",
+          "在此技能組的目標中，本角色的減少體力 > 0"
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 99,
+    "標籤": "Forever"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+    "Reflect_trigger"
+  ],
+  "_actionTable": [
+    {
+      "Key": 8,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.AssignParameterSkillEffect",
+                  "AssignParameter": {
+                    "AssignCharacter": {
+                      "$type": "BattleModel.NoneCharacter"
+                    },
+                    "AssignCharacterGroup": {
+                      "$type": "BattleModel.NoneCharacters"
+                    },
+                    "AssignInteger": {
+                      "$type": "BattleModel.TransitionResultValue",
+                      "ResultValue": {
+                        "$type": "BattleModel.TotalResultsValueOfCharacter",
+                        "CharType": "Target",
+                        "Character": {
+                          "$type": "BattleModel.ThisBuffOwner"
+                        },
+                        "Results": {
+                          "$type": "BattleModel.ThisSkillSetResult"
+                        },
+                        "ValueType": "HpDamage"
+                      }
+                    },
+                    "AssignIntegerGroup": {
+                      "$type": "BattleModel.ConstanctIntegerGroup",
+                      "Group": [
+                      ]
+                    }
+                  },
+                  "SkillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": true,
+                    "multi": {
+                      "$type": "BattleModel.OppositeTeamChars",
+                      "includeDead": false,
+                      "includeEmpty": false,
+                      "reference": {
+                        "$type": "BattleModel.ThisBuffOwner"
+                      }
+                    },
+                    "single": null,
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.TrueDamageSkillEffect",
+                        "Tag": 8193,
+                        "_keyString": "",
+                        "_skillModifier": {
+                          "_constant": 0,
+                          "_parameter": {
+                            "$type": "BattleModel.BuffAssignedInteger"
+                          },
+                          "_ratio": 1
+                        }
+                      }
+                    ]
+                  },
+                  "UseAssignParameter": true,
+                  "WillTriggerBuff": true
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "Reflect_trigger",
+                      "Forever": false,
+                      "LevelStack": 1,
+                      "OverwriteDuration": -1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+            ]
+          }
+        ],
+        "Conditions": [
+          {
+            "$type": "BattleModel.AndConditions",
+            "cond1": {
+              "$type": "BattleModel.CharacterInside",
+              "group": {
+                "$type": "BattleModel.ThisSkillEffectTargets"
+              },
+              "left": {
+                "$type": "BattleModel.ThisBuffOwner"
+              }
+            },
+            "cond2": {
+              "$type": "BattleModel.ThisSkillEffectTagContains",
+              "containsAll": 1
+            }
+          },
+          {
+            "$type": "BattleModel.IntCompare",
+            "left": {
+              "$type": "BattleModel.TransitionResultValue",
+              "ResultValue": {
+                "$type": "BattleModel.TotalResultsValueOfCharacter",
+                "CharType": "Target",
+                "Character": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                },
+                "Results": {
+                  "$type": "BattleModel.ThisSkillSetResult"
+                },
+                "ValueType": "HpDamage"
+              }
+            },
+            "op": 2,
+            "right": {
+              "$type": "BattleModel.ConstanctInt",
+              "constant": 0
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 99,
+  "_orderTable": [
+    {
+      "Key": 8,
+      "Value": {
+        "Order": 0
+      }
+    }
+  ],
+  "_tag": 64
+}

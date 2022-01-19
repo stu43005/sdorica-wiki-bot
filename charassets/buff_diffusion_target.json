@@ -1,0 +1,588 @@
+{
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "OnBuffStack": {
+        "效果": [
+          {
+            "效果": [
+              "立即施展技能：對本角色移除狀態h0008s5_S4_petal、攻擊(50 x1)、賦予1回合1層h0008s5_S4_petal"
+            ],
+            "條件": [
+              "玩家中符合(的AssetId包含＂h0025s5＂字串)的角色中的任意角色 沒有h0025s5_a2_P1_S1狀態",
+              "玩家中符合(的AssetId包含＂h0025s5＂字串)的角色中的任意角色 沒有h0025s5_a2_P1_S2狀態",
+              "玩家中符合(的AssetId包含＂h0025s5＂字串)的角色中的任意角色 沒有h0025s5_a2_P1_S3狀態"
+            ]
+          },
+          {
+            "效果": [
+              "立即施展技能：對本角色移除狀態h0008s5_S4_petal、攻擊(100 x1)、賦予1回合1層h0008s5_S4_petal"
+            ],
+            "條件": [
+              "玩家中符合(的AssetId包含＂h0025s5＂字串)的角色中的任意角色 擁有h0025s5_a2_P1_S1狀態",
+              "玩家中符合(的AssetId包含＂h0025s5＂字串)的角色中的任意角色 沒有h0025s5_a2_P1_S2狀態",
+              "玩家中符合(的AssetId包含＂h0025s5＂字串)的角色中的任意角色 沒有h0025s5_a2_P1_S3狀態"
+            ]
+          },
+          {
+            "效果": [
+              "立即施展技能：對本角色移除狀態h0008s5_S4_petal、攻擊(100 x1)、賦予1回合1層h0008s5_S4_petal、賦予1回合1層nerf_damage_small(弱化)"
+            ],
+            "條件": [
+              "玩家中符合(的AssetId包含＂h0025s5＂字串)的角色中的任意角色 擁有h0025s5_a2_P1_S2狀態",
+              "敵人中符合(的AssetId包含＂h0025s5＂字串)的角色中的任意角色 沒有h0025s5_a2_P1_S3狀態"
+            ]
+          },
+          {
+            "效果": [
+              "立即施展技能：對本角色移除狀態h0047s5_dieAttack_trigger、攻擊((50 + floor(玩家的倒數第2個角色的FullPower * 0.2)) x1)、賦予1回合1層h0047s5_dieAttack_trigger"
+            ],
+            "條件": [
+              "玩家中符合(的AssetId包含＂h0025s5＂字串)的角色中的任意角色 擁有h0025s5_a2_P1_S3狀態"
+            ]
+          }
+        ],
+        "條件": [
+          "當前事件的狀態 是＂Diffusion_target＂"
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 1,
+    "標籤": "Forever"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+    "h0008s5_S4_petal",
+    "nerf_damage_small",
+    "h0047s5_dieAttack_trigger"
+  ],
+  "_actionTable": [
+    {
+      "Key": 8192,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": {
+                      "$type": "BattleModel.CharGroupWhere",
+                      "condition": {
+                        "$type": "BattleModel.HasBuff",
+                        "buffId": "Diffusion_target"
+                      },
+                      "group": {
+                        "$type": "BattleModel.PVEEnemyTeam",
+                        "includeDead": false,
+                        "includeEmpty": false
+                      }
+                    },
+                    "single": {
+                      "$type": "BattleModel.ThisBuffOwner"
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.RemoveBuffSkillEffect",
+                        "Tag": 4100,
+                        "_buffID": "h0008s5_S4_petal",
+                        "_keyString": ""
+                      },
+                      {
+                        "$type": "BattleModel.HpDamageSkillEffect",
+                        "Tag": 9,
+                        "_keyString": "",
+                        "_skillModifier": {
+                          "_constant": 0,
+                          "_parameter": {
+                            "$type": "BattleModel.ConstanctInt",
+                            "constant": 50
+                          },
+                          "_ratio": 1
+                        }
+                      },
+                      {
+                        "$type": "BattleModel.AddBuffSkillEffect",
+                        "Tag": 132,
+                        "_buffData": [
+                          {
+                            "BuffId": "h0008s5_S4_petal",
+                            "Forever": false,
+                            "LevelStack": 1,
+                            "OverwriteDuration": 1,
+                            "UserDefineVariable": {
+                            }
+                          }
+                        ],
+                        "_keyString": ""
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": false
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.Inverse",
+                "condition": {
+                  "$type": "BattleModel.CharGroupCondition",
+                  "condition": {
+                    "$type": "BattleModel.HasBuff",
+                    "buffId": "h0025s5_a2_P1_S1"
+                  },
+                  "everybody": false,
+                  "group": {
+                    "$type": "BattleModel.CharGroupWhere",
+                    "condition": {
+                      "$type": "BattleModel.AssetIdHasSubString",
+                      "subString": "h0025s5"
+                    },
+                    "group": {
+                      "$type": "BattleModel.PVEPlayerTeam",
+                      "includeDead": false,
+                      "includeEmpty": false
+                    }
+                  }
+                }
+              },
+              {
+                "$type": "BattleModel.Inverse",
+                "condition": {
+                  "$type": "BattleModel.CharGroupCondition",
+                  "condition": {
+                    "$type": "BattleModel.HasBuff",
+                    "buffId": "h0025s5_a2_P1_S2"
+                  },
+                  "everybody": false,
+                  "group": {
+                    "$type": "BattleModel.CharGroupWhere",
+                    "condition": {
+                      "$type": "BattleModel.AssetIdHasSubString",
+                      "subString": "h0025s5"
+                    },
+                    "group": {
+                      "$type": "BattleModel.PVEPlayerTeam",
+                      "includeDead": false,
+                      "includeEmpty": false
+                    }
+                  }
+                }
+              },
+              {
+                "$type": "BattleModel.Inverse",
+                "condition": {
+                  "$type": "BattleModel.CharGroupCondition",
+                  "condition": {
+                    "$type": "BattleModel.HasBuff",
+                    "buffId": "h0025s5_a2_P1_S3"
+                  },
+                  "everybody": false,
+                  "group": {
+                    "$type": "BattleModel.CharGroupWhere",
+                    "condition": {
+                      "$type": "BattleModel.AssetIdHasSubString",
+                      "subString": "h0025s5"
+                    },
+                    "group": {
+                      "$type": "BattleModel.PVEPlayerTeam",
+                      "includeDead": false,
+                      "includeEmpty": false
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": {
+                      "$type": "BattleModel.SelfTeamChars",
+                      "excludeSelf": true,
+                      "includeDead": false,
+                      "includeEmpty": false,
+                      "reference": {
+                        "$type": "BattleModel.ThisSpecifiedTarget"
+                      }
+                    },
+                    "single": {
+                      "$type": "BattleModel.ThisBuffOwner"
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.RemoveBuffSkillEffect",
+                        "Tag": 4100,
+                        "_buffID": "h0008s5_S4_petal",
+                        "_keyString": ""
+                      },
+                      {
+                        "$type": "BattleModel.HpDamageSkillEffect",
+                        "Tag": 9,
+                        "_keyString": "",
+                        "_skillModifier": {
+                          "_constant": 0,
+                          "_parameter": {
+                            "$type": "BattleModel.ConstanctInt",
+                            "constant": 100
+                          },
+                          "_ratio": 1
+                        }
+                      },
+                      {
+                        "$type": "BattleModel.AddBuffSkillEffect",
+                        "Tag": 132,
+                        "_buffData": [
+                          {
+                            "BuffId": "h0008s5_S4_petal",
+                            "Forever": false,
+                            "LevelStack": 1,
+                            "OverwriteDuration": 1,
+                            "UserDefineVariable": {
+                            }
+                          }
+                        ],
+                        "_keyString": ""
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": false
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharGroupCondition",
+                "condition": {
+                  "$type": "BattleModel.HasBuff",
+                  "buffId": "h0025s5_a2_P1_S1"
+                },
+                "everybody": false,
+                "group": {
+                  "$type": "BattleModel.CharGroupWhere",
+                  "condition": {
+                    "$type": "BattleModel.AssetIdHasSubString",
+                    "subString": "h0025s5"
+                  },
+                  "group": {
+                    "$type": "BattleModel.PVEPlayerTeam",
+                    "includeDead": false,
+                    "includeEmpty": false
+                  }
+                }
+              },
+              {
+                "$type": "BattleModel.Inverse",
+                "condition": {
+                  "$type": "BattleModel.CharGroupCondition",
+                  "condition": {
+                    "$type": "BattleModel.HasBuff",
+                    "buffId": "h0025s5_a2_P1_S2"
+                  },
+                  "everybody": false,
+                  "group": {
+                    "$type": "BattleModel.CharGroupWhere",
+                    "condition": {
+                      "$type": "BattleModel.AssetIdHasSubString",
+                      "subString": "h0025s5"
+                    },
+                    "group": {
+                      "$type": "BattleModel.PVEPlayerTeam",
+                      "includeDead": false,
+                      "includeEmpty": false
+                    }
+                  }
+                }
+              },
+              {
+                "$type": "BattleModel.Inverse",
+                "condition": {
+                  "$type": "BattleModel.CharGroupCondition",
+                  "condition": {
+                    "$type": "BattleModel.HasBuff",
+                    "buffId": "h0025s5_a2_P1_S3"
+                  },
+                  "everybody": false,
+                  "group": {
+                    "$type": "BattleModel.CharGroupWhere",
+                    "condition": {
+                      "$type": "BattleModel.AssetIdHasSubString",
+                      "subString": "h0025s5"
+                    },
+                    "group": {
+                      "$type": "BattleModel.PVEPlayerTeam",
+                      "includeDead": false,
+                      "includeEmpty": false
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": {
+                      "$type": "BattleModel.SelfTeamChars",
+                      "excludeSelf": true,
+                      "includeDead": false,
+                      "includeEmpty": false,
+                      "reference": {
+                        "$type": "BattleModel.ThisSpecifiedTarget"
+                      }
+                    },
+                    "single": {
+                      "$type": "BattleModel.ThisBuffOwner"
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.RemoveBuffSkillEffect",
+                        "Tag": 4100,
+                        "_buffID": "h0008s5_S4_petal",
+                        "_keyString": ""
+                      },
+                      {
+                        "$type": "BattleModel.HpDamageSkillEffect",
+                        "Tag": 9,
+                        "_keyString": "",
+                        "_skillModifier": {
+                          "_constant": 0,
+                          "_parameter": {
+                            "$type": "BattleModel.ConstanctInt",
+                            "constant": 100
+                          },
+                          "_ratio": 1
+                        }
+                      },
+                      {
+                        "$type": "BattleModel.AddBuffSkillEffect",
+                        "Tag": 132,
+                        "_buffData": [
+                          {
+                            "BuffId": "h0008s5_S4_petal",
+                            "Forever": false,
+                            "LevelStack": 1,
+                            "OverwriteDuration": 1,
+                            "UserDefineVariable": {
+                            }
+                          }
+                        ],
+                        "_keyString": ""
+                      },
+                      {
+                        "$type": "BattleModel.AddBuffSkillEffect",
+                        "Tag": 132,
+                        "_buffData": [
+                          {
+                            "BuffId": "nerf_damage_small",
+                            "Forever": false,
+                            "LevelStack": 1,
+                            "OverwriteDuration": 1,
+                            "UserDefineVariable": {
+                            }
+                          }
+                        ],
+                        "_keyString": ""
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": false
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharGroupCondition",
+                "condition": {
+                  "$type": "BattleModel.HasBuff",
+                  "buffId": "h0025s5_a2_P1_S2"
+                },
+                "everybody": false,
+                "group": {
+                  "$type": "BattleModel.CharGroupWhere",
+                  "condition": {
+                    "$type": "BattleModel.AssetIdHasSubString",
+                    "subString": "h0025s5"
+                  },
+                  "group": {
+                    "$type": "BattleModel.PVEPlayerTeam",
+                    "includeDead": false,
+                    "includeEmpty": false
+                  }
+                }
+              },
+              {
+                "$type": "BattleModel.Inverse",
+                "condition": {
+                  "$type": "BattleModel.CharGroupCondition",
+                  "condition": {
+                    "$type": "BattleModel.HasBuff",
+                    "buffId": "h0025s5_a2_P1_S3"
+                  },
+                  "everybody": false,
+                  "group": {
+                    "$type": "BattleModel.CharGroupWhere",
+                    "condition": {
+                      "$type": "BattleModel.AssetIdHasSubString",
+                      "subString": "h0025s5"
+                    },
+                    "group": {
+                      "$type": "BattleModel.PVEEnemyTeam",
+                      "includeDead": false,
+                      "includeEmpty": false
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": {
+                      "$type": "BattleModel.SelfTeamChars",
+                      "excludeSelf": true,
+                      "includeDead": false,
+                      "includeEmpty": false,
+                      "reference": {
+                        "$type": "BattleModel.ThisSpecifiedTarget"
+                      }
+                    },
+                    "single": {
+                      "$type": "BattleModel.ThisBuffOwner"
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.RemoveBuffSkillEffect",
+                        "Tag": 4100,
+                        "_buffID": "h0047s5_dieAttack_trigger",
+                        "_keyString": ""
+                      },
+                      {
+                        "$type": "BattleModel.HpDamageSkillEffect",
+                        "Tag": 9,
+                        "_keyString": "",
+                        "_skillModifier": {
+                          "_constant": 0,
+                          "_parameter": {
+                            "$type": "BattleModel.PlusInt",
+                            "left": {
+                              "$type": "BattleModel.ConstanctInt",
+                              "constant": 50
+                            },
+                            "right": {
+                              "$type": "BattleModel.MultiplyFloat",
+                              "left": {
+                                "$type": "BattleModel.IntCharaterField",
+                                "character": {
+                                  "$type": "BattleModel.IndexOfChars",
+                                  "backward": false,
+                                  "group": {
+                                    "$type": "BattleModel.PVEPlayerTeam",
+                                    "includeDead": false,
+                                    "includeEmpty": false
+                                  },
+                                  "index": {
+                                    "$type": "BattleModel.ConstanctInt",
+                                    "constant": 1
+                                  }
+                                },
+                                "targetField": 9
+                              },
+                              "ratio": 0.2
+                            }
+                          },
+                          "_ratio": 1
+                        }
+                      },
+                      {
+                        "$type": "BattleModel.AddBuffSkillEffect",
+                        "Tag": 132,
+                        "_buffData": [
+                          {
+                            "BuffId": "h0047s5_dieAttack_trigger",
+                            "Forever": false,
+                            "LevelStack": 1,
+                            "OverwriteDuration": 1,
+                            "UserDefineVariable": {
+                            }
+                          }
+                        ],
+                        "_keyString": ""
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": false
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharGroupCondition",
+                "condition": {
+                  "$type": "BattleModel.HasBuff",
+                  "buffId": "h0025s5_a2_P1_S3"
+                },
+                "everybody": false,
+                "group": {
+                  "$type": "BattleModel.CharGroupWhere",
+                  "condition": {
+                    "$type": "BattleModel.AssetIdHasSubString",
+                    "subString": "h0025s5"
+                  },
+                  "group": {
+                    "$type": "BattleModel.PVEPlayerTeam",
+                    "includeDead": false,
+                    "includeEmpty": false
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+          {
+            "$type": "BattleModel.BuffCondition",
+            "buff": {
+              "$type": "BattleModel.SpecifiedBuff"
+            },
+            "condition": {
+              "$type": "BattleModel.CheckBuffMatchBuffId",
+              "subString": "Diffusion_target"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 1,
+  "_orderTable": [
+    {
+      "Key": 8192,
+      "Value": {
+        "Order": 0
+      }
+    }
+  ],
+  "_tag": 64
+}

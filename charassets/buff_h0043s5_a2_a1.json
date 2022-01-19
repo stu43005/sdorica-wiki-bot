@@ -1,0 +1,714 @@
+{
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "OnBuffAdd": {
+        "效果": [
+          {
+            "效果": [
+              "對本狀態的層數改為(本角色持有的Buff中有在attack_and_defense[強化, 減傷]列表內的Buff中的持續時間)的最大值"
+            ],
+            "條件": [
+              "當前事件的狀態 有在attack_and_defense[強化, 減傷]列表內",
+              "本角色 沒有任何一個 (有在attack_and_defense[強化, 減傷]列表內) 且 (有(Forever)標籤) 的狀態"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnBuffFinish": {
+        "效果": [
+          {
+            "效果": [
+              "對本狀態的層數改為(本角色持有的Buff中有在attack_and_defense[強化, 減傷]列表內的Buff中的持續時間)的最大值"
+            ],
+            "條件": [
+              "當前事件的狀態 有在attack_and_defense[強化, 減傷]列表內",
+              "本角色 沒有任何一個 (有在attack_and_defense[強化, 減傷]列表內) 且 (有(Forever)標籤) 的狀態"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnBuffRemove": {
+        "效果": [
+          {
+            "效果": [
+              "對本狀態的層數改為(本角色持有的Buff中有在attack_and_defense[強化, 減傷]列表內的Buff中的持續時間)的最大值"
+            ],
+            "條件": [
+              "當前事件的狀態 有在attack_and_defense[強化, 減傷]列表內",
+              "本角色 沒有任何一個 (有在attack_and_defense[強化, 減傷]列表內) 且 (有(Forever)標籤) 的狀態"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnBuffStack": {
+        "效果": [
+          {
+            "效果": [
+              "對本狀態的層數改為(本角色持有的Buff中有在attack_and_defense[強化, 減傷]列表內的Buff中的持續時間)的最大值"
+            ],
+            "條件": [
+              "當前事件的狀態 有在attack_and_defense[強化, 減傷]列表內",
+              "本角色 沒有任何一個 (有在attack_and_defense[強化, 減傷]列表內) 且 (有(Forever)標籤) 的狀態"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnTurnBegin": {
+        "效果": [
+          {
+            "效果": [
+              "對本狀態的層數改為(本角色持有的Buff中有在attack_and_defense[強化, 減傷]列表內的Buff中的持續時間)的最大值"
+            ],
+            "條件": [
+              "本角色 擁有任何一個 有在attack_and_defense[強化, 減傷]列表內 的狀態"
+            ]
+          },
+          {
+            "效果": [
+              "對本狀態的層數改為7"
+            ],
+            "條件": [
+              "目前回合輪到本角色",
+              "本角色 擁有任何一個 (有在attack_and_defense[強化, 減傷]列表內) 且 (有(Forever)標籤) 的狀態"
+            ]
+          },
+          {
+            "效果": [
+              "對本角色觸發S1"
+            ],
+            "條件": [
+              "目前回合輪到本角色",
+              "本狀態的層數 >= 5"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 7,
+    "標籤": "Hidden | Forever"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+    "bonusAttackPower",
+    "defense_up_small"
+  ],
+  "_actionTable": [
+    {
+      "Key": 16384,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 1,
+                    "value": {
+                      "$type": "BattleModel.MaxOfInts",
+                      "group": {
+                        "$type": "BattleModel.IntsOnBuffGroup",
+                        "group": {
+                          "$type": "BattleModel.BuffGroupWhere",
+                          "condition": {
+                            "$type": "BattleModel.CheckBuffBelongLabel",
+                            "BuffLabel": {
+                              "BuffIdList": [
+                                "bonusAttackPower",
+                                "defense_up_small"
+                              ],
+                              "BuffLabel": "attack_and_defense"
+                            }
+                          },
+                          "group": {
+                            "$type": "BattleModel.AllBuffsOnChar",
+                            "character": {
+                              "$type": "BattleModel.ThisBuffOwner"
+                            }
+                          }
+                        },
+                        "targetField": 0
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.BuffCondition",
+                "buff": {
+                  "$type": "BattleModel.SpecifiedBuff"
+                },
+                "condition": {
+                  "$type": "BattleModel.CheckBuffBelongLabel",
+                  "BuffLabel": {
+                    "BuffIdList": [
+                      "bonusAttackPower",
+                      "defense_up_small"
+                    ],
+                    "BuffLabel": "attack_and_defense"
+                  }
+                }
+              },
+              {
+                "$type": "BattleModel.Inverse",
+                "condition": {
+                  "$type": "BattleModel.CharacterCondition",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "condition": {
+                    "$type": "BattleModel.HasAnyConditionalBuff",
+                    "buffCondition": {
+                      "$type": "BattleModel.AndConditionsB",
+                      "cond1": {
+                        "$type": "BattleModel.CheckBuffBelongLabel",
+                        "BuffLabel": {
+                          "BuffIdList": [
+                            "bonusAttackPower",
+                            "defense_up_small"
+                          ],
+                          "BuffLabel": "attack_and_defense"
+                        }
+                      },
+                      "cond2": {
+                        "$type": "BattleModel.CheckBuffHasTag",
+                        "tag": 64
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 1,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 1,
+                    "value": {
+                      "$type": "BattleModel.MaxOfInts",
+                      "group": {
+                        "$type": "BattleModel.IntsOnBuffGroup",
+                        "group": {
+                          "$type": "BattleModel.BuffGroupWhere",
+                          "condition": {
+                            "$type": "BattleModel.CheckBuffBelongLabel",
+                            "BuffLabel": {
+                              "BuffIdList": [
+                                "bonusAttackPower",
+                                "defense_up_small"
+                              ],
+                              "BuffLabel": "attack_and_defense"
+                            }
+                          },
+                          "group": {
+                            "$type": "BattleModel.AllBuffsOnChar",
+                            "character": {
+                              "$type": "BattleModel.ThisBuffOwner"
+                            }
+                          }
+                        },
+                        "targetField": 0
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterCondition",
+                "character": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                },
+                "condition": {
+                  "$type": "BattleModel.HasAnyConditionalBuff",
+                  "buffCondition": {
+                    "$type": "BattleModel.CheckBuffBelongLabel",
+                    "BuffLabel": {
+                      "BuffIdList": [
+                        "bonusAttackPower",
+                        "defense_up_small"
+                      ],
+                      "BuffLabel": "attack_and_defense"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 1,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 7
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CurrentTurnBelongsTo",
+                "character": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                }
+              },
+              {
+                "$type": "BattleModel.CharacterCondition",
+                "character": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                },
+                "condition": {
+                  "$type": "BattleModel.HasAnyConditionalBuff",
+                  "buffCondition": {
+                    "$type": "BattleModel.AndConditionsB",
+                    "cond1": {
+                      "$type": "BattleModel.CheckBuffBelongLabel",
+                      "BuffLabel": {
+                        "BuffIdList": [
+                          "bonusAttackPower",
+                          "defense_up_small"
+                        ],
+                        "BuffLabel": "attack_and_defense"
+                      }
+                    },
+                    "cond2": {
+                      "$type": "BattleModel.CheckBuffHasTag",
+                      "tag": 64
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.CastSkillSet",
+                    "AssignParameter": {
+                      "AssignCharacter": {
+                        "$type": "BattleModel.NoneCharacter"
+                      },
+                      "AssignCharacterGroup": {
+                        "$type": "BattleModel.NoneCharacters"
+                      },
+                      "AssignInteger": {
+                        "$type": "BattleModel.ConstanctInt",
+                        "constant": 0
+                      },
+                      "AssignIntegerGroup": {
+                        "$type": "BattleModel.ConstanctIntegerGroup",
+                        "Group": [
+                        ]
+                      }
+                    },
+                    "UseAssignParameter": false,
+                    "resetCasterCD": false,
+                    "skillsetId": "S1"
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CurrentTurnBelongsTo",
+                "character": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.ThisBuff"
+                  },
+                  "targetField": 1
+                },
+                "op": 4,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 5
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 8192,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 1,
+                    "value": {
+                      "$type": "BattleModel.MaxOfInts",
+                      "group": {
+                        "$type": "BattleModel.IntsOnBuffGroup",
+                        "group": {
+                          "$type": "BattleModel.BuffGroupWhere",
+                          "condition": {
+                            "$type": "BattleModel.CheckBuffBelongLabel",
+                            "BuffLabel": {
+                              "BuffIdList": [
+                                "bonusAttackPower",
+                                "defense_up_small"
+                              ],
+                              "BuffLabel": "attack_and_defense"
+                            }
+                          },
+                          "group": {
+                            "$type": "BattleModel.AllBuffsOnChar",
+                            "character": {
+                              "$type": "BattleModel.ThisBuffOwner"
+                            }
+                          }
+                        },
+                        "targetField": 0
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.BuffCondition",
+                "buff": {
+                  "$type": "BattleModel.SpecifiedBuff"
+                },
+                "condition": {
+                  "$type": "BattleModel.CheckBuffBelongLabel",
+                  "BuffLabel": {
+                    "BuffIdList": [
+                      "bonusAttackPower",
+                      "defense_up_small"
+                    ],
+                    "BuffLabel": "attack_and_defense"
+                  }
+                }
+              },
+              {
+                "$type": "BattleModel.Inverse",
+                "condition": {
+                  "$type": "BattleModel.CharacterCondition",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "condition": {
+                    "$type": "BattleModel.HasAnyConditionalBuff",
+                    "buffCondition": {
+                      "$type": "BattleModel.AndConditionsB",
+                      "cond1": {
+                        "$type": "BattleModel.CheckBuffBelongLabel",
+                        "BuffLabel": {
+                          "BuffIdList": [
+                            "bonusAttackPower",
+                            "defense_up_small"
+                          ],
+                          "BuffLabel": "attack_and_defense"
+                        }
+                      },
+                      "cond2": {
+                        "$type": "BattleModel.CheckBuffHasTag",
+                        "tag": 64
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 32768,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 1,
+                    "value": {
+                      "$type": "BattleModel.MaxOfInts",
+                      "group": {
+                        "$type": "BattleModel.IntsOnBuffGroup",
+                        "group": {
+                          "$type": "BattleModel.BuffGroupWhere",
+                          "condition": {
+                            "$type": "BattleModel.CheckBuffBelongLabel",
+                            "BuffLabel": {
+                              "BuffIdList": [
+                                "bonusAttackPower",
+                                "defense_up_small"
+                              ],
+                              "BuffLabel": "attack_and_defense"
+                            }
+                          },
+                          "group": {
+                            "$type": "BattleModel.AllBuffsOnChar",
+                            "character": {
+                              "$type": "BattleModel.ThisBuffOwner"
+                            }
+                          }
+                        },
+                        "targetField": 0
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.BuffCondition",
+                "buff": {
+                  "$type": "BattleModel.SpecifiedBuff"
+                },
+                "condition": {
+                  "$type": "BattleModel.CheckBuffBelongLabel",
+                  "BuffLabel": {
+                    "BuffIdList": [
+                      "bonusAttackPower",
+                      "defense_up_small"
+                    ],
+                    "BuffLabel": "attack_and_defense"
+                  }
+                }
+              },
+              {
+                "$type": "BattleModel.Inverse",
+                "condition": {
+                  "$type": "BattleModel.CharacterCondition",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "condition": {
+                    "$type": "BattleModel.HasAnyConditionalBuff",
+                    "buffCondition": {
+                      "$type": "BattleModel.AndConditionsB",
+                      "cond1": {
+                        "$type": "BattleModel.CheckBuffBelongLabel",
+                        "BuffLabel": {
+                          "BuffIdList": [
+                            "bonusAttackPower",
+                            "defense_up_small"
+                          ],
+                          "BuffLabel": "attack_and_defense"
+                        }
+                      },
+                      "cond2": {
+                        "$type": "BattleModel.CheckBuffHasTag",
+                        "tag": 64
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 65536,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 1,
+                    "value": {
+                      "$type": "BattleModel.MaxOfInts",
+                      "group": {
+                        "$type": "BattleModel.IntsOnBuffGroup",
+                        "group": {
+                          "$type": "BattleModel.BuffGroupWhere",
+                          "condition": {
+                            "$type": "BattleModel.CheckBuffBelongLabel",
+                            "BuffLabel": {
+                              "BuffIdList": [
+                                "bonusAttackPower",
+                                "defense_up_small"
+                              ],
+                              "BuffLabel": "attack_and_defense"
+                            }
+                          },
+                          "group": {
+                            "$type": "BattleModel.AllBuffsOnChar",
+                            "character": {
+                              "$type": "BattleModel.ThisBuffOwner"
+                            }
+                          }
+                        },
+                        "targetField": 0
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.BuffCondition",
+                "buff": {
+                  "$type": "BattleModel.SpecifiedBuff"
+                },
+                "condition": {
+                  "$type": "BattleModel.CheckBuffBelongLabel",
+                  "BuffLabel": {
+                    "BuffIdList": [
+                      "bonusAttackPower",
+                      "defense_up_small"
+                    ],
+                    "BuffLabel": "attack_and_defense"
+                  }
+                }
+              },
+              {
+                "$type": "BattleModel.Inverse",
+                "condition": {
+                  "$type": "BattleModel.CharacterCondition",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "condition": {
+                    "$type": "BattleModel.HasAnyConditionalBuff",
+                    "buffCondition": {
+                      "$type": "BattleModel.AndConditionsB",
+                      "cond1": {
+                        "$type": "BattleModel.CheckBuffBelongLabel",
+                        "BuffLabel": {
+                          "BuffIdList": [
+                            "bonusAttackPower",
+                            "defense_up_small"
+                          ],
+                          "BuffLabel": "attack_and_defense"
+                        }
+                      },
+                      "cond2": {
+                        "$type": "BattleModel.CheckBuffHasTag",
+                        "tag": 64
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 7,
+  "_orderTable": [
+    {
+      "Key": 16384,
+      "Value": {
+        "Order": 0
+      }
+    },
+    {
+      "Key": 1,
+      "Value": {
+        "Order": 0
+      }
+    },
+    {
+      "Key": 8192,
+      "Value": {
+        "Order": 0
+      }
+    },
+    {
+      "Key": 32768,
+      "Value": {
+        "Order": 0
+      }
+    },
+    {
+      "Key": 65536,
+      "Value": {
+        "Order": 0
+      }
+    }
+  ],
+  "_tag": 65
+}

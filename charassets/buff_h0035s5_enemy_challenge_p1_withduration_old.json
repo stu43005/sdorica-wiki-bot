@@ -1,0 +1,617 @@
+{
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "BeforeAnyoneDie": {
+        "效果": [
+          {
+            "效果": [
+              "立即施展技能：對敵人及玩家中符合(擁有DmgReflect_target狀態)的角色全體穿透(((本狀態的變數一 + (-1 * 本角色的HP)) + (本狀態的變數二 + (本角色的疊盾 * -1))) x1)、移除狀態DmgReflect_target、賦予永久1層Reflect_dmg"
+            ],
+            "條件": [
+            ]
+          }
+        ],
+        "條件": [
+          "本角色是死亡或復活的角色",
+          "(本狀態的變數一 > 本角色的HP) 或 (本狀態的變數二 > 本角色的疊盾)",
+          "本角色的對方中的任意角色 擁有DmgReflect_target狀態"
+        ]
+      },
+      "OnEachSkillSetEnd": {
+        "效果": [
+          {
+            "效果": [
+              "立即施展技能：對敵人及玩家中符合(擁有DmgReflect_target狀態)的角色全體穿透(((本狀態的變數一 + (-1 * 本角色的HP)) + (本狀態的變數二 + (本角色的疊盾 * -1))) x1)、移除狀態DmgReflect_target、賦予永久1層Reflect_dmg",
+              "對本角色賦予永久1層Reflect_trigger"
+            ],
+            "條件": [
+              "(本狀態的變數一 > 本角色的HP) 或 (本狀態的變數二 > 本角色的疊盾)",
+              "施展的技能效果中包含(Attack)屬性",
+              "本角色的對方中的任意角色 擁有DmgReflect_target狀態",
+              "本角色的HP > 0"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnEachSkillTargetEffect": {
+        "效果": [
+          {
+            "效果": [
+              "對本角色的對方所有角色賦予永久1層DmgReflect_target"
+            ],
+            "條件": [
+            ]
+          },
+          {
+            "效果": [
+              "對本狀態的變數一改為本角色的HP",
+              "對本狀態的變數二改為本角色的疊盾"
+            ],
+            "條件": [
+            ]
+          }
+        ],
+        "條件": [
+          "指定目標是本角色",
+          "施展的技能效果中包含(Attack)屬性"
+        ]
+      }
+    },
+    "持續時間": 1,
+    "最高層數": 1,
+    "標籤": ""
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+    "Reflect_dmg",
+    "Reflect_trigger",
+    "DmgReflect_target"
+  ],
+  "_actionTable": [
+    {
+      "Key": 8,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": true,
+                    "multi": {
+                      "$type": "BattleModel.CharGroupWhere",
+                      "condition": {
+                        "$type": "BattleModel.HasBuff",
+                        "buffId": "DmgReflect_target"
+                      },
+                      "group": {
+                        "$type": "BattleModel.UnionCharGroup",
+                        "group1": {
+                          "$type": "BattleModel.PVEEnemyTeam",
+                          "includeDead": false,
+                          "includeEmpty": false
+                        },
+                        "group2": {
+                          "$type": "BattleModel.PVEPlayerTeam",
+                          "includeDead": false,
+                          "includeEmpty": false
+                        }
+                      }
+                    },
+                    "single": {
+                      "$type": "BattleModel.FrontOfChars",
+                      "group": {
+                        "$type": "BattleModel.OppositeTeamChars",
+                        "includeDead": false,
+                        "includeEmpty": false,
+                        "reference": {
+                          "$type": "BattleModel.ThisBuffOwner"
+                        }
+                      }
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.TrueDamageSkillEffect",
+                        "Tag": 8193,
+                        "_keyString": "1",
+                        "_skillModifier": {
+                          "_constant": 0,
+                          "_parameter": {
+                            "$type": "BattleModel.PlusInt",
+                            "left": {
+                              "$type": "BattleModel.PlusInt",
+                              "left": {
+                                "$type": "BattleModel.IntBuffField",
+                                "buff": {
+                                  "$type": "BattleModel.ThisBuff"
+                                },
+                                "targetField": 4
+                              },
+                              "right": {
+                                "$type": "BattleModel.MultiplyInt",
+                                "left": {
+                                  "$type": "BattleModel.ConstanctInt",
+                                  "constant": -1
+                                },
+                                "right": {
+                                  "$type": "BattleModel.IntCharaterField",
+                                  "character": {
+                                    "$type": "BattleModel.ThisBuffOwner"
+                                  },
+                                  "targetField": 0
+                                }
+                              }
+                            },
+                            "right": {
+                              "$type": "BattleModel.PlusInt",
+                              "left": {
+                                "$type": "BattleModel.IntBuffField",
+                                "buff": {
+                                  "$type": "BattleModel.ThisBuff"
+                                },
+                                "targetField": 8
+                              },
+                              "right": {
+                                "$type": "BattleModel.MultiplyInt",
+                                "left": {
+                                  "$type": "BattleModel.IntCharaterField",
+                                  "character": {
+                                    "$type": "BattleModel.ThisBuffOwner"
+                                  },
+                                  "targetField": 4
+                                },
+                                "right": {
+                                  "$type": "BattleModel.ConstanctInt",
+                                  "constant": -1
+                                }
+                              }
+                            }
+                          },
+                          "_ratio": 1
+                        }
+                      },
+                      {
+                        "$type": "BattleModel.RemoveBuffSkillEffect",
+                        "Tag": 4100,
+                        "_buffID": "DmgReflect_target",
+                        "_keyString": "1"
+                      },
+                      {
+                        "$type": "BattleModel.AddBuffSkillEffect",
+                        "Tag": 132,
+                        "_buffData": [
+                          {
+                            "BuffId": "Reflect_dmg",
+                            "Forever": false,
+                            "LevelStack": 1,
+                            "OverwriteDuration": -1,
+                            "UserDefineVariable": {
+                            }
+                          }
+                        ],
+                        "_keyString": ""
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": false
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "Reflect_trigger",
+                      "Forever": false,
+                      "LevelStack": 1,
+                      "OverwriteDuration": -1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.OrConditions",
+                "cond1": {
+                  "$type": "BattleModel.IntCompare",
+                  "left": {
+                    "$type": "BattleModel.IntBuffField",
+                    "buff": {
+                      "$type": "BattleModel.ThisBuff"
+                    },
+                    "targetField": 4
+                  },
+                  "op": 2,
+                  "right": {
+                    "$type": "BattleModel.IntCharaterField",
+                    "character": {
+                      "$type": "BattleModel.ThisBuffOwner"
+                    },
+                    "targetField": 0
+                  }
+                },
+                "cond2": {
+                  "$type": "BattleModel.IntCompare",
+                  "left": {
+                    "$type": "BattleModel.IntBuffField",
+                    "buff": {
+                      "$type": "BattleModel.ThisBuff"
+                    },
+                    "targetField": 8
+                  },
+                  "op": 2,
+                  "right": {
+                    "$type": "BattleModel.IntCharaterField",
+                    "character": {
+                      "$type": "BattleModel.ThisBuffOwner"
+                    },
+                    "targetField": 4
+                  }
+                }
+              },
+              {
+                "$type": "BattleModel.ThisSkillEffectTagContains",
+                "containsAll": 1
+              },
+              {
+                "$type": "BattleModel.CharGroupCondition",
+                "condition": {
+                  "$type": "BattleModel.HasBuff",
+                  "buffId": "DmgReflect_target"
+                },
+                "everybody": false,
+                "group": {
+                  "$type": "BattleModel.OppositeTeamChars",
+                  "includeDead": false,
+                  "includeEmpty": false,
+                  "reference": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  }
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntCharaterField",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "targetField": 0
+                },
+                "op": 2,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 0
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 1024,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacterGroup",
+                  "group": {
+                    "$type": "BattleModel.OppositeTeamChars",
+                    "includeDead": false,
+                    "includeEmpty": false,
+                    "reference": {
+                      "$type": "BattleModel.ThisBuffOwner"
+                    }
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "DmgReflect_target",
+                      "Forever": false,
+                      "LevelStack": 1,
+                      "OverwriteDuration": -1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.IntCharaterField",
+                      "character": {
+                        "$type": "BattleModel.ThisBuffOwner"
+                      },
+                      "targetField": 0
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 8,
+                    "value": {
+                      "$type": "BattleModel.IntCharaterField",
+                      "character": {
+                        "$type": "BattleModel.ThisBuffOwner"
+                      },
+                      "targetField": 4
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+            ]
+          }
+        ],
+        "Conditions": [
+          {
+            "$type": "BattleModel.CharacterEqual",
+            "left": {
+              "$type": "BattleModel.ThisSpecifiedTarget"
+            },
+            "right": {
+              "$type": "BattleModel.ThisBuffOwner"
+            }
+          },
+          {
+            "$type": "BattleModel.ThisSkillEffectTagContains",
+            "containsAll": 1
+          }
+        ]
+      }
+    },
+    {
+      "Key": 131072,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": true,
+                    "multi": {
+                      "$type": "BattleModel.CharGroupWhere",
+                      "condition": {
+                        "$type": "BattleModel.HasBuff",
+                        "buffId": "DmgReflect_target"
+                      },
+                      "group": {
+                        "$type": "BattleModel.UnionCharGroup",
+                        "group1": {
+                          "$type": "BattleModel.PVEEnemyTeam",
+                          "includeDead": false,
+                          "includeEmpty": false
+                        },
+                        "group2": {
+                          "$type": "BattleModel.PVEPlayerTeam",
+                          "includeDead": false,
+                          "includeEmpty": false
+                        }
+                      }
+                    },
+                    "single": null,
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.TrueDamageSkillEffect",
+                        "Tag": 8193,
+                        "_keyString": "1",
+                        "_skillModifier": {
+                          "_constant": 0,
+                          "_parameter": {
+                            "$type": "BattleModel.PlusInt",
+                            "left": {
+                              "$type": "BattleModel.PlusInt",
+                              "left": {
+                                "$type": "BattleModel.IntBuffField",
+                                "buff": {
+                                  "$type": "BattleModel.ThisBuff"
+                                },
+                                "targetField": 4
+                              },
+                              "right": {
+                                "$type": "BattleModel.MultiplyInt",
+                                "left": {
+                                  "$type": "BattleModel.ConstanctInt",
+                                  "constant": -1
+                                },
+                                "right": {
+                                  "$type": "BattleModel.IntCharaterField",
+                                  "character": {
+                                    "$type": "BattleModel.ThisBuffOwner"
+                                  },
+                                  "targetField": 0
+                                }
+                              }
+                            },
+                            "right": {
+                              "$type": "BattleModel.PlusInt",
+                              "left": {
+                                "$type": "BattleModel.IntBuffField",
+                                "buff": {
+                                  "$type": "BattleModel.ThisBuff"
+                                },
+                                "targetField": 8
+                              },
+                              "right": {
+                                "$type": "BattleModel.MultiplyInt",
+                                "left": {
+                                  "$type": "BattleModel.IntCharaterField",
+                                  "character": {
+                                    "$type": "BattleModel.ThisBuffOwner"
+                                  },
+                                  "targetField": 4
+                                },
+                                "right": {
+                                  "$type": "BattleModel.ConstanctInt",
+                                  "constant": -1
+                                }
+                              }
+                            }
+                          },
+                          "_ratio": 1
+                        }
+                      },
+                      {
+                        "$type": "BattleModel.RemoveBuffSkillEffect",
+                        "Tag": 4100,
+                        "_buffID": "DmgReflect_target",
+                        "_keyString": "1"
+                      },
+                      {
+                        "$type": "BattleModel.AddBuffSkillEffect",
+                        "Tag": 132,
+                        "_buffData": [
+                          {
+                            "BuffId": "Reflect_dmg",
+                            "Forever": false,
+                            "LevelStack": 1,
+                            "OverwriteDuration": -1,
+                            "UserDefineVariable": {
+                            }
+                          }
+                        ],
+                        "_keyString": ""
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": true
+                }
+              }
+            ],
+            "Conditions": [
+            ]
+          }
+        ],
+        "Conditions": [
+          {
+            "$type": "BattleModel.CharacterEqual",
+            "left": {
+              "$type": "BattleModel.ThisBuffOwner"
+            },
+            "right": {
+              "$type": "BattleModel.DeadOrReviveTarget"
+            }
+          },
+          {
+            "$type": "BattleModel.OrConditions",
+            "cond1": {
+              "$type": "BattleModel.IntCompare",
+              "left": {
+                "$type": "BattleModel.IntBuffField",
+                "buff": {
+                  "$type": "BattleModel.ThisBuff"
+                },
+                "targetField": 4
+              },
+              "op": 2,
+              "right": {
+                "$type": "BattleModel.IntCharaterField",
+                "character": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                },
+                "targetField": 0
+              }
+            },
+            "cond2": {
+              "$type": "BattleModel.IntCompare",
+              "left": {
+                "$type": "BattleModel.IntBuffField",
+                "buff": {
+                  "$type": "BattleModel.ThisBuff"
+                },
+                "targetField": 8
+              },
+              "op": 2,
+              "right": {
+                "$type": "BattleModel.IntCharaterField",
+                "character": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                },
+                "targetField": 4
+              }
+            }
+          },
+          {
+            "$type": "BattleModel.CharGroupCondition",
+            "condition": {
+              "$type": "BattleModel.HasBuff",
+              "buffId": "DmgReflect_target"
+            },
+            "everybody": false,
+            "group": {
+              "$type": "BattleModel.OppositeTeamChars",
+              "includeDead": false,
+              "includeEmpty": false,
+              "reference": {
+                "$type": "BattleModel.ThisBuffOwner"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "_duration": 1,
+  "_maxLevel": 1,
+  "_orderTable": [
+    {
+      "Key": 8,
+      "Value": {
+        "Order": 0
+      }
+    },
+    {
+      "Key": 1024,
+      "Value": {
+        "Order": 0
+      }
+    },
+    {
+      "Key": 131072,
+      "Value": {
+        "Order": 0
+      }
+    }
+  ],
+  "_tag": 0
+}

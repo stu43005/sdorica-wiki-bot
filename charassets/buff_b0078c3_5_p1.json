@@ -1,0 +1,124 @@
+{
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "BeforeAnyoneDie": {
+        "效果": [
+          {
+            "效果": [
+              "立即施展技能：對施術者隊伍的空位全體召喚敵人(b0078c1;棕狼;等級變化:0;初始體力:100%;初始疊盾:0%;初始CD:1;死後消失)"
+            ],
+            "條件": [
+              "死亡或復活的角色不是本角色",
+              "本角色是施術者"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      }
+    },
+    "持續時間": 1,
+    "最高層數": 99,
+    "標籤": "Forever"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+  ],
+  "_actionTable": [
+    {
+      "Key": 131072,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": true,
+                    "multi": {
+                      "$type": "BattleModel.SelftTeamEmptySlots",
+                      "reference": {
+                        "$type": "BattleModel.ThisSkillCaster"
+                      }
+                    },
+                    "single": {
+                      "$type": "BattleModel.RandomOfChars",
+                      "group": {
+                        "$type": "BattleModel.SelftTeamEmptySlots",
+                        "reference": {
+                          "$type": "BattleModel.ThisSkillCaster"
+                        }
+                      }
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.SummonEnemySkillEffect",
+                        "IsShowArrive": false,
+                        "Reference": {
+                          "$type": "BattleModel.SummonCharacter",
+                          "CharacterArg": {
+                            "AssetName": "b0078c1",
+                            "State": {
+                              "DisapearAfterDead": true,
+                              "InitArmorRatio": 0,
+                              "InitBloodRatio": 1,
+                              "InitCd": 1,
+                              "LevelAdjustment": 0
+                            },
+                            "SummonCasterLevel": 1
+                          }
+                        },
+                        "Tag": 260,
+                        "_keyString": ""
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": true
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.Inverse",
+                "condition": {
+                  "$type": "BattleModel.CharacterEqual",
+                  "left": {
+                    "$type": "BattleModel.DeadOrReviveTarget"
+                  },
+                  "right": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  }
+                }
+              },
+              {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                },
+                "right": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 1,
+  "_maxLevel": 99,
+  "_orderTable": [
+    {
+      "Key": 131072,
+      "Value": {
+        "Order": 0
+      }
+    }
+  ],
+  "_tag": 64
+}

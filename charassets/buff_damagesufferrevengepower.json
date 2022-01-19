@@ -1,0 +1,175 @@
+{
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "OnEachSkillSetEnd": {
+        "效果": [
+          {
+            "效果": [
+              "對本狀態的變數一改為(在此技能組的目標中，本角色的減少體力 + 在此技能組的目標中，本角色的減少疊盾)"
+            ],
+            "條件": [
+            ]
+          }
+        ],
+        "條件": [
+          "本角色是此技能效果目標的一員",
+          "施展的技能效果中包含(Attack)屬性",
+          "本角色不是施術者"
+        ]
+      },
+      "OnEachSkillTargetEffect": {
+        "效果": [
+          {
+            "效果": [
+              "技能的(Attack)屬性效果增加(本狀態的變數一)"
+            ],
+            "條件": [
+              "施術者是本角色",
+              "施展的技能效果中包含(Attack)屬性"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 99,
+    "標籤": "InfinityTrigger"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+  ],
+  "_actionTable": [
+    {
+      "Key": 8,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.PlusInt",
+                      "left": {
+                        "$type": "BattleModel.TransitionResultValue",
+                        "ResultValue": {
+                          "$type": "BattleModel.TotalResultsValueOfCharacter",
+                          "CharType": "Target",
+                          "Character": {
+                            "$type": "BattleModel.ThisBuffOwner"
+                          },
+                          "Results": {
+                            "$type": "BattleModel.ThisSkillSetResult"
+                          },
+                          "ValueType": "HpDamage"
+                        }
+                      },
+                      "right": {
+                        "$type": "BattleModel.TransitionResultValue",
+                        "ResultValue": {
+                          "$type": "BattleModel.TotalResultsValueOfCharacter",
+                          "CharType": "Target",
+                          "Character": {
+                            "$type": "BattleModel.ThisBuffOwner"
+                          },
+                          "Results": {
+                            "$type": "BattleModel.ThisSkillSetResult"
+                          },
+                          "ValueType": "ArmorReduce"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+            ]
+          }
+        ],
+        "Conditions": [
+          {
+            "$type": "BattleModel.CharacterInside",
+            "group": {
+              "$type": "BattleModel.ThisSkillEffectTargets"
+            },
+            "left": {
+              "$type": "BattleModel.ThisBuffOwner"
+            }
+          },
+          {
+            "$type": "BattleModel.ThisSkillEffectTagContains",
+            "containsAll": 1
+          },
+          {
+            "$type": "BattleModel.Inverse",
+            "condition": {
+              "$type": "BattleModel.CharacterEqual",
+              "left": {
+                "$type": "BattleModel.ThisBuffOwner"
+              },
+              "right": {
+                "$type": "BattleModel.ThisSkillCaster"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "Key": 1024,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.BonusEffectForSkillProperty",
+                  "isPercent": false,
+                  "property": 1,
+                  "value": {
+                    "$type": "BattleModel.IntBuffField",
+                    "buff": {
+                      "$type": "BattleModel.ThisBuff"
+                    },
+                    "targetField": 4
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                },
+                "right": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                }
+              },
+              {
+                "$type": "BattleModel.ThisSkillEffectTagContains",
+                "containsAll": 1
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 99,
+  "_orderTable": {
+  },
+  "_tag": 32768
+}

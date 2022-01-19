@@ -1,0 +1,144 @@
+{
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "OnTurnBegin": {
+        "效果": [
+          {
+            "效果": [
+              "對本角色觸發S5"
+            ],
+            "條件": [
+            ]
+          }
+        ],
+        "條件": [
+          "目前回合輪到本角色",
+          "(((本角色擁有bonusAttackPower(強化)狀態) 或 (本角色擁有defense_up_small(減傷)狀態)) 或 ((本角色擁有dexterity(靈巧)狀態) 或 (本角色擁有damage_absorption(轉盾)狀態))) 或 ((本角色擁有regeneration(再生)狀態) 或 (本角色擁有leader(領袖)狀態))"
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 99,
+    "標籤": ""
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+  ],
+  "_actionTable": [
+    {
+      "Key": 1,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.CastSkillSet",
+                    "AssignParameter": {
+                      "AssignCharacter": {
+                        "$type": "BattleModel.NoneCharacter"
+                      },
+                      "AssignCharacterGroup": {
+                        "$type": "BattleModel.NoneCharacters"
+                      },
+                      "AssignInteger": {
+                        "$type": "BattleModel.ConstanctInt",
+                        "constant": 0
+                      },
+                      "AssignIntegerGroup": {
+                        "$type": "BattleModel.ConstanctIntegerGroup",
+                        "Group": [
+                        ]
+                      }
+                    },
+                    "UseAssignParameter": false,
+                    "resetCasterCD": false,
+                    "skillsetId": "S5"
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+            ]
+          }
+        ],
+        "Conditions": [
+          {
+            "$type": "BattleModel.CurrentTurnBelongsTo",
+            "character": {
+              "$type": "BattleModel.ThisBuffOwner"
+            }
+          },
+          {
+            "$type": "BattleModel.OrConditions",
+            "cond1": {
+              "$type": "BattleModel.OrConditions",
+              "cond1": {
+                "$type": "BattleModel.OrConditions",
+                "cond1": {
+                  "$type": "BattleModel.CharacterHasBuff",
+                  "buffId": "bonusAttackPower",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  }
+                },
+                "cond2": {
+                  "$type": "BattleModel.CharacterHasBuff",
+                  "buffId": "defense_up_small",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  }
+                }
+              },
+              "cond2": {
+                "$type": "BattleModel.OrConditions",
+                "cond1": {
+                  "$type": "BattleModel.CharacterHasBuff",
+                  "buffId": "dexterity",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  }
+                },
+                "cond2": {
+                  "$type": "BattleModel.CharacterHasBuff",
+                  "buffId": "damage_absorption",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  }
+                }
+              }
+            },
+            "cond2": {
+              "$type": "BattleModel.OrConditions",
+              "cond1": {
+                "$type": "BattleModel.CharacterHasBuff",
+                "buffId": "regeneration",
+                "character": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                }
+              },
+              "cond2": {
+                "$type": "BattleModel.CharacterHasBuff",
+                "buffId": "leader",
+                "character": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 99,
+  "_orderTable": {
+  },
+  "_tag": 0
+}
