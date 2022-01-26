@@ -6,11 +6,10 @@
         "效果": [
           {
             "效果": [
-              "技能的(NormalDamage)屬性效果增加(-10000)%"
+              "技能的(Attack)屬性效果增加((施術者持有的Buff中有在generalNerf[弱化, 易傷, 撕裂, 中毒, 易傷, 暈眩, 汙染, 出血, 汙染, 寒冷, 燃燒]列表內的Buff的狀態數量 * -30))%"
             ],
             "條件": [
-              "施展的技能效果中包含(NormalDamage)屬性",
-              "指定目標 {\"Group\":{\"includeDead\":false,\"includeEmpty\":false,\"$type\":\"BattleModel.PVEEnemyTeam\"},\"$type\":\"BattleModel.CharacterInsideC\"}"
+              "施術者 {\"Group\":{\"includeDead\":false,\"includeEmpty\":false,\"$type\":\"BattleModel.PVEPlayerTeam\"},\"$type\":\"BattleModel.CharacterInsideC\"}"
             ]
           }
         ],
@@ -24,6 +23,19 @@
   },
   "$type": "BattleModel.Buff",
   "ReferenceBuffKeys": [
+    "nerf_damage_small",
+    "weak",
+    "tearing",
+    "poison",
+    "stun",
+    "infection_maintain",
+    "bleeding_maintain",
+    "infection",
+    "frosted",
+    "burn",
+    "tearing_trigger",
+    "tearing_trigger_alert",
+    "poison_trigger"
   ],
   "_actionTable": [
     {
@@ -36,28 +48,58 @@
                 "TargetField": {
                   "$type": "BattleModel.BonusEffectForSkillProperty",
                   "isPercent": true,
-                  "property": 8,
+                  "property": 1,
                   "value": {
-                    "$type": "BattleModel.ConstanctInt",
-                    "constant": -10000
+                    "$type": "BattleModel.MultiplyInt",
+                    "left": {
+                      "$type": "BattleModel.CountOfBuffGroup",
+                      "group": {
+                        "$type": "BattleModel.BuffGroupWhere",
+                        "condition": {
+                          "$type": "BattleModel.CheckBuffBelongLabel",
+                          "BuffLabel": {
+                            "BuffIdList": [
+                              "nerf_damage_small",
+                              "weak",
+                              "tearing",
+                              "poison",
+                              "weak",
+                              "stun",
+                              "infection_maintain",
+                              "bleeding_maintain",
+                              "infection",
+                              "frosted",
+                              "burn"
+                            ],
+                            "BuffLabel": "generalNerf"
+                          }
+                        },
+                        "group": {
+                          "$type": "BattleModel.AllBuffsOnChar",
+                          "character": {
+                            "$type": "BattleModel.ThisSkillCaster"
+                          }
+                        }
+                      }
+                    },
+                    "right": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": -30
+                    }
                   }
                 }
               }
             ],
             "Conditions": [
               {
-                "$type": "BattleModel.ThisSkillEffectTagContains",
-                "containsAll": 8
-              },
-              {
                 "$type": "BattleModel.CharacterCondition",
                 "character": {
-                  "$type": "BattleModel.ThisSpecifiedTarget"
+                  "$type": "BattleModel.ThisSkillCaster"
                 },
                 "condition": {
                   "$type": "BattleModel.CharacterInsideC",
                   "Group": {
-                    "$type": "BattleModel.PVEEnemyTeam",
+                    "$type": "BattleModel.PVEPlayerTeam",
                     "includeDead": false,
                     "includeEmpty": false
                   }

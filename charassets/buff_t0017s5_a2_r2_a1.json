@@ -6,7 +6,7 @@
         "效果": [
           {
             "效果": [
-              "對本狀態的變數一改為1"
+              "對本狀態的變數一改為0"
             ],
             "條件": [
             ]
@@ -28,7 +28,7 @@
           },
           {
             "效果": [
-              "立即施展技能效果：賦予1回合1層nerf_damage_small(弱化)",
+              "對指定目標賦予1回合1層nerf_damage_small(弱化)",
               "對本狀態的變數一改為1"
             ],
             "條件": [
@@ -90,24 +90,21 @@
             "Actions": [
               {
                 "TargetField": {
-                  "$type": "BattleModel.ImmediatelySkillEffect",
-                  "SkillEffect": [
-                    {
-                      "$type": "BattleModel.AddBuffSkillEffect",
-                      "Tag": 132,
-                      "_buffData": [
-                        {
-                          "BuffId": "nerf_damage_small",
-                          "Forever": false,
-                          "LevelStack": 1,
-                          "OverwriteDuration": 1,
-                          "UserDefineVariable": {
-                          }
-                        }
-                      ],
-                      "_keyString": ""
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisSpecifiedTarget"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "nerf_damage_small",
+                      "Forever": false,
+                      "LevelStack": 1,
+                      "OverwriteDuration": 1,
+                      "UserDefineVariable": {
+                      }
                     }
-                  ]
+                  }
                 }
               },
               {
@@ -182,7 +179,7 @@
                     "targetField": 4,
                     "value": {
                       "$type": "BattleModel.ConstanctInt",
-                      "constant": 1
+                      "constant": 0
                     }
                   }
                 }

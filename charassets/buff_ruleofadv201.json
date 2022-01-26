@@ -2,15 +2,43 @@
   "$interpreted": {
     "Localization": "",
     "動作": {
+      "": {
+        "效果": [
+          {
+            "效果": [
+              "對本狀態的變數一改為0"
+            ],
+            "條件": [
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
       "OnEachSkillTargetEffect": {
         "效果": [
           {
             "效果": [
-              "技能的(NormalDamage)屬性效果增加(-10000)%"
+              "技能的(Attack)屬性效果增加(60)%",
+              "對本狀態的變數一改為1"
             ],
             "條件": [
-              "施展的技能效果中包含(BreakArmor)屬性",
-              "指定目標 {\"Group\":{\"includeDead\":false,\"includeEmpty\":false,\"$type\":\"BattleModel.PVEEnemyTeam\"},\"$type\":\"BattleModel.CharacterInsideC\"}"
+              "施術者 {\"Group\":{\"includeDead\":false,\"includeEmpty\":false,\"$type\":\"BattleModel.PVEPlayerTeam\"},\"$type\":\"BattleModel.CharacterInsideC\"}",
+              "本狀態的變數一 != 1"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnTurnBegin": {
+        "效果": [
+          {
+            "效果": [
+              "對本狀態的變數一改為0"
+            ],
+            "條件": [
+              "(目前戰鬥回合數 == 0) 且 (目前回合輪到敵人首位)"
             ]
           }
         ],
@@ -36,30 +64,147 @@
                 "TargetField": {
                   "$type": "BattleModel.BonusEffectForSkillProperty",
                   "isPercent": true,
-                  "property": 8,
+                  "property": 1,
                   "value": {
                     "$type": "BattleModel.ConstanctInt",
-                    "constant": -10000
+                    "constant": 60
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 1
+                    }
                   }
                 }
               }
             ],
             "Conditions": [
               {
-                "$type": "BattleModel.ThisSkillEffectTagContains",
-                "containsAll": 16
-              },
-              {
                 "$type": "BattleModel.CharacterCondition",
                 "character": {
-                  "$type": "BattleModel.ThisSpecifiedTarget"
+                  "$type": "BattleModel.ThisSkillCaster"
                 },
                 "condition": {
                   "$type": "BattleModel.CharacterInsideC",
                   "Group": {
-                    "$type": "BattleModel.PVEEnemyTeam",
+                    "$type": "BattleModel.PVEPlayerTeam",
                     "includeDead": false,
                     "includeEmpty": false
+                  }
+                }
+              },
+              {
+                "$type": "BattleModel.Inverse",
+                "condition": {
+                  "$type": "BattleModel.IntCompare",
+                  "left": {
+                    "$type": "BattleModel.IntBuffField",
+                    "buff": {
+                      "$type": "BattleModel.ThisBuff"
+                    },
+                    "targetField": 4
+                  },
+                  "op": 0,
+                  "right": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 1
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 134217728,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 1,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.AndConditions",
+                "cond1": {
+                  "$type": "BattleModel.IntCompare",
+                  "left": {
+                    "$type": "BattleModel.BattleActionRecordValue",
+                    "RecordValue": {
+                      "$type": "BattleModel.ThisBattleTurnCount"
+                    }
+                  },
+                  "op": 0,
+                  "right": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 0
+                  }
+                },
+                "cond2": {
+                  "$type": "BattleModel.CurrentTurnBelongsTo",
+                  "character": {
+                    "$type": "BattleModel.FrontOfChars",
+                    "group": {
+                      "$type": "BattleModel.PVEEnemyTeam",
+                      "includeDead": true,
+                      "includeEmpty": true
+                    }
                   }
                 }
               }

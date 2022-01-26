@@ -1,0 +1,444 @@
+{
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "OnEachSkillTargetEffect": {
+        "效果": [
+          {
+            "效果": [
+              "{\"property\":1,\"value\":{\"left\":{\"group\":{\"group\":{\"character\":{\"$type\":\"BattleModel.ThisSkillCaster\"},\"$type\":\"BattleModel.AllBuffsOnChar\"},\"condition\":{\"BuffLabel\":{\"BuffLabel\":\"generalBuff\",\"BuffIdList\":[\"bonusAttackPower\",\"defense_up_small\",\"dexterity\",\"damage_absorption\",\"ArmorToBlood\",\"regeneration\",\"rage\",\"warfare\",\"leader\"]},\"$type\":\"BattleModel.CheckBuffBelongLabel\"},\"$type\":\"BattleModel.BuffGroupWhere\"},\"$type\":\"BattleModel.CountOfBuffGroup\"},\"right\":{\"constant\":-20,\"$type\":\"BattleModel.ConstanctInt\"},\"$type\":\"BattleModel.MultiplyInt\"},\"isPercent\":true,\"$type\":\"BattleModel.ExtraBonusEffectForSkillProperty\"}",
+              "{\"property\":1,\"value\":{\"left\":{\"group\":{\"group\":{\"character\":{\"$type\":\"BattleModel.ThisSkillCaster\"},\"$type\":\"BattleModel.AllBuffsOnChar\"},\"condition\":{\"BuffLabel\":{\"BuffLabel\":\"generalNerf\",\"BuffIdList\":[\"nerf_damage_small\",\"weak\",\"tearing\",\"poison\",\"weak\",\"stun\",\"infection_maintain\",\"bleeding_maintain\",\"infection\",\"frosted\",\"burn\"]},\"$type\":\"BattleModel.CheckBuffBelongLabel\"},\"$type\":\"BattleModel.BuffGroupWhere\"},\"$type\":\"BattleModel.CountOfBuffGroup\"},\"right\":{\"constant\":20,\"$type\":\"BattleModel.ConstanctInt\"},\"$type\":\"BattleModel.MultiplyInt\"},\"isPercent\":true,\"$type\":\"BattleModel.ExtraBonusEffectForSkillProperty\"}"
+            ],
+            "條件": [
+              "本角色是指定目標",
+              "施術者 {\"Group\":{\"reference\":{\"$type\":\"BattleModel.ThisBuffOwner\"},\"includeDead\":false,\"includeEmpty\":false,\"$type\":\"BattleModel.OppositeTeamChars\"},\"$type\":\"BattleModel.CharacterInsideC\"}"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnTurnBegin": {
+        "效果": [
+          {
+            "效果": [
+              "對本角色的對方首位賦予永久3層rage(怒氣)"
+            ],
+            "條件": [
+              "(目前戰鬥回合數 == 0) 且 (目前回合輪到敵人首位)",
+              "(本角色的對方首位 的AssetId包含＂t0187＂字串) 且 (本角色的對方首位 {\"$type\":\"BattleModel.IsCharacterAlive\"})"
+            ]
+          },
+          {
+            "效果": [
+              "對本角色觸發S2"
+            ],
+            "條件": [
+              "(目前戰鬥回合數 == 0) 且 (目前回合輪到敵人首位)",
+              "(本角色的對方的倒數第3個角色 的AssetId包含＂t0158＂字串) 或 (本角色的對方的倒數第1個角色 的AssetId包含＂t0212＂字串)"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 99,
+    "標籤": "Forever"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+    "rage",
+    "bonusAttackPower",
+    "defense_up_small",
+    "dexterity",
+    "damage_absorption",
+    "ArmorToBlood",
+    "regeneration",
+    "warfare",
+    "leader",
+    "nerf_damage_small",
+    "weak",
+    "tearing",
+    "poison",
+    "stun",
+    "infection_maintain",
+    "bleeding_maintain",
+    "infection",
+    "frosted",
+    "burn",
+    "dexterity_trigger",
+    "dexterity_fightback_0",
+    "dexterity_fightback_1",
+    "dexterity_fightback_2",
+    "dexterity_fightback_3",
+    "dexterity_fightback_4",
+    "b0028sx_dodge",
+    "damage_absorption_trigger",
+    "ArmorToBlood_trigger",
+    "regeneration_trigger",
+    "follower",
+    "tearing_trigger",
+    "tearing_trigger_alert",
+    "poison_trigger"
+  ],
+  "_actionTable": [
+    {
+      "Key": 1024,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.ExtraBonusEffectForSkillProperty",
+                  "isPercent": true,
+                  "property": 1,
+                  "value": {
+                    "$type": "BattleModel.MultiplyInt",
+                    "left": {
+                      "$type": "BattleModel.CountOfBuffGroup",
+                      "group": {
+                        "$type": "BattleModel.BuffGroupWhere",
+                        "condition": {
+                          "$type": "BattleModel.CheckBuffBelongLabel",
+                          "BuffLabel": {
+                            "BuffIdList": [
+                              "bonusAttackPower",
+                              "defense_up_small",
+                              "dexterity",
+                              "damage_absorption",
+                              "ArmorToBlood",
+                              "regeneration",
+                              "rage",
+                              "warfare",
+                              "leader"
+                            ],
+                            "BuffLabel": "generalBuff"
+                          }
+                        },
+                        "group": {
+                          "$type": "BattleModel.AllBuffsOnChar",
+                          "character": {
+                            "$type": "BattleModel.ThisSkillCaster"
+                          }
+                        }
+                      }
+                    },
+                    "right": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": -20
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.ExtraBonusEffectForSkillProperty",
+                  "isPercent": true,
+                  "property": 1,
+                  "value": {
+                    "$type": "BattleModel.MultiplyInt",
+                    "left": {
+                      "$type": "BattleModel.CountOfBuffGroup",
+                      "group": {
+                        "$type": "BattleModel.BuffGroupWhere",
+                        "condition": {
+                          "$type": "BattleModel.CheckBuffBelongLabel",
+                          "BuffLabel": {
+                            "BuffIdList": [
+                              "nerf_damage_small",
+                              "weak",
+                              "tearing",
+                              "poison",
+                              "weak",
+                              "stun",
+                              "infection_maintain",
+                              "bleeding_maintain",
+                              "infection",
+                              "frosted",
+                              "burn"
+                            ],
+                            "BuffLabel": "generalNerf"
+                          }
+                        },
+                        "group": {
+                          "$type": "BattleModel.AllBuffsOnChar",
+                          "character": {
+                            "$type": "BattleModel.ThisSkillCaster"
+                          }
+                        }
+                      }
+                    },
+                    "right": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 20
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                },
+                "right": {
+                  "$type": "BattleModel.ThisSpecifiedTarget"
+                }
+              },
+              {
+                "$type": "BattleModel.CharacterCondition",
+                "character": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                },
+                "condition": {
+                  "$type": "BattleModel.CharacterInsideC",
+                  "Group": {
+                    "$type": "BattleModel.OppositeTeamChars",
+                    "includeDead": false,
+                    "includeEmpty": false,
+                    "reference": {
+                      "$type": "BattleModel.ThisBuffOwner"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 1,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.FrontOfChars",
+                    "group": {
+                      "$type": "BattleModel.OppositeTeamChars",
+                      "includeDead": false,
+                      "includeEmpty": false,
+                      "reference": {
+                        "$type": "BattleModel.ThisBuffOwner"
+                      }
+                    }
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "rage",
+                      "Forever": true,
+                      "LevelStack": 3,
+                      "OverwriteDuration": -1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.AndConditions",
+                "cond1": {
+                  "$type": "BattleModel.IntCompare",
+                  "left": {
+                    "$type": "BattleModel.BattleActionRecordValue",
+                    "RecordValue": {
+                      "$type": "BattleModel.ThisBattleTurnCount"
+                    }
+                  },
+                  "op": 0,
+                  "right": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 0
+                  }
+                },
+                "cond2": {
+                  "$type": "BattleModel.CurrentTurnBelongsTo",
+                  "character": {
+                    "$type": "BattleModel.FrontOfChars",
+                    "group": {
+                      "$type": "BattleModel.PVEEnemyTeam",
+                      "includeDead": true,
+                      "includeEmpty": true
+                    }
+                  }
+                }
+              },
+              {
+                "$type": "BattleModel.AndConditions",
+                "cond1": {
+                  "$type": "BattleModel.CharacterCondition",
+                  "character": {
+                    "$type": "BattleModel.FrontOfChars",
+                    "group": {
+                      "$type": "BattleModel.OppositeTeamChars",
+                      "includeDead": true,
+                      "includeEmpty": false,
+                      "reference": {
+                        "$type": "BattleModel.ThisBuffOwner"
+                      }
+                    }
+                  },
+                  "condition": {
+                    "$type": "BattleModel.AssetIdHasSubString",
+                    "subString": "t0187"
+                  }
+                },
+                "cond2": {
+                  "$type": "BattleModel.CharacterCondition",
+                  "character": {
+                    "$type": "BattleModel.FrontOfChars",
+                    "group": {
+                      "$type": "BattleModel.OppositeTeamChars",
+                      "includeDead": true,
+                      "includeEmpty": false,
+                      "reference": {
+                        "$type": "BattleModel.ThisBuffOwner"
+                      }
+                    }
+                  },
+                  "condition": {
+                    "$type": "BattleModel.IsCharacterAlive"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.CastSkillSet",
+                    "AssignParameter": {
+                      "AssignCharacter": {
+                        "$type": "BattleModel.NoneCharacter"
+                      },
+                      "AssignCharacterGroup": {
+                        "$type": "BattleModel.NoneCharacters"
+                      },
+                      "AssignInteger": {
+                        "$type": "BattleModel.ConstanctInt",
+                        "constant": 0
+                      },
+                      "AssignIntegerGroup": {
+                        "$type": "BattleModel.ConstanctIntegerGroup",
+                        "Group": [
+                        ]
+                      }
+                    },
+                    "UseAssignParameter": false,
+                    "resetCasterCD": false,
+                    "skillsetId": "S2"
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.AndConditions",
+                "cond1": {
+                  "$type": "BattleModel.IntCompare",
+                  "left": {
+                    "$type": "BattleModel.BattleActionRecordValue",
+                    "RecordValue": {
+                      "$type": "BattleModel.ThisBattleTurnCount"
+                    }
+                  },
+                  "op": 0,
+                  "right": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 0
+                  }
+                },
+                "cond2": {
+                  "$type": "BattleModel.CurrentTurnBelongsTo",
+                  "character": {
+                    "$type": "BattleModel.FrontOfChars",
+                    "group": {
+                      "$type": "BattleModel.PVEEnemyTeam",
+                      "includeDead": true,
+                      "includeEmpty": true
+                    }
+                  }
+                }
+              },
+              {
+                "$type": "BattleModel.OrConditions",
+                "cond1": {
+                  "$type": "BattleModel.CharacterCondition",
+                  "character": {
+                    "$type": "BattleModel.IndexOfChars",
+                    "backward": false,
+                    "group": {
+                      "$type": "BattleModel.OppositeTeamChars",
+                      "includeDead": true,
+                      "includeEmpty": false,
+                      "reference": {
+                        "$type": "BattleModel.ThisBuffOwner"
+                      }
+                    },
+                    "index": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 2
+                    }
+                  },
+                  "condition": {
+                    "$type": "BattleModel.AssetIdHasSubString",
+                    "subString": "t0158"
+                  }
+                },
+                "cond2": {
+                  "$type": "BattleModel.CharacterCondition",
+                  "character": {
+                    "$type": "BattleModel.IndexOfChars",
+                    "backward": false,
+                    "group": {
+                      "$type": "BattleModel.OppositeTeamChars",
+                      "includeDead": true,
+                      "includeEmpty": false,
+                      "reference": {
+                        "$type": "BattleModel.ThisBuffOwner"
+                      }
+                    },
+                    "index": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 0
+                    }
+                  },
+                  "condition": {
+                    "$type": "BattleModel.AssetIdHasSubString",
+                    "subString": "t0212"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 99,
+  "_orderTable": {
+  },
+  "_tag": 64
+}

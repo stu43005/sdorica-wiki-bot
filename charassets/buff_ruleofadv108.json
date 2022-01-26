@@ -2,15 +2,14 @@
   "$interpreted": {
     "Localization": "",
     "動作": {
-      "OnEachSkillTargetEffect": {
+      "OnTurnBegin": {
         "效果": [
           {
             "效果": [
-              "技能的(NormalDamage)屬性效果增加(-10000)%"
+              "對玩家所有角色賦予永久1層bonusAttackPower(強化)"
             ],
             "條件": [
-              "施展的技能效果中包含(NormalDamage)屬性",
-              "指定目標 {\"Group\":{\"includeDead\":false,\"includeEmpty\":false,\"$type\":\"BattleModel.PVEEnemyTeam\"},\"$type\":\"BattleModel.CharacterInsideC\"}"
+              "目前戰鬥回合數 == 0"
             ]
           }
         ],
@@ -24,43 +23,50 @@
   },
   "$type": "BattleModel.Buff",
   "ReferenceBuffKeys": [
+    "bonusAttackPower"
   ],
   "_actionTable": [
     {
-      "Key": 1024,
+      "Key": 1,
       "Value": {
         "Actions": [
           {
             "Actions": [
               {
                 "TargetField": {
-                  "$type": "BattleModel.BonusEffectForSkillProperty",
-                  "isPercent": true,
-                  "property": 8,
-                  "value": {
-                    "$type": "BattleModel.ConstanctInt",
-                    "constant": -10000
+                  "$type": "BattleModel.OperateCharacterGroup",
+                  "group": {
+                    "$type": "BattleModel.PVEPlayerTeam",
+                    "includeDead": false,
+                    "includeEmpty": false
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "bonusAttackPower",
+                      "Forever": true,
+                      "LevelStack": 1,
+                      "OverwriteDuration": -1,
+                      "UserDefineVariable": {
+                      }
+                    }
                   }
                 }
               }
             ],
             "Conditions": [
               {
-                "$type": "BattleModel.ThisSkillEffectTagContains",
-                "containsAll": 8
-              },
-              {
-                "$type": "BattleModel.CharacterCondition",
-                "character": {
-                  "$type": "BattleModel.ThisSpecifiedTarget"
-                },
-                "condition": {
-                  "$type": "BattleModel.CharacterInsideC",
-                  "Group": {
-                    "$type": "BattleModel.PVEEnemyTeam",
-                    "includeDead": false,
-                    "includeEmpty": false
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.BattleActionRecordValue",
+                  "RecordValue": {
+                    "$type": "BattleModel.ThisBattleTurnCount"
                   }
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 0
                 }
               }
             ]
