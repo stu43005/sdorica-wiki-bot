@@ -40,8 +40,8 @@ export class HeroSkillSet implements IHeroSkillSet {
 		return skillSets;
 	}
 
-	public static getByModel(skillSet: string) {
-		return HeroSkillSet.find(s => s.model == skillSet);
+	public static getByModel(skillSet: string): IHeroSkillSet | undefined {
+		return HeroSkillSet.find(s => s.model == skillSet) ?? HeroSkillLevel.getByModel(skillSet);
 	}
 
 	public static getList(list: string | string[]): (HeroSkillSet | string)[] {

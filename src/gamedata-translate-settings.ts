@@ -1,3 +1,4 @@
+import { HeroSkillSet } from './model/hero-skillset';
 import { ImperiumData } from "./imperium-data";
 import { black, call2, colonFirst, Func1, gamedataString, gold, ifor, localizationBuffName, localizationChapterName, localizationCharacterName, localizationCharacterNameByHeroId, localizationCharacterNameWithDefault, localizationExploreBuildingName, localizationHomelandBuildingName, localizationItemName, localizationItemNameWithType, localizationMonsterName, localizationMonsterSkillName, localizationMonsterSpecialityName, localizationQuestName, localizationString, localizationStringAuto, localizationTavernMissionName, localizationUnlockCondition, rank, semicolon, weekday, white } from "./localization";
 import { Logger } from "./logger";
@@ -762,6 +763,25 @@ export const gamedataTeanslateSettings: GamedataRef[] = [
 		table: "RaidChapterSettings",
 		column: "targetItemId",
 		func: localizationItemName(),
+	},
+	{
+		table: "SkillLabel",
+		column: "skillSet",
+		func: (str) => {
+			const skillset = HeroSkillSet.getByModel(str);
+			if (skillset) {
+				return `${skillset.hero?.firstname} ${skillset.rankPlus} ${skillset.name}`
+			}
+			return "";
+		},
+	},
+	{
+		table: "SkillLabel",
+		column: "casterBuff,enemyAssignBuff,enemyMultiBuff,enemySingleBuff,friendAssignBuff,friendMultiBuff,friendSingleBuff,stoneBuff",
+		func: (str) => {
+			const arr = str.split(",");
+			return arr.map(localizationString("BaseBuff")).join(",");
+		},
 	},
 ];
 

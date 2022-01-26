@@ -1,6 +1,7 @@
 import { ImperiumData } from "../imperium-data";
 import { Hero } from "../model/hero";
 import { HeroSkillSet } from "../model/hero-skillset";
+import { IHeroSkillSet } from "../model/hero-skillset.interface";
 import { arrayGroupBy } from "../utils";
 import { wikiNextLine } from "../wiki-utils";
 
@@ -11,7 +12,7 @@ const CharaRankUpVoiceTable = ImperiumData.fromGamedata().getTable("CharaRankUpV
 
 interface VoiceData {
 	model: string;
-	skillSet: HeroSkillSet | string;
+	skillSet: IHeroSkillSet | string;
 	hero: Hero | string;
 	info: string[];
 	select: string[];

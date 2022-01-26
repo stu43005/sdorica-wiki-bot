@@ -32,6 +32,18 @@ export class HeroSkillLevel implements IHeroSkillSet {
 		return skillSets;
 	}
 
+	public static getByModel(skillSet: string) {
+		return HeroSkillLevel.find(s => s.model == skillSet);
+	}
+
+	private static find(predicate: (value: HeroSkillLevel, index: number) => boolean): HeroSkillLevel | undefined {
+		const item = SkillLevelTable.find((row, index) => {
+			const item2 = HeroSkillLevel.get(row);
+			return predicate(item2, index);
+		});
+		return item && HeroSkillLevel.get(item);
+	}
+
 	get id(): string { return this.row.get('id'); }
 	get rootSkill(): string { return this.row.get('rootSkill'); }
 	get rootSkillSet() { return HeroSkillSet.get(this.rootSkill); }

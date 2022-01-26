@@ -155,6 +155,10 @@ const TABLE_KEYS: Record<string, string[]> = {
 		"ext1Ref", "ext1Count", "ext2Ref", "ext2Count", "ext3Ref", "ext3Count", "ext4Ref", "ext4Count", "ext5Ref", "ext5Count",
 	],
 	RewardGroups: ["rewardGroupId", "note", "note2", "order", "targetItemId", "targetCount", "giveType", "giveLinkId", "giveAmount"],
+	SkillLabel: [
+		"skillSet",
+		"skillType",
+	],
 	SkillLevel: [
 		"id", "note",
 		"rootSkill", "requiredSubrank",
