@@ -53,7 +53,7 @@ export function ifor(...cbs: Func1[]): Func1 {
 	};
 }
 
-export function gamedataString(tablename: string, key: string | number, value: string | number, keyPrefix: string | ((key: string) => string) = "", originValue = true): Func1 {
+export function gamedataString(tablename: string, key: string | number, value: string | number, keyPrefix: string | ((key: string) => string) = ""): Func1 {
 	return (str) => {
 		if (str) {
 			const table = ImperiumData.fromGamedata().getTable(tablename);
@@ -61,22 +61,10 @@ export function gamedataString(tablename: string, key: string | number, value: s
 			if (row) {
 				if (typeof value == "string") {
 					const subvalues = value.split(":");
-					const values = subvalues.map(sv => {
-						const data = row.get(sv);
-						const dataMatch = String(data).match(/^(.*) \((.*)\)$/);
-						if (dataMatch) {
-							return dataMatch[originValue ? 1 : 2];
-						}
-						return data;
-					}).join(":");
+					const values = subvalues.map(sv => row.get(sv)).join(":");
 					return values;
 				}
-				const data = row.get(value);
-				const dataMatch = String(data).match(/^(.*) \((.*)\)$/);
-				if (dataMatch) {
-					return dataMatch[originValue ? 1 : 2];
-				}
-				return `${data}`;
+				return `${row.get(value)}`;
 			}
 		}
 		return EMPTY;
@@ -162,7 +150,7 @@ export function localizationItemName(isExplore = false): Func1 {
 			ifor(
 				localizationString("ExpItem", "exp_item_name_"),
 				call2(
-					gamedataString("ExploreItems", "id", "localizationKeyName", undefined, true),
+					gamedataString("ExploreItems", "id", "localizationKeyName"),
 					localizationString("ExpItem")
 				),
 				gamedataString("ExploreItems", "id", "iconKey")
@@ -174,7 +162,7 @@ export function localizationItemName(isExplore = false): Func1 {
 		ifor(
 			localizationString("Item", "item_name_"),
 			call2(
-				gamedataString("Items", "id", "localizationKeyName", undefined, true),
+				gamedataString("Items", "id", "localizationKeyName"),
 				localizationString("Item")
 			),
 			gamedataString("Items", "id", "name"),
@@ -268,7 +256,7 @@ export function localizationExploreBuildingName(): Func1 {
 
 export function localizationHomelandBuildingName(): Func1 {
 	return call2(
-		gamedataString("HomelandBuilding", "buildingId", "nameKey", undefined, true),
+		gamedataString("HomelandBuilding", "buildingId", "nameKey"),
 		localizationString("Homeland")
 	);
 }
@@ -289,7 +277,7 @@ export function localizationBuffName(orig?: boolean): Func1 {
 export function localizationTavernMissionName(withRank = false): Func1 {
 	const namer = ifor(
 		call2(
-			gamedataString("TavernMission", "id", "questKeyName", undefined, true),
+			gamedataString("TavernMission", "id", "questKeyName"),
 			localizationString("TavernMission")
 		),
 		gamedataString("TavernMission", "id", "questKeyDescription"),
@@ -308,30 +296,30 @@ export function localizationTavernMissionName(withRank = false): Func1 {
 export function localizationMonsterNameById(): Func1 {
 	return ifor(
 		call2(
-			gamedataString("HomelandMonster", "id", "keyName", undefined, true),
+			gamedataString("HomelandMonster", "id", "keyName"),
 			localizationCharacterName()
 		),
-		gamedataString("HomelandMonster", "id", "keyName", undefined, true),
+		gamedataString("HomelandMonster", "id", "keyName"),
 		something()
 	);
 }
 
 export function localizationMonsterName(): Func1 {
 	return call2(
-		gamedataString("HomelandMonster", "monsterId", "keyName", undefined, true),
+		gamedataString("HomelandMonster", "monsterId", "keyName"),
 		localizationCharacterName()
 	);
 }
 
 export function localizationMonsterSkillName(): Func1 {
 	return ifor(
-		call2(gamedataString("MonsterSkill", "skillId", "skillKeyName", undefined, true), localizationString("MonsterSkill")),
+		call2(gamedataString("MonsterSkill", "skillId", "skillKeyName"), localizationString("MonsterSkill")),
 		gamedataString("MonsterSkill", "skillId", "iconKey")
 	);
 }
 
 export function localizationMonsterSpecialityName(): Func1 {
-	return call2(gamedataString("MonsterSpeciality", "id", "specialityKeyName", undefined, true), localizationString("MonsterSkill"));
+	return call2(gamedataString("MonsterSpeciality", "id", "specialityKeyName"), localizationString("MonsterSkill"));
 }
 
 export function weekday(): Func1 {
@@ -405,7 +393,7 @@ export function white(): Func1 {
 export function localizationVolumeNameById(): Func1 {
 	return ifor(
 		call2(
-			gamedataString("Volume", "order", "name", undefined, true),
+			gamedataString("Volume", "order", "name"),
 			localizationString("Metagame")
 		),
 		gamedataString("Volume", "order", "title"),
@@ -414,7 +402,7 @@ export function localizationVolumeNameById(): Func1 {
 
 export function localizationChapterName(): Func1 {
 	return call2(
-		gamedataString("Chapters", "id", "title", undefined, true),
+		gamedataString("Chapters", "id", "title"),
 		localizationString("RegionName")
 	);
 }
@@ -424,7 +412,7 @@ export function localizationChapterName(): Func1 {
  */
 export function localizationQuestName(): Func1 {
 	return call2(
-		gamedataString("Quests", "id", "levelId", undefined, true),
+		gamedataString("Quests", "id", "levelId"),
 		localizationString("QuestName")
 	);
 }

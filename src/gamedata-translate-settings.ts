@@ -4,6 +4,7 @@ import { Logger } from "./logger";
 import { ItemCategory } from './model/enums/item-category.enum';
 import { Item } from './model/item';
 import { exploreLabelName } from "./wiki-item";
+import { cloneDeep } from 'lodash';
 
 const logger = new Logger('gamedata-translate');
 
@@ -401,7 +402,7 @@ export const gamedataTeanslateSettings: GamedataRef[] = [
 	{
 		table: "ExploreComposite",
 		column: "requireBuildingId",
-		func: gamedataString("ExploreBuilding", "id", "type:level", undefined, false),
+		func: gamedataString("ExploreBuilding", "id", "type:level"),
 	},
 	// TODO:
 	// {
@@ -562,7 +563,7 @@ export const gamedataTeanslateSettings: GamedataRef[] = [
 	{
 		table: "AbilityDrop",
 		column: "groupId",
-		func: call2(ifor(gamedataString("HomelandMonster", "skill1", "keyName", undefined, true), gamedataString("HomelandMonster", "skill2", "keyName", undefined, true), gamedataString("HomelandMonster", "speciality1", "keyName", undefined, true), gamedataString("HomelandMonster", "speciality2", "keyName", undefined, true), gamedataString("HomelandMonster", "speciality3", "keyName", undefined, true)), localizationCharacterNameWithDefault()),
+		func: call2(ifor(gamedataString("HomelandMonster", "skill1", "keyName"), gamedataString("HomelandMonster", "skill2", "keyName"), gamedataString("HomelandMonster", "speciality1", "keyName"), gamedataString("HomelandMonster", "speciality2", "keyName"), gamedataString("HomelandMonster", "speciality3", "keyName")), localizationCharacterNameWithDefault()),
 	},
 	{
 		table: "AbilityDrop",
@@ -765,24 +766,31 @@ export const gamedataTeanslateSettings: GamedataRef[] = [
 ];
 
 export function doGamedataTranslation() {
+	const clonedGamedata = new ImperiumData("gamedata");
+	clonedGamedata.setRawData(cloneDeep(ImperiumData.fromGamedata().getRawData()));
+
 	gamedataTeanslateSettings.forEach((ref) => {
 		const table = ImperiumData.fromGamedata().getTable(ref.table);
-		if (!table) {
+		const clonedTable = clonedGamedata.getTable(ref.table);
+		if (!table || !clonedTable) {
 			logger.debug(ref);
 			debugger;
 			return;
 		}
 		for (let i = 0; i < table.length; i++) {
 			const row = table.get(i);
+			const clonedRow = clonedTable.get(i);
 			const columns = ref.column.split(",");
 			columns.forEach(col => {
 				const subcols = col.split(":");
 				const data = subcols.map(c => row.get(c)).join(":");
 				const result = ref.func.call(row, data);
 				if (result) {
-					row.set(subcols[0], `${row.get(subcols[0])} (${result})`);
+					clonedRow.set(subcols[0], `${row.get(subcols[0])} (${result})`);
 				}
 			});
 		}
 	});
+
+	return clonedGamedata;
 }

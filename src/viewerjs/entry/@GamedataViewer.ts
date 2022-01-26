@@ -13,9 +13,7 @@ export default async function (helper: ViewerJSHelper) {
 		"!! Imperium version !!": `\n${await getImperiumName(helper, "localization")}\n${await getImperiumName(helper, "gamedata")}`,
 	};
 
-	doGamedataTranslation();
-
-	const gamedata = ImperiumData.fromGamedata().getRawData();
+	const gamedata = doGamedataTranslation().getRawData();
 	objectEach(gamedata.C, (tablename, table) => {
 		out[tablename] = out[tablename] || [];
 		tableOut(out[tablename], tablename, table);
