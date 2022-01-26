@@ -171,10 +171,10 @@ export class HeroSkillSet implements IHeroSkillSet {
 		Object.assign(params, self.A1.getWikiTemplateParams());
 		Object.assign(params, <HeroRankParams>{
 			共鳴材料: !self.isBook ? (self.hero?.resonanceItem?.item?.name ?? '{{?}}') : '',
-			介紹: self.info.info1,
-			年齡: self.info.age,
-			身高: self.info.height,
-			聲優: self.info.cv,
+			介紹: self.info?.info1,
+			年齡: self.info?.age,
+			身高: self.info?.height,
+			聲優: self.info?.cv,
 		});
 		return heroRankTemplate(params);
 	}

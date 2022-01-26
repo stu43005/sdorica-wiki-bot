@@ -1,10 +1,8 @@
 import { ImperiumData, RowWrapper } from "../imperium-data";
-import { HeroRank } from "./enums/hero-rank.enum";
 import { SkillId } from "./enums/skill-id.enum";
 import { SkillType } from "./enums/skill-type.enum";
 import { StoneEraseShape } from "./enums/stone-erase-shape.enum";
 import { StoneEraseType } from "./enums/stone-erase-type.enum";
-import { HeroInfo } from "./hero-info";
 import { HeroSkill } from "./hero-skill";
 import { HeroSkillSet } from "./hero-skillset";
 import { IHeroSkillSet } from "./hero-skillset.interface";
@@ -43,13 +41,13 @@ export class HeroSkillLevel implements IHeroSkillSet {
 	get plus(): string { return '+'.repeat(+this.skillLv); }
 
 	get model(): string { return this.row.get('targetSkillSet'); }
-	get name(): string { return this.rootSkillSet?.name!; }
-	get rank(): HeroRank { return this.rootSkillSet?.rank!; }
+	get name() { return this.rootSkillSet?.name; }
+	get rank() { return this.rootSkillSet?.rank; }
 	get rankPlus(): string { return `${this.rank}${this.plus}`; }
-	get isBook(): boolean { return this.rootSkillSet?.isBook!; }
-	get isAlt(): boolean { return this.rootSkillSet?.isAlt!; }
-	get isSkin(): boolean { return this.rootSkillSet?.isSkin!; }
-	get revive(): number { return this.rootSkillSet?.revive!; }
+	get isBook() { return this.rootSkillSet?.isBook; }
+	get isAlt() { return this.rootSkillSet?.isAlt; }
+	get isSkin() { return this.rootSkillSet?.isSkin; }
+	get revive() { return this.rootSkillSet?.revive; }
 
 	P1: HeroSkill;
 	A1: HeroSkill;
@@ -67,7 +65,7 @@ export class HeroSkillLevel implements IHeroSkillSet {
 	get tipsS2(): boolean { return !!this.row.get('tipsS2'); }
 	get tipsS3(): boolean { return !!this.row.get('tipsS3'); }
 
-	get info(): HeroInfo { return this.rootSkillSet?.info!; }
+	get info() { return this.rootSkillSet?.info; }
 
 	payItems: ItemPayRef[];
 

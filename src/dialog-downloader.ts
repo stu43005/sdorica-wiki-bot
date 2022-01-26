@@ -31,7 +31,7 @@ export async function dialogDownloader(force = false) {
 		const name: string = row.get('BundleName');
 		const asset = dialog.getAsset(row.get('Ref'));
 
-		if (checkNeedDownload(meta, name, asset, force)) {
+		if (asset && checkNeedDownload(meta, name, asset, force)) {
 			if (await downloadDialog(name, asset)) {
 				meta[name] = asset;
 			}

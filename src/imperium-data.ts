@@ -57,11 +57,11 @@ export class ImperiumData {
 	}
 
 	getEnum(name: string) {
-		return this.data?.E[name]!;
+		return this.data?.E[name];
 	}
 
 	getAsset(name: string) {
-		return this.data?.A[name]!;
+		return this.data?.A[name];
 	}
 
 	setRawData(data: ImperiumDataRaw) {

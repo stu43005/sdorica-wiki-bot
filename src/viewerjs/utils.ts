@@ -248,6 +248,9 @@ export async function getCharAssets(helper: ViewerJSHelper): Promise<JSZip> {
 	await charAssets.loadData();
 
 	const asset = charAssets.getAsset("CharAssets.zip");
+	if (!asset) {
+		throw new Error("CharAssets.zip not found.");
+	}
 	const base64 = await getDataFromCache(asset.L, async () => {
 		helper.toastMsg("正在下載 CharAssets.zip，請稍等大約1分鐘。。。");
 		const buffer = await downloadFileCors(asset.L);

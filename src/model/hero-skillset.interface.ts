@@ -6,15 +6,15 @@ import { HeroSkill } from "./hero-skill";
 export interface IHeroSkillSet {
 	hero?: Hero;
 	model: string;
-	name: string;
+	name?: string;
 
-	rank: HeroRank;
+	rank?: HeroRank;
 	rankPlus: string;
-	isBook: boolean;
-	isAlt: boolean;
-	isSkin: boolean;
+	isBook?: boolean;
+	isAlt?: boolean;
+	isSkin?: boolean;
 
-	revive: number;
+	revive?: number;
 	skillLv: number;
 
 	P1: HeroSkill;
@@ -23,5 +23,5 @@ export interface IHeroSkillSet {
 	S2: HeroSkill;
 	S3: HeroSkill;
 
-	info: HeroInfo;
+	info?: HeroInfo;
 }
