@@ -33,7 +33,18 @@
             ],
             "條件": [
               "目前回合輪到本角色",
-              "黑位魂芯數量 >= 8"
+              "黑位魂芯數量 >= 8",
+              "本角色 的AssetId不包含＂h0043s5_a2＂字串"
+            ]
+          },
+          {
+            "效果": [
+              "對本角色觸發E3"
+            ],
+            "條件": [
+              "目前回合輪到本角色",
+              "黑位魂芯數量 >= 8",
+              "本角色 的AssetId包含＂h0043s5_a2＂字串"
             ]
           }
         ],
@@ -207,6 +218,84 @@
                 "right": {
                   "$type": "BattleModel.ConstanctInt",
                   "constant": 8
+                }
+              },
+              {
+                "$type": "BattleModel.Inverse",
+                "condition": {
+                  "$type": "BattleModel.CharacterCondition",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "condition": {
+                    "$type": "BattleModel.AssetIdHasSubString",
+                    "subString": "h0043s5_a2"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.CastSkillSet",
+                    "AssignParameter": {
+                      "AssignCharacter": {
+                        "$type": "BattleModel.NoneCharacter"
+                      },
+                      "AssignCharacterGroup": {
+                        "$type": "BattleModel.NoneCharacters"
+                      },
+                      "AssignInteger": {
+                        "$type": "BattleModel.ConstanctInt",
+                        "constant": 0
+                      },
+                      "AssignIntegerGroup": {
+                        "$type": "BattleModel.ConstanctIntegerGroup",
+                        "Group": [
+                        ]
+                      }
+                    },
+                    "UseAssignParameter": false,
+                    "resetCasterCD": false,
+                    "skillsetId": "E3"
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CurrentTurnBelongsTo",
+                "character": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.StonePanelColorCount",
+                  "Type": 2
+                },
+                "op": 4,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 8
+                }
+              },
+              {
+                "$type": "BattleModel.CharacterCondition",
+                "character": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                },
+                "condition": {
+                  "$type": "BattleModel.AssetIdHasSubString",
+                  "subString": "h0043s5_a2"
                 }
               }
             ]

@@ -2,34 +2,18 @@
   "$interpreted": {
     "Localization": "",
     "動作": {
-      "OnEachSkill": {
-        "效果": [
-          {
-            "效果": [
-              "對本狀態的變數一改為0"
-            ],
-            "條件": [
-            ]
-          }
-        ],
-        "條件": [
-        ]
-      },
       "OnEachSkillTargetEffect": {
         "效果": [
           {
             "效果": [
-              "技能係數增加((-1 * 施術者的HP%))%",
-              "對本狀態的變數一改為1"
+              "{\"property\":1,\"value\":{\"left\":{\"constant\":-1,\"$type\":\"BattleModel.ConstanctInt\"},\"right\":{\"character\":{\"$type\":\"BattleModel.ThisSkillCaster\"},\"targetField\":2,\"$type\":\"BattleModel.IntCharaterField\"},\"$type\":\"BattleModel.MultiplyInt\"},\"isPercent\":true,\"$type\":\"BattleModel.ExtraBonusEffectForSkillProperty\"}"
             ],
             "條件": [
             ]
           }
         ],
         "條件": [
-          "本角色是指定目標",
-          "本狀態的變數一 == 0",
-          "敵人中的所有角色皆 狀態Jealous(嫉妒) 符合條件 變數一 == 0"
+          "本角色是指定目標"
         ]
       }
     },
@@ -49,8 +33,9 @@
             "Actions": [
               {
                 "TargetField": {
-                  "$type": "BattleModel.ExtraPowerForSkillEffect",
+                  "$type": "BattleModel.ExtraBonusEffectForSkillProperty",
                   "isPercent": true,
+                  "property": 1,
                   "value": {
                     "$type": "BattleModel.MultiplyInt",
                     "left": {
@@ -63,21 +48,6 @@
                         "$type": "BattleModel.ThisSkillCaster"
                       },
                       "targetField": 2
-                    }
-                  }
-                }
-              },
-              {
-                "TargetField": {
-                  "$type": "BattleModel.OperateThisBuff",
-                  "operation": {
-                    "$type": "BattleModel.SetBuffField",
-                    "lastIndepedentStack": false,
-                    "setOperator": 0,
-                    "targetField": 4,
-                    "value": {
-                      "$type": "BattleModel.ConstanctInt",
-                      "constant": 1
                     }
                   }
                 }
@@ -96,77 +66,7 @@
             "right": {
               "$type": "BattleModel.ThisSpecifiedTarget"
             }
-          },
-          {
-            "$type": "BattleModel.IntCompare",
-            "left": {
-              "$type": "BattleModel.IntBuffField",
-              "buff": {
-                "$type": "BattleModel.ThisBuff"
-              },
-              "targetField": 4
-            },
-            "op": 0,
-            "right": {
-              "$type": "BattleModel.ConstanctInt",
-              "constant": 0
-            }
-          },
-          {
-            "$type": "BattleModel.CharGroupCondition",
-            "condition": {
-              "$type": "BattleModel.HasConditionalBuff",
-              "buffCondition": {
-                "$type": "BattleModel.IntCompareB",
-                "left": {
-                  "$type": "BattleModel.IntFieldB",
-                  "targetField": 4
-                },
-                "op": 0,
-                "right": {
-                  "$type": "BattleModel.ConstantIntB",
-                  "constant": 0
-                }
-              },
-              "buffId": "Jealous"
-            },
-            "everybody": true,
-            "group": {
-              "$type": "BattleModel.PVEEnemyTeam",
-              "includeDead": true,
-              "includeEmpty": false
-            }
           }
-        ]
-      }
-    },
-    {
-      "Key": 64,
-      "Value": {
-        "Actions": [
-          {
-            "Actions": [
-              {
-                "TargetField": {
-                  "$type": "BattleModel.OperateThisBuff",
-                  "operation": {
-                    "$type": "BattleModel.SetBuffField",
-                    "lastIndepedentStack": false,
-                    "setOperator": 0,
-                    "targetField": 4,
-                    "value": {
-                      "$type": "BattleModel.ConstanctInt",
-                      "constant": 0
-                    }
-                  }
-                }
-              }
-            ],
-            "Conditions": [
-            ]
-          }
-        ],
-        "Conditions": [
         ]
       }
     }
@@ -176,12 +76,6 @@
   "_orderTable": [
     {
       "Key": 1024,
-      "Value": {
-        "Order": 0
-      }
-    },
-    {
-      "Key": 64,
       "Value": {
         "Order": 0
       }
