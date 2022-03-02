@@ -1,15 +1,20 @@
 {
   "$interpreted": {
-    "Localization": "h0221s5",
+    "Localization": "娜雅SP",
     "參謀技能": {
       "_maxCastStack": 1,
       "_startCastStack": 0,
-      "技能CD": 5,
+      "動作": "賦予永久1層",
+      "技能CD": 1,
       "起始CD": 0,
-      "類型": "{\"Action\":{\"Count\":2,\"Operation\":\"ChangeType\",\"ChangeTo\":\"ToWhite\",\"Buff\":null,\"BuffAction\":\"Add\",\"UsePositionSettings\":false,\"Selection\":\"PlayerSelect\",\"Filter\":\"IsNotWhite\",\"isInitStoneFilter\":\"None\",\"BuffFilter\":\"Normal\",\"BuffId\":\"\",\"BuffLabel\":null,\"EffectFilter\":\"Normal\",\"StonePositionList\":[]},\"_skillIcon\":256,\"_startCD\":0,\"_skillCD\":5,\"_maxCastStack\":1,\"_startCastStack\":0,\"$type\":\"BattleModel.AssistantActiveStoneSkill\"}"
+      "類型": "被動參謀"
     },
-    "復活魂芯數": 1,
+    "復活魂芯數": 8,
     "技能": {
+      "A1": [
+        "對{\"$type\":\"BattleModel.BuffAssignedCharacters\"}的倒數第2個角色疊盾(攻擊力 x0.12)",
+        "對{\"$type\":\"BattleModel.BuffAssignedCharacters\"}的倒數第1個角色賦予2回合1層warfare(戰意)"
+      ],
       "Arrive1": [
         "對施術者冷卻時間加1"
       ],
@@ -17,14 +22,16 @@
         "對施術者{\"Tag\":65540,\"_keyString\":\"1\",\"$type\":\"BattleModel.DirectKillSkillEffect\"}"
       ],
       "S1": [
-        "對施術者的隊伍全體疊盾(攻擊力 x0.48)"
+        "對施術者的隊伍全體疊盾(攻擊力 x0.48)、賦予1回合1層damage_absorption(轉盾)"
       ],
       "S2": [
-        "對施術者的目標破甲(攻擊力 x1.875)",
+        "對施術者的目標破甲(攻擊力 x1.65)"
+      ],
+      "S2_1": [
         "對施術者的對方全體疊盾(攻擊力 x0)"
       ],
       "S3_1": [
-        "對施術者的對方全體破甲(攻擊力 x2.25)",
+        "對施術者的對方全體破甲(攻擊力 x1.875)",
         "對玩家的倒數第2個角色",
         "對施術者的對方的倒數第1個角色",
         "對施術者的對方的倒數第2個角色",
@@ -33,7 +40,7 @@
         "對施術者的對方的倒數第5個角色"
       ],
       "S3_2": [
-        "對施術者的對方全體破甲(攻擊力 x2.25)",
+        "對施術者的對方全體破甲(攻擊力 x1.875)",
         "對施術者的對方的倒數第1個角色",
         "對施術者的對方的倒數第2個角色",
         "對施術者的對方的倒數第3個角色",
@@ -41,10 +48,21 @@
         "對施術者的對方的倒數第5個角色"
       ],
       "S4": [
-        "對施術者的對方全體破甲(攻擊力 x0.525)"
+        "對施術者的對方全體穿透(攻擊力 x0.7)、移除狀態damage_absorption(轉盾)、移除狀態ArmorToBlood(盾轉)、移除狀態defense_up_small(減傷)"
       ]
     },
     "技能組": {
+      "A1": [
+        {
+          "CoolDown": 0,
+          "技能列表": [
+            "施展A1"
+          ],
+          "條件": [
+          ],
+          "目標": ""
+        }
+      ],
       "S1": [
         {
           "CoolDown": 0,
@@ -60,7 +78,8 @@
         {
           "CoolDown": 0,
           "技能列表": [
-            "施展S2"
+            "施展S2",
+            "施展S2_1"
           ],
           "條件": [
           ],
@@ -114,7 +133,7 @@
     "血量": 315,
     "血量等級調整後": 297,
     "被動Buff": [
-      "賦予永久h0221s5_P1",
+      "賦予永久h0221s5_P1(我方角色以破甲攻擊使敵方角色護盾歸零時，娜雅穿透攻擊敵方全體並解除目標的轉盾、盾轉、減傷【觸發限制】)",
       "賦予永久h0221s5_P2"
     ],
     "起始CD": 0,
@@ -124,8 +143,13 @@
   "ReferenceBuffKeys": [
     "h0221s5_P1",
     "h0221s5_P2",
+    "h0221s5_A1",
+    "damage_absorption",
+    "warfare",
     "h0221s5_P1_APcheck",
-    "combo"
+    "combo",
+    "h0221s5_A1_APcheck",
+    "damage_absorption_trigger"
   ],
   "ReferenceCharacterKeys": [
   ],
@@ -136,8 +160,8 @@
     "h0221s5_s01_Trail01",
     "h0221s5_s02_Hit01",
     "Common_LineW01",
-    "Common_emo_Heart",
     "Common_SmokeRun01_A",
+    "Common_emo_Heart",
     "h0221s5_table_S3_table_pos_spine",
     "h0221s5_table_S3_1_spine",
     "h0221s5_s03_Back01",
@@ -174,39 +198,128 @@
     "h0221s5_s04_Catch01",
     "h0221s5_s04_Catch02",
     "h0221s5_s04_Item01",
-    "h0221s5_s04_AtkSmoke01"
+    "h0221s5_s04_AtkSmoke01",
+    "h0221s5_A1_spine",
+    "h0221s5_a01_DialogBox01",
+    "h0221s5_FSM_Mask01",
+    "h0221s5_a01_Back01",
+    "h0221s5_a01_Trail01",
+    "h0221s5_a01_Perfume01",
+    "h0221s5_a01_SpeedLine01"
   ],
   "ReferenceEmoIconKeys": [
   ],
   "ReferenceMusicKeys": [
   ],
   "ReferenceSFXKeys": [
+    "Movement_cloth_012set_04_sand_rustle_scrap",
+    "Swish_Arm_Swing_short_01",
+    "Hit_smash_045set_03_punch_fan_rustle_smoke_bass",
+    "Whoosh_ethereal_047_chime_magic_crystal_small",
+    "Movement_cloth_005set_01_flag",
+    "Whoosh_ethereal_042set02_dodge_comedy",
+    "Effect_flash_029_chime_simple",
+    "Movement_cloth_005set_02_flag",
+    "Movement_cloth_007",
+    "Whoosh_physical_067_launch_air_rush",
+    "Hit_bladed_024set_03_slash_stab_bass",
+    "Hit_smash_012_general",
+    "Footsteps_012_heels_fast_multi",
+    "Movement_misc_066set_01_bone_wood_break_crunch_bite_bass",
+    "Movement_misc_006set_03_comedy_bubble",
+    "Movement_misc_058_comedy_boing_apear",
+    "Ambience_022set_01_scene_crowd_laugh_walla_medium",
+    "metal_501",
+    "Hit_smash_009set_03_general",
+    "Whoosh_swing_011_small_multi",
+    "Hit_smash_033_glass_medium_short",
+    "Whoosh_physical_039",
+    "Whoosh_physical_038",
+    "Hit_bladed_014set_03_whip_slash_short",
+    "Movement_misc_030_smash_glass_crystal_break",
+    "Hit_bladed_015set_02_whip_slash_short",
+    "Movement_misc_047_glass_metal_rumble_shake_scrap",
+    "Hit_bladed_015set_05_whip_slash_large",
+    "Hit_smash_050set_01_general_simple_short",
+    "Whoosh_ethereal_017_air_magic",
+    "Whoosh_physical_025",
+    "Hit_explosion_009_firework_small",
+    "Hit_explosion_007set_02_electric_thunder_long",
+    "Hit_smash_045set_01_punch_fan_rustle_smoke_bass",
+    "Movement_misc_029_smash_glass_crash",
+    "Hit_smash_004_glass_crash_scrap",
+    "Hit_ethereal_004_glass_break-03",
+    "Movement_cloth_004set_03_flag_small",
+    "Musical_032_bell_chime_ascend_resonate_flash",
+    "Creature_misc_002set_03_ghost_laugh",
+    "Hit_smash_040_general_large",
+    "Glass_Break_Med_01",
+    "Movement_misc_054_glass_crystal_break_crash_scrap",
+    "Hit_smash_029_large_scrap",
+    "Hit_smash_039_rock_movement_slide_large",
+    "Movement_misc_049_wood_hit_smash_break_scrap",
+    "metal_503",
+    "Hit_smash_045set_02_punch_fan_rustle_smoke_bass",
+    "Hit_bladed_019_slash_smash_giant_short_bass",
+    "Hit_smash_050set_02_balloon_medium_short",
+    "Whoosh_physical_002_comedy_whistle_ascend_long",
+    "Effect_splash_019set_03_liquid_blood_sticky_hit",
+    "Hit_smash_009set_02_general",
+    "Whoosh_swing_004_small_multi",
+    "Whoosh_swing_012_multi",
+    "Hit_smash_027set_01_electric",
+    "Hit_smash_019_slap_snare",
+    "Hit_bladed_021set_01_katana_slash",
+    "Hit_bladed_028set_03_slash_metal_large",
+    "Whoosh_physical_008_air_leaves_discharge",
+    "Whoosh_physical_009_air_breeze_chime"
   ],
   "ReferenceVoiceSFXKeys": [
+    "h0221s5_skill_s1",
+    "h0221s5_skill_s2",
+    "h0221s5_skill_s3_ver2",
+    "h0221s5_skill_s3_ver1",
+    "h0221s5_skill_s4",
+    "h0221s5_skill_a1",
+    "h0221s5_battle_hit_01_2_med",
+    "h0221s5_death_02"
   ],
   "_armorCapacity": 315,
   "_assistantSkill": {
-    "$type": "BattleModel.AssistantActiveStoneSkill",
-    "Action": {
-      "Buff": null,
-      "BuffAction": "Add",
-      "BuffFilter": "Normal",
+    "$type": "BattleModel.AssistantPassiveBuffSkill",
+    "BuffData": {
       "BuffId": "",
-      "BuffLabel": null,
-      "ChangeTo": "ToWhite",
-      "Count": 2,
-      "EffectFilter": "Normal",
-      "Filter": "IsNotWhite",
-      "Operation": "ChangeType",
-      "Selection": "PlayerSelect",
-      "StonePositionList": [
-      ],
-      "UsePositionSettings": false,
-      "isInitStoneFilter": "None"
+      "Forever": false,
+      "LevelStack": 1,
+      "OverwriteDuration": -1,
+      "UserDefineVariable": {
+      }
+    },
+    "PassiveBuffDatas": [
+      {
+        "BuffData": {
+          "BuffId": "h0221s5_A1",
+          "Forever": true,
+          "LevelStack": 0,
+          "OverwriteDuration": -1,
+          "UserDefineVariable": {
+          }
+        },
+        "TargetSelector": {
+          "IsMultiple": false,
+          "single": {
+            "$type": "BattleModel.ThisBuffCaster"
+          }
+        }
+      }
+    ],
+    "TargetSelector": {
+      "IsMultiple": false,
+      "single": null
     },
     "_maxCastStack": 1,
-    "_skillCD": 5,
-    "_skillIcon": 256,
+    "_skillCD": 1,
+    "_skillIcon": 32,
     "_startCD": 0,
     "_startCastStack": 0
   },
@@ -242,8 +355,79 @@
   ],
   "_pose": "Stand",
   "_power": 60,
-  "_reviveCount": 1,
+  "_reviveCount": 8,
   "_skills": {
+    "A1": {
+      "$type": "BattleModel.BattleSkill",
+      "_isFallBackIfEmptyTarget": false,
+      "_isResolveTargetEachUnit": false,
+      "_skillIdentifiers": [
+        {
+          "CanBeEmpty": true,
+          "IsMultiple": false,
+          "multi": null,
+          "single": {
+            "$type": "BattleModel.IndexOfChars",
+            "backward": false,
+            "group": {
+              "$type": "BattleModel.BuffAssignedCharacters"
+            },
+            "index": {
+              "$type": "BattleModel.ConstanctInt",
+              "constant": 1
+            }
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.AmrGainSkillEffect",
+              "Tag": 66,
+              "_keyString": "1",
+              "_skillModifier": {
+                "_constant": 0,
+                "_parameter": {
+                  "$type": "BattleModel.SkillCasterPower",
+                  "basePower": false
+                },
+                "_ratio": 0.1
+              }
+            }
+          ]
+        },
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": false,
+          "multi": null,
+          "single": {
+            "$type": "BattleModel.IndexOfChars",
+            "backward": false,
+            "group": {
+              "$type": "BattleModel.BuffAssignedCharacters"
+            },
+            "index": {
+              "$type": "BattleModel.ConstanctInt",
+              "constant": 0
+            }
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.AddBuffSkillEffect",
+              "Tag": 132,
+              "_buffData": [
+                {
+                  "BuffId": "warfare",
+                  "Forever": false,
+                  "LevelStack": 1,
+                  "OverwriteDuration": 2,
+                  "UserDefineVariable": {
+                  }
+                }
+              ],
+              "_keyString": "1"
+            }
+          ]
+        }
+      ]
+    },
     "Arrive1": {
       "$type": "BattleModel.BattleSkill",
       "_isFallBackIfEmptyTarget": false,
@@ -322,6 +506,21 @@
                 },
                 "_ratio": 0.4
               }
+            },
+            {
+              "$type": "BattleModel.AddBuffSkillEffect",
+              "Tag": 132,
+              "_buffData": [
+                {
+                  "BuffId": "damage_absorption",
+                  "Forever": false,
+                  "LevelStack": 1,
+                  "OverwriteDuration": 1,
+                  "UserDefineVariable": {
+                  }
+                }
+              ],
+              "_keyString": "1"
             }
           ]
         }
@@ -361,13 +560,20 @@
                   "$type": "BattleModel.SkillCasterPower",
                   "basePower": false
                 },
-                "_ratio": 2.5
+                "_ratio": 2.2
               }
             }
           ]
-        },
+        }
+      ]
+    },
+    "S2_1": {
+      "$type": "BattleModel.BattleSkill",
+      "_isFallBackIfEmptyTarget": false,
+      "_isResolveTargetEachUnit": false,
+      "_skillIdentifiers": [
         {
-          "CanBeEmpty": false,
+          "CanBeEmpty": true,
           "IsMultiple": true,
           "multi": {
             "$type": "BattleModel.OppositeTeamChars",
@@ -429,7 +635,7 @@
                   "$type": "BattleModel.SkillCasterPower",
                   "basePower": false
                 },
-                "_ratio": 3
+                "_ratio": 2.5
               }
             }
           ]
@@ -604,7 +810,7 @@
                   "$type": "BattleModel.SkillCasterPower",
                   "basePower": false
                 },
-                "_ratio": 3
+                "_ratio": 2.5
               }
             }
           ]
@@ -747,8 +953,8 @@
           },
           "skillEffects": [
             {
-              "$type": "BattleModel.AmrBreakSkillEffect",
-              "Tag": 17,
+              "$type": "BattleModel.TrueDamageSkillEffect",
+              "Tag": 8193,
               "_keyString": "1",
               "_skillModifier": {
                 "_constant": 0,
@@ -758,6 +964,24 @@
                 },
                 "_ratio": 0.7
               }
+            },
+            {
+              "$type": "BattleModel.RemoveBuffSkillEffect",
+              "Tag": 4100,
+              "_buffID": "damage_absorption",
+              "_keyString": "1"
+            },
+            {
+              "$type": "BattleModel.RemoveBuffSkillEffect",
+              "Tag": 4100,
+              "_buffID": "ArmorToBlood",
+              "_keyString": "1"
+            },
+            {
+              "$type": "BattleModel.RemoveBuffSkillEffect",
+              "Tag": 4100,
+              "_buffID": "defense_up_small",
+              "_keyString": "1"
             }
           ]
         }
@@ -765,6 +989,29 @@
     }
   },
   "_skillsetTable": {
+    "A1": {
+      "ComboList": [
+        {
+          "ConditionList": [
+          ],
+          "SkillList": [
+            {
+              "ConditionList": [
+              ],
+              "SkillID": "A1",
+              "_conditionalSequences": [
+              ],
+              "seq": "",
+              "t": null
+            }
+          ],
+          "_characterCoolDown": 0,
+          "assignTarget": null,
+          "icon": 32
+        }
+      ],
+      "_isViewSkillSet": false
+    },
     "S1": {
       "ComboList": [
         {
@@ -783,7 +1030,7 @@
           ],
           "_characterCoolDown": 0,
           "assignTarget": null,
-          "icon": 16
+          "icon": 48
         }
       ],
       "_isViewSkillSet": false
@@ -799,6 +1046,25 @@
               ],
               "SkillID": "S2",
               "_conditionalSequences": [
+                {
+                  "ConditionList": [
+                  ],
+                  "_sequenceId": "S2_1"
+                }
+              ],
+              "seq": "",
+              "t": null
+            },
+            {
+              "ConditionList": [
+              ],
+              "SkillID": "S2_1",
+              "_conditionalSequences": [
+                {
+                  "ConditionList": [
+                  ],
+                  "_sequenceId": "S2_2"
+                }
               ],
               "seq": "",
               "t": null

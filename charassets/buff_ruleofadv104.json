@@ -2,15 +2,29 @@
   "$interpreted": {
     "Localization": "",
     "動作": {
+      "OnEachSkillSetEnd": {
+        "效果": [
+          {
+            "效果": [
+              "立即施展技能：對{\"$type\":\"BattleModel.BuffAssignedCharacter\"}{\"Ratio\":{\"constant\":0.05,\"$type\":\"BattleModel.ConstanctFloat\"},\"Tag\":40961,\"_keyString\":\"\",\"$type\":\"BattleModel.FixedTrueDamageRatioMaxSkillEffect\"}"
+            ],
+            "條件": [
+              "施術者是玩家的一員"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
       "OnEachSkillTargetEffect": {
         "效果": [
           {
             "效果": [
-              "技能的(Attack)屬性效果增加(-10000)%"
+              "技能的(Attack)屬性效果增加(施術者的HP%)%"
             ],
             "條件": [
-              "(施展的技能效果中包含(NormalDamage)屬性) 或 (施展的技能效果中包含(BreakArmor)屬性)",
-              "指定目標 {\"Group\":{\"includeDead\":false,\"includeEmpty\":false,\"$type\":\"BattleModel.PVEEnemyTeam\"},\"$type\":\"BattleModel.CharacterInsideC\"}"
+              "施術者是玩家的一員",
+              "施展的技能效果中包含(Attack)屬性"
             ]
           }
         ],
@@ -27,6 +41,75 @@
   ],
   "_actionTable": [
     {
+      "Key": 8,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.AssignParameterSkillEffect",
+                  "AssignParameter": {
+                    "AssignCharacter": {
+                      "$type": "BattleModel.ThisSkillCaster"
+                    },
+                    "AssignCharacterGroup": {
+                      "$type": "BattleModel.NoneCharacters"
+                    },
+                    "AssignInteger": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 0
+                    },
+                    "AssignIntegerGroup": {
+                      "$type": "BattleModel.ConstanctIntegerGroup",
+                      "Group": [
+                      ]
+                    }
+                  },
+                  "SkillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": null,
+                    "single": {
+                      "$type": "BattleModel.BuffAssignedCharacter"
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.FixedTrueDamageRatioMaxSkillEffect",
+                        "Ratio": {
+                          "$type": "BattleModel.ConstanctFloat",
+                          "constant": 0.05
+                        },
+                        "Tag": 40961,
+                        "_keyString": ""
+                      }
+                    ]
+                  },
+                  "UseAssignParameter": true,
+                  "WillTriggerBuff": true
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterInside",
+                "group": {
+                  "$type": "BattleModel.PVEPlayerTeam",
+                  "includeDead": false,
+                  "includeEmpty": false
+                },
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
       "Key": 1024,
       "Value": {
         "Actions": [
@@ -38,37 +121,30 @@
                   "isPercent": true,
                   "property": 1,
                   "value": {
-                    "$type": "BattleModel.ConstanctInt",
-                    "constant": -10000
+                    "$type": "BattleModel.IntCharaterField",
+                    "character": {
+                      "$type": "BattleModel.ThisSkillCaster"
+                    },
+                    "targetField": 2
                   }
                 }
               }
             ],
             "Conditions": [
               {
-                "$type": "BattleModel.OrConditions",
-                "cond1": {
-                  "$type": "BattleModel.ThisSkillEffectTagContains",
-                  "containsAll": 8
+                "$type": "BattleModel.CharacterInside",
+                "group": {
+                  "$type": "BattleModel.PVEPlayerTeam",
+                  "includeDead": false,
+                  "includeEmpty": false
                 },
-                "cond2": {
-                  "$type": "BattleModel.ThisSkillEffectTagContains",
-                  "containsAll": 16
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
                 }
               },
               {
-                "$type": "BattleModel.CharacterCondition",
-                "character": {
-                  "$type": "BattleModel.ThisSpecifiedTarget"
-                },
-                "condition": {
-                  "$type": "BattleModel.CharacterInsideC",
-                  "Group": {
-                    "$type": "BattleModel.PVEEnemyTeam",
-                    "includeDead": false,
-                    "includeEmpty": false
-                  }
-                }
+                "$type": "BattleModel.ThisSkillEffectTagContains",
+                "containsAll": 1
               }
             ]
           }

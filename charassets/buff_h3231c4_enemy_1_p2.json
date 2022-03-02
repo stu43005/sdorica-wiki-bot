@@ -9,7 +9,17 @@
               "對本角色觸發Retreat1"
             ],
             "條件": [
-              "{\"$type\":\"BattleModel.ThisLevelTurnCount\"} >= 20"
+              "{\"$type\":\"BattleModel.ThisLevelTurnCount\"} >= 20",
+              "本角色的最大HP > 300000"
+            ]
+          },
+          {
+            "效果": [
+              "對本角色觸發Retreat1"
+            ],
+            "條件": [
+              "{\"$type\":\"BattleModel.ThisLevelTurnCount\"} >= 10",
+              "本角色的最大HP <= 300000"
             ]
           }
         ],
@@ -76,6 +86,87 @@
                 "right": {
                   "$type": "BattleModel.ConstanctInt",
                   "constant": 20
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntCharaterField",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "targetField": 1
+                },
+                "op": 2,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 300000
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.CastSkillSet",
+                    "AssignParameter": {
+                      "AssignCharacter": {
+                        "$type": "BattleModel.NoneCharacter"
+                      },
+                      "AssignCharacterGroup": {
+                        "$type": "BattleModel.NoneCharacters"
+                      },
+                      "AssignInteger": {
+                        "$type": "BattleModel.ConstanctInt",
+                        "constant": 0
+                      },
+                      "AssignIntegerGroup": {
+                        "$type": "BattleModel.ConstanctIntegerGroup",
+                        "Group": [
+                        ]
+                      }
+                    },
+                    "UseAssignParameter": false,
+                    "resetCasterCD": false,
+                    "skillsetId": "Retreat1"
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.BattleActionRecordValue",
+                  "RecordValue": {
+                    "$type": "BattleModel.ThisLevelTurnCount"
+                  }
+                },
+                "op": 4,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 10
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntCharaterField",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "targetField": 1
+                },
+                "op": 3,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 300000
                 }
               }
             ]

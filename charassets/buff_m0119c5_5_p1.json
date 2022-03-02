@@ -2,7 +2,7 @@
   "$interpreted": {
     "Localization": "",
     "動作": {
-      "OnEachSkillSetEnd": {
+      "OnTurnBegin": {
         "效果": [
           {
             "效果": [
@@ -10,7 +10,7 @@
               "對本狀態的變數一改為1"
             ],
             "條件": [
-              "{\"$type\":\"BattleModel.ThisLevelTurnCount\"} == 4",
+              "{\"$type\":\"BattleModel.ThisLevelTurnCount\"} == 6",
               "本角色沒有m0119c5_P1_changeIdle狀態",
               "本狀態的變數一 == 0"
             ]
@@ -22,30 +22,14 @@
               "對本狀態的變數一改為2"
             ],
             "條件": [
-              "{\"$type\":\"BattleModel.ThisLevelTurnCount\"} == 7",
-              "本角色沒有changeIdle_1狀態",
+              "{\"$type\":\"BattleModel.ThisLevelTurnCount\"} == 10",
+              "本角色沒有changeIdle_1_notRemoveWhenDie狀態",
               "本狀態的變數一 == 1"
-            ]
-          },
-          {
-            "效果": [
-              "對本角色觸發Retreat1"
-            ],
-            "條件": [
-              "{\"$type\":\"BattleModel.ThisLevelTurnCount\"} == 10"
-            ]
-          },
-          {
-            "效果": [
-              "對本角色觸發S1"
-            ],
-            "條件": [
-              "指定目標是本角色",
-              "施展的技能組是S2"
             ]
           }
         ],
         "條件": [
+          "目前回合輪到本角色"
         ]
       }
     },
@@ -58,7 +42,7 @@
   ],
   "_actionTable": [
     {
-      "Key": 8,
+      "Key": 1,
       "Value": {
         "Actions": [
           {
@@ -122,7 +106,7 @@
                 "op": 0,
                 "right": {
                   "$type": "BattleModel.ConstanctInt",
-                  "constant": 4
+                  "constant": 6
                 }
               },
               {
@@ -225,14 +209,14 @@
                 "op": 0,
                 "right": {
                   "$type": "BattleModel.ConstanctInt",
-                  "constant": 7
+                  "constant": 10
                 }
               },
               {
                 "$type": "BattleModel.Inverse",
                 "condition": {
                   "$type": "BattleModel.CharacterHasBuff",
-                  "buffId": "changeIdle_1",
+                  "buffId": "changeIdle_1_notRemoveWhenDie",
                   "character": {
                     "$type": "BattleModel.ThisBuffOwner"
                   }
@@ -254,110 +238,15 @@
                 }
               }
             ]
-          },
-          {
-            "Actions": [
-              {
-                "TargetField": {
-                  "$type": "BattleModel.OperateCharacter",
-                  "character": {
-                    "$type": "BattleModel.ThisBuffOwner"
-                  },
-                  "operation": {
-                    "$type": "BattleModel.CastSkillSet",
-                    "AssignParameter": {
-                      "AssignCharacter": {
-                        "$type": "BattleModel.NoneCharacter"
-                      },
-                      "AssignCharacterGroup": {
-                        "$type": "BattleModel.NoneCharacters"
-                      },
-                      "AssignInteger": {
-                        "$type": "BattleModel.ConstanctInt",
-                        "constant": 0
-                      },
-                      "AssignIntegerGroup": {
-                        "$type": "BattleModel.ConstanctIntegerGroup",
-                        "Group": [
-                        ]
-                      }
-                    },
-                    "UseAssignParameter": false,
-                    "resetCasterCD": false,
-                    "skillsetId": "Retreat1"
-                  }
-                }
-              }
-            ],
-            "Conditions": [
-              {
-                "$type": "BattleModel.IntCompare",
-                "left": {
-                  "$type": "BattleModel.BattleActionRecordValue",
-                  "RecordValue": {
-                    "$type": "BattleModel.ThisLevelTurnCount"
-                  }
-                },
-                "op": 0,
-                "right": {
-                  "$type": "BattleModel.ConstanctInt",
-                  "constant": 10
-                }
-              }
-            ]
-          },
-          {
-            "Actions": [
-              {
-                "TargetField": {
-                  "$type": "BattleModel.OperateCharacter",
-                  "character": {
-                    "$type": "BattleModel.ThisBuffOwner"
-                  },
-                  "operation": {
-                    "$type": "BattleModel.CastSkillSet",
-                    "AssignParameter": {
-                      "AssignCharacter": {
-                        "$type": "BattleModel.NoneCharacter"
-                      },
-                      "AssignCharacterGroup": {
-                        "$type": "BattleModel.NoneCharacters"
-                      },
-                      "AssignInteger": {
-                        "$type": "BattleModel.ConstanctInt",
-                        "constant": 0
-                      },
-                      "AssignIntegerGroup": {
-                        "$type": "BattleModel.ConstanctIntegerGroup",
-                        "Group": [
-                        ]
-                      }
-                    },
-                    "UseAssignParameter": false,
-                    "resetCasterCD": false,
-                    "skillsetId": "S1"
-                  }
-                }
-              }
-            ],
-            "Conditions": [
-              {
-                "$type": "BattleModel.CharacterEqual",
-                "left": {
-                  "$type": "BattleModel.ThisSpecifiedTarget"
-                },
-                "right": {
-                  "$type": "BattleModel.ThisBuffOwner"
-                }
-              },
-              {
-                "$type": "BattleModel.ThisSkillSetIdEqual",
-                "id": "S2"
-              }
-            ]
           }
         ],
         "Conditions": [
+          {
+            "$type": "BattleModel.CurrentTurnBelongsTo",
+            "character": {
+              "$type": "BattleModel.ThisBuffOwner"
+            }
+          }
         ]
       }
     }

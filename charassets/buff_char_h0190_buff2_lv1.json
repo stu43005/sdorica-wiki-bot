@@ -1,0 +1,186 @@
+{
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "OnEachSkillTargetEffect": {
+        "效果": [
+          {
+            "效果": [
+              "技能效果增加((({\"group\":{\"group1\":{\"includeDead\":false,\"includeEmpty\":false,\"$type\":\"BattleModel.PVEEnemyTeam\"},\"group2\":{\"includeDead\":false,\"includeEmpty\":false,\"$type\":\"BattleModel.PVEPlayerTeam\"},\"$type\":\"BattleModel.UnionCharGroup\"},\"buffId\":\"tearing\",\"$type\":\"BattleModel.BuffsOnCharGroup\"}中的層數)的總和 * 10))%"
+            ],
+            "條件": [
+              "施術者是玩家的一員",
+              "施術者是玩家中符合(的AssetId包含＂h0190＂字串)的角色首位"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnTurnBegin": {
+        "效果": [
+          {
+            "效果": [
+              "對本狀態{\"addTag\":70,\"$type\":\"BattleModel.AddBuffTag\"}"
+            ],
+            "條件": [
+              "(目前戰鬥回合數 == 0) 且 (目前回合輪到敵人首位)"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 99,
+    "標籤": "NotRemoveAfterBattle | NotRemoveWhenDie | Forever | InfinityTrigger"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+  ],
+  "_actionTable": [
+    {
+      "Key": 1024,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.BonusEffectForSkillProperty",
+                  "isPercent": true,
+                  "property": -1,
+                  "value": {
+                    "$type": "BattleModel.MultiplyInt",
+                    "left": {
+                      "$type": "BattleModel.SumOfInts",
+                      "group": {
+                        "$type": "BattleModel.IntsOnBuffGroup",
+                        "group": {
+                          "$type": "BattleModel.BuffsOnCharGroup",
+                          "buffId": "tearing",
+                          "group": {
+                            "$type": "BattleModel.UnionCharGroup",
+                            "group1": {
+                              "$type": "BattleModel.PVEEnemyTeam",
+                              "includeDead": false,
+                              "includeEmpty": false
+                            },
+                            "group2": {
+                              "$type": "BattleModel.PVEPlayerTeam",
+                              "includeDead": false,
+                              "includeEmpty": false
+                            }
+                          }
+                        },
+                        "targetField": 1
+                      }
+                    },
+                    "right": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 10
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterInside",
+                "group": {
+                  "$type": "BattleModel.PVEPlayerTeam",
+                  "includeDead": true,
+                  "includeEmpty": false
+                },
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              },
+              {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                },
+                "right": {
+                  "$type": "BattleModel.FrontOfChars",
+                  "group": {
+                    "$type": "BattleModel.CharGroupWhere",
+                    "condition": {
+                      "$type": "BattleModel.AssetIdHasSubString",
+                      "subString": "h0190"
+                    },
+                    "group": {
+                      "$type": "BattleModel.PVEPlayerTeam",
+                      "includeDead": true,
+                      "includeEmpty": false
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 1,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.AddBuffTag",
+                    "addTag": 70
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.AndConditions",
+                "cond1": {
+                  "$type": "BattleModel.IntCompare",
+                  "left": {
+                    "$type": "BattleModel.BattleActionRecordValue",
+                    "RecordValue": {
+                      "$type": "BattleModel.ThisBattleTurnCount"
+                    }
+                  },
+                  "op": 0,
+                  "right": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 0
+                  }
+                },
+                "cond2": {
+                  "$type": "BattleModel.CurrentTurnBelongsTo",
+                  "character": {
+                    "$type": "BattleModel.FrontOfChars",
+                    "group": {
+                      "$type": "BattleModel.PVEEnemyTeam",
+                      "includeDead": true,
+                      "includeEmpty": true
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 99,
+  "_orderTable": {
+  },
+  "_tag": 32838
+}

@@ -2,13 +2,16 @@
   "$interpreted": {
     "Localization": "",
     "動作": {
-      "OnEachSkill": {
+      "OnEachSkillSetEnd": {
         "效果": [
           {
             "效果": [
-              "對本狀態的變數一改為0"
+              "對本角色移除狀態RuneBoot(術式)",
+              "對本角色移除狀態RuneBoot_effect"
             ],
             "條件": [
+              "本角色是施術者",
+              "施展的技能組是S3"
             ]
           }
         ],
@@ -28,12 +31,10 @@
           },
           {
             "效果": [
-              "技能係數增加((在本角色的RuneBoot(術式)狀態的層數 * 10))%",
-              "對本狀態的變數一改為1"
+              "{\"property\":-1,\"value\":{\"left\":{\"buff\":{\"character\":{\"$type\":\"BattleModel.ThisBuffOwner\"},\"buffId\":\"RuneBoot\",\"$type\":\"BattleModel.BuffOnCharater\"},\"targetField\":1,\"$type\":\"BattleModel.IntBuffField\"},\"right\":{\"constant\":10,\"$type\":\"BattleModel.ConstanctInt\"},\"$type\":\"BattleModel.MultiplyInt\"},\"isPercent\":true,\"$type\":\"BattleModel.ExtraBonusEffectForSkillProperty\"}"
             ],
             "條件": [
-              "本角色是施術者",
-              "本狀態的變數一 == 0"
+              "本角色是施術者"
             ]
           }
         ],
@@ -107,8 +108,9 @@
             "Actions": [
               {
                 "TargetField": {
-                  "$type": "BattleModel.ExtraPowerForSkillEffect",
+                  "$type": "BattleModel.ExtraBonusEffectForSkillProperty",
                   "isPercent": true,
+                  "property": -1,
                   "value": {
                     "$type": "BattleModel.MultiplyInt",
                     "left": {
@@ -128,19 +130,52 @@
                     }
                   }
                 }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                },
+                "right": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 8,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.RemoveBuff",
+                    "buffId": "RuneBoot"
+                  }
+                }
               },
               {
                 "TargetField": {
-                  "$type": "BattleModel.OperateThisBuff",
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
                   "operation": {
-                    "$type": "BattleModel.SetBuffField",
-                    "lastIndepedentStack": false,
-                    "setOperator": 0,
-                    "targetField": 4,
-                    "value": {
-                      "$type": "BattleModel.ConstanctInt",
-                      "constant": 1
-                    }
+                    "$type": "BattleModel.RemoveBuff",
+                    "buffId": "RuneBoot_effect"
                   }
                 }
               }
@@ -156,50 +191,9 @@
                 }
               },
               {
-                "$type": "BattleModel.IntCompare",
-                "left": {
-                  "$type": "BattleModel.IntBuffField",
-                  "buff": {
-                    "$type": "BattleModel.ThisBuff"
-                  },
-                  "targetField": 4
-                },
-                "op": 0,
-                "right": {
-                  "$type": "BattleModel.ConstanctInt",
-                  "constant": 0
-                }
+                "$type": "BattleModel.ThisSkillSetIdEqual",
+                "id": "S3"
               }
-            ]
-          }
-        ],
-        "Conditions": [
-        ]
-      }
-    },
-    {
-      "Key": 64,
-      "Value": {
-        "Actions": [
-          {
-            "Actions": [
-              {
-                "TargetField": {
-                  "$type": "BattleModel.OperateThisBuff",
-                  "operation": {
-                    "$type": "BattleModel.SetBuffField",
-                    "lastIndepedentStack": false,
-                    "setOperator": 0,
-                    "targetField": 4,
-                    "value": {
-                      "$type": "BattleModel.ConstanctInt",
-                      "constant": 0
-                    }
-                  }
-                }
-              }
-            ],
-            "Conditions": [
             ]
           }
         ],

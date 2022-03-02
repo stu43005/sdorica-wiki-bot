@@ -1,0 +1,304 @@
+{
+  "$interpreted": {
+    "Localization": "b0144c4_4",
+    "復活魂芯數": 0,
+    "技能": {
+      "S1": [
+        "對施術者的目標破甲(攻擊力 x0.75)"
+      ],
+      "S2": [
+        "對施術者的對方全體攻擊(攻擊力 x4)",
+        "對敵人全體賦予永久devineShield(魂能屏障)、賦予永久1層rage(怒氣)"
+      ]
+    },
+    "技能組": {
+      "S1": [
+        {
+          "CoolDown": 2,
+          "技能列表": [
+            "對玩家的隨機角色施展S1"
+          ],
+          "條件": [
+          ],
+          "目標": ""
+        }
+      ],
+      "avenge": [
+        {
+          "CoolDown": 0,
+          "技能列表": [
+            "施展S2"
+          ],
+          "條件": [
+          ],
+          "目標": ""
+        }
+      ]
+    },
+    "攻擊力": 90,
+    "攻擊力等級調整後": 84,
+    "敵人AI": "S1",
+    "消魂設置": {
+      "Type1": "S1",
+      "Type2": "S2",
+      "Type4": "S3"
+    },
+    "疊盾": 800,
+    "疊盾等級調整後": 754,
+    "站位": "無",
+    "血量": 800,
+    "血量等級調整後": 754,
+    "被動Buff": [
+      "賦予永久avenge(本角色死亡前立即執行1次行動。)"
+    ],
+    "起始CD": 0,
+    "預設CD": 3
+  },
+  "$type": "BattleModel.EnemyCharacter",
+  "ReferenceBuffKeys": [
+    "avenge",
+    "devineShield",
+    "rage"
+  ],
+  "ReferenceCharacterKeys": [
+  ],
+  "ReferenceEffectKeys": [
+    "b0144c4_s1_stone",
+    "b0144c4_s1_hit01",
+    "b0144c4_s1_hit02",
+    "b0144c4_s1_hit03",
+    "b0144c4_s2_radia01",
+    "b0144c4_s2_light",
+    "b0144c4_SmokeDown05_A",
+    "b0144c4_s2_shoot",
+    "b0144c4_S2_HitDash01_A",
+    "b0144c4_S2_ready"
+  ],
+  "ReferenceEmoIconKeys": [
+  ],
+  "ReferenceMusicKeys": [
+  ],
+  "ReferenceSFXKeys": [
+    "movment_108",
+    "rock_502",
+    "impact_body_stab_01",
+    "rock_003",
+    "movment_020",
+    "voice_501",
+    "voice_012",
+    "explode_014",
+    "footstep_monster_ginat_01",
+    "swish_rapid_multi_whip_like_02",
+    "impact_body_stab_03",
+    "movment_109",
+    "movment_088",
+    "movment_019"
+  ],
+  "ReferenceVoiceSFXKeys": [
+  ],
+  "_armorCapacity": 800,
+  "_assistantSkill": null,
+  "_bloodCapacity": 800,
+  "_characterAI": {
+    "$type": "BattleModel.SequenceEnemyAI",
+    "OrderList": [
+      "S1"
+    ]
+  },
+  "_defaultCoolDown": 3,
+  "_initialCoolDown": 0,
+  "_levelStartBuff": [
+  ],
+  "_mass": 1,
+  "_masterRank": 0,
+  "_passiveBuff": [
+    {
+      "BuffId": "avenge",
+      "Forever": true,
+      "LevelStack": 0,
+      "OverwriteDuration": -1,
+      "UserDefineVariable": {
+      }
+    }
+  ],
+  "_pose": "Prone",
+  "_power": 90,
+  "_reviveCount": 0,
+  "_skills": {
+    "S1": {
+      "$type": "BattleModel.BattleSkill",
+      "_isFallBackIfEmptyTarget": false,
+      "_isResolveTargetEachUnit": false,
+      "_skillIdentifiers": [
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": false,
+          "multi": null,
+          "single": {
+            "$type": "BattleModel.EnemyAssignee",
+            "reference": {
+              "$type": "BattleModel.ThisSkillCaster"
+            }
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.AmrBreakSkillEffect",
+              "Tag": 17,
+              "_keyString": "1",
+              "_skillModifier": {
+                "_constant": 0,
+                "_parameter": {
+                  "$type": "BattleModel.SkillCasterPower",
+                  "basePower": false
+                },
+                "_ratio": 1
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "S2": {
+      "$type": "BattleModel.BattleSkill",
+      "_isFallBackIfEmptyTarget": false,
+      "_isResolveTargetEachUnit": false,
+      "_skillIdentifiers": [
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": true,
+          "multi": {
+            "$type": "BattleModel.OppositeTeamChars",
+            "includeDead": false,
+            "includeEmpty": false,
+            "reference": {
+              "$type": "BattleModel.ThisSkillCaster"
+            }
+          },
+          "single": null,
+          "skillEffects": [
+            {
+              "$type": "BattleModel.HpDamageSkillEffect",
+              "Tag": 9,
+              "_keyString": "1",
+              "_skillModifier": {
+                "_constant": 0,
+                "_parameter": {
+                  "$type": "BattleModel.SkillCasterPower",
+                  "basePower": false
+                },
+                "_ratio": 4
+              }
+            }
+          ]
+        },
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": true,
+          "multi": {
+            "$type": "BattleModel.PVEEnemyTeam",
+            "includeDead": false,
+            "includeEmpty": false
+          },
+          "single": {
+            "$type": "BattleModel.ThisSkillCaster"
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.AddBuffSkillEffect",
+              "Tag": 132,
+              "_buffData": [
+                {
+                  "BuffId": "devineShield",
+                  "Forever": true,
+                  "LevelStack": 0,
+                  "OverwriteDuration": 1,
+                  "UserDefineVariable": {
+                  }
+                },
+                {
+                  "BuffId": "rage",
+                  "Forever": true,
+                  "LevelStack": 1,
+                  "OverwriteDuration": -1,
+                  "UserDefineVariable": {
+                  }
+                }
+              ],
+              "_keyString": "1"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "_skillsetTable": {
+    "S1": {
+      "ComboList": [
+        {
+          "ConditionList": [
+          ],
+          "SkillList": [
+            {
+              "ConditionList": [
+              ],
+              "SkillID": "S1",
+              "_conditionalSequences": [
+              ],
+              "seq": "",
+              "t": {
+                "$type": "BattleModel.RandomOfChars",
+                "group": {
+                  "$type": "BattleModel.PVEPlayerTeam",
+                  "includeDead": false,
+                  "includeEmpty": false
+                }
+              }
+            }
+          ],
+          "_characterCoolDown": 2,
+          "assignTarget": null,
+          "icon": 0
+        }
+      ],
+      "_isViewSkillSet": false
+    },
+    "avenge": {
+      "ComboList": [
+        {
+          "ConditionList": [
+          ],
+          "SkillList": [
+            {
+              "ConditionList": [
+              ],
+              "SkillID": "S2",
+              "_conditionalSequences": [
+              ],
+              "seq": "",
+              "t": null
+            }
+          ],
+          "_characterCoolDown": 0,
+          "assignTarget": null,
+          "icon": 0
+        }
+      ],
+      "_isViewSkillSet": false
+    }
+  },
+  "_stoneEraseSetting": [
+    {
+      "Key": 0,
+      "Value": "S1"
+    },
+    {
+      "Key": 1,
+      "Value": "S2"
+    },
+    {
+      "Key": 2,
+      "Value": "S3"
+    }
+  ],
+  "_stoneType": 0
+}

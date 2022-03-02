@@ -2,15 +2,14 @@
   "$interpreted": {
     "Localization": "",
     "動作": {
-      "OnEachSkillTargetEffect": {
+      "OnTurnEnd": {
         "效果": [
           {
             "效果": [
-              "技能的(Attack)屬性效果增加(60)%"
+              "立即施展技能：對玩家全體{\"Ratio\":{\"constant\":0.2,\"$type\":\"BattleModel.ConstanctFloat\"},\"Tag\":40961,\"_keyString\":\"\",\"$type\":\"BattleModel.FixedTrueDamageRatioMaxSkillEffect\"}"
             ],
             "條件": [
-              "指定目標 {\"Group\":{\"includeDead\":false,\"includeEmpty\":false,\"$type\":\"BattleModel.PVEEnemyTeam\"},\"$type\":\"BattleModel.CharacterInsideC\"}",
-              "施展的技能效果中不包含(BreakArmor)屬性"
+              "目前回合輪到玩家首位"
             ]
           }
         ],
@@ -27,43 +26,49 @@
   ],
   "_actionTable": [
     {
-      "Key": 1024,
+      "Key": 2,
       "Value": {
         "Actions": [
           {
             "Actions": [
               {
                 "TargetField": {
-                  "$type": "BattleModel.BonusEffectForSkillProperty",
-                  "isPercent": true,
-                  "property": 1,
-                  "value": {
-                    "$type": "BattleModel.ConstanctInt",
-                    "constant": 60
-                  }
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": true,
+                    "multi": {
+                      "$type": "BattleModel.PVEPlayerTeam",
+                      "includeDead": false,
+                      "includeEmpty": false
+                    },
+                    "single": null,
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.FixedTrueDamageRatioMaxSkillEffect",
+                        "Ratio": {
+                          "$type": "BattleModel.ConstanctFloat",
+                          "constant": 0.2
+                        },
+                        "Tag": 40961,
+                        "_keyString": ""
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": false
                 }
               }
             ],
             "Conditions": [
               {
-                "$type": "BattleModel.CharacterCondition",
+                "$type": "BattleModel.CurrentTurnBelongsTo",
                 "character": {
-                  "$type": "BattleModel.ThisSpecifiedTarget"
-                },
-                "condition": {
-                  "$type": "BattleModel.CharacterInsideC",
-                  "Group": {
-                    "$type": "BattleModel.PVEEnemyTeam",
+                  "$type": "BattleModel.FrontOfChars",
+                  "group": {
+                    "$type": "BattleModel.PVEPlayerTeam",
                     "includeDead": false,
                     "includeEmpty": false
                   }
-                }
-              },
-              {
-                "$type": "BattleModel.Inverse",
-                "condition": {
-                  "$type": "BattleModel.ThisSkillEffectTagContains",
-                  "containsAll": 16
                 }
               }
             ]

@@ -7,18 +7,6 @@
           {
             "效果": [
               "技能的(Attack)屬性效果增加(-10000000)%",
-              "對本狀態的變數一改為1",
-              "對本狀態的層數改為1"
-            ],
-            "條件": [
-              "本角色是指定目標",
-              "施展的技能效果中包含(Attack)屬性",
-              "本狀態的變數一 == 0"
-            ]
-          },
-          {
-            "效果": [
-              "技能的(Attack)屬性效果增加(-10000000)%",
               "對本角色移除狀態h0008c3_8_P1",
               "對本狀態的變數一改為2"
             ],
@@ -26,6 +14,18 @@
               "本角色是指定目標",
               "施展的技能效果中包含(Attack)屬性",
               "本狀態的變數一 == 1"
+            ]
+          },
+          {
+            "效果": [
+              "技能的(Attack)屬性效果增加(-10000000)%",
+              "對本狀態的變數一改為1",
+              "對本狀態的層數改為1"
+            ],
+            "條件": [
+              "本角色是指定目標",
+              "施展的技能效果中包含(Attack)屬性",
+              "本狀態的變數一 == 0"
             ]
           }
         ],
@@ -132,6 +132,78 @@
               },
               {
                 "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.RemoveBuff",
+                    "buffId": "h0008c3_8_P1"
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 2
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                },
+                "right": {
+                  "$type": "BattleModel.ThisSpecifiedTarget"
+                }
+              },
+              {
+                "$type": "BattleModel.ThisSkillEffectTagContains",
+                "containsAll": 1
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.ThisBuff"
+                  },
+                  "targetField": 4
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 1
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.BonusEffectForSkillProperty",
+                  "isPercent": true,
+                  "property": 1,
+                  "value": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": -10000000
+                  }
+                }
+              },
+              {
+                "TargetField": {
                   "$type": "BattleModel.OperateThisBuff",
                   "operation": {
                     "$type": "BattleModel.SetBuffField",
@@ -188,78 +260,6 @@
                 "right": {
                   "$type": "BattleModel.ConstanctInt",
                   "constant": 0
-                }
-              }
-            ]
-          },
-          {
-            "Actions": [
-              {
-                "TargetField": {
-                  "$type": "BattleModel.BonusEffectForSkillProperty",
-                  "isPercent": true,
-                  "property": 1,
-                  "value": {
-                    "$type": "BattleModel.ConstanctInt",
-                    "constant": -10000000
-                  }
-                }
-              },
-              {
-                "TargetField": {
-                  "$type": "BattleModel.OperateCharacter",
-                  "character": {
-                    "$type": "BattleModel.ThisBuffOwner"
-                  },
-                  "operation": {
-                    "$type": "BattleModel.RemoveBuff",
-                    "buffId": "h0008c3_8_P1"
-                  }
-                }
-              },
-              {
-                "TargetField": {
-                  "$type": "BattleModel.OperateThisBuff",
-                  "operation": {
-                    "$type": "BattleModel.SetBuffField",
-                    "lastIndepedentStack": false,
-                    "setOperator": 0,
-                    "targetField": 4,
-                    "value": {
-                      "$type": "BattleModel.ConstanctInt",
-                      "constant": 2
-                    }
-                  }
-                }
-              }
-            ],
-            "Conditions": [
-              {
-                "$type": "BattleModel.CharacterEqual",
-                "left": {
-                  "$type": "BattleModel.ThisBuffOwner"
-                },
-                "right": {
-                  "$type": "BattleModel.ThisSpecifiedTarget"
-                }
-              },
-              {
-                "$type": "BattleModel.ThisSkillEffectTagContains",
-                "containsAll": 1
-              },
-              {
-                "$type": "BattleModel.IntCompare",
-                "left": {
-                  "$type": "BattleModel.IntBuffField",
-                  "buff": {
-                    "$type": "BattleModel.ThisBuff"
-                  },
-                  "targetField": 4
-                },
-                "op": 0,
-                "right": {
-                  "$type": "BattleModel.ConstanctInt",
-                  "constant": 1
                 }
               }
             ]

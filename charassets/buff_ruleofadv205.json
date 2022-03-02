@@ -6,11 +6,11 @@
         "效果": [
           {
             "效果": [
-              "技能的(Attack)屬性效果增加(60)%"
+              "技能的(Heal)屬性效果增加(60)%"
             ],
             "條件": [
-              "指定目標 {\"Group\":{\"includeDead\":false,\"includeEmpty\":false,\"$type\":\"BattleModel.PVEEnemyTeam\"},\"$type\":\"BattleModel.CharacterInsideC\"}",
-              "相反((施展的技能效果中包含(TrueDamage)屬性) 或 (施展的技能效果中包含(BreakArmor)屬性))"
+              "施術者 {\"Group\":{\"includeDead\":false,\"includeEmpty\":false,\"$type\":\"BattleModel.PVEPlayerTeam\"},\"$type\":\"BattleModel.CharacterInsideC\"}",
+              "施展的技能效果中包含(Heal)屬性"
             ]
           }
         ],
@@ -36,7 +36,7 @@
                 "TargetField": {
                   "$type": "BattleModel.BonusEffectForSkillProperty",
                   "isPercent": true,
-                  "property": 1,
+                  "property": 32,
                   "value": {
                     "$type": "BattleModel.ConstanctInt",
                     "constant": 60
@@ -48,30 +48,20 @@
               {
                 "$type": "BattleModel.CharacterCondition",
                 "character": {
-                  "$type": "BattleModel.ThisSpecifiedTarget"
+                  "$type": "BattleModel.ThisSkillCaster"
                 },
                 "condition": {
                   "$type": "BattleModel.CharacterInsideC",
                   "Group": {
-                    "$type": "BattleModel.PVEEnemyTeam",
+                    "$type": "BattleModel.PVEPlayerTeam",
                     "includeDead": false,
                     "includeEmpty": false
                   }
                 }
               },
               {
-                "$type": "BattleModel.Inverse",
-                "condition": {
-                  "$type": "BattleModel.OrConditions",
-                  "cond1": {
-                    "$type": "BattleModel.ThisSkillEffectTagContains",
-                    "containsAll": 8192
-                  },
-                  "cond2": {
-                    "$type": "BattleModel.ThisSkillEffectTagContains",
-                    "containsAll": 16
-                  }
-                }
+                "$type": "BattleModel.ThisSkillEffectTagContains",
+                "containsAll": 32
               }
             ]
           }

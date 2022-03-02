@@ -10,33 +10,33 @@
         "對施術者{\"Tag\":65540,\"_keyString\":\"1\",\"$type\":\"BattleModel.DirectKillSkillEffect\"}"
       ],
       "S1_I1": [
-        "對施術者的目標破甲(攻擊力 x0.375)、賦予1回合3層tearing(撕裂)",
+        "對施術者的目標破甲(攻擊力 x0.6)",
         "對施術者治療(施術者的最大HP x1.8)"
       ],
       "S1_I2": [
-        "對玩家的隨機角色穿透(攻擊力 x0.5)、賦予3回合1層nerf_damage_small(弱化)",
-        "對施術者賦予3回合1層defense_up_small(減傷)、治療(施術者的最大HP x1.8)"
+        "對施術者的目標穿透(攻擊力 x0.8)、賦予1回合1層nerf_damage_small(弱化)",
+        "對施術者治療(施術者的最大HP x1.8)"
       ],
       "S1_I3": [
-        "對施術者的目標攻擊(攻擊力 x1)",
+        "對施術者的目標攻擊(攻擊力 x0.5)",
         "對施術者治療(施術者的最大HP x1.8)"
       ],
       "S2_I1": [
-        "對玩家全體破甲(攻擊力 x0.375)、賦予1回合3層tearing(撕裂)"
+        "對玩家全體破甲(攻擊力 x0.6)"
       ],
       "S2_I2": [
-        "對玩家全體穿透(攻擊力 x1)",
-        "對施術者賦予3回合1層defense_up_small(減傷)、治療(施術者的最大HP x1.8)"
+        "對玩家全體穿透(攻擊力 x0.5)",
+        "對施術者治療(施術者的最大HP x1.8)"
       ],
       "S2_I3": [
-        "對玩家全體攻擊(攻擊力 x1.5)",
-        "對施術者治療(施術者的最大HP x1.8)"
+        "對玩家全體{\"Ratio\":{\"constant\":0.9,\"$type\":\"BattleModel.ConstanctFloat\"},\"Tag\":34,\"_keyString\":\"1\",\"$type\":\"BattleModel.FixedHealRatioCurrentSkillEffect\"}",
+        "對施術者{\"Tag\":65540,\"_keyString\":\"1\",\"$type\":\"BattleModel.DirectKillSkillEffect\"}"
       ],
       "STr_I1_I2": [
         "對施術者賦予永久m0119c5_P1_changeIdle"
       ],
       "STr_I2_I3": [
-        "對施術者賦予永久changeIdle_1"
+        "對施術者賦予永久changeIdle_1_notRemoveWhenDie"
       ]
     },
     "技能組": {
@@ -55,17 +55,17 @@
         {
           "CoolDown": 1,
           "技能列表": [
-            "對玩家後排施展S1_I3"
+            "對施術者的對方首位施展S1_I3"
           ],
           "條件": [
-            "施術者擁有changeIdle_1狀態"
+            "施術者擁有changeIdle_1_notRemoveWhenDie狀態"
           ],
           "目標": ""
         },
         {
           "CoolDown": 1,
           "技能列表": [
-            "對玩家後排施展S1_I2"
+            "對施術者的對方首位施展S1_I2"
           ],
           "條件": [
             "施術者擁有m0119c5_P1_changeIdle狀態"
@@ -75,7 +75,7 @@
         {
           "CoolDown": 1,
           "技能列表": [
-            "施展S1_I1"
+            "對施術者的對方首位施展S1_I1"
           ],
           "條件": [
           ],
@@ -89,7 +89,7 @@
             "對玩家後排施展S2_I3"
           ],
           "條件": [
-            "施術者擁有changeIdle_1狀態"
+            "施術者擁有changeIdle_1_notRemoveWhenDie狀態"
           ],
           "目標": ""
         },
@@ -128,7 +128,8 @@
         {
           "CoolDown": 0,
           "技能列表": [
-            "施展STr_I2_I3"
+            "施展STr_I2_I3",
+            "施展S2_I3"
           ],
           "條件": [
           ],
@@ -153,7 +154,7 @@
       "賦予永久m0119c5_5_P1",
       "賦予永久h3177c4_3_P2",
       "賦予永久Sensitive(敏感)",
-      "賦予永久h3177c4_3_P3"
+      "賦予永久defense_up_small(減傷)"
     ],
     "起始CD": 0,
     "預設CD": 0
@@ -163,14 +164,10 @@
     "m0119c5_5_P1",
     "h3177c4_3_P2",
     "Sensitive",
-    "h3177c4_3_P3",
-    "tearing",
-    "nerf_damage_small",
     "defense_up_small",
+    "nerf_damage_small",
     "m0119c5_P1_changeIdle",
-    "changeIdle_1",
-    "tearing_trigger",
-    "tearing_trigger_alert"
+    "changeIdle_1_notRemoveWhenDie"
   ],
   "ReferenceCharacterKeys": [
   ],
@@ -380,7 +377,7 @@
       }
     },
     {
-      "BuffId": "h3177c4_3_P3",
+      "BuffId": "defense_up_small",
       "Forever": true,
       "LevelStack": 0,
       "OverwriteDuration": -1,
@@ -456,30 +453,15 @@
             {
               "$type": "BattleModel.AmrBreakSkillEffect",
               "Tag": 17,
-              "_keyString": "",
+              "_keyString": "1",
               "_skillModifier": {
                 "_constant": 0,
                 "_parameter": {
                   "$type": "BattleModel.SkillCasterPower",
                   "basePower": false
                 },
-                "_ratio": 0.5
+                "_ratio": 0.8
               }
-            },
-            {
-              "$type": "BattleModel.AddBuffSkillEffect",
-              "Tag": 132,
-              "_buffData": [
-                {
-                  "BuffId": "tearing",
-                  "Forever": false,
-                  "LevelStack": 3,
-                  "OverwriteDuration": 1,
-                  "UserDefineVariable": {
-                  }
-                }
-              ],
-              "_keyString": "1"
             }
           ]
         },
@@ -525,25 +507,23 @@
             "includeEmpty": false
           },
           "single": {
-            "$type": "BattleModel.RandomOfChars",
-            "group": {
-              "$type": "BattleModel.PVEPlayerTeam",
-              "includeDead": false,
-              "includeEmpty": false
+            "$type": "BattleModel.EnemyAssignee",
+            "reference": {
+              "$type": "BattleModel.ThisSkillCaster"
             }
           },
           "skillEffects": [
             {
               "$type": "BattleModel.TrueDamageSkillEffect",
               "Tag": 8193,
-              "_keyString": "",
+              "_keyString": "1",
               "_skillModifier": {
                 "_constant": 0,
                 "_parameter": {
                   "$type": "BattleModel.SkillCasterPower",
                   "basePower": false
                 },
-                "_ratio": 0.5
+                "_ratio": 0.8
               }
             },
             {
@@ -554,7 +534,7 @@
                   "BuffId": "nerf_damage_small",
                   "Forever": false,
                   "LevelStack": 1,
-                  "OverwriteDuration": 3,
+                  "OverwriteDuration": 1,
                   "UserDefineVariable": {
                   }
                 }
@@ -571,21 +551,6 @@
             "$type": "BattleModel.ThisSkillCaster"
           },
           "skillEffects": [
-            {
-              "$type": "BattleModel.AddBuffSkillEffect",
-              "Tag": 132,
-              "_buffData": [
-                {
-                  "BuffId": "defense_up_small",
-                  "Forever": false,
-                  "LevelStack": 1,
-                  "OverwriteDuration": 3,
-                  "UserDefineVariable": {
-                  }
-                }
-              ],
-              "_keyString": "1"
-            },
             {
               "$type": "BattleModel.HpHealSkillEffect",
               "Tag": 34,
@@ -632,7 +597,7 @@
                   "$type": "BattleModel.SkillCasterPower",
                   "basePower": false
                 },
-                "_ratio": 1
+                "_ratio": 0.5
               }
             }
           ]
@@ -692,23 +657,8 @@
                   "$type": "BattleModel.SkillCasterPower",
                   "basePower": false
                 },
-                "_ratio": 0.5
+                "_ratio": 0.8
               }
-            },
-            {
-              "$type": "BattleModel.AddBuffSkillEffect",
-              "Tag": 132,
-              "_buffData": [
-                {
-                  "BuffId": "tearing",
-                  "Forever": false,
-                  "LevelStack": 3,
-                  "OverwriteDuration": 1,
-                  "UserDefineVariable": {
-                  }
-                }
-              ],
-              "_keyString": "1"
             }
           ]
         }
@@ -734,14 +684,14 @@
             {
               "$type": "BattleModel.TrueDamageSkillEffect",
               "Tag": 8193,
-              "_keyString": "",
+              "_keyString": "1",
               "_skillModifier": {
                 "_constant": 0,
                 "_parameter": {
                   "$type": "BattleModel.SkillCasterPower",
                   "basePower": false
                 },
-                "_ratio": 1
+                "_ratio": 0.5
               }
             }
           ]
@@ -758,21 +708,6 @@
             "$type": "BattleModel.ThisSkillCaster"
           },
           "skillEffects": [
-            {
-              "$type": "BattleModel.AddBuffSkillEffect",
-              "Tag": 132,
-              "_buffData": [
-                {
-                  "BuffId": "defense_up_small",
-                  "Forever": false,
-                  "LevelStack": 1,
-                  "OverwriteDuration": 3,
-                  "UserDefineVariable": {
-                  }
-                }
-              ],
-              "_keyString": "1"
-            },
             {
               "$type": "BattleModel.HpHealSkillEffect",
               "Tag": 34,
@@ -814,17 +749,13 @@
           },
           "skillEffects": [
             {
-              "$type": "BattleModel.HpDamageSkillEffect",
-              "Tag": 9,
-              "_keyString": "1",
-              "_skillModifier": {
-                "_constant": 0,
-                "_parameter": {
-                  "$type": "BattleModel.SkillCasterPower",
-                  "basePower": false
-                },
-                "_ratio": 1.5
-              }
+              "$type": "BattleModel.FixedHealRatioCurrentSkillEffect",
+              "Ratio": {
+                "$type": "BattleModel.ConstanctFloat",
+                "constant": 0.9
+              },
+              "Tag": 34,
+              "_keyString": "1"
             }
           ]
         },
@@ -841,20 +772,9 @@
           },
           "skillEffects": [
             {
-              "$type": "BattleModel.HpHealSkillEffect",
-              "Tag": 34,
-              "_keyString": "",
-              "_skillModifier": {
-                "_constant": 0,
-                "_parameter": {
-                  "$type": "BattleModel.IntCharaterField",
-                  "character": {
-                    "$type": "BattleModel.ThisSkillCaster"
-                  },
-                  "targetField": 1
-                },
-                "_ratio": 2
-              }
+              "$type": "BattleModel.DirectKillSkillEffect",
+              "Tag": 65540,
+              "_keyString": "1"
             }
           ]
         }
@@ -910,7 +830,7 @@
               "Tag": 132,
               "_buffData": [
                 {
-                  "BuffId": "changeIdle_1",
+                  "BuffId": "changeIdle_1_notRemoveWhenDie",
                   "Forever": true,
                   "LevelStack": 0,
                   "OverwriteDuration": 1,
@@ -955,7 +875,7 @@
           "ConditionList": [
             {
               "$type": "BattleModel.CharacterHasBuff",
-              "buffId": "changeIdle_1",
+              "buffId": "changeIdle_1_notRemoveWhenDie",
               "character": {
                 "$type": "BattleModel.ThisSkillCaster"
               }
@@ -970,11 +890,14 @@
               ],
               "seq": "",
               "t": {
-                "$type": "BattleModel.BackOfChars",
+                "$type": "BattleModel.FrontOfChars",
                 "group": {
-                  "$type": "BattleModel.PVEPlayerTeam",
+                  "$type": "BattleModel.OppositeTeamChars",
                   "includeDead": false,
-                  "includeEmpty": false
+                  "includeEmpty": false,
+                  "reference": {
+                    "$type": "BattleModel.ThisSkillCaster"
+                  }
                 }
               }
             }
@@ -1002,11 +925,14 @@
               ],
               "seq": "",
               "t": {
-                "$type": "BattleModel.BackOfChars",
+                "$type": "BattleModel.FrontOfChars",
                 "group": {
-                  "$type": "BattleModel.PVEPlayerTeam",
+                  "$type": "BattleModel.OppositeTeamChars",
                   "includeDead": false,
-                  "includeEmpty": false
+                  "includeEmpty": false,
+                  "reference": {
+                    "$type": "BattleModel.ThisSkillCaster"
+                  }
                 }
               }
             }
@@ -1026,7 +952,17 @@
               "_conditionalSequences": [
               ],
               "seq": "",
-              "t": null
+              "t": {
+                "$type": "BattleModel.FrontOfChars",
+                "group": {
+                  "$type": "BattleModel.OppositeTeamChars",
+                  "includeDead": false,
+                  "includeEmpty": false,
+                  "reference": {
+                    "$type": "BattleModel.ThisSkillCaster"
+                  }
+                }
+              }
             }
           ],
           "_characterCoolDown": 1,
@@ -1042,7 +978,7 @@
           "ConditionList": [
             {
               "$type": "BattleModel.CharacterHasBuff",
-              "buffId": "changeIdle_1",
+              "buffId": "changeIdle_1_notRemoveWhenDie",
               "character": {
                 "$type": "BattleModel.ThisSkillCaster"
               }
@@ -1156,6 +1092,15 @@
               "ConditionList": [
               ],
               "SkillID": "STr_I2_I3",
+              "_conditionalSequences": [
+              ],
+              "seq": "",
+              "t": null
+            },
+            {
+              "ConditionList": [
+              ],
+              "SkillID": "S2_I3",
               "_conditionalSequences": [
               ],
               "seq": "",

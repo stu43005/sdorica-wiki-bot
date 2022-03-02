@@ -1,0 +1,226 @@
+{
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "OnTurnBegin | OnTurnEnd": {
+        "效果": [
+          {
+            "效果": [
+              "對玩家中符合(的AssetId包含＂h0221s＂字串)的角色所有角色符合(是＂h0221s5_r2_P1(我方角色以破甲攻擊使敵方角色護盾歸零時，將左側一個非黑色魂芯轉為有領袖的黑色魂芯，娜雅穿透攻擊敵方全體並解除目標的轉盾、盾轉、減傷【觸發限制】)＂)的狀態的變數一增加1",
+              "對玩家中符合(的AssetId包含＂h0221s＂字串)的角色所有角色賦予1回合1層combo",
+              "對玩家中符合(的AssetId包含＂h0221s＂字串)的角色所有角色觸發S4"
+            ],
+            "條件": [
+              "本角色的疊盾 == 0",
+              "在玩家中符合(的AssetId包含＂h0221s＂字串)的角色首位的h0221s5_r2_P1(我方角色以破甲攻擊使敵方角色護盾歸零時，將左側一個非黑色魂芯轉為有領袖的黑色魂芯，娜雅穿透攻擊敵方全體並解除目標的轉盾、盾轉、減傷【觸發限制】)狀態的變數一 < 3"
+            ]
+          },
+          {
+            "效果": [
+              "對本角色移除狀態h0221s5_r2_P1_APcheck"
+            ],
+            "條件": [
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 99,
+    "標籤": "Hidden | Forever | InfinityTrigger"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+    "combo"
+  ],
+  "_actionTable": [
+    {
+      "Key": 4099,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacterGroup",
+                  "group": {
+                    "$type": "BattleModel.CharGroupWhere",
+                    "condition": {
+                      "$type": "BattleModel.AssetIdHasSubString",
+                      "subString": "h0221s"
+                    },
+                    "group": {
+                      "$type": "BattleModel.PVEPlayerTeam",
+                      "includeDead": false,
+                      "includeEmpty": false
+                    }
+                  },
+                  "operation": {
+                    "$type": "BattleModel.OperateCharacterAllConditionalBuffs",
+                    "condition": {
+                      "$type": "BattleModel.CheckBuffMatchBuffId",
+                      "subString": "h0221s5_r2_P1"
+                    },
+                    "operation": {
+                      "$type": "BattleModel.SetBuffField",
+                      "lastIndepedentStack": false,
+                      "setOperator": 1,
+                      "targetField": 4,
+                      "value": {
+                        "$type": "BattleModel.ConstanctInt",
+                        "constant": 1
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacterGroup",
+                  "group": {
+                    "$type": "BattleModel.CharGroupWhere",
+                    "condition": {
+                      "$type": "BattleModel.AssetIdHasSubString",
+                      "subString": "h0221s"
+                    },
+                    "group": {
+                      "$type": "BattleModel.PVEPlayerTeam",
+                      "includeDead": false,
+                      "includeEmpty": false
+                    }
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "combo",
+                      "Forever": false,
+                      "LevelStack": 1,
+                      "OverwriteDuration": 1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacterGroup",
+                  "group": {
+                    "$type": "BattleModel.CharGroupWhere",
+                    "condition": {
+                      "$type": "BattleModel.AssetIdHasSubString",
+                      "subString": "h0221s"
+                    },
+                    "group": {
+                      "$type": "BattleModel.PVEPlayerTeam",
+                      "includeDead": false,
+                      "includeEmpty": false
+                    }
+                  },
+                  "operation": {
+                    "$type": "BattleModel.CastSkillSet",
+                    "AssignParameter": {
+                      "AssignCharacter": {
+                        "$type": "BattleModel.NoneCharacter"
+                      },
+                      "AssignCharacterGroup": {
+                        "$type": "BattleModel.NoneCharacters"
+                      },
+                      "AssignInteger": {
+                        "$type": "BattleModel.ConstanctInt",
+                        "constant": 0
+                      },
+                      "AssignIntegerGroup": {
+                        "$type": "BattleModel.ConstanctIntegerGroup",
+                        "Group": [
+                        ]
+                      }
+                    },
+                    "UseAssignParameter": false,
+                    "resetCasterCD": false,
+                    "skillsetId": "S4"
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntCharaterField",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "targetField": 4
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 0
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.BuffOnCharater",
+                    "buffId": "h0221s5_r2_P1",
+                    "character": {
+                      "$type": "BattleModel.FrontOfChars",
+                      "group": {
+                        "$type": "BattleModel.CharGroupWhere",
+                        "condition": {
+                          "$type": "BattleModel.AssetIdHasSubString",
+                          "subString": "h0221s"
+                        },
+                        "group": {
+                          "$type": "BattleModel.PVEPlayerTeam",
+                          "includeDead": false,
+                          "includeEmpty": false
+                        }
+                      }
+                    }
+                  },
+                  "targetField": 4
+                },
+                "op": 1,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 3
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.RemoveBuff",
+                    "buffId": "h0221s5_r2_P1_APcheck"
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 99,
+  "_orderTable": {
+  },
+  "_tag": 32833
+}

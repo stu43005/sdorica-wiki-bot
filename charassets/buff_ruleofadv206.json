@@ -2,15 +2,36 @@
   "$interpreted": {
     "Localization": "",
     "動作": {
-      "OnEachSkillTargetEffect": {
+      "OnTurnBegin": {
         "效果": [
           {
             "效果": [
-              "技能的(NormalDamage)屬性效果增加(-10000)%"
+              "立即施展技能：對玩家首位將7個魂芯轉為黑色魂芯"
             ],
             "條件": [
-              "施展的技能效果中包含(BreakArmor)屬性",
-              "指定目標 {\"Group\":{\"includeDead\":false,\"includeEmpty\":false,\"$type\":\"BattleModel.PVEEnemyTeam\"},\"$type\":\"BattleModel.CharacterInsideC\"}"
+              "目前戰鬥回合數 == 0",
+              "{\"$type\":\"BattleModel.ThisLevelWaveCount\"} == 1",
+              "目前回合輪到敵人首位"
+            ]
+          },
+          {
+            "效果": [
+              "立即施展技能：對玩家首位將7個魂芯轉為白色魂芯"
+            ],
+            "條件": [
+              "目前戰鬥回合數 == 0",
+              "{\"$type\":\"BattleModel.ThisLevelWaveCount\"} == 2",
+              "目前回合輪到敵人首位"
+            ]
+          },
+          {
+            "效果": [
+              "立即施展技能：對玩家首位將7個魂芯轉為金色魂芯"
+            ],
+            "條件": [
+              "目前戰鬥回合數 == 0",
+              "{\"$type\":\"BattleModel.ThisLevelWaveCount\"} == 3",
+              "目前回合輪到敵人首位"
             ]
           }
         ],
@@ -20,43 +41,263 @@
     },
     "持續時間": 0,
     "最高層數": 99,
-    "標籤": "NotRemoveAfterBattle | Forever | InfinityTrigger"
+    "標籤": "NotRemoveAfterBattle | Forever"
   },
   "$type": "BattleModel.Buff",
   "ReferenceBuffKeys": [
   ],
   "_actionTable": [
     {
-      "Key": 1024,
+      "Key": 1,
       "Value": {
         "Actions": [
           {
             "Actions": [
               {
                 "TargetField": {
-                  "$type": "BattleModel.BonusEffectForSkillProperty",
-                  "isPercent": true,
-                  "property": 8,
-                  "value": {
-                    "$type": "BattleModel.ConstanctInt",
-                    "constant": -10000
-                  }
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": null,
+                    "single": {
+                      "$type": "BattleModel.FrontOfChars",
+                      "group": {
+                        "$type": "BattleModel.PVEPlayerTeam",
+                        "includeDead": false,
+                        "includeEmpty": false
+                      }
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.StoneActionSkillEffect",
+                        "Tag": 516,
+                        "_keyString": "1",
+                        "_stoneAction": {
+                          "BuffFilter": "Normal",
+                          "BuffId": "",
+                          "BuffLabel": null,
+                          "EffectFilter": "Normal",
+                          "StonePositionList": [
+                          ],
+                          "UsePositionSettings": false,
+                          "changeTo": "ToBlack",
+                          "filter": "IsAnyColor",
+                          "isInitStoneFilter": "None",
+                          "order": "LeftToRight",
+                          "targetStoneCount": 7
+                        }
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": true
                 }
               }
             ],
             "Conditions": [
               {
-                "$type": "BattleModel.ThisSkillEffectTagContains",
-                "containsAll": 16
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.BattleActionRecordValue",
+                  "RecordValue": {
+                    "$type": "BattleModel.ThisBattleTurnCount"
+                  }
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 0
+                }
               },
               {
-                "$type": "BattleModel.CharacterCondition",
-                "character": {
-                  "$type": "BattleModel.ThisSpecifiedTarget"
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.BattleActionRecordValue",
+                  "RecordValue": {
+                    "$type": "BattleModel.ThisLevelWaveCount"
+                  }
                 },
-                "condition": {
-                  "$type": "BattleModel.CharacterInsideC",
-                  "Group": {
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 1
+                }
+              },
+              {
+                "$type": "BattleModel.CurrentTurnBelongsTo",
+                "character": {
+                  "$type": "BattleModel.FrontOfChars",
+                  "group": {
+                    "$type": "BattleModel.PVEEnemyTeam",
+                    "includeDead": false,
+                    "includeEmpty": false
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": null,
+                    "single": {
+                      "$type": "BattleModel.FrontOfChars",
+                      "group": {
+                        "$type": "BattleModel.PVEPlayerTeam",
+                        "includeDead": false,
+                        "includeEmpty": false
+                      }
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.StoneActionSkillEffect",
+                        "Tag": 516,
+                        "_keyString": "1",
+                        "_stoneAction": {
+                          "BuffFilter": "Normal",
+                          "BuffId": "",
+                          "BuffLabel": null,
+                          "EffectFilter": "Normal",
+                          "StonePositionList": [
+                          ],
+                          "UsePositionSettings": false,
+                          "changeTo": "ToWhite",
+                          "filter": "IsAnyColor",
+                          "isInitStoneFilter": "None",
+                          "order": "LeftToRight",
+                          "targetStoneCount": 7
+                        }
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": true
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.BattleActionRecordValue",
+                  "RecordValue": {
+                    "$type": "BattleModel.ThisBattleTurnCount"
+                  }
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 0
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.BattleActionRecordValue",
+                  "RecordValue": {
+                    "$type": "BattleModel.ThisLevelWaveCount"
+                  }
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 2
+                }
+              },
+              {
+                "$type": "BattleModel.CurrentTurnBelongsTo",
+                "character": {
+                  "$type": "BattleModel.FrontOfChars",
+                  "group": {
+                    "$type": "BattleModel.PVEEnemyTeam",
+                    "includeDead": false,
+                    "includeEmpty": false
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": null,
+                    "single": {
+                      "$type": "BattleModel.FrontOfChars",
+                      "group": {
+                        "$type": "BattleModel.PVEPlayerTeam",
+                        "includeDead": false,
+                        "includeEmpty": false
+                      }
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.StoneActionSkillEffect",
+                        "Tag": 516,
+                        "_keyString": "1",
+                        "_stoneAction": {
+                          "BuffFilter": "Normal",
+                          "BuffId": "",
+                          "BuffLabel": null,
+                          "EffectFilter": "Normal",
+                          "StonePositionList": [
+                          ],
+                          "UsePositionSettings": false,
+                          "changeTo": "ToGold",
+                          "filter": "IsAnyColor",
+                          "isInitStoneFilter": "None",
+                          "order": "LeftToRight",
+                          "targetStoneCount": 7
+                        }
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": true
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.BattleActionRecordValue",
+                  "RecordValue": {
+                    "$type": "BattleModel.ThisBattleTurnCount"
+                  }
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 0
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.BattleActionRecordValue",
+                  "RecordValue": {
+                    "$type": "BattleModel.ThisLevelWaveCount"
+                  }
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 3
+                }
+              },
+              {
+                "$type": "BattleModel.CurrentTurnBelongsTo",
+                "character": {
+                  "$type": "BattleModel.FrontOfChars",
+                  "group": {
                     "$type": "BattleModel.PVEEnemyTeam",
                     "includeDead": false,
                     "includeEmpty": false
@@ -75,5 +316,5 @@
   "_maxLevel": 99,
   "_orderTable": {
   },
-  "_tag": 32834
+  "_tag": 66
 }

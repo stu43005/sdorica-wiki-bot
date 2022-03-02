@@ -1,0 +1,162 @@
+{
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "OnEachSkillTargetEffect": {
+        "效果": [
+          {
+            "效果": [
+              "技能的(Attack)屬性效果增加(-1000000)%"
+            ],
+            "條件": [
+              "本角色是指定目標",
+              "施展的技能效果中包含(Attack)屬性",
+              "施術者是本角色的對方的一員"
+            ]
+          },
+          {
+            "效果": [
+              "技能的(Attack)屬性效果增加(1000000)%"
+            ],
+            "條件": [
+              "(施展的技能組是S3) 或 ((施展的技能組是S3X) 或 (施展的技能組是S3Y))",
+              "施展的技能效果中包含(Attack)屬性",
+              "本角色是指定目標",
+              "施術者是本角色的對方的一員"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 99,
+    "標籤": "Forever"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+  ],
+  "_actionTable": [
+    {
+      "Key": 1024,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.BonusEffectForSkillProperty",
+                  "isPercent": true,
+                  "property": 1,
+                  "value": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": -1000000
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                },
+                "right": {
+                  "$type": "BattleModel.ThisSpecifiedTarget"
+                }
+              },
+              {
+                "$type": "BattleModel.ThisSkillEffectTagContains",
+                "containsAll": 1
+              },
+              {
+                "$type": "BattleModel.CharacterInside",
+                "group": {
+                  "$type": "BattleModel.OppositeTeamChars",
+                  "includeDead": true,
+                  "includeEmpty": true,
+                  "reference": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  }
+                },
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.BonusEffectForSkillProperty",
+                  "isPercent": true,
+                  "property": 1,
+                  "value": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 1000000
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.OrConditions",
+                "cond1": {
+                  "$type": "BattleModel.ThisSkillSetIdEqual",
+                  "id": "S3"
+                },
+                "cond2": {
+                  "$type": "BattleModel.OrConditions",
+                  "cond1": {
+                    "$type": "BattleModel.ThisSkillSetIdEqual",
+                    "id": "S3X"
+                  },
+                  "cond2": {
+                    "$type": "BattleModel.ThisSkillSetIdEqual",
+                    "id": "S3Y"
+                  }
+                }
+              },
+              {
+                "$type": "BattleModel.ThisSkillEffectTagContains",
+                "containsAll": 1
+              },
+              {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                },
+                "right": {
+                  "$type": "BattleModel.ThisSpecifiedTarget"
+                }
+              },
+              {
+                "$type": "BattleModel.CharacterInside",
+                "group": {
+                  "$type": "BattleModel.OppositeTeamChars",
+                  "includeDead": true,
+                  "includeEmpty": true,
+                  "reference": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  }
+                },
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 99,
+  "_orderTable": {
+  },
+  "_tag": 64
+}

@@ -2,15 +2,81 @@
   "$interpreted": {
     "Localization": "",
     "動作": {
-      "OnEachSkillTargetEffect": {
+      "OnEachSkillSetEnd": {
         "效果": [
           {
             "效果": [
-              "技能的(Attack)屬性效果增加(-10000)%"
+              "對本狀態的變數一改為1",
+              "對施術者觸發S1",
+              "對施術者觸發S1"
             ],
             "條件": [
-              "(施展的技能效果中包含(TrueDamage)屬性) 或 (施展的技能效果中包含(BreakArmor)屬性)",
-              "指定目標 {\"Group\":{\"includeDead\":false,\"includeEmpty\":false,\"$type\":\"BattleModel.PVEEnemyTeam\"},\"$type\":\"BattleModel.CharacterInsideC\"}"
+              "施展的技能效果中不包含(Attack)屬性",
+              "施展的技能組是S1",
+              "本狀態 符合條件 變數一 == 0"
+            ]
+          },
+          {
+            "效果": [
+              "對本狀態的變數一改為1",
+              "對施術者觸發S2",
+              "對施術者觸發S2"
+            ],
+            "條件": [
+              "施展的技能效果中不包含(Attack)屬性",
+              "施展的技能組是S2",
+              "本狀態 符合條件 變數一 == 0"
+            ]
+          },
+          {
+            "效果": [
+              "對本狀態的變數一改為1",
+              "對施術者觸發S3",
+              "對施術者觸發S3"
+            ],
+            "條件": [
+              "施展的技能效果中不包含(Attack)屬性",
+              "施展的技能組是S3",
+              "本狀態 符合條件 變數一 == 0"
+            ]
+          },
+          {
+            "效果": [
+              "對本狀態的變數一改為1",
+              "對施術者觸發E3",
+              "對施術者觸發E3"
+            ],
+            "條件": [
+              "施展的技能效果中不包含(Attack)屬性",
+              "施展的技能組是E3",
+              "本狀態 符合條件 變數一 == 0"
+            ]
+          },
+          {
+            "效果": [
+              "對本狀態的變數一改為1",
+              "對施術者觸發E6",
+              "對施術者觸發E6"
+            ],
+            "條件": [
+              "施展的技能效果中不包含(Attack)屬性",
+              "施展的技能組是E6",
+              "本狀態 符合條件 變數一 == 0"
+            ]
+          }
+        ],
+        "條件": [
+          "目前回合輪到玩家首位"
+        ]
+      },
+      "OnTurnBegin": {
+        "效果": [
+          {
+            "效果": [
+              "對本狀態的變數一改為0"
+            ],
+            "條件": [
+              "目前回合輪到玩家首位"
             ]
           }
         ],
@@ -20,53 +86,43 @@
     },
     "持續時間": 0,
     "最高層數": 99,
-    "標籤": "NotRemoveAfterBattle | Forever | InfinityTrigger"
+    "標籤": "NotRemoveAfterBattle | Forever"
   },
   "$type": "BattleModel.Buff",
   "ReferenceBuffKeys": [
   ],
   "_actionTable": [
     {
-      "Key": 1024,
+      "Key": 1,
       "Value": {
         "Actions": [
           {
             "Actions": [
               {
                 "TargetField": {
-                  "$type": "BattleModel.BonusEffectForSkillProperty",
-                  "isPercent": true,
-                  "property": 1,
-                  "value": {
-                    "$type": "BattleModel.ConstanctInt",
-                    "constant": -10000
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 0
+                    }
                   }
                 }
               }
             ],
             "Conditions": [
               {
-                "$type": "BattleModel.OrConditions",
-                "cond1": {
-                  "$type": "BattleModel.ThisSkillEffectTagContains",
-                  "containsAll": 8192
-                },
-                "cond2": {
-                  "$type": "BattleModel.ThisSkillEffectTagContains",
-                  "containsAll": 16
-                }
-              },
-              {
-                "$type": "BattleModel.CharacterCondition",
+                "$type": "BattleModel.CurrentTurnBelongsTo",
                 "character": {
-                  "$type": "BattleModel.ThisSpecifiedTarget"
-                },
-                "condition": {
-                  "$type": "BattleModel.CharacterInsideC",
-                  "Group": {
-                    "$type": "BattleModel.PVEEnemyTeam",
-                    "includeDead": false,
-                    "includeEmpty": false
+                  "$type": "BattleModel.FrontOfChars",
+                  "group": {
+                    "$type": "BattleModel.PVEPlayerTeam",
+                    "includeDead": true,
+                    "includeEmpty": true
                   }
                 }
               }
@@ -76,11 +132,597 @@
         "Conditions": [
         ]
       }
+    },
+    {
+      "Key": 8,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 1
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisSkillCaster"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.CastSkillSet",
+                    "AssignParameter": {
+                      "AssignCharacter": {
+                        "$type": "BattleModel.NoneCharacter"
+                      },
+                      "AssignCharacterGroup": {
+                        "$type": "BattleModel.NoneCharacters"
+                      },
+                      "AssignInteger": {
+                        "$type": "BattleModel.ConstanctInt",
+                        "constant": 0
+                      },
+                      "AssignIntegerGroup": {
+                        "$type": "BattleModel.ConstanctIntegerGroup",
+                        "Group": [
+                        ]
+                      }
+                    },
+                    "UseAssignParameter": false,
+                    "resetCasterCD": false,
+                    "skillsetId": "S1"
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisSkillCaster"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.CastSkillSet",
+                    "AssignParameter": {
+                      "AssignCharacter": {
+                        "$type": "BattleModel.NoneCharacter"
+                      },
+                      "AssignCharacterGroup": {
+                        "$type": "BattleModel.NoneCharacters"
+                      },
+                      "AssignInteger": {
+                        "$type": "BattleModel.ConstanctInt",
+                        "constant": 0
+                      },
+                      "AssignIntegerGroup": {
+                        "$type": "BattleModel.ConstanctIntegerGroup",
+                        "Group": [
+                        ]
+                      }
+                    },
+                    "UseAssignParameter": false,
+                    "resetCasterCD": false,
+                    "skillsetId": "S1"
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.Inverse",
+                "condition": {
+                  "$type": "BattleModel.ThisSkillEffectTagContains",
+                  "containsAll": 1
+                }
+              },
+              {
+                "$type": "BattleModel.ThisSkillSetIdEqual",
+                "id": "S1"
+              },
+              {
+                "$type": "BattleModel.BuffCondition",
+                "buff": {
+                  "$type": "BattleModel.ThisBuff"
+                },
+                "condition": {
+                  "$type": "BattleModel.IntCompareB",
+                  "left": {
+                    "$type": "BattleModel.IntFieldB",
+                    "targetField": 4
+                  },
+                  "op": 0,
+                  "right": {
+                    "$type": "BattleModel.ConstantIntB",
+                    "constant": 0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 1
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisSkillCaster"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.CastSkillSet",
+                    "AssignParameter": {
+                      "AssignCharacter": {
+                        "$type": "BattleModel.NoneCharacter"
+                      },
+                      "AssignCharacterGroup": {
+                        "$type": "BattleModel.NoneCharacters"
+                      },
+                      "AssignInteger": {
+                        "$type": "BattleModel.ConstanctInt",
+                        "constant": 0
+                      },
+                      "AssignIntegerGroup": {
+                        "$type": "BattleModel.ConstanctIntegerGroup",
+                        "Group": [
+                        ]
+                      }
+                    },
+                    "UseAssignParameter": false,
+                    "resetCasterCD": false,
+                    "skillsetId": "S2"
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisSkillCaster"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.CastSkillSet",
+                    "AssignParameter": {
+                      "AssignCharacter": {
+                        "$type": "BattleModel.NoneCharacter"
+                      },
+                      "AssignCharacterGroup": {
+                        "$type": "BattleModel.NoneCharacters"
+                      },
+                      "AssignInteger": {
+                        "$type": "BattleModel.ConstanctInt",
+                        "constant": 0
+                      },
+                      "AssignIntegerGroup": {
+                        "$type": "BattleModel.ConstanctIntegerGroup",
+                        "Group": [
+                        ]
+                      }
+                    },
+                    "UseAssignParameter": false,
+                    "resetCasterCD": false,
+                    "skillsetId": "S2"
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.Inverse",
+                "condition": {
+                  "$type": "BattleModel.ThisSkillEffectTagContains",
+                  "containsAll": 1
+                }
+              },
+              {
+                "$type": "BattleModel.ThisSkillSetIdEqual",
+                "id": "S2"
+              },
+              {
+                "$type": "BattleModel.BuffCondition",
+                "buff": {
+                  "$type": "BattleModel.ThisBuff"
+                },
+                "condition": {
+                  "$type": "BattleModel.IntCompareB",
+                  "left": {
+                    "$type": "BattleModel.IntFieldB",
+                    "targetField": 4
+                  },
+                  "op": 0,
+                  "right": {
+                    "$type": "BattleModel.ConstantIntB",
+                    "constant": 0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 1
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisSkillCaster"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.CastSkillSet",
+                    "AssignParameter": {
+                      "AssignCharacter": {
+                        "$type": "BattleModel.NoneCharacter"
+                      },
+                      "AssignCharacterGroup": {
+                        "$type": "BattleModel.NoneCharacters"
+                      },
+                      "AssignInteger": {
+                        "$type": "BattleModel.ConstanctInt",
+                        "constant": 0
+                      },
+                      "AssignIntegerGroup": {
+                        "$type": "BattleModel.ConstanctIntegerGroup",
+                        "Group": [
+                        ]
+                      }
+                    },
+                    "UseAssignParameter": false,
+                    "resetCasterCD": false,
+                    "skillsetId": "S3"
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisSkillCaster"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.CastSkillSet",
+                    "AssignParameter": {
+                      "AssignCharacter": {
+                        "$type": "BattleModel.NoneCharacter"
+                      },
+                      "AssignCharacterGroup": {
+                        "$type": "BattleModel.NoneCharacters"
+                      },
+                      "AssignInteger": {
+                        "$type": "BattleModel.ConstanctInt",
+                        "constant": 0
+                      },
+                      "AssignIntegerGroup": {
+                        "$type": "BattleModel.ConstanctIntegerGroup",
+                        "Group": [
+                        ]
+                      }
+                    },
+                    "UseAssignParameter": false,
+                    "resetCasterCD": false,
+                    "skillsetId": "S3"
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.Inverse",
+                "condition": {
+                  "$type": "BattleModel.ThisSkillEffectTagContains",
+                  "containsAll": 1
+                }
+              },
+              {
+                "$type": "BattleModel.ThisSkillSetIdEqual",
+                "id": "S3"
+              },
+              {
+                "$type": "BattleModel.BuffCondition",
+                "buff": {
+                  "$type": "BattleModel.ThisBuff"
+                },
+                "condition": {
+                  "$type": "BattleModel.IntCompareB",
+                  "left": {
+                    "$type": "BattleModel.IntFieldB",
+                    "targetField": 4
+                  },
+                  "op": 0,
+                  "right": {
+                    "$type": "BattleModel.ConstantIntB",
+                    "constant": 0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 1
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisSkillCaster"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.CastSkillSet",
+                    "AssignParameter": {
+                      "AssignCharacter": {
+                        "$type": "BattleModel.NoneCharacter"
+                      },
+                      "AssignCharacterGroup": {
+                        "$type": "BattleModel.NoneCharacters"
+                      },
+                      "AssignInteger": {
+                        "$type": "BattleModel.ConstanctInt",
+                        "constant": 0
+                      },
+                      "AssignIntegerGroup": {
+                        "$type": "BattleModel.ConstanctIntegerGroup",
+                        "Group": [
+                        ]
+                      }
+                    },
+                    "UseAssignParameter": false,
+                    "resetCasterCD": false,
+                    "skillsetId": "E3"
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisSkillCaster"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.CastSkillSet",
+                    "AssignParameter": {
+                      "AssignCharacter": {
+                        "$type": "BattleModel.NoneCharacter"
+                      },
+                      "AssignCharacterGroup": {
+                        "$type": "BattleModel.NoneCharacters"
+                      },
+                      "AssignInteger": {
+                        "$type": "BattleModel.ConstanctInt",
+                        "constant": 0
+                      },
+                      "AssignIntegerGroup": {
+                        "$type": "BattleModel.ConstanctIntegerGroup",
+                        "Group": [
+                        ]
+                      }
+                    },
+                    "UseAssignParameter": false,
+                    "resetCasterCD": false,
+                    "skillsetId": "E3"
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.Inverse",
+                "condition": {
+                  "$type": "BattleModel.ThisSkillEffectTagContains",
+                  "containsAll": 1
+                }
+              },
+              {
+                "$type": "BattleModel.ThisSkillSetIdEqual",
+                "id": "E3"
+              },
+              {
+                "$type": "BattleModel.BuffCondition",
+                "buff": {
+                  "$type": "BattleModel.ThisBuff"
+                },
+                "condition": {
+                  "$type": "BattleModel.IntCompareB",
+                  "left": {
+                    "$type": "BattleModel.IntFieldB",
+                    "targetField": 4
+                  },
+                  "op": 0,
+                  "right": {
+                    "$type": "BattleModel.ConstantIntB",
+                    "constant": 0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 1
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisSkillCaster"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.CastSkillSet",
+                    "AssignParameter": {
+                      "AssignCharacter": {
+                        "$type": "BattleModel.NoneCharacter"
+                      },
+                      "AssignCharacterGroup": {
+                        "$type": "BattleModel.NoneCharacters"
+                      },
+                      "AssignInteger": {
+                        "$type": "BattleModel.ConstanctInt",
+                        "constant": 0
+                      },
+                      "AssignIntegerGroup": {
+                        "$type": "BattleModel.ConstanctIntegerGroup",
+                        "Group": [
+                        ]
+                      }
+                    },
+                    "UseAssignParameter": false,
+                    "resetCasterCD": false,
+                    "skillsetId": "E6"
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisSkillCaster"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.CastSkillSet",
+                    "AssignParameter": {
+                      "AssignCharacter": {
+                        "$type": "BattleModel.NoneCharacter"
+                      },
+                      "AssignCharacterGroup": {
+                        "$type": "BattleModel.NoneCharacters"
+                      },
+                      "AssignInteger": {
+                        "$type": "BattleModel.ConstanctInt",
+                        "constant": 0
+                      },
+                      "AssignIntegerGroup": {
+                        "$type": "BattleModel.ConstanctIntegerGroup",
+                        "Group": [
+                        ]
+                      }
+                    },
+                    "UseAssignParameter": false,
+                    "resetCasterCD": false,
+                    "skillsetId": "E6"
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.Inverse",
+                "condition": {
+                  "$type": "BattleModel.ThisSkillEffectTagContains",
+                  "containsAll": 1
+                }
+              },
+              {
+                "$type": "BattleModel.ThisSkillSetIdEqual",
+                "id": "E6"
+              },
+              {
+                "$type": "BattleModel.BuffCondition",
+                "buff": {
+                  "$type": "BattleModel.ThisBuff"
+                },
+                "condition": {
+                  "$type": "BattleModel.IntCompareB",
+                  "left": {
+                    "$type": "BattleModel.IntFieldB",
+                    "targetField": 4
+                  },
+                  "op": 0,
+                  "right": {
+                    "$type": "BattleModel.ConstantIntB",
+                    "constant": 0
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+          {
+            "$type": "BattleModel.CurrentTurnBelongsTo",
+            "character": {
+              "$type": "BattleModel.FrontOfChars",
+              "group": {
+                "$type": "BattleModel.PVEPlayerTeam",
+                "includeDead": true,
+                "includeEmpty": true
+              }
+            }
+          }
+        ]
+      }
     }
   ],
   "_duration": 0,
   "_maxLevel": 99,
-  "_orderTable": {
-  },
-  "_tag": 32834
+  "_orderTable": [
+    {
+      "Key": 8,
+      "Value": {
+        "Order": -5
+      }
+    }
+  ],
+  "_tag": 66
 }

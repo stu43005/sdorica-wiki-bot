@@ -1,0 +1,274 @@
+{
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "OnTurnBegin": {
+        "效果": [
+          {
+            "效果": [
+              "立即施展技能：對本角色將14個魂芯轉為白色魂芯、將6個非黑色魂芯轉為黑色魂芯"
+            ],
+            "條件": [
+              "(目前戰鬥回合數 == 0) 且 (目前回合輪到敵人首位)"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnTurnEnd": {
+        "效果": [
+          {
+            "效果": [
+              "立即施展技能：對本角色將14個魂芯由左至右的順序移除賦予永久1層stun(暈眩)",
+              "對本角色觸發Retreat1"
+            ],
+            "條件": [
+              "本狀態的層數 == 4",
+              "目前回合輪到本角色"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 4,
+    "標籤": "Forever"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+    "stun"
+  ],
+  "_actionTable": [
+    {
+      "Key": 2,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": null,
+                    "single": {
+                      "$type": "BattleModel.ThisBuffOwner"
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.StoneBuffSkillEffect",
+                        "Tag": 132,
+                        "_keyString": "1",
+                        "_stoneBuffAction": {
+                          "BuffFilter": "WithBuff",
+                          "BuffId": "",
+                          "BuffLabel": null,
+                          "EffectFilter": "Normal",
+                          "StonePositionList": [
+                          ],
+                          "UsePositionSettings": false,
+                          "action": "Remove",
+                          "buff": {
+                            "BuffId": "stun",
+                            "Forever": true,
+                            "LevelStack": 1,
+                            "OverwriteDuration": 1,
+                            "UserDefineVariable": {
+                            }
+                          },
+                          "filter": "IsAnyColor",
+                          "isInitStoneFilter": "None",
+                          "order": "LeftToRight",
+                          "targetStoneCount": 14
+                        }
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": false
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.CastSkillSet",
+                    "AssignParameter": {
+                      "AssignCharacter": {
+                        "$type": "BattleModel.NoneCharacter"
+                      },
+                      "AssignCharacterGroup": {
+                        "$type": "BattleModel.NoneCharacters"
+                      },
+                      "AssignInteger": {
+                        "$type": "BattleModel.ConstanctInt",
+                        "constant": 0
+                      },
+                      "AssignIntegerGroup": {
+                        "$type": "BattleModel.ConstanctIntegerGroup",
+                        "Group": [
+                        ]
+                      }
+                    },
+                    "UseAssignParameter": false,
+                    "resetCasterCD": false,
+                    "skillsetId": "Retreat1"
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.ThisBuff"
+                  },
+                  "targetField": 1
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 4
+                }
+              },
+              {
+                "$type": "BattleModel.CurrentTurnBelongsTo",
+                "character": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 1,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": null,
+                    "single": {
+                      "$type": "BattleModel.ThisBuffOwner"
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.StoneActionSkillEffect",
+                        "Tag": 516,
+                        "_keyString": "",
+                        "_stoneAction": {
+                          "BuffFilter": "Normal",
+                          "BuffId": "",
+                          "BuffLabel": null,
+                          "EffectFilter": "Normal",
+                          "StonePositionList": [
+                          ],
+                          "UsePositionSettings": false,
+                          "changeTo": "ToWhite",
+                          "filter": "IsAnyColor",
+                          "isInitStoneFilter": "None",
+                          "order": "LeftToRight",
+                          "targetStoneCount": 14
+                        }
+                      },
+                      {
+                        "$type": "BattleModel.StoneActionSkillEffect",
+                        "Tag": 516,
+                        "_keyString": "",
+                        "_stoneAction": {
+                          "BuffFilter": "Normal",
+                          "BuffId": "",
+                          "BuffLabel": null,
+                          "EffectFilter": "Normal",
+                          "StonePositionList": [
+                            {
+                              "StoneColumn": 0,
+                              "StoneRow": 0
+                            },
+                            {
+                              "StoneColumn": 0,
+                              "StoneRow": 1
+                            },
+                            {
+                              "StoneColumn": 2,
+                              "StoneRow": 0
+                            },
+                            {
+                              "StoneColumn": 2,
+                              "StoneRow": 1
+                            }
+                          ],
+                          "UsePositionSettings": true,
+                          "changeTo": "ToBlack",
+                          "filter": "IsNotBlack",
+                          "isInitStoneFilter": "None",
+                          "order": "UpperLeftToLowerLeft",
+                          "targetStoneCount": 6
+                        }
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": false
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.AndConditions",
+                "cond1": {
+                  "$type": "BattleModel.IntCompare",
+                  "left": {
+                    "$type": "BattleModel.BattleActionRecordValue",
+                    "RecordValue": {
+                      "$type": "BattleModel.ThisBattleTurnCount"
+                    }
+                  },
+                  "op": 0,
+                  "right": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 0
+                  }
+                },
+                "cond2": {
+                  "$type": "BattleModel.CurrentTurnBelongsTo",
+                  "character": {
+                    "$type": "BattleModel.FrontOfChars",
+                    "group": {
+                      "$type": "BattleModel.PVEEnemyTeam",
+                      "includeDead": true,
+                      "includeEmpty": true
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 4,
+  "_orderTable": {
+  },
+  "_tag": 64
+}

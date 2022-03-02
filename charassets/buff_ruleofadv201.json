@@ -24,7 +24,17 @@
             ],
             "條件": [
               "施術者 {\"Group\":{\"includeDead\":false,\"includeEmpty\":false,\"$type\":\"BattleModel.PVEPlayerTeam\"},\"$type\":\"BattleModel.CharacterInsideC\"}",
-              "本狀態的變數一 != 1"
+              "本狀態的變數一 != 1",
+              "施展的技能效果中包含(Attack)屬性"
+            ]
+          },
+          {
+            "效果": [
+              "技能的(Attack)屬性效果增加(-30)%"
+            ],
+            "條件": [
+              "施術者 {\"Group\":{\"includeDead\":false,\"includeEmpty\":false,\"$type\":\"BattleModel.PVEPlayerTeam\"},\"$type\":\"BattleModel.CharacterInsideC\"}",
+              "本狀態的變數一 == 1"
             ]
           }
         ],
@@ -118,6 +128,56 @@
                     "$type": "BattleModel.ConstanctInt",
                     "constant": 1
                   }
+                }
+              },
+              {
+                "$type": "BattleModel.ThisSkillEffectTagContains",
+                "containsAll": 1
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.BonusEffectForSkillProperty",
+                  "isPercent": true,
+                  "property": 1,
+                  "value": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": -30
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterCondition",
+                "character": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                },
+                "condition": {
+                  "$type": "BattleModel.CharacterInsideC",
+                  "Group": {
+                    "$type": "BattleModel.PVEPlayerTeam",
+                    "includeDead": false,
+                    "includeEmpty": false
+                  }
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.ThisBuff"
+                  },
+                  "targetField": 4
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 1
                 }
               }
             ]

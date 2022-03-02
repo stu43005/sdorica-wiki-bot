@@ -2,19 +2,35 @@
   "$interpreted": {
     "Localization": "",
     "動作": {
-      "OnEachSkillTargetEffect": {
+      "OnTurnEnd": {
         "效果": [
           {
             "效果": [
-              "技能的(Attack)屬性效果增加(-10000)%"
+              "對本狀態的變數一增加1"
             ],
             "條件": [
-              "(施展的技能效果中包含(NormalDamage)屬性) 或 (施展的技能效果中包含(BreakArmor)屬性)",
-              "指定目標 {\"Group\":{\"includeDead\":false,\"includeEmpty\":false,\"$type\":\"BattleModel.PVEEnemyTeam\"},\"$type\":\"BattleModel.CharacterInsideC\"}"
+            ]
+          },
+          {
+            "效果": [
+              "立即施展技能：對玩家後排賦予1回合3層nerf_damage_small(弱化)、賦予1回合poison_fsm_02、攻擊(敵人首位的最大HP x1)"
+            ],
+            "條件": [
+              "(本狀態的變數一 == 3) 或 ((本狀態的變數一 == 6) 或 ((本狀態的變數一 == 9) 或 ((本狀態的變數一 == 3) 或 (本狀態的變數一 == 6))))"
+            ]
+          },
+          {
+            "效果": [
+              "對本狀態的變數一改為0",
+              "立即施展技能：對敵人全體賦予永久rock_fsm_03、移除狀態invincible(免疫)、破甲(1 x100%)、攻擊(最大血量的1 x100%)"
+            ],
+            "條件": [
+              "本狀態的變數一 >= 10"
             ]
           }
         ],
         "條件": [
+          "目前回合輪到玩家首位"
         ]
       }
     },
@@ -24,23 +40,105 @@
   },
   "$type": "BattleModel.Buff",
   "ReferenceBuffKeys": [
+    "nerf_damage_small",
+    "poison_fsm_02",
+    "rock_fsm_03"
   ],
   "_actionTable": [
     {
-      "Key": 1024,
+      "Key": 2,
       "Value": {
         "Actions": [
           {
             "Actions": [
               {
                 "TargetField": {
-                  "$type": "BattleModel.BonusEffectForSkillProperty",
-                  "isPercent": true,
-                  "property": 1,
-                  "value": {
-                    "$type": "BattleModel.ConstanctInt",
-                    "constant": -10000
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 1,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 1
+                    }
                   }
+                }
+              }
+            ],
+            "Conditions": [
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": {
+                      "$type": "BattleModel.PVEPlayerTeam",
+                      "includeDead": false,
+                      "includeEmpty": false
+                    },
+                    "single": {
+                      "$type": "BattleModel.BackOfChars",
+                      "group": {
+                        "$type": "BattleModel.PVEPlayerTeam",
+                        "includeDead": false,
+                        "includeEmpty": false
+                      }
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.AddBuffSkillEffect",
+                        "Tag": 132,
+                        "_buffData": [
+                          {
+                            "BuffId": "nerf_damage_small",
+                            "Forever": false,
+                            "LevelStack": 3,
+                            "OverwriteDuration": 1,
+                            "UserDefineVariable": {
+                            }
+                          },
+                          {
+                            "BuffId": "poison_fsm_02",
+                            "Forever": false,
+                            "LevelStack": 0,
+                            "OverwriteDuration": 1,
+                            "UserDefineVariable": {
+                            }
+                          }
+                        ],
+                        "_keyString": "1"
+                      },
+                      {
+                        "$type": "BattleModel.HpDamageSkillEffect",
+                        "Tag": 9,
+                        "_keyString": "1",
+                        "_skillModifier": {
+                          "_constant": 0,
+                          "_parameter": {
+                            "$type": "BattleModel.IntCharaterField",
+                            "character": {
+                              "$type": "BattleModel.FrontOfChars",
+                              "group": {
+                                "$type": "BattleModel.PVEEnemyTeam",
+                                "includeDead": true,
+                                "includeEmpty": false
+                              }
+                            },
+                            "targetField": 1
+                          },
+                          "_ratio": 1
+                        }
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": true
                 }
               }
             ],
@@ -48,32 +146,206 @@
               {
                 "$type": "BattleModel.OrConditions",
                 "cond1": {
-                  "$type": "BattleModel.ThisSkillEffectTagContains",
-                  "containsAll": 8
+                  "$type": "BattleModel.IntCompare",
+                  "left": {
+                    "$type": "BattleModel.IntBuffField",
+                    "buff": {
+                      "$type": "BattleModel.ThisBuff"
+                    },
+                    "targetField": 4
+                  },
+                  "op": 0,
+                  "right": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 3
+                  }
                 },
                 "cond2": {
-                  "$type": "BattleModel.ThisSkillEffectTagContains",
-                  "containsAll": 16
+                  "$type": "BattleModel.OrConditions",
+                  "cond1": {
+                    "$type": "BattleModel.IntCompare",
+                    "left": {
+                      "$type": "BattleModel.IntBuffField",
+                      "buff": {
+                        "$type": "BattleModel.ThisBuff"
+                      },
+                      "targetField": 4
+                    },
+                    "op": 0,
+                    "right": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 6
+                    }
+                  },
+                  "cond2": {
+                    "$type": "BattleModel.OrConditions",
+                    "cond1": {
+                      "$type": "BattleModel.IntCompare",
+                      "left": {
+                        "$type": "BattleModel.IntBuffField",
+                        "buff": {
+                          "$type": "BattleModel.ThisBuff"
+                        },
+                        "targetField": 4
+                      },
+                      "op": 0,
+                      "right": {
+                        "$type": "BattleModel.ConstanctInt",
+                        "constant": 9
+                      }
+                    },
+                    "cond2": {
+                      "$type": "BattleModel.OrConditions",
+                      "cond1": {
+                        "$type": "BattleModel.IntCompare",
+                        "left": {
+                          "$type": "BattleModel.IntBuffField",
+                          "buff": {
+                            "$type": "BattleModel.ThisBuff"
+                          },
+                          "targetField": 4
+                        },
+                        "op": 0,
+                        "right": {
+                          "$type": "BattleModel.ConstanctInt",
+                          "constant": 3
+                        }
+                      },
+                      "cond2": {
+                        "$type": "BattleModel.IntCompare",
+                        "left": {
+                          "$type": "BattleModel.IntBuffField",
+                          "buff": {
+                            "$type": "BattleModel.ThisBuff"
+                          },
+                          "targetField": 4
+                        },
+                        "op": 0,
+                        "right": {
+                          "$type": "BattleModel.ConstanctInt",
+                          "constant": 6
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 0
+                    }
+                  }
                 }
               },
               {
-                "$type": "BattleModel.CharacterCondition",
-                "character": {
-                  "$type": "BattleModel.ThisSpecifiedTarget"
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": true,
+                    "multi": {
+                      "$type": "BattleModel.PVEEnemyTeam",
+                      "includeDead": false,
+                      "includeEmpty": false
+                    },
+                    "single": null,
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.AddBuffSkillEffect",
+                        "Tag": 132,
+                        "_buffData": [
+                          {
+                            "BuffId": "rock_fsm_03",
+                            "Forever": false,
+                            "LevelStack": 0,
+                            "OverwriteDuration": -1,
+                            "UserDefineVariable": {
+                            }
+                          }
+                        ],
+                        "_keyString": ""
+                      },
+                      {
+                        "$type": "BattleModel.RemoveBuffSkillEffect",
+                        "Tag": 4100,
+                        "_buffID": "invincible",
+                        "_keyString": ""
+                      },
+                      {
+                        "$type": "BattleModel.AmrReduceRatioSkillEffect",
+                        "Tag": 34820,
+                        "_keyString": "",
+                        "_skillModifier": {
+                          "_constant": 0,
+                          "_parameter": {
+                            "$type": "BattleModel.ConstanctInt",
+                            "constant": 1
+                          },
+                          "_ratio": 1
+                        }
+                      },
+                      {
+                        "$type": "BattleModel.HpDamageRatioMaxSkillEffect",
+                        "Tag": 32777,
+                        "_keyString": "",
+                        "_skillModifier": {
+                          "_constant": 0,
+                          "_parameter": {
+                            "$type": "BattleModel.ConstanctInt",
+                            "constant": 1
+                          },
+                          "_ratio": 1
+                        }
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": false
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.ThisBuff"
+                  },
+                  "targetField": 4
                 },
-                "condition": {
-                  "$type": "BattleModel.CharacterInsideC",
-                  "Group": {
-                    "$type": "BattleModel.PVEEnemyTeam",
-                    "includeDead": false,
-                    "includeEmpty": false
-                  }
+                "op": 4,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 10
                 }
               }
             ]
           }
         ],
         "Conditions": [
+          {
+            "$type": "BattleModel.CurrentTurnBelongsTo",
+            "character": {
+              "$type": "BattleModel.FrontOfChars",
+              "group": {
+                "$type": "BattleModel.PVEPlayerTeam",
+                "includeDead": false,
+                "includeEmpty": false
+              }
+            }
+          }
         ]
       }
     }
