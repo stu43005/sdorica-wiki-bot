@@ -2,7 +2,7 @@ import numeral from "numeral";
 import { ImperiumData } from "../imperium-data";
 import { localizationString } from "../localization";
 import { arrayUnique } from "../utils";
-import { item2wiki, item2wikiWithType } from "../wiki-item";
+import { item2wikiWithType } from "../wiki-item";
 
 const AdventureDailyRankTable = ImperiumData.fromGamedata().getTable("AdventureDailyRank");
 const AdventureTierTable = ImperiumData.fromGamedata().getTable("AdventureTier");
