@@ -176,7 +176,7 @@ export default function wikiAdventure() {
 			for (let j = 0; j < quests.length; j++) {
 				const quest = quests[j];
 				const { name: qname } = questMetadata(quest, row);
-				str += `\n{{旅途|${localizationQuestSubtitle()(quest.get("subtitle"))}|${quest.get("recommendLevel")}|||${qname}}}\n| style="padding-left: 10px;" | [[#${localizationStringAuto()(quest.get("displayDropText"))}]]`;
+				str += `\n{{旅途|${localizationQuestSubtitle()(quest.get("subtitle"))}|${quest.get("recommendLevel")}|||${qname}}}\n| style="padding-left: 10px;" | [[#${localizationStringAuto()(quest.get("displayDropText")) || `${quest.get("displayDropText")}`.split("/").at(-1)}]]`;
 			}
 			str += `\n|}`;
 			out.push(str);
