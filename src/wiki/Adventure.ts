@@ -41,7 +41,7 @@ export default function wikiAdventure() {
 			// 超過{[turnBegin]}回合後，每經過1回合扣{[score]}分，第{[turnEnd]}回合後停止扣分
 			const [score, turnBegin, turnEnd] = `${row.get("turnBuffer")}`.split(";");
 			descs.push(new TemplateString(localizationString("ScoreMessage")("turnBufferRule_info")).apply({
-				score, turnBegin, turnEnd,
+				score: score * -1, turnBegin, turnEnd,
 			}));
 		}
 		if (row.get("wave")) {
