@@ -2,14 +2,14 @@
   "$interpreted": {
     "Localization": "",
     "動作": {
-      "OnEachSkillSetStart": {
+      "AfterAnyoneDie": {
         "效果": [
           {
             "效果": [
-              "對本狀態的變數一改為0"
+              "對本角色賦予永久3層n0038c1_P2"
             ],
             "條件": [
-              "施術者是玩家的一員"
+              "本角色的隊伍的角色數量 == 0"
             ]
           }
         ],
@@ -20,8 +20,7 @@
         "效果": [
           {
             "效果": [
-              "技能的(Attack | NormalDamage | BreakArmor | TrueDamage)屬性效果增加((本角色的最大HP + (本角色的最大疊盾 * 2)))",
-              "對本狀態的變數一改為1"
+              "技能的(Attack | NormalDamage | BreakArmor | TrueDamage)屬性效果增加((本角色的最大HP + (本角色的最大疊盾 * 2)))"
             ],
             "條件": [
             ]
@@ -30,7 +29,6 @@
         "條件": [
           "本角色的隊伍的角色數量 == 0",
           "本角色是指定目標",
-          "本狀態的變數一 == 0",
           "施展的技能效果中包含(Attack)屬性"
         ]
       },
@@ -94,21 +92,6 @@
                     }
                   }
                 }
-              },
-              {
-                "TargetField": {
-                  "$type": "BattleModel.OperateThisBuff",
-                  "operation": {
-                    "$type": "BattleModel.SetBuffField",
-                    "lastIndepedentStack": false,
-                    "setOperator": 0,
-                    "targetField": 4,
-                    "value": {
-                      "$type": "BattleModel.ConstanctInt",
-                      "constant": 1
-                    }
-                  }
-                }
               }
             ],
             "Conditions": [
@@ -146,21 +129,6 @@
             }
           },
           {
-            "$type": "BattleModel.IntCompare",
-            "left": {
-              "$type": "BattleModel.IntBuffField",
-              "buff": {
-                "$type": "BattleModel.ThisBuff"
-              },
-              "targetField": 4
-            },
-            "op": 0,
-            "right": {
-              "$type": "BattleModel.ConstanctInt",
-              "constant": 0
-            }
-          },
-          {
             "$type": "BattleModel.ThisSkillEffectTagContains",
             "containsAll": 1
           }
@@ -183,7 +151,7 @@
                     "$type": "BattleModel.AddBuff",
                     "buffToAdd": {
                       "BuffId": "n0038c1_P2",
-                      "Forever": false,
+                      "Forever": true,
                       "LevelStack": 3,
                       "OverwriteDuration": -1,
                       "UserDefineVariable": {
@@ -218,22 +186,26 @@
       }
     },
     {
-      "Key": 4,
+      "Key": 1048576,
       "Value": {
         "Actions": [
           {
             "Actions": [
               {
                 "TargetField": {
-                  "$type": "BattleModel.OperateThisBuff",
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
                   "operation": {
-                    "$type": "BattleModel.SetBuffField",
-                    "lastIndepedentStack": false,
-                    "setOperator": 0,
-                    "targetField": 4,
-                    "value": {
-                      "$type": "BattleModel.ConstanctInt",
-                      "constant": 0
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "n0038c1_P2",
+                      "Forever": true,
+                      "LevelStack": 3,
+                      "OverwriteDuration": -1,
+                      "UserDefineVariable": {
+                      }
                     }
                   }
                 }
@@ -241,14 +213,23 @@
             ],
             "Conditions": [
               {
-                "$type": "BattleModel.CharacterInside",
-                "group": {
-                  "$type": "BattleModel.PVEPlayerTeam",
-                  "includeDead": false,
-                  "includeEmpty": false
-                },
+                "$type": "BattleModel.IntCompare",
                 "left": {
-                  "$type": "BattleModel.ThisSkillCaster"
+                  "$type": "BattleModel.CountOfCharGroup",
+                  "group": {
+                    "$type": "BattleModel.SelfTeamChars",
+                    "excludeSelf": true,
+                    "includeDead": false,
+                    "includeEmpty": false,
+                    "reference": {
+                      "$type": "BattleModel.ThisBuffOwner"
+                    }
+                  }
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 0
                 }
               }
             ]

@@ -10,15 +10,16 @@
         "對施術者{\"Tag\":65540,\"_keyString\":\"1\",\"$type\":\"BattleModel.DirectKillSkillEffect\"}"
       ],
       "S1": [
-        "對施術者的目標攻擊(攻擊力 x0.5)"
+        "對施術者的目標攻擊(攻擊力 x0.7)",
+        "對施術者賦予永久1層sharp(銳利)"
       ],
       "S2": [
         "對玩家全體攻擊(攻擊力 x0.5)",
-        "對施術者隊伍的空位全體召喚敵人(h3004c3_3;;等級變化:0;初始體力:100%;初始疊盾:0.3%;初始CD:1;死後消失)"
+        "對施術者隊伍的空位全體召喚敵人(h3004c3_3;;等級變化:0;初始體力:30%;初始疊盾:1%;初始CD:1;死後消失)"
       ],
       "S3": [
-        "對施術者的隊伍的隨機角色{\"Tag\":65540,\"_keyString\":\"\",\"$type\":\"BattleModel.DirectKillSkillEffect\"}",
-        "對施術者治療(施術者的最大HP x0.9)"
+        "對施術者的隊伍的隨機角色{\"Tag\":65540,\"_keyString\":\"1\",\"$type\":\"BattleModel.DirectKillSkillEffect\"}",
+        "對施術者治療(施術者的最大HP x0.9)、賦予永久1層sharp(銳利)"
       ]
     },
     "技能組": {
@@ -35,13 +36,23 @@
       ],
       "S1": [
         {
-          "CoolDown": 0,
+          "CoolDown": 1,
           "技能列表": [
             "施展S1"
           ],
           "條件": [
+            "施術者的隊伍的角色數量 > 1"
           ],
-          "目標": "{\"$type\":\"BattleModel.BuffAssignedCharacter\"}"
+          "目標": ""
+        },
+        {
+          "CoolDown": 1,
+          "技能列表": [
+            "施展S2"
+          ],
+          "條件": [
+          ],
+          "目標": ""
         }
       ],
       "S2": [
@@ -54,22 +65,11 @@
           ],
           "目標": ""
         }
-      ],
-      "S3": [
-        {
-          "CoolDown": 1,
-          "技能列表": [
-            "施展S3"
-          ],
-          "條件": [
-          ],
-          "目標": ""
-        }
       ]
     },
     "攻擊力": 50,
     "攻擊力等級調整後": 47,
-    "敵人AI": "S2 -> S3",
+    "敵人AI": "S1",
     "消魂設置": {
       "Type1": "S1",
       "Type2": "S2",
@@ -82,11 +82,10 @@
     "血量等級調整後": 471698,
     "被動Buff": [
       "賦予永久h3348c4_FSM",
-      "賦予永久h3348c4_4_P1",
-      "賦予永久h3348c4_4_P2",
       "賦予永久h3348c4_4_P3",
       "賦予永久h3177c4_3_P2",
-      "賦予永久Sensitive(敏感)"
+      "賦予永久h0009s5_enemy_4_P3",
+      "賦予永久add_inhibit_taunt"
     ],
     "起始CD": 0,
     "預設CD": 0
@@ -94,21 +93,17 @@
   "$type": "BattleModel.EnemyCharacter",
   "ReferenceBuffKeys": [
     "h3348c4_FSM",
-    "h3348c4_4_P1",
-    "h3348c4_4_P2",
     "h3348c4_4_P3",
     "h3177c4_3_P2",
-    "Sensitive"
+    "h0009s5_enemy_4_P3",
+    "add_inhibit_taunt",
+    "sharp",
+    "inhibit_taunt"
   ],
   "ReferenceCharacterKeys": [
     "h3004c3_3"
   ],
   "ReferenceEffectKeys": [
-    "h3348c4_s01_line01",
-    "h3348c4_s01_trail01",
-    "h3348c4_s01_smoke01",
-    "h3348c4_s01_hit01",
-    "h3348c4_idle01_bodydust01",
     "h3348c4_s02_trail01",
     "h3348c4_s02_trail03",
     "h3348c4_s02_trail02",
@@ -120,17 +115,12 @@
     "h3348c4_s02_dustready02",
     "h3348c4_s02_expo01",
     "h3348c4_s02_bgfocus01",
+    "h3348c4_idle01_bodydust01",
     "h3348c4_s02_color01",
-    "h3348c4_s03_trail01",
-    "h3348c4_s03_trail02",
-    "h3348c4_s03_nerf01",
-    "h3348c4_s03_soultrail01",
-    "h3348c4_s03_ground01",
-    "h3348c4_s03_magicreact01",
-    "h3348c4_s03_bufftrail01",
-    "h3348c4_s03_bodybright01",
-    "h3348c4_s03_bodybright02",
-    "h3348c4_s03_bodybright03",
+    "h3348c4_s01_line01",
+    "h3348c4_s01_trail01",
+    "h3348c4_s01_smoke01",
+    "h3348c4_s01_hit01",
     "h3348c4_tr_i01_d01_bodydust01",
     "h3348c4_tr_i01_d01_body01",
     "h3348c4_tr_i01_d01_eye01",
@@ -145,11 +135,6 @@
   "ReferenceMusicKeys": [
   ],
   "ReferenceSFXKeys": [
-    "magic_light_040",
-    "Whoosh_ethereal_027_laser_small",
-    "Hit_smash_027set_01_electric",
-    "Effect_chaos_004_air_shockwave_awake",
-    "magic_dark_501",
     "Effect_chaos_012_awake",
     "magic_light_086",
     "Musical_017_bell_chime_light",
@@ -165,16 +150,11 @@
     "magic_light_089",
     "Effect_flash_049set_01_light_reverb",
     "Whoosh_ethereal_008_chime_air",
-    "Whoosh_ethereal_021set_03_laser",
-    "Whoosh_ethereal_013_wave_bass",
-    "Whoosh_ethereal_025_chaos_awake_magic",
-    "Whoosh_ethereal_029_air_rush",
-    "Whoosh_ethereal_027_magic_chaos",
-    "Hit_ethereal_007set_03_electric_whoosh",
-    "Whoosh_ethereal_037set_01_fire_shockwave",
-    "magic_electric_bolt_01",
-    "Whoosh_ethereal_021set_01_laser",
-    "Effect_flash_018_crystal_buff",
+    "magic_light_040",
+    "Whoosh_ethereal_027_laser_small",
+    "Hit_smash_027set_01_electric",
+    "Effect_chaos_004_air_shockwave_awake",
+    "magic_dark_501",
     "Effect_drone_008_quake_bass_sizzle_magic",
     "Effect_charge_020_sizzle_ascend_short",
     "body_impact_smash_flesh_01",
@@ -191,8 +171,7 @@
   "_characterAI": {
     "$type": "BattleModel.SequenceEnemyAI",
     "OrderList": [
-      "S2",
-      "S3"
+      "S1"
     ]
   },
   "_defaultCoolDown": 0,
@@ -207,22 +186,6 @@
       "Forever": true,
       "LevelStack": 0,
       "OverwriteDuration": 1,
-      "UserDefineVariable": {
-      }
-    },
-    {
-      "BuffId": "h3348c4_4_P1",
-      "Forever": true,
-      "LevelStack": 0,
-      "OverwriteDuration": -1,
-      "UserDefineVariable": {
-      }
-    },
-    {
-      "BuffId": "h3348c4_4_P2",
-      "Forever": true,
-      "LevelStack": 0,
-      "OverwriteDuration": -1,
       "UserDefineVariable": {
       }
     },
@@ -243,7 +206,15 @@
       }
     },
     {
-      "BuffId": "Sensitive",
+      "BuffId": "h0009s5_enemy_4_P3",
+      "Forever": true,
+      "LevelStack": 0,
+      "OverwriteDuration": -1,
+      "UserDefineVariable": {
+      }
+    },
+    {
+      "BuffId": "add_inhibit_taunt",
       "Forever": true,
       "LevelStack": 0,
       "OverwriteDuration": -1,
@@ -319,15 +290,40 @@
             {
               "$type": "BattleModel.HpDamageSkillEffect",
               "Tag": 9,
-              "_keyString": "",
+              "_keyString": "1",
               "_skillModifier": {
                 "_constant": 0,
                 "_parameter": {
                   "$type": "BattleModel.SkillCasterPower",
                   "basePower": false
                 },
-                "_ratio": 0.5
+                "_ratio": 0.7
               }
+            }
+          ]
+        },
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": false,
+          "multi": null,
+          "single": {
+            "$type": "BattleModel.ThisSkillCaster"
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.AddBuffSkillEffect",
+              "Tag": 132,
+              "_buffData": [
+                {
+                  "BuffId": "sharp",
+                  "Forever": true,
+                  "LevelStack": 1,
+                  "OverwriteDuration": -1,
+                  "UserDefineVariable": {
+                  }
+                }
+              ],
+              "_keyString": "1"
             }
           ]
         }
@@ -356,7 +352,7 @@
             {
               "$type": "BattleModel.HpDamageSkillEffect",
               "Tag": 9,
-              "_keyString": "",
+              "_keyString": "1",
               "_skillModifier": {
                 "_constant": 0,
                 "_parameter": {
@@ -369,7 +365,7 @@
           ]
         },
         {
-          "CanBeEmpty": false,
+          "CanBeEmpty": true,
           "IsMultiple": true,
           "multi": {
             "$type": "BattleModel.SelftTeamEmptySlots",
@@ -381,15 +377,15 @@
           "skillEffects": [
             {
               "$type": "BattleModel.SummonEnemySkillEffect",
-              "IsShowArrive": false,
+              "IsShowArrive": true,
               "Reference": {
                 "$type": "BattleModel.SummonCharacter",
                 "CharacterArg": {
                   "AssetName": "h3004c3_3",
                   "State": {
                     "DisapearAfterDead": true,
-                    "InitArmorRatio": 0.3,
-                    "InitBloodRatio": 1,
+                    "InitArmorRatio": 1,
+                    "InitBloodRatio": 0.3,
                     "InitCd": 1,
                     "LevelAdjustment": 0
                   },
@@ -397,7 +393,7 @@
                 }
               },
               "Tag": 260,
-              "_keyString": "1"
+              "_keyString": ""
             }
           ]
         }
@@ -409,7 +405,7 @@
       "_isResolveTargetEachUnit": false,
       "_skillIdentifiers": [
         {
-          "CanBeEmpty": false,
+          "CanBeEmpty": true,
           "IsMultiple": false,
           "multi": null,
           "single": {
@@ -428,12 +424,12 @@
             {
               "$type": "BattleModel.DirectKillSkillEffect",
               "Tag": 65540,
-              "_keyString": ""
+              "_keyString": "1"
             }
           ]
         },
         {
-          "CanBeEmpty": false,
+          "CanBeEmpty": true,
           "IsMultiple": false,
           "multi": null,
           "single": {
@@ -443,7 +439,7 @@
             {
               "$type": "BattleModel.HpHealSkillEffect",
               "Tag": 34,
-              "_keyString": "",
+              "_keyString": "2",
               "_skillModifier": {
                 "_constant": 0,
                 "_parameter": {
@@ -455,6 +451,21 @@
                 },
                 "_ratio": 1
               }
+            },
+            {
+              "$type": "BattleModel.AddBuffSkillEffect",
+              "Tag": 132,
+              "_buffData": [
+                {
+                  "BuffId": "sharp",
+                  "Forever": true,
+                  "LevelStack": 1,
+                  "OverwriteDuration": -1,
+                  "UserDefineVariable": {
+                  }
+                }
+              ],
+              "_keyString": "2"
             }
           ]
         }
@@ -489,6 +500,26 @@
       "ComboList": [
         {
           "ConditionList": [
+            {
+              "$type": "BattleModel.IntCompare",
+              "left": {
+                "$type": "BattleModel.CountOfCharGroup",
+                "group": {
+                  "$type": "BattleModel.SelfTeamChars",
+                  "excludeSelf": false,
+                  "includeDead": false,
+                  "includeEmpty": false,
+                  "reference": {
+                    "$type": "BattleModel.ThisSkillCaster"
+                  }
+                }
+              },
+              "op": 2,
+              "right": {
+                "$type": "BattleModel.ConstanctInt",
+                "constant": 1
+              }
+            }
           ],
           "SkillList": [
             {
@@ -501,17 +532,10 @@
               "t": null
             }
           ],
-          "_characterCoolDown": 0,
-          "assignTarget": {
-            "$type": "BattleModel.BuffAssignedCharacter"
-          },
+          "_characterCoolDown": 1,
+          "assignTarget": null,
           "icon": 0
-        }
-      ],
-      "_isViewSkillSet": false
-    },
-    "S2": {
-      "ComboList": [
+        },
         {
           "ConditionList": [
           ],
@@ -533,7 +557,7 @@
       ],
       "_isViewSkillSet": false
     },
-    "S3": {
+    "S2": {
       "ComboList": [
         {
           "ConditionList": [
@@ -542,7 +566,7 @@
             {
               "ConditionList": [
               ],
-              "SkillID": "S3",
+              "SkillID": "S2",
               "_conditionalSequences": [
               ],
               "seq": "",

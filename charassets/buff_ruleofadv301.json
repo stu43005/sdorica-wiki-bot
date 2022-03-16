@@ -2,14 +2,14 @@
   "$interpreted": {
     "Localization": "",
     "動作": {
-      "OnTurnBegin": {
+      "OnEachSkillTargetEffect": {
         "效果": [
           {
             "效果": [
-              "立即施展技能：對玩家首位將14個魂芯消除、將3個魂芯由隨機的順序加入賦予1回合1層nerf_damage_small(弱化)、將3個魂芯由隨機的順序加入賦予1回合1層weak(易傷)、將3個魂芯由隨機的順序加入賦予1回合1層tearing(撕裂)、將2個魂芯由隨機的順序加入賦予1回合1層poison(中毒)、將1個魂芯由隨機的順序加入賦予1回合1層infection(汙染)、將1個魂芯由隨機的順序加入賦予1回合1層frosted(寒冷)、將1個魂芯由隨機的順序加入賦予1回合1層burn(燃燒)"
+              "技能的(Attack)屬性效果增加(60)%"
             ],
             "條件": [
-              "(目前戰鬥回合數 == 0) 且 (目前回合輪到敵人首位)"
+              "{\"SourceType\":\"StoneAction\",\"$type\":\"BattleModel.SkillSetSourceTypeEqual\"}"
             ]
           }
         ],
@@ -19,286 +19,34 @@
     },
     "持續時間": 0,
     "最高層數": 99,
-    "標籤": "NotRemoveAfterBattle | Forever | InfinityTrigger"
+    "標籤": "NotRemoveAfterBattle | Forever"
   },
   "$type": "BattleModel.Buff",
   "ReferenceBuffKeys": [
-    "nerf_damage_small",
-    "weak",
-    "tearing",
-    "poison",
-    "infection",
-    "frosted",
-    "burn",
-    "tearing_trigger",
-    "tearing_trigger_alert",
-    "poison_trigger"
   ],
   "_actionTable": [
     {
-      "Key": 1,
+      "Key": 1024,
       "Value": {
         "Actions": [
           {
             "Actions": [
               {
                 "TargetField": {
-                  "$type": "BattleModel.DirectSkillEffect",
-                  "skillUnit": {
-                    "CanBeEmpty": false,
-                    "IsMultiple": false,
-                    "multi": null,
-                    "single": {
-                      "$type": "BattleModel.FrontOfChars",
-                      "group": {
-                        "$type": "BattleModel.PVEPlayerTeam",
-                        "includeDead": false,
-                        "includeEmpty": false
-                      }
-                    },
-                    "skillEffects": [
-                      {
-                        "$type": "BattleModel.StoneActionSkillEffect",
-                        "Tag": 516,
-                        "_keyString": "",
-                        "_stoneAction": {
-                          "BuffFilter": "Normal",
-                          "BuffId": "",
-                          "BuffLabel": null,
-                          "EffectFilter": "Normal",
-                          "StonePositionList": [
-                          ],
-                          "UsePositionSettings": false,
-                          "changeTo": "Erase",
-                          "filter": "IsAnyColor",
-                          "isInitStoneFilter": "None",
-                          "order": "LeftToRight",
-                          "targetStoneCount": 14
-                        }
-                      },
-                      {
-                        "$type": "BattleModel.StoneBuffSkillEffect",
-                        "Tag": 132,
-                        "_keyString": "1",
-                        "_stoneBuffAction": {
-                          "BuffFilter": "WithoutBuff",
-                          "BuffId": "",
-                          "BuffLabel": null,
-                          "EffectFilter": "Normal",
-                          "StonePositionList": [
-                          ],
-                          "UsePositionSettings": false,
-                          "action": "Add",
-                          "buff": {
-                            "BuffId": "nerf_damage_small",
-                            "Forever": false,
-                            "LevelStack": 1,
-                            "OverwriteDuration": 1,
-                            "UserDefineVariable": {
-                            }
-                          },
-                          "filter": "IsAnyColor",
-                          "isInitStoneFilter": "None",
-                          "order": "Random",
-                          "targetStoneCount": 3
-                        }
-                      },
-                      {
-                        "$type": "BattleModel.StoneBuffSkillEffect",
-                        "Tag": 132,
-                        "_keyString": "1",
-                        "_stoneBuffAction": {
-                          "BuffFilter": "WithoutBuff",
-                          "BuffId": "",
-                          "BuffLabel": null,
-                          "EffectFilter": "Normal",
-                          "StonePositionList": [
-                          ],
-                          "UsePositionSettings": false,
-                          "action": "Add",
-                          "buff": {
-                            "BuffId": "weak",
-                            "Forever": false,
-                            "LevelStack": 1,
-                            "OverwriteDuration": 1,
-                            "UserDefineVariable": {
-                            }
-                          },
-                          "filter": "IsAnyColor",
-                          "isInitStoneFilter": "None",
-                          "order": "Random",
-                          "targetStoneCount": 3
-                        }
-                      },
-                      {
-                        "$type": "BattleModel.StoneBuffSkillEffect",
-                        "Tag": 132,
-                        "_keyString": "1",
-                        "_stoneBuffAction": {
-                          "BuffFilter": "WithoutBuff",
-                          "BuffId": "",
-                          "BuffLabel": null,
-                          "EffectFilter": "Normal",
-                          "StonePositionList": [
-                          ],
-                          "UsePositionSettings": false,
-                          "action": "Add",
-                          "buff": {
-                            "BuffId": "tearing",
-                            "Forever": false,
-                            "LevelStack": 1,
-                            "OverwriteDuration": 1,
-                            "UserDefineVariable": {
-                            }
-                          },
-                          "filter": "IsAnyColor",
-                          "isInitStoneFilter": "None",
-                          "order": "Random",
-                          "targetStoneCount": 3
-                        }
-                      },
-                      {
-                        "$type": "BattleModel.StoneBuffSkillEffect",
-                        "Tag": 132,
-                        "_keyString": "1",
-                        "_stoneBuffAction": {
-                          "BuffFilter": "WithoutBuff",
-                          "BuffId": "",
-                          "BuffLabel": null,
-                          "EffectFilter": "Normal",
-                          "StonePositionList": [
-                          ],
-                          "UsePositionSettings": false,
-                          "action": "Add",
-                          "buff": {
-                            "BuffId": "poison",
-                            "Forever": false,
-                            "LevelStack": 1,
-                            "OverwriteDuration": 1,
-                            "UserDefineVariable": {
-                            }
-                          },
-                          "filter": "IsAnyColor",
-                          "isInitStoneFilter": "None",
-                          "order": "Random",
-                          "targetStoneCount": 2
-                        }
-                      },
-                      {
-                        "$type": "BattleModel.StoneBuffSkillEffect",
-                        "Tag": 132,
-                        "_keyString": "1",
-                        "_stoneBuffAction": {
-                          "BuffFilter": "WithoutBuff",
-                          "BuffId": "",
-                          "BuffLabel": null,
-                          "EffectFilter": "Normal",
-                          "StonePositionList": [
-                          ],
-                          "UsePositionSettings": false,
-                          "action": "Add",
-                          "buff": {
-                            "BuffId": "infection",
-                            "Forever": false,
-                            "LevelStack": 1,
-                            "OverwriteDuration": 1,
-                            "UserDefineVariable": {
-                            }
-                          },
-                          "filter": "IsAnyColor",
-                          "isInitStoneFilter": "None",
-                          "order": "Random",
-                          "targetStoneCount": 1
-                        }
-                      },
-                      {
-                        "$type": "BattleModel.StoneBuffSkillEffect",
-                        "Tag": 132,
-                        "_keyString": "1",
-                        "_stoneBuffAction": {
-                          "BuffFilter": "WithoutBuff",
-                          "BuffId": "",
-                          "BuffLabel": null,
-                          "EffectFilter": "Normal",
-                          "StonePositionList": [
-                          ],
-                          "UsePositionSettings": false,
-                          "action": "Add",
-                          "buff": {
-                            "BuffId": "frosted",
-                            "Forever": false,
-                            "LevelStack": 1,
-                            "OverwriteDuration": 1,
-                            "UserDefineVariable": {
-                            }
-                          },
-                          "filter": "IsAnyColor",
-                          "isInitStoneFilter": "None",
-                          "order": "Random",
-                          "targetStoneCount": 1
-                        }
-                      },
-                      {
-                        "$type": "BattleModel.StoneBuffSkillEffect",
-                        "Tag": 132,
-                        "_keyString": "1",
-                        "_stoneBuffAction": {
-                          "BuffFilter": "WithoutBuff",
-                          "BuffId": "",
-                          "BuffLabel": null,
-                          "EffectFilter": "Normal",
-                          "StonePositionList": [
-                          ],
-                          "UsePositionSettings": false,
-                          "action": "Add",
-                          "buff": {
-                            "BuffId": "burn",
-                            "Forever": false,
-                            "LevelStack": 1,
-                            "OverwriteDuration": 1,
-                            "UserDefineVariable": {
-                            }
-                          },
-                          "filter": "IsAnyColor",
-                          "isInitStoneFilter": "None",
-                          "order": "Random",
-                          "targetStoneCount": 1
-                        }
-                      }
-                    ]
-                  },
-                  "willTriggerBuff": true
+                  "$type": "BattleModel.BonusEffectForSkillProperty",
+                  "isPercent": true,
+                  "property": 1,
+                  "value": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 60
+                  }
                 }
               }
             ],
             "Conditions": [
               {
-                "$type": "BattleModel.AndConditions",
-                "cond1": {
-                  "$type": "BattleModel.IntCompare",
-                  "left": {
-                    "$type": "BattleModel.BattleActionRecordValue",
-                    "RecordValue": {
-                      "$type": "BattleModel.ThisBattleTurnCount"
-                    }
-                  },
-                  "op": 0,
-                  "right": {
-                    "$type": "BattleModel.ConstanctInt",
-                    "constant": 0
-                  }
-                },
-                "cond2": {
-                  "$type": "BattleModel.CurrentTurnBelongsTo",
-                  "character": {
-                    "$type": "BattleModel.FrontOfChars",
-                    "group": {
-                      "$type": "BattleModel.PVEEnemyTeam",
-                      "includeDead": true,
-                      "includeEmpty": true
-                    }
-                  }
-                }
+                "$type": "BattleModel.SkillSetSourceTypeEqual",
+                "SourceType": "StoneAction"
               }
             ]
           }
@@ -310,13 +58,7 @@
   ],
   "_duration": 0,
   "_maxLevel": 99,
-  "_orderTable": [
-    {
-      "Key": 1,
-      "Value": {
-        "Order": 9999
-      }
-    }
-  ],
-  "_tag": 32834
+  "_orderTable": {
+  },
+  "_tag": 66
 }

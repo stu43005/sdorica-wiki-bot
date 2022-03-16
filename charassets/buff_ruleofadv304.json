@@ -6,10 +6,12 @@
         "效果": [
           {
             "效果": [
-              "技能的(Attack)屬性效果增加((50 * {\"$type\":\"BattleModel.PlayerTeamDeathCount\"}))%"
+              "技能的(Attack)屬性效果增加(50)%"
             ],
             "條件": [
-              "施術者是玩家的一員"
+              "施術者擁有dexterity(靈巧)狀態",
+              "施術者是玩家的一員",
+              "施展的技能效果中包含(Attack)屬性"
             ]
           }
         ],
@@ -37,22 +39,20 @@
                   "isPercent": true,
                   "property": 1,
                   "value": {
-                    "$type": "BattleModel.MultiplyInt",
-                    "left": {
-                      "$type": "BattleModel.ConstanctInt",
-                      "constant": 50
-                    },
-                    "right": {
-                      "$type": "BattleModel.BattleActionRecordValue",
-                      "RecordValue": {
-                        "$type": "BattleModel.PlayerTeamDeathCount"
-                      }
-                    }
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 50
                   }
                 }
               }
             ],
             "Conditions": [
+              {
+                "$type": "BattleModel.CharacterHasBuff",
+                "buffId": "dexterity",
+                "character": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              },
               {
                 "$type": "BattleModel.CharacterInside",
                 "group": {
@@ -63,6 +63,10 @@
                 "left": {
                   "$type": "BattleModel.ThisSkillCaster"
                 }
+              },
+              {
+                "$type": "BattleModel.ThisSkillEffectTagContains",
+                "containsAll": 1
               }
             ]
           }

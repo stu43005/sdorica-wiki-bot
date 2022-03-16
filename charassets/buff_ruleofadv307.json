@@ -9,7 +9,7 @@
               "對玩家所有角色賦予永久1層defense_up_small(減傷)"
             ],
             "條件": [
-              "目前戰鬥回合數 == 0"
+              "(目前戰鬥回合數 == 0) 且 (目前回合輪到敵人首位)"
             ]
           }
         ],
@@ -56,17 +56,31 @@
             ],
             "Conditions": [
               {
-                "$type": "BattleModel.IntCompare",
-                "left": {
-                  "$type": "BattleModel.BattleActionRecordValue",
-                  "RecordValue": {
-                    "$type": "BattleModel.ThisBattleTurnCount"
+                "$type": "BattleModel.AndConditions",
+                "cond1": {
+                  "$type": "BattleModel.IntCompare",
+                  "left": {
+                    "$type": "BattleModel.BattleActionRecordValue",
+                    "RecordValue": {
+                      "$type": "BattleModel.ThisBattleTurnCount"
+                    }
+                  },
+                  "op": 0,
+                  "right": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 0
                   }
                 },
-                "op": 0,
-                "right": {
-                  "$type": "BattleModel.ConstanctInt",
-                  "constant": 0
+                "cond2": {
+                  "$type": "BattleModel.CurrentTurnBelongsTo",
+                  "character": {
+                    "$type": "BattleModel.FrontOfChars",
+                    "group": {
+                      "$type": "BattleModel.PVEEnemyTeam",
+                      "includeDead": true,
+                      "includeEmpty": true
+                    }
+                  }
                 }
               }
             ]

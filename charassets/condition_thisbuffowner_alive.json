@@ -1,0 +1,32 @@
+{
+  "$interpreted": "(本角色的HP > 0) 或 (本角色 擁有任何一個 有(Undead)標籤 的狀態)",
+  "$type": "BattleModel.OrConditions",
+  "cond1": {
+    "$type": "BattleModel.IntCompare",
+    "left": {
+      "$type": "BattleModel.IntCharaterField",
+      "character": {
+        "$type": "BattleModel.ThisBuffOwner"
+      },
+      "targetField": 0
+    },
+    "op": 2,
+    "right": {
+      "$type": "BattleModel.ConstanctInt",
+      "constant": 0
+    }
+  },
+  "cond2": {
+    "$type": "BattleModel.CharacterCondition",
+    "character": {
+      "$type": "BattleModel.ThisBuffOwner"
+    },
+    "condition": {
+      "$type": "BattleModel.HasAnyConditionalBuff",
+      "buffCondition": {
+        "$type": "BattleModel.CheckBuffHasTag",
+        "tag": 128
+      }
+    }
+  }
+}

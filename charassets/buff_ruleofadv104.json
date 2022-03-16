@@ -2,29 +2,14 @@
   "$interpreted": {
     "Localization": "",
     "動作": {
-      "OnEachSkillSetEnd": {
-        "效果": [
-          {
-            "效果": [
-              "立即施展技能：對{\"$type\":\"BattleModel.BuffAssignedCharacter\"}{\"Ratio\":{\"constant\":0.05,\"$type\":\"BattleModel.ConstanctFloat\"},\"Tag\":40961,\"_keyString\":\"\",\"$type\":\"BattleModel.FixedTrueDamageRatioMaxSkillEffect\"}"
-            ],
-            "條件": [
-              "施術者是玩家的一員"
-            ]
-          }
-        ],
-        "條件": [
-        ]
-      },
       "OnEachSkillTargetEffect": {
         "效果": [
           {
             "效果": [
-              "技能的(Attack)屬性效果增加(施術者的HP%)%"
+              "技能的(Attack)屬性效果增加((50 * {\"$type\":\"BattleModel.PlayerTeamDeathCount\"}))%"
             ],
             "條件": [
-              "施術者是玩家的一員",
-              "施展的技能效果中包含(Attack)屬性"
+              "施術者是玩家的一員"
             ]
           }
         ],
@@ -41,75 +26,6 @@
   ],
   "_actionTable": [
     {
-      "Key": 8,
-      "Value": {
-        "Actions": [
-          {
-            "Actions": [
-              {
-                "TargetField": {
-                  "$type": "BattleModel.AssignParameterSkillEffect",
-                  "AssignParameter": {
-                    "AssignCharacter": {
-                      "$type": "BattleModel.ThisSkillCaster"
-                    },
-                    "AssignCharacterGroup": {
-                      "$type": "BattleModel.NoneCharacters"
-                    },
-                    "AssignInteger": {
-                      "$type": "BattleModel.ConstanctInt",
-                      "constant": 0
-                    },
-                    "AssignIntegerGroup": {
-                      "$type": "BattleModel.ConstanctIntegerGroup",
-                      "Group": [
-                      ]
-                    }
-                  },
-                  "SkillUnit": {
-                    "CanBeEmpty": false,
-                    "IsMultiple": false,
-                    "multi": null,
-                    "single": {
-                      "$type": "BattleModel.BuffAssignedCharacter"
-                    },
-                    "skillEffects": [
-                      {
-                        "$type": "BattleModel.FixedTrueDamageRatioMaxSkillEffect",
-                        "Ratio": {
-                          "$type": "BattleModel.ConstanctFloat",
-                          "constant": 0.05
-                        },
-                        "Tag": 40961,
-                        "_keyString": ""
-                      }
-                    ]
-                  },
-                  "UseAssignParameter": true,
-                  "WillTriggerBuff": true
-                }
-              }
-            ],
-            "Conditions": [
-              {
-                "$type": "BattleModel.CharacterInside",
-                "group": {
-                  "$type": "BattleModel.PVEPlayerTeam",
-                  "includeDead": false,
-                  "includeEmpty": false
-                },
-                "left": {
-                  "$type": "BattleModel.ThisSkillCaster"
-                }
-              }
-            ]
-          }
-        ],
-        "Conditions": [
-        ]
-      }
-    },
-    {
       "Key": 1024,
       "Value": {
         "Actions": [
@@ -121,11 +37,17 @@
                   "isPercent": true,
                   "property": 1,
                   "value": {
-                    "$type": "BattleModel.IntCharaterField",
-                    "character": {
-                      "$type": "BattleModel.ThisSkillCaster"
+                    "$type": "BattleModel.MultiplyInt",
+                    "left": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 50
                     },
-                    "targetField": 2
+                    "right": {
+                      "$type": "BattleModel.BattleActionRecordValue",
+                      "RecordValue": {
+                        "$type": "BattleModel.PlayerTeamDeathCount"
+                      }
+                    }
                   }
                 }
               }
@@ -141,10 +63,6 @@
                 "left": {
                   "$type": "BattleModel.ThisSkillCaster"
                 }
-              },
-              {
-                "$type": "BattleModel.ThisSkillEffectTagContains",
-                "containsAll": 1
               }
             ]
           }

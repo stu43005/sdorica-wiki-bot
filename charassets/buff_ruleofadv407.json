@@ -2,14 +2,78 @@
   "$interpreted": {
     "Localization": "",
     "動作": {
-      "OnTurnBegin": {
+      "": {
         "效果": [
           {
             "效果": [
-              "立即施展技能：對玩家全體{\"Ratio\":{\"constant\":0.5,\"$type\":\"BattleModel.ConstanctFloat\"},\"Tag\":66,\"_keyString\":\"\",\"$type\":\"BattleModel.FixedArmorRatioMaxSkillEffect\"}"
+              "立即施展技能：對玩家全體復活魂芯減少2個"
             ],
             "條件": [
-              "(目前戰鬥回合數 == 0) 且 (目前回合輪到敵人首位)"
+              "{\"Type\":4,\"$type\":\"BattleModel.ConsumedStoneTypeEqual\"}",
+              "{\"EraseType\":0,\"$type\":\"BattleModel.ConsumedStoneEraseTypeEqual\"}"
+            ]
+          },
+          {
+            "效果": [
+              "立即施展技能：對玩家全體復活魂芯減少4個"
+            ],
+            "條件": [
+              "{\"Type\":4,\"$type\":\"BattleModel.ConsumedStoneTypeEqual\"}",
+              "{\"EraseType\":1,\"$type\":\"BattleModel.ConsumedStoneEraseTypeEqual\"}"
+            ]
+          },
+          {
+            "效果": [
+              "立即施展技能：對玩家全體復活魂芯減少8個"
+            ],
+            "條件": [
+              "{\"Type\":4,\"$type\":\"BattleModel.ConsumedStoneTypeEqual\"}",
+              "{\"EraseType\":2,\"$type\":\"BattleModel.ConsumedStoneEraseTypeEqual\"}"
+            ]
+          },
+          {
+            "效果": [
+              "立即施展技能：對玩家全體復活魂芯減少6個"
+            ],
+            "條件": [
+              "{\"Type\":4,\"$type\":\"BattleModel.ConsumedStoneTypeEqual\"}",
+              "{\"EraseType\":3,\"$type\":\"BattleModel.ConsumedStoneEraseTypeEqual\"}"
+            ]
+          },
+          {
+            "效果": [
+              "立即施展技能：對玩家全體復活魂芯減少6個"
+            ],
+            "條件": [
+              "{\"Type\":4,\"$type\":\"BattleModel.ConsumedStoneTypeEqual\"}",
+              "{\"EraseType\":4,\"$type\":\"BattleModel.ConsumedStoneEraseTypeEqual\"}"
+            ]
+          },
+          {
+            "效果": [
+              "立即施展技能：對玩家全體復活魂芯減少8個"
+            ],
+            "條件": [
+              "{\"Type\":4,\"$type\":\"BattleModel.ConsumedStoneTypeEqual\"}",
+              "{\"EraseType\":5,\"$type\":\"BattleModel.ConsumedStoneEraseTypeEqual\"}"
+            ]
+          },
+          {
+            "效果": [
+              "立即施展技能：對玩家全體復活魂芯減少8個"
+            ],
+            "條件": [
+              "{\"Type\":4,\"$type\":\"BattleModel.ConsumedStoneTypeEqual\"}",
+              "{\"EraseType\":6,\"$type\":\"BattleModel.ConsumedStoneEraseTypeEqual\"}"
+            ]
+          },
+          {
+            "效果": [
+              "立即施展技能：對玩家全體復活魂芯減少12個"
+            ],
+            "條件": [
+              "{\"Type\":4,\"$type\":\"BattleModel.ConsumedStoneTypeEqual\"}",
+              "{\"EraseType\":7,\"$type\":\"BattleModel.ConsumedStoneEraseTypeEqual\"}"
             ]
           }
         ],
@@ -26,7 +90,7 @@
   ],
   "_actionTable": [
     {
-      "Key": 1,
+      "Key": 33554432,
       "Value": {
         "Actions": [
           {
@@ -39,54 +103,297 @@
                     "IsMultiple": true,
                     "multi": {
                       "$type": "BattleModel.PVEPlayerTeam",
-                      "includeDead": false,
+                      "includeDead": true,
                       "includeEmpty": false
                     },
                     "single": null,
                     "skillEffects": [
                       {
-                        "$type": "BattleModel.FixedArmorRatioMaxSkillEffect",
-                        "Ratio": {
-                          "$type": "BattleModel.ConstanctFloat",
-                          "constant": 0.5
-                        },
-                        "Tag": 66,
-                        "_keyString": ""
+                        "$type": "BattleModel.ChangeReviveCountSkillEffect",
+                        "Tag": 4,
+                        "Value": 2,
+                        "_keyString": "1"
                       }
                     ]
                   },
-                  "willTriggerBuff": false
+                  "willTriggerBuff": true
                 }
               }
             ],
             "Conditions": [
               {
-                "$type": "BattleModel.AndConditions",
-                "cond1": {
-                  "$type": "BattleModel.IntCompare",
-                  "left": {
-                    "$type": "BattleModel.BattleActionRecordValue",
-                    "RecordValue": {
-                      "$type": "BattleModel.ThisBattleTurnCount"
-                    }
-                  },
-                  "op": 0,
-                  "right": {
-                    "$type": "BattleModel.ConstanctInt",
-                    "constant": 0
-                  }
-                },
-                "cond2": {
-                  "$type": "BattleModel.CurrentTurnBelongsTo",
-                  "character": {
-                    "$type": "BattleModel.FrontOfChars",
-                    "group": {
-                      "$type": "BattleModel.PVEEnemyTeam",
+                "$type": "BattleModel.ConsumedStoneTypeEqual",
+                "Type": 4
+              },
+              {
+                "$type": "BattleModel.ConsumedStoneEraseTypeEqual",
+                "EraseType": 0
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": true,
+                    "multi": {
+                      "$type": "BattleModel.PVEPlayerTeam",
                       "includeDead": true,
-                      "includeEmpty": true
-                    }
-                  }
+                      "includeEmpty": false
+                    },
+                    "single": null,
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.ChangeReviveCountSkillEffect",
+                        "Tag": 4,
+                        "Value": 4,
+                        "_keyString": "1"
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": true
                 }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.ConsumedStoneTypeEqual",
+                "Type": 4
+              },
+              {
+                "$type": "BattleModel.ConsumedStoneEraseTypeEqual",
+                "EraseType": 1
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": true,
+                    "multi": {
+                      "$type": "BattleModel.PVEPlayerTeam",
+                      "includeDead": true,
+                      "includeEmpty": false
+                    },
+                    "single": null,
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.ChangeReviveCountSkillEffect",
+                        "Tag": 4,
+                        "Value": 8,
+                        "_keyString": "1"
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": true
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.ConsumedStoneTypeEqual",
+                "Type": 4
+              },
+              {
+                "$type": "BattleModel.ConsumedStoneEraseTypeEqual",
+                "EraseType": 2
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": true,
+                    "multi": {
+                      "$type": "BattleModel.PVEPlayerTeam",
+                      "includeDead": true,
+                      "includeEmpty": false
+                    },
+                    "single": null,
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.ChangeReviveCountSkillEffect",
+                        "Tag": 4,
+                        "Value": 6,
+                        "_keyString": "1"
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": true
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.ConsumedStoneTypeEqual",
+                "Type": 4
+              },
+              {
+                "$type": "BattleModel.ConsumedStoneEraseTypeEqual",
+                "EraseType": 3
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": true,
+                    "multi": {
+                      "$type": "BattleModel.PVEPlayerTeam",
+                      "includeDead": true,
+                      "includeEmpty": false
+                    },
+                    "single": null,
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.ChangeReviveCountSkillEffect",
+                        "Tag": 4,
+                        "Value": 6,
+                        "_keyString": "1"
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": true
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.ConsumedStoneTypeEqual",
+                "Type": 4
+              },
+              {
+                "$type": "BattleModel.ConsumedStoneEraseTypeEqual",
+                "EraseType": 4
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": true,
+                    "multi": {
+                      "$type": "BattleModel.PVEPlayerTeam",
+                      "includeDead": true,
+                      "includeEmpty": false
+                    },
+                    "single": null,
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.ChangeReviveCountSkillEffect",
+                        "Tag": 4,
+                        "Value": 8,
+                        "_keyString": "1"
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": true
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.ConsumedStoneTypeEqual",
+                "Type": 4
+              },
+              {
+                "$type": "BattleModel.ConsumedStoneEraseTypeEqual",
+                "EraseType": 5
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": true,
+                    "multi": {
+                      "$type": "BattleModel.PVEPlayerTeam",
+                      "includeDead": true,
+                      "includeEmpty": false
+                    },
+                    "single": null,
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.ChangeReviveCountSkillEffect",
+                        "Tag": 4,
+                        "Value": 8,
+                        "_keyString": "1"
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": true
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.ConsumedStoneTypeEqual",
+                "Type": 4
+              },
+              {
+                "$type": "BattleModel.ConsumedStoneEraseTypeEqual",
+                "EraseType": 6
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": true,
+                    "multi": {
+                      "$type": "BattleModel.PVEPlayerTeam",
+                      "includeDead": true,
+                      "includeEmpty": false
+                    },
+                    "single": null,
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.ChangeReviveCountSkillEffect",
+                        "Tag": 4,
+                        "Value": 12,
+                        "_keyString": "1"
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": true
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.ConsumedStoneTypeEqual",
+                "Type": 4
+              },
+              {
+                "$type": "BattleModel.ConsumedStoneEraseTypeEqual",
+                "EraseType": 7
               }
             ]
           }

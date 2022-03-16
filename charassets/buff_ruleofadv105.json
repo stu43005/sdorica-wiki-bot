@@ -2,14 +2,14 @@
   "$interpreted": {
     "Localization": "",
     "動作": {
-      "OnEachSkillTargetEffect": {
+      "OnEachSkillSetEnd": {
         "效果": [
           {
             "效果": [
-              "技能的(Attack)屬性效果增加((施術者持有的Buff中有在generalNerf[弱化, 易傷, 撕裂, 中毒, 暈眩, 汙染, 出血, 汙染, 寒冷, 燃燒]列表內的Buff的狀態數量 * -60))%"
+              "立即施展技能：對{\"$type\":\"BattleModel.BuffAssignedCharacter\"}{\"Ratio\":{\"constant\":0.05,\"$type\":\"BattleModel.ConstanctFloat\"},\"Tag\":40961,\"_keyString\":\"\",\"$type\":\"BattleModel.FixedTrueDamageRatioMaxSkillEffect\"}"
             ],
             "條件": [
-              "施術者 {\"Group\":{\"includeDead\":false,\"includeEmpty\":false,\"$type\":\"BattleModel.PVEPlayerTeam\"},\"$type\":\"BattleModel.CharacterInsideC\"}"
+              "施術者是玩家的一員"
             ]
           }
         ],
@@ -23,85 +23,68 @@
   },
   "$type": "BattleModel.Buff",
   "ReferenceBuffKeys": [
-    "nerf_damage_small",
-    "weak",
-    "tearing",
-    "poison",
-    "stun",
-    "infection_maintain",
-    "bleeding_maintain",
-    "infection",
-    "frosted",
-    "burn",
-    "tearing_trigger",
-    "tearing_trigger_alert",
-    "poison_trigger"
   ],
   "_actionTable": [
     {
-      "Key": 1024,
+      "Key": 8,
       "Value": {
         "Actions": [
           {
             "Actions": [
               {
                 "TargetField": {
-                  "$type": "BattleModel.BonusEffectForSkillProperty",
-                  "isPercent": true,
-                  "property": 1,
-                  "value": {
-                    "$type": "BattleModel.MultiplyInt",
-                    "left": {
-                      "$type": "BattleModel.CountOfBuffGroup",
-                      "group": {
-                        "$type": "BattleModel.BuffGroupWhere",
-                        "condition": {
-                          "$type": "BattleModel.CheckBuffBelongLabel",
-                          "BuffLabel": {
-                            "BuffIdList": [
-                              "nerf_damage_small",
-                              "weak",
-                              "tearing",
-                              "poison",
-                              "stun",
-                              "infection_maintain",
-                              "bleeding_maintain",
-                              "infection",
-                              "frosted",
-                              "burn"
-                            ],
-                            "BuffLabel": "generalNerf"
-                          }
-                        },
-                        "group": {
-                          "$type": "BattleModel.AllBuffsOnChar",
-                          "character": {
-                            "$type": "BattleModel.ThisSkillCaster"
-                          }
-                        }
-                      }
+                  "$type": "BattleModel.AssignParameterSkillEffect",
+                  "AssignParameter": {
+                    "AssignCharacter": {
+                      "$type": "BattleModel.ThisSkillCaster"
                     },
-                    "right": {
+                    "AssignCharacterGroup": {
+                      "$type": "BattleModel.NoneCharacters"
+                    },
+                    "AssignInteger": {
                       "$type": "BattleModel.ConstanctInt",
-                      "constant": -60
+                      "constant": 0
+                    },
+                    "AssignIntegerGroup": {
+                      "$type": "BattleModel.ConstanctIntegerGroup",
+                      "Group": [
+                      ]
                     }
-                  }
+                  },
+                  "SkillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": null,
+                    "single": {
+                      "$type": "BattleModel.BuffAssignedCharacter"
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.FixedTrueDamageRatioMaxSkillEffect",
+                        "Ratio": {
+                          "$type": "BattleModel.ConstanctFloat",
+                          "constant": 0.05
+                        },
+                        "Tag": 40961,
+                        "_keyString": ""
+                      }
+                    ]
+                  },
+                  "UseAssignParameter": true,
+                  "WillTriggerBuff": true
                 }
               }
             ],
             "Conditions": [
               {
-                "$type": "BattleModel.CharacterCondition",
-                "character": {
-                  "$type": "BattleModel.ThisSkillCaster"
+                "$type": "BattleModel.CharacterInside",
+                "group": {
+                  "$type": "BattleModel.PVEPlayerTeam",
+                  "includeDead": false,
+                  "includeEmpty": false
                 },
-                "condition": {
-                  "$type": "BattleModel.CharacterInsideC",
-                  "Group": {
-                    "$type": "BattleModel.PVEPlayerTeam",
-                    "includeDead": false,
-                    "includeEmpty": false
-                  }
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
                 }
               }
             ]
