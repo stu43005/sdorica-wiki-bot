@@ -9,6 +9,7 @@ import { TimeDisplayType } from "./enums/chapter-time-display-type.enum";
 import { TitleViewType } from "./enums/chapter-title-view-type.enum";
 import { ChapterWikiGroup } from './enums/chapter-wiki-group.enum';
 import { ItemPayType } from './enums/item-pay-type.enum';
+import { RewardGroupType } from "./enums/reward-group-type.enum";
 import { StateCondition } from "./enums/state-condition.enum";
 import { VolumeEnum } from './enums/volume.enum';
 import { Hero } from "./hero";
@@ -126,9 +127,10 @@ export class Chapter {
 	/**
 	 * 活動累積道具獎勵
 	 *
-	 * 對應 RewardGroups Table
+	 * rewardGroupType=`Normal`: 對應 RewardGroups Table
 	 */
 	get rewardGroupId(): string { return this.row.get('rewardGroupId'); }
+	get rewardGroupType(): RewardGroupType { return this.row.get('rewardGroupType'); }
 
 	/**
 	 * 章節完成進度

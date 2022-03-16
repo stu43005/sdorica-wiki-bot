@@ -783,6 +783,16 @@ export const gamedataTeanslateSettings: GamedataRef[] = [
 			return arr.map(localizationString("BaseBuff")).join(",");
 		},
 	},
+	{
+		table: "Evaluates",
+		column: "giveLinkId1:giveType1,giveLinkId2:giveType2",
+		func: localizationItemNameWithType(),
+	},
+	{
+		table: "QuestAchievements",
+		column: "giveLinkId1:giveType1",
+		func: localizationItemNameWithType(),
+	},
 ];
 
 export function doGamedataTranslation() {

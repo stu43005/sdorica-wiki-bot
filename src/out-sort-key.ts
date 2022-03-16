@@ -45,7 +45,9 @@ const TABLE_KEYS: Record<string, string[]> = {
 		"unlockCondition", "param2", "unlockText", /* 解鎖條件&文字 */
 		"countDisplay", "dailyCount", /* 可完成次數 */
 		"extraCountCurrency", "extraCountPrice", "extraCountItem", "extraCountItemCount", /* 增加可完成次數消耗 */
-		"progress", "region", "rewardGroupId", "timeDisplay", "weekday",
+		"progress", "region",
+		"rewardGroupType", "rewardGroupId",
+		"timeDisplay", "weekday",
 	],
 	DiligentGroups: ["id", "chapterId", "diligentId", "diligentAmount", "levelGroup"],
 	Diligents: [
@@ -57,6 +59,12 @@ const TABLE_KEYS: Record<string, string[]> = {
 		"buffId", "buffLevel", // buffIncrease
 	],
 	DropItems: ["groupId", "subgroupId", "category", "chest", "dropTime", "giveType", "giveLinkId", "giveAmount", "value", "flagOpId"],
+	Evaluates: [
+		"id", "groupId",
+		"evaluateRankIcon", "evaluatePoint",
+		"giveType1", "giveLinkId1", "giveAmount1",
+		"giveType2", "giveLinkId2", "giveAmount2",
+	],
 	ExtraProducts: ["id", "category", "enable", "param1", "param2", "param3", "payType", "linkId", "amount"],
 	ExploreBuilding: ["id", "type", "level", "localizationKeyDescription", "effectValue", "iconKey", "item1Id", "item1Count", "item2Id", "item2Count", "item3Id", "item3Count", "item4Id", "item4Count"],
 	ExploreComposite: ["id", "enable", "groupId", "requireBuildingId", "requireFlagId", "itemId", "localizationKeyDescription", "itemType", "item1Id", "item1Count", "item2Id", "item2Count", "item3Id", "item3Count", "item4Id", "item4Count", "initialViewable", "maxCount", "resetDay"],
@@ -137,6 +145,12 @@ const TABLE_KEYS: Record<string, string[]> = {
 		"expHeroFirst", "expHero", /* 角色魂能 */
 		"coinFirst", "coin", /* 庫倫 */
 		"expTimePieceFirst", "expTimePiece", /* 魂能 */
+	],
+	QuestAchievements: [
+		"id", "groupId",
+		"achievementGroupId",
+		"descriptionKey",
+		"giveType", "giveLinkId", "giveAmount",
 	],
 	MonsterSkill: ["id", "skillId", "skillLv", "skillrank", "skillKeyName", "skillKeyDescription", "iconKey"],
 	MonsterSpeciality: [
