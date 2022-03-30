@@ -9,8 +9,8 @@
               "技能的(Attack)屬性效果增加(-60)%"
             ],
             "條件": [
-              "本角色是指定目標",
-              "本角色的疊盾% >= 65",
+              "指定目標是玩家的一員",
+              "指定目標的疊盾% >= 65",
               "施展的技能效果中包含(Attack)屬性"
             ]
           }
@@ -21,7 +21,7 @@
     },
     "持續時間": 0,
     "最高層數": 99,
-    "標籤": ""
+    "標籤": "NotRemoveAfterBattle | Forever"
   },
   "$type": "BattleModel.Buff",
   "ReferenceBuffKeys": [
@@ -47,11 +47,13 @@
             ],
             "Conditions": [
               {
-                "$type": "BattleModel.CharacterEqual",
-                "left": {
-                  "$type": "BattleModel.ThisBuffOwner"
+                "$type": "BattleModel.CharacterInside",
+                "group": {
+                  "$type": "BattleModel.PVEPlayerTeam",
+                  "includeDead": false,
+                  "includeEmpty": false
                 },
-                "right": {
+                "left": {
                   "$type": "BattleModel.ThisSpecifiedTarget"
                 }
               },
@@ -60,7 +62,7 @@
                 "left": {
                   "$type": "BattleModel.IntCharaterField",
                   "character": {
-                    "$type": "BattleModel.ThisBuffOwner"
+                    "$type": "BattleModel.ThisSpecifiedTarget"
                   },
                   "targetField": 6
                 },
@@ -86,5 +88,5 @@
   "_maxLevel": 99,
   "_orderTable": {
   },
-  "_tag": 0
+  "_tag": 66
 }

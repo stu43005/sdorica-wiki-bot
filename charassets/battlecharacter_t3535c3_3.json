@@ -6,6 +6,9 @@
       "Arrive1": [
         "對施術者冷卻時間加1"
       ],
+      "CounterAttack": [
+        "對{\"$type\":\"BattleModel.BuffAssignedCharacter\"}穿透(攻擊力 x3)"
+      ],
       "Retreat1": [
         "對施術者{\"Tag\":65540,\"_keyString\":\"1\",\"$type\":\"BattleModel.DirectKillSkillEffect\"}"
       ],
@@ -13,62 +16,60 @@
         "對施術者的目標穿透(攻擊力 x1)"
       ],
       "S2": [
-        "對施術者的目標{\"Tag\":0,\"_keyString\":\"\",\"$type\":\"BattleModel.EmptyBuffSkillEffect\"}"
+        "對施術者賦予1回合3層bonusAttackPower(強化)、賦予1回合3層rage(怒氣)"
       ]
     },
     "技能組": {
-      "S1": [
-        {
-          "CoolDown": 2,
-          "技能列表": [
-            "施展S1"
-          ],
-          "條件": [
-          ],
-          "目標": "玩家的隨機角色"
-        }
-      ],
-      "S2": [
+      "CounterAttack_SufferS1Attack": [
         {
           "CoolDown": 0,
           "技能列表": [
             "施展S2",
+            "施展CounterAttack"
+          ],
+          "條件": [
+          ],
+          "目標": "施術者的對方中HP最低的角色"
+        }
+      ],
+      "S1": [
+        {
+          "CoolDown": 6,
+          "技能列表": [
             "施展S1"
           ],
           "條件": [
           ],
-          "目標": "玩家的隨機角色"
+          "目標": "施術者的對方中HP最低的角色"
         }
       ]
     },
-    "攻擊力": 60,
-    "攻擊力等級調整後": 56,
+    "攻擊力": 200,
+    "攻擊力等級調整後": 188,
     "敵人AI": "S1",
     "消魂設置": {
       "Type1": "S1",
       "Type2": "S2",
       "Type4": "S3"
     },
-    "疊盾": 200,
-    "疊盾等級調整後": 188,
+    "疊盾": 1200,
+    "疊盾等級調整後": 1132,
     "站位": "無",
-    "血量": 200,
-    "血量等級調整後": 188,
+    "血量": 1200,
+    "血量等級調整後": 1132,
     "被動Buff": [
-      "賦予永久h0058c3_1_P1(玩家施展一魂技能後，本角色立即進行1次行動。)",
-      "賦予永久true_damage(本角色會施展穿透攻擊。)",
-      "賦予永久3層defense_up_small(減傷)",
-      "賦予永久3層sharp(銳利)"
+      "賦予永久CounterAttack_SufferS1Attack",
+      "賦予永久true_damage(本角色會施展穿透攻擊。)"
     ],
     "起始CD": 2,
     "預設CD": 3
   },
   "$type": "BattleModel.EnemyCharacter",
   "ReferenceBuffKeys": [
-    "h0058c3_1_P1",
+    "CounterAttack_SufferS1Attack",
     "true_damage",
-    "defense_up_small",
-    "sharp"
+    "bonusAttackPower",
+    "rage"
   ],
   "ReferenceCharacterKeys": [
   ],
@@ -109,9 +110,9 @@
   ],
   "ReferenceVoiceSFXKeys": [
   ],
-  "_armorCapacity": 200,
+  "_armorCapacity": 1200,
   "_assistantSkill": null,
-  "_bloodCapacity": 200,
+  "_bloodCapacity": 1200,
   "_characterAI": {
     "$type": "BattleModel.SequenceEnemyAI",
     "OrderList": [
@@ -126,7 +127,7 @@
   "_masterRank": 1,
   "_passiveBuff": [
     {
-      "BuffId": "h0058c3_1_P1",
+      "BuffId": "CounterAttack_SufferS1Attack",
       "Forever": true,
       "LevelStack": 0,
       "OverwriteDuration": -1,
@@ -140,26 +141,10 @@
       "OverwriteDuration": -1,
       "UserDefineVariable": {
       }
-    },
-    {
-      "BuffId": "defense_up_small",
-      "Forever": true,
-      "LevelStack": 3,
-      "OverwriteDuration": -1,
-      "UserDefineVariable": {
-      }
-    },
-    {
-      "BuffId": "sharp",
-      "Forever": true,
-      "LevelStack": 3,
-      "OverwriteDuration": -1,
-      "UserDefineVariable": {
-      }
     }
   ],
   "_pose": "Stand",
-  "_power": 60,
+  "_power": 200,
   "_reviveCount": 0,
   "_skills": {
     "Arrive1": {
@@ -180,6 +165,36 @@
               "Tag": 1028,
               "_keyString": "",
               "_value": 1
+            }
+          ]
+        }
+      ]
+    },
+    "CounterAttack": {
+      "$type": "BattleModel.BattleSkill",
+      "_isFallBackIfEmptyTarget": false,
+      "_isResolveTargetEachUnit": false,
+      "_skillIdentifiers": [
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": false,
+          "multi": null,
+          "single": {
+            "$type": "BattleModel.BuffAssignedCharacter"
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.TrueDamageSkillEffect",
+              "Tag": 8193,
+              "_keyString": "1",
+              "_skillModifier": {
+                "_constant": 0,
+                "_parameter": {
+                  "$type": "BattleModel.SkillCasterPower",
+                  "basePower": false
+                },
+                "_ratio": 3
+              }
             }
           ]
         }
@@ -250,16 +265,31 @@
           "IsMultiple": false,
           "multi": null,
           "single": {
-            "$type": "BattleModel.EnemyAssignee",
-            "reference": {
-              "$type": "BattleModel.ThisSkillCaster"
-            }
+            "$type": "BattleModel.ThisSkillCaster"
           },
           "skillEffects": [
             {
-              "$type": "BattleModel.EmptyBuffSkillEffect",
-              "Tag": 0,
-              "_keyString": ""
+              "$type": "BattleModel.AddBuffSkillEffect",
+              "Tag": 132,
+              "_buffData": [
+                {
+                  "BuffId": "bonusAttackPower",
+                  "Forever": false,
+                  "LevelStack": 3,
+                  "OverwriteDuration": 1,
+                  "UserDefineVariable": {
+                  }
+                },
+                {
+                  "BuffId": "rage",
+                  "Forever": false,
+                  "LevelStack": 3,
+                  "OverwriteDuration": 1,
+                  "UserDefineVariable": {
+                  }
+                }
+              ],
+              "_keyString": "1"
             }
           ]
         }
@@ -267,37 +297,7 @@
     }
   },
   "_skillsetTable": {
-    "S1": {
-      "ComboList": [
-        {
-          "ConditionList": [
-          ],
-          "SkillList": [
-            {
-              "ConditionList": [
-              ],
-              "SkillID": "S1",
-              "_conditionalSequences": [
-              ],
-              "seq": "",
-              "t": null
-            }
-          ],
-          "_characterCoolDown": 2,
-          "assignTarget": {
-            "$type": "BattleModel.RandomOfChars",
-            "group": {
-              "$type": "BattleModel.PVEPlayerTeam",
-              "includeDead": false,
-              "includeEmpty": false
-            }
-          },
-          "icon": 0
-        }
-      ],
-      "_isViewSkillSet": false
-    },
-    "S2": {
+    "CounterAttack_SufferS1Attack": {
       "ComboList": [
         {
           "ConditionList": [
@@ -315,8 +315,13 @@
             {
               "ConditionList": [
               ],
-              "SkillID": "S1",
+              "SkillID": "CounterAttack",
               "_conditionalSequences": [
+                {
+                  "ConditionList": [
+                  ],
+                  "_sequenceId": "S1"
+                }
               ],
               "seq": "",
               "t": null
@@ -324,11 +329,55 @@
           ],
           "_characterCoolDown": 0,
           "assignTarget": {
-            "$type": "BattleModel.RandomOfChars",
+            "$type": "BattleModel.FieldMinChar",
+            "field": {
+              "$type": "BattleModel.IntFieldC",
+              "targetField": 0
+            },
             "group": {
-              "$type": "BattleModel.PVEPlayerTeam",
+              "$type": "BattleModel.OppositeTeamChars",
               "includeDead": false,
-              "includeEmpty": false
+              "includeEmpty": false,
+              "reference": {
+                "$type": "BattleModel.ThisSkillCaster"
+              }
+            }
+          },
+          "icon": 0
+        }
+      ],
+      "_isViewSkillSet": false
+    },
+    "S1": {
+      "ComboList": [
+        {
+          "ConditionList": [
+          ],
+          "SkillList": [
+            {
+              "ConditionList": [
+              ],
+              "SkillID": "S1",
+              "_conditionalSequences": [
+              ],
+              "seq": "",
+              "t": null
+            }
+          ],
+          "_characterCoolDown": 6,
+          "assignTarget": {
+            "$type": "BattleModel.FieldMinChar",
+            "field": {
+              "$type": "BattleModel.IntFieldC",
+              "targetField": 0
+            },
+            "group": {
+              "$type": "BattleModel.OppositeTeamChars",
+              "includeDead": false,
+              "includeEmpty": false,
+              "reference": {
+                "$type": "BattleModel.ThisSkillCaster"
+              }
             }
           },
           "icon": 0

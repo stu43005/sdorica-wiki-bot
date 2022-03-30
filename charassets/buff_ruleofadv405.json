@@ -2,79 +2,44 @@
   "$interpreted": {
     "Localization": "",
     "動作": {
-      "OnEachSkillSetEnd": {
-        "效果": [
-          {
-            "效果": [
-              "對施術者觸發S1"
-            ],
-            "條件": [
-              "{\"SourceType\":\"StoneAction\",\"$type\":\"BattleModel.SkillSetSourceTypeEqual\"}",
-              "施展的技能組是S1",
-              "施術者是玩家的一員",
-              "施展的技能效果中包含(Attack)屬性"
-            ]
-          },
-          {
-            "效果": [
-              "對施術者觸發S2"
-            ],
-            "條件": [
-              "{\"SourceType\":\"StoneAction\",\"$type\":\"BattleModel.SkillSetSourceTypeEqual\"}",
-              "施展的技能組是S2",
-              "施術者是玩家的一員",
-              "施展的技能效果中包含(Attack)屬性"
-            ]
-          },
-          {
-            "效果": [
-              "對施術者觸發S3"
-            ],
-            "條件": [
-              "{\"SourceType\":\"StoneAction\",\"$type\":\"BattleModel.SkillSetSourceTypeEqual\"}",
-              "施展的技能組是S3",
-              "施術者是玩家的一員",
-              "施展的技能效果中包含(Attack)屬性"
-            ]
-          },
-          {
-            "效果": [
-              "對施術者觸發E3"
-            ],
-            "條件": [
-              "{\"SourceType\":\"StoneAction\",\"$type\":\"BattleModel.SkillSetSourceTypeEqual\"}",
-              "施展的技能組是E3",
-              "施術者是玩家的一員",
-              "施展的技能效果中包含(Attack)屬性"
-            ]
-          },
-          {
-            "效果": [
-              "對施術者觸發E6"
-            ],
-            "條件": [
-              "{\"SourceType\":\"StoneAction\",\"$type\":\"BattleModel.SkillSetSourceTypeEqual\"}",
-              "施展的技能組是E6",
-              "施術者是玩家的一員",
-              "施展的技能效果中包含(Attack)屬性"
-            ]
-          }
-        ],
-        "條件": [
-        ]
-      },
       "OnEachSkillTargetEffect": {
         "效果": [
           {
             "效果": [
-              "技能的(Attack)屬性效果增加(-30)%"
+              "技能的(Attack)屬性效果增加(20)%"
             ],
             "條件": [
-              "施術者 {\"Group\":{\"includeDead\":false,\"includeEmpty\":false,\"$type\":\"BattleModel.PVEPlayerTeam\"},\"$type\":\"BattleModel.CharacterInsideC\"}"
+              "{\"EraseType\":1,\"$type\":\"BattleModel.ConsumedStoneEraseTypeEqual\"}"
+            ]
+          },
+          {
+            "效果": [
+              "技能的(Attack)屬性效果增加(40)%"
+            ],
+            "條件": [
+              "({\"EraseType\":3,\"$type\":\"BattleModel.ConsumedStoneEraseTypeEqual\"}) 或 ({\"EraseType\":4,\"$type\":\"BattleModel.ConsumedStoneEraseTypeEqual\"})"
+            ]
+          },
+          {
+            "效果": [
+              "技能的(Attack)屬性效果增加(80)%"
+            ],
+            "條件": [
+              "(({\"EraseType\":5,\"$type\":\"BattleModel.ConsumedStoneEraseTypeEqual\"}) 或 ({\"EraseType\":6,\"$type\":\"BattleModel.ConsumedStoneEraseTypeEqual\"})) 或 ({\"EraseType\":2,\"$type\":\"BattleModel.ConsumedStoneEraseTypeEqual\"})"
+            ]
+          },
+          {
+            "效果": [
+              "技能的(Attack)屬性效果增加(160)%"
+            ],
+            "條件": [
+              "{\"EraseType\":7,\"$type\":\"BattleModel.ConsumedStoneEraseTypeEqual\"}"
             ]
           }
         ],
         "條件": [
+          "{\"SourceType\":\"StoneAction\",\"$type\":\"BattleModel.SkillSetSourceTypeEqual\"}",
+          "施術者是玩家的一員"
         ]
       }
     },
@@ -99,339 +64,119 @@
                   "property": 1,
                   "value": {
                     "$type": "BattleModel.ConstanctInt",
-                    "constant": -30
+                    "constant": 20
                   }
                 }
               }
             ],
             "Conditions": [
               {
-                "$type": "BattleModel.CharacterCondition",
-                "character": {
-                  "$type": "BattleModel.ThisSkillCaster"
-                },
-                "condition": {
-                  "$type": "BattleModel.CharacterInsideC",
-                  "Group": {
-                    "$type": "BattleModel.PVEPlayerTeam",
-                    "includeDead": false,
-                    "includeEmpty": false
+                "$type": "BattleModel.ConsumedStoneEraseTypeEqual",
+                "EraseType": 1
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.BonusEffectForSkillProperty",
+                  "isPercent": true,
+                  "property": 1,
+                  "value": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 40
                   }
                 }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.OrConditions",
+                "cond1": {
+                  "$type": "BattleModel.ConsumedStoneEraseTypeEqual",
+                  "EraseType": 3
+                },
+                "cond2": {
+                  "$type": "BattleModel.ConsumedStoneEraseTypeEqual",
+                  "EraseType": 4
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.BonusEffectForSkillProperty",
+                  "isPercent": true,
+                  "property": 1,
+                  "value": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 80
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.OrConditions",
+                "cond1": {
+                  "$type": "BattleModel.OrConditions",
+                  "cond1": {
+                    "$type": "BattleModel.ConsumedStoneEraseTypeEqual",
+                    "EraseType": 5
+                  },
+                  "cond2": {
+                    "$type": "BattleModel.ConsumedStoneEraseTypeEqual",
+                    "EraseType": 6
+                  }
+                },
+                "cond2": {
+                  "$type": "BattleModel.ConsumedStoneEraseTypeEqual",
+                  "EraseType": 2
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.BonusEffectForSkillProperty",
+                  "isPercent": true,
+                  "property": 1,
+                  "value": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 160
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.ConsumedStoneEraseTypeEqual",
+                "EraseType": 7
               }
             ]
           }
         ],
         "Conditions": [
-        ]
-      }
-    },
-    {
-      "Key": 8,
-      "Value": {
-        "Actions": [
           {
-            "Actions": [
-              {
-                "TargetField": {
-                  "$type": "BattleModel.OperateCharacter",
-                  "character": {
-                    "$type": "BattleModel.ThisSkillCaster"
-                  },
-                  "operation": {
-                    "$type": "BattleModel.CastSkillSet",
-                    "AssignParameter": {
-                      "AssignCharacter": {
-                        "$type": "BattleModel.NoneCharacter"
-                      },
-                      "AssignCharacterGroup": {
-                        "$type": "BattleModel.NoneCharacters"
-                      },
-                      "AssignInteger": {
-                        "$type": "BattleModel.ConstanctInt",
-                        "constant": 0
-                      },
-                      "AssignIntegerGroup": {
-                        "$type": "BattleModel.ConstanctIntegerGroup",
-                        "Group": [
-                        ]
-                      }
-                    },
-                    "UseAssignParameter": false,
-                    "resetCasterCD": false,
-                    "skillsetId": "S1"
-                  }
-                }
-              }
-            ],
-            "Conditions": [
-              {
-                "$type": "BattleModel.SkillSetSourceTypeEqual",
-                "SourceType": "StoneAction"
-              },
-              {
-                "$type": "BattleModel.ThisSkillSetIdEqual",
-                "id": "S1"
-              },
-              {
-                "$type": "BattleModel.CharacterInside",
-                "group": {
-                  "$type": "BattleModel.PVEPlayerTeam",
-                  "includeDead": false,
-                  "includeEmpty": false
-                },
-                "left": {
-                  "$type": "BattleModel.ThisSkillCaster"
-                }
-              },
-              {
-                "$type": "BattleModel.ThisSkillEffectTagContains",
-                "containsAll": 1
-              }
-            ]
+            "$type": "BattleModel.SkillSetSourceTypeEqual",
+            "SourceType": "StoneAction"
           },
           {
-            "Actions": [
-              {
-                "TargetField": {
-                  "$type": "BattleModel.OperateCharacter",
-                  "character": {
-                    "$type": "BattleModel.ThisSkillCaster"
-                  },
-                  "operation": {
-                    "$type": "BattleModel.CastSkillSet",
-                    "AssignParameter": {
-                      "AssignCharacter": {
-                        "$type": "BattleModel.NoneCharacter"
-                      },
-                      "AssignCharacterGroup": {
-                        "$type": "BattleModel.NoneCharacters"
-                      },
-                      "AssignInteger": {
-                        "$type": "BattleModel.ConstanctInt",
-                        "constant": 0
-                      },
-                      "AssignIntegerGroup": {
-                        "$type": "BattleModel.ConstanctIntegerGroup",
-                        "Group": [
-                        ]
-                      }
-                    },
-                    "UseAssignParameter": false,
-                    "resetCasterCD": false,
-                    "skillsetId": "S2"
-                  }
-                }
-              }
-            ],
-            "Conditions": [
-              {
-                "$type": "BattleModel.SkillSetSourceTypeEqual",
-                "SourceType": "StoneAction"
-              },
-              {
-                "$type": "BattleModel.ThisSkillSetIdEqual",
-                "id": "S2"
-              },
-              {
-                "$type": "BattleModel.CharacterInside",
-                "group": {
-                  "$type": "BattleModel.PVEPlayerTeam",
-                  "includeDead": false,
-                  "includeEmpty": false
-                },
-                "left": {
-                  "$type": "BattleModel.ThisSkillCaster"
-                }
-              },
-              {
-                "$type": "BattleModel.ThisSkillEffectTagContains",
-                "containsAll": 1
-              }
-            ]
-          },
-          {
-            "Actions": [
-              {
-                "TargetField": {
-                  "$type": "BattleModel.OperateCharacter",
-                  "character": {
-                    "$type": "BattleModel.ThisSkillCaster"
-                  },
-                  "operation": {
-                    "$type": "BattleModel.CastSkillSet",
-                    "AssignParameter": {
-                      "AssignCharacter": {
-                        "$type": "BattleModel.NoneCharacter"
-                      },
-                      "AssignCharacterGroup": {
-                        "$type": "BattleModel.NoneCharacters"
-                      },
-                      "AssignInteger": {
-                        "$type": "BattleModel.ConstanctInt",
-                        "constant": 0
-                      },
-                      "AssignIntegerGroup": {
-                        "$type": "BattleModel.ConstanctIntegerGroup",
-                        "Group": [
-                        ]
-                      }
-                    },
-                    "UseAssignParameter": false,
-                    "resetCasterCD": false,
-                    "skillsetId": "S3"
-                  }
-                }
-              }
-            ],
-            "Conditions": [
-              {
-                "$type": "BattleModel.SkillSetSourceTypeEqual",
-                "SourceType": "StoneAction"
-              },
-              {
-                "$type": "BattleModel.ThisSkillSetIdEqual",
-                "id": "S3"
-              },
-              {
-                "$type": "BattleModel.CharacterInside",
-                "group": {
-                  "$type": "BattleModel.PVEPlayerTeam",
-                  "includeDead": false,
-                  "includeEmpty": false
-                },
-                "left": {
-                  "$type": "BattleModel.ThisSkillCaster"
-                }
-              },
-              {
-                "$type": "BattleModel.ThisSkillEffectTagContains",
-                "containsAll": 1
-              }
-            ]
-          },
-          {
-            "Actions": [
-              {
-                "TargetField": {
-                  "$type": "BattleModel.OperateCharacter",
-                  "character": {
-                    "$type": "BattleModel.ThisSkillCaster"
-                  },
-                  "operation": {
-                    "$type": "BattleModel.CastSkillSet",
-                    "AssignParameter": {
-                      "AssignCharacter": {
-                        "$type": "BattleModel.NoneCharacter"
-                      },
-                      "AssignCharacterGroup": {
-                        "$type": "BattleModel.NoneCharacters"
-                      },
-                      "AssignInteger": {
-                        "$type": "BattleModel.ConstanctInt",
-                        "constant": 0
-                      },
-                      "AssignIntegerGroup": {
-                        "$type": "BattleModel.ConstanctIntegerGroup",
-                        "Group": [
-                        ]
-                      }
-                    },
-                    "UseAssignParameter": false,
-                    "resetCasterCD": false,
-                    "skillsetId": "E3"
-                  }
-                }
-              }
-            ],
-            "Conditions": [
-              {
-                "$type": "BattleModel.SkillSetSourceTypeEqual",
-                "SourceType": "StoneAction"
-              },
-              {
-                "$type": "BattleModel.ThisSkillSetIdEqual",
-                "id": "E3"
-              },
-              {
-                "$type": "BattleModel.CharacterInside",
-                "group": {
-                  "$type": "BattleModel.PVEPlayerTeam",
-                  "includeDead": false,
-                  "includeEmpty": false
-                },
-                "left": {
-                  "$type": "BattleModel.ThisSkillCaster"
-                }
-              },
-              {
-                "$type": "BattleModel.ThisSkillEffectTagContains",
-                "containsAll": 1
-              }
-            ]
-          },
-          {
-            "Actions": [
-              {
-                "TargetField": {
-                  "$type": "BattleModel.OperateCharacter",
-                  "character": {
-                    "$type": "BattleModel.ThisSkillCaster"
-                  },
-                  "operation": {
-                    "$type": "BattleModel.CastSkillSet",
-                    "AssignParameter": {
-                      "AssignCharacter": {
-                        "$type": "BattleModel.NoneCharacter"
-                      },
-                      "AssignCharacterGroup": {
-                        "$type": "BattleModel.NoneCharacters"
-                      },
-                      "AssignInteger": {
-                        "$type": "BattleModel.ConstanctInt",
-                        "constant": 0
-                      },
-                      "AssignIntegerGroup": {
-                        "$type": "BattleModel.ConstanctIntegerGroup",
-                        "Group": [
-                        ]
-                      }
-                    },
-                    "UseAssignParameter": false,
-                    "resetCasterCD": false,
-                    "skillsetId": "E6"
-                  }
-                }
-              }
-            ],
-            "Conditions": [
-              {
-                "$type": "BattleModel.SkillSetSourceTypeEqual",
-                "SourceType": "StoneAction"
-              },
-              {
-                "$type": "BattleModel.ThisSkillSetIdEqual",
-                "id": "E6"
-              },
-              {
-                "$type": "BattleModel.CharacterInside",
-                "group": {
-                  "$type": "BattleModel.PVEPlayerTeam",
-                  "includeDead": false,
-                  "includeEmpty": false
-                },
-                "left": {
-                  "$type": "BattleModel.ThisSkillCaster"
-                }
-              },
-              {
-                "$type": "BattleModel.ThisSkillEffectTagContains",
-                "containsAll": 1
-              }
-            ]
+            "$type": "BattleModel.CharacterInside",
+            "group": {
+              "$type": "BattleModel.PVEPlayerTeam",
+              "includeDead": true,
+              "includeEmpty": false
+            },
+            "left": {
+              "$type": "BattleModel.ThisSkillCaster"
+            }
           }
-        ],
-        "Conditions": [
         ]
       }
     }

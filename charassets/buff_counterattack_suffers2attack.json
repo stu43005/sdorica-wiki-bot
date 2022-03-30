@@ -6,8 +6,8 @@
         "效果": [
           {
             "效果": [
-              "對本狀態的變數一增加1",
-              "對本角色觸發CounterAttack"
+              "對本狀態的變數一改為0",
+              "對本角色觸發CounterAttack_SufferS2Attack"
             ],
             "條件": [
               "本狀態的變數一 == 1",
@@ -25,27 +25,15 @@
               "對本狀態的變數一增加1"
             ],
             "條件": [
-              "本角色是指定目標",
-              "施術者 擁有任何一個 有在generalNerf[弱化, 易傷, 撕裂, 中毒, 暈眩, 汙染, 出血, 汙染, 寒冷, 燃燒]列表內 的狀態",
-              "施展的技能效果中包含(Attack)屬性",
-              "本狀態的變數一 == 0"
             ]
           }
         ],
         "條件": [
-        ]
-      },
-      "OnTurnBegin": {
-        "效果": [
-          {
-            "效果": [
-              "對本狀態的變數一改為0"
-            ],
-            "條件": [
-            ]
-          }
-        ],
-        "條件": [
+          "指定目標是敵人的一員",
+          "施術者是玩家的一員",
+          "施展的技能效果中包含(Attack)屬性",
+          "施展的技能組是S2",
+          "本狀態的變數一 == 0"
         ]
       }
     },
@@ -55,23 +43,10 @@
   },
   "$type": "BattleModel.Buff",
   "ReferenceBuffKeys": [
-    "nerf_damage_small",
-    "weak",
-    "tearing",
-    "poison",
-    "stun",
-    "infection_maintain",
-    "bleeding_maintain",
-    "infection",
-    "frosted",
-    "burn",
-    "tearing_trigger",
-    "tearing_trigger_alert",
-    "poison_trigger"
   ],
   "_actionTable": [
     {
-      "Key": 1,
+      "Key": 8,
       "Value": {
         "Actions": [
           {
@@ -87,121 +62,6 @@
                     "value": {
                       "$type": "BattleModel.ConstanctInt",
                       "constant": 0
-                    }
-                  }
-                }
-              }
-            ],
-            "Conditions": [
-            ]
-          }
-        ],
-        "Conditions": [
-        ]
-      }
-    },
-    {
-      "Key": 1024,
-      "Value": {
-        "Actions": [
-          {
-            "Actions": [
-              {
-                "TargetField": {
-                  "$type": "BattleModel.OperateThisBuff",
-                  "operation": {
-                    "$type": "BattleModel.SetBuffField",
-                    "lastIndepedentStack": false,
-                    "setOperator": 1,
-                    "targetField": 4,
-                    "value": {
-                      "$type": "BattleModel.ConstanctInt",
-                      "constant": 1
-                    }
-                  }
-                }
-              }
-            ],
-            "Conditions": [
-              {
-                "$type": "BattleModel.CharacterEqual",
-                "left": {
-                  "$type": "BattleModel.ThisBuffOwner"
-                },
-                "right": {
-                  "$type": "BattleModel.ThisSpecifiedTarget"
-                }
-              },
-              {
-                "$type": "BattleModel.CharacterCondition",
-                "character": {
-                  "$type": "BattleModel.ThisSkillCaster"
-                },
-                "condition": {
-                  "$type": "BattleModel.HasAnyConditionalBuff",
-                  "buffCondition": {
-                    "$type": "BattleModel.CheckBuffBelongLabel",
-                    "BuffLabel": {
-                      "BuffIdList": [
-                        "nerf_damage_small",
-                        "weak",
-                        "tearing",
-                        "poison",
-                        "stun",
-                        "infection_maintain",
-                        "bleeding_maintain",
-                        "infection",
-                        "frosted",
-                        "burn"
-                      ],
-                      "BuffLabel": "generalNerf"
-                    }
-                  }
-                }
-              },
-              {
-                "$type": "BattleModel.ThisSkillEffectTagContains",
-                "containsAll": 1
-              },
-              {
-                "$type": "BattleModel.IntCompare",
-                "left": {
-                  "$type": "BattleModel.IntBuffField",
-                  "buff": {
-                    "$type": "BattleModel.ThisBuff"
-                  },
-                  "targetField": 4
-                },
-                "op": 0,
-                "right": {
-                  "$type": "BattleModel.ConstanctInt",
-                  "constant": 0
-                }
-              }
-            ]
-          }
-        ],
-        "Conditions": [
-        ]
-      }
-    },
-    {
-      "Key": 8,
-      "Value": {
-        "Actions": [
-          {
-            "Actions": [
-              {
-                "TargetField": {
-                  "$type": "BattleModel.OperateThisBuff",
-                  "operation": {
-                    "$type": "BattleModel.SetBuffField",
-                    "lastIndepedentStack": false,
-                    "setOperator": 1,
-                    "targetField": 4,
-                    "value": {
-                      "$type": "BattleModel.ConstanctInt",
-                      "constant": 1
                     }
                   }
                 }
@@ -233,7 +93,7 @@
                     },
                     "UseAssignParameter": true,
                     "resetCasterCD": false,
-                    "skillsetId": "CounterAttack"
+                    "skillsetId": "CounterAttack_SufferS2Attack"
                   }
                 }
               }
@@ -289,6 +149,81 @@
           }
         ],
         "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 1024,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 1,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 1
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+            ]
+          }
+        ],
+        "Conditions": [
+          {
+            "$type": "BattleModel.CharacterInside",
+            "group": {
+              "$type": "BattleModel.PVEEnemyTeam",
+              "includeDead": true,
+              "includeEmpty": false
+            },
+            "left": {
+              "$type": "BattleModel.ThisSpecifiedTarget"
+            }
+          },
+          {
+            "$type": "BattleModel.CharacterInside",
+            "group": {
+              "$type": "BattleModel.PVEPlayerTeam",
+              "includeDead": true,
+              "includeEmpty": false
+            },
+            "left": {
+              "$type": "BattleModel.ThisSkillCaster"
+            }
+          },
+          {
+            "$type": "BattleModel.ThisSkillEffectTagContains",
+            "containsAll": 1
+          },
+          {
+            "$type": "BattleModel.ThisSkillSetIdEqual",
+            "id": "S2"
+          },
+          {
+            "$type": "BattleModel.IntCompare",
+            "left": {
+              "$type": "BattleModel.IntBuffField",
+              "buff": {
+                "$type": "BattleModel.ThisBuff"
+              },
+              "targetField": 4
+            },
+            "op": 0,
+            "right": {
+              "$type": "BattleModel.ConstanctInt",
+              "constant": 0
+            }
+          }
         ]
       }
     }

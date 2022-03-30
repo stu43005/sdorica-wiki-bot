@@ -1,6 +1,6 @@
 {
   "$interpreted": {
-    "Localization": "t3458c4_1",
+    "Localization": "b0045c2_7",
     "復活魂芯數": 0,
     "技能": {
       "Arrive1": [
@@ -10,13 +10,27 @@
         "對施術者{\"Tag\":65540,\"_keyString\":\"1\",\"$type\":\"BattleModel.DirectKillSkillEffect\"}"
       ],
       "S1": [
-        "對施術者的目標攻擊(攻擊力 x1)"
+        "對施術者的目標破甲(攻擊力 x0.75)"
+      ],
+      "S2": [
+        "對{\"$type\":\"BattleModel.BuffAssignedCharacter\"}破甲(攻擊力 x2.25)"
       ]
     },
     "技能組": {
+      "CounterArmorBreak": [
+        {
+          "CoolDown": 0,
+          "技能列表": [
+            "施展S2"
+          ],
+          "條件": [
+          ],
+          "目標": ""
+        }
+      ],
       "S1": [
         {
-          "CoolDown": 3,
+          "CoolDown": 4,
           "技能列表": [
             "施展S1"
           ],
@@ -34,73 +48,62 @@
       "Type2": "S2",
       "Type4": "S3"
     },
-    "疊盾": 300,
-    "疊盾等級調整後": 283,
+    "疊盾": 500,
+    "疊盾等級調整後": 471,
     "站位": "無",
-    "血量": 300,
-    "血量等級調整後": 283,
+    "血量": 500,
+    "血量等級調整後": 471,
     "被動Buff": [
-      "賦予永久1層sharp(銳利)",
-      "賦予永久taunt(嘲諷)",
-      "賦予永久Jealous(嫉妒)"
+      "賦予永久CounterAttack_ArmorBreak"
     ],
-    "起始CD": 0,
-    "預設CD": 2
+    "起始CD": 1,
+    "預設CD": 4
   },
   "$type": "BattleModel.EnemyCharacter",
   "ReferenceBuffKeys": [
-    "sharp",
-    "taunt",
-    "Jealous"
+    "CounterAttack_ArmorBreak"
   ],
   "ReferenceCharacterKeys": [
   ],
   "ReferenceEffectKeys": [
-    "h0127c2_idle_fire",
-    "CS_RedEye"
+    "Common_SmokeDash01_B",
+    "Common_SmokeRun03_B",
+    "Common_HitDash01_B",
+    "Common_SmokeDown01_B",
+    "Common_SmokeRun02_A"
   ],
   "ReferenceEmoIconKeys": [
   ],
   "ReferenceMusicKeys": [
   ],
   "ReferenceSFXKeys": [
+    "voice_013",
+    "step_rock_010",
+    "rock_010",
+    "step_rock_011",
+    "step_rock_012",
+    "step_rock_013"
   ],
   "ReferenceVoiceSFXKeys": [
   ],
-  "_armorCapacity": 300,
+  "_armorCapacity": 500,
   "_assistantSkill": null,
-  "_bloodCapacity": 300,
+  "_bloodCapacity": 500,
   "_characterAI": {
     "$type": "BattleModel.SequenceEnemyAI",
     "OrderList": [
       "S1"
     ]
   },
-  "_defaultCoolDown": 2,
-  "_initialCoolDown": 0,
+  "_defaultCoolDown": 4,
+  "_initialCoolDown": 1,
   "_levelStartBuff": [
   ],
-  "_mass": 1,
-  "_masterRank": 0,
+  "_mass": 3,
+  "_masterRank": 1,
   "_passiveBuff": [
     {
-      "BuffId": "sharp",
-      "Forever": true,
-      "LevelStack": 1,
-      "OverwriteDuration": -1,
-      "UserDefineVariable": {
-      }
-    },
-    {
-      "BuffId": "taunt",
-      "Forever": true,
-      "LevelStack": 0,
-      "OverwriteDuration": -1,
-      "UserDefineVariable": {
-      }
-    },
-    {
-      "BuffId": "Jealous",
+      "BuffId": "CounterAttack_ArmorBreak",
       "Forever": true,
       "LevelStack": 0,
       "OverwriteDuration": -1,
@@ -108,7 +111,7 @@
       }
     }
   ],
-  "_pose": "Stand",
+  "_pose": "Prone",
   "_power": 60,
   "_reviveCount": 0,
   "_skills": {
@@ -174,9 +177,9 @@
           },
           "skillEffects": [
             {
-              "$type": "BattleModel.HpDamageSkillEffect",
-              "Tag": 9,
-              "_keyString": "1",
+              "$type": "BattleModel.AmrBreakSkillEffect",
+              "Tag": 17,
+              "_keyString": "0",
               "_skillModifier": {
                 "_constant": 0,
                 "_parameter": {
@@ -189,9 +192,67 @@
           ]
         }
       ]
+    },
+    "S2": {
+      "$type": "BattleModel.BattleSkill",
+      "_isFallBackIfEmptyTarget": false,
+      "_isResolveTargetEachUnit": false,
+      "_skillIdentifiers": [
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": false,
+          "multi": null,
+          "single": {
+            "$type": "BattleModel.BuffAssignedCharacter"
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.AmrBreakSkillEffect",
+              "Tag": 17,
+              "_keyString": "1",
+              "_skillModifier": {
+                "_constant": 0,
+                "_parameter": {
+                  "$type": "BattleModel.SkillCasterPower",
+                  "basePower": false
+                },
+                "_ratio": 3
+              }
+            }
+          ]
+        }
+      ]
     }
   },
   "_skillsetTable": {
+    "CounterArmorBreak": {
+      "ComboList": [
+        {
+          "ConditionList": [
+          ],
+          "SkillList": [
+            {
+              "ConditionList": [
+              ],
+              "SkillID": "S2",
+              "_conditionalSequences": [
+                {
+                  "ConditionList": [
+                  ],
+                  "_sequenceId": "S1_I1"
+                }
+              ],
+              "seq": "",
+              "t": null
+            }
+          ],
+          "_characterCoolDown": 0,
+          "assignTarget": null,
+          "icon": 0
+        }
+      ],
+      "_isViewSkillSet": false
+    },
     "S1": {
       "ComboList": [
         {
@@ -203,12 +264,17 @@
               ],
               "SkillID": "S1",
               "_conditionalSequences": [
+                {
+                  "ConditionList": [
+                  ],
+                  "_sequenceId": "S1_I1"
+                }
               ],
               "seq": "",
               "t": null
             }
           ],
-          "_characterCoolDown": 3,
+          "_characterCoolDown": 4,
           "assignTarget": {
             "$type": "BattleModel.FrontOfChars",
             "group": {

@@ -2,14 +2,50 @@
   "$interpreted": {
     "Localization": "",
     "動作": {
+      "": {
+        "效果": [
+          {
+            "效果": [
+              "對本狀態的變數一增加{\"$type\":\"BattleModel.CountOfConsumedStone\"}"
+            ],
+            "條件": [
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
       "OnEachSkillTargetEffect": {
         "效果": [
           {
             "效果": [
-              "技能的(Attack)屬性效果增加((({\"group\":{\"includeDead\":false,\"includeEmpty\":false,\"$type\":\"BattleModel.PVEPlayerTeam\"},\"$type\":\"BattleModel.AllBuffsOnCharGroup\"}中有在generalBuff[強化, 減傷, 靈巧, 轉盾, 盾轉, 再生, 怒氣, 戰意, 領袖]列表內的Buff的狀態數量 + {\"group\":{\"includeDead\":false,\"includeEmpty\":false,\"$type\":\"BattleModel.PVEPlayerTeam\"},\"$type\":\"BattleModel.AllBuffsOnCharGroup\"}中有在generalNerf[弱化, 易傷, 撕裂, 中毒, 暈眩, 汙染, 出血, 汙染, 寒冷, 燃燒]列表內的Buff的狀態數量) * -30))%"
+              "技能的(Attack)屬性效果增加(100)%"
             ],
             "條件": [
-              "施術者是玩家的一員"
+              "本狀態的變數一 >= 8"
+            ]
+          },
+          {
+            "效果": [
+              "技能的(Attack)屬性效果增加(-50)%"
+            ],
+            "條件": [
+              "本狀態的變數一 < 8"
+            ]
+          }
+        ],
+        "條件": [
+          "施術者是玩家的一員"
+        ]
+      },
+      "OnTurnBegin": {
+        "效果": [
+          {
+            "效果": [
+              "對本狀態的變數一改為0"
+            ],
+            "條件": [
+              "(目前戰鬥回合數 == 0) 且 (目前回合輪到敵人首位)"
             ]
           }
         ],
@@ -23,39 +59,6 @@
   },
   "$type": "BattleModel.Buff",
   "ReferenceBuffKeys": [
-    "bonusAttackPower",
-    "defense_up_small",
-    "dexterity",
-    "damage_absorption",
-    "ArmorToBlood",
-    "regeneration",
-    "rage",
-    "warfare",
-    "leader",
-    "nerf_damage_small",
-    "weak",
-    "tearing",
-    "poison",
-    "stun",
-    "infection_maintain",
-    "bleeding_maintain",
-    "infection",
-    "frosted",
-    "burn",
-    "dexterity_trigger",
-    "dexterity_fightback_0",
-    "dexterity_fightback_1",
-    "dexterity_fightback_2",
-    "dexterity_fightback_3",
-    "dexterity_fightback_4",
-    "b0028sx_dodge",
-    "damage_absorption_trigger",
-    "ArmorToBlood_trigger",
-    "regeneration_trigger",
-    "follower",
-    "tearing_trigger",
-    "tearing_trigger_alert",
-    "poison_trigger"
   ],
   "_actionTable": [
     {
@@ -70,76 +73,95 @@
                   "isPercent": true,
                   "property": 1,
                   "value": {
-                    "$type": "BattleModel.MultiplyInt",
-                    "left": {
-                      "$type": "BattleModel.PlusInt",
-                      "left": {
-                        "$type": "BattleModel.CountOfBuffGroup",
-                        "group": {
-                          "$type": "BattleModel.BuffGroupWhere",
-                          "condition": {
-                            "$type": "BattleModel.CheckBuffBelongLabel",
-                            "BuffLabel": {
-                              "BuffIdList": [
-                                "bonusAttackPower",
-                                "defense_up_small",
-                                "dexterity",
-                                "damage_absorption",
-                                "ArmorToBlood",
-                                "regeneration",
-                                "rage",
-                                "warfare",
-                                "leader"
-                              ],
-                              "BuffLabel": "generalBuff"
-                            }
-                          },
-                          "group": {
-                            "$type": "BattleModel.AllBuffsOnCharGroup",
-                            "group": {
-                              "$type": "BattleModel.PVEPlayerTeam",
-                              "includeDead": false,
-                              "includeEmpty": false
-                            }
-                          }
-                        }
-                      },
-                      "right": {
-                        "$type": "BattleModel.CountOfBuffGroup",
-                        "group": {
-                          "$type": "BattleModel.BuffGroupWhere",
-                          "condition": {
-                            "$type": "BattleModel.CheckBuffBelongLabel",
-                            "BuffLabel": {
-                              "BuffIdList": [
-                                "nerf_damage_small",
-                                "weak",
-                                "tearing",
-                                "poison",
-                                "stun",
-                                "infection_maintain",
-                                "bleeding_maintain",
-                                "infection",
-                                "frosted",
-                                "burn"
-                              ],
-                              "BuffLabel": "generalNerf"
-                            }
-                          },
-                          "group": {
-                            "$type": "BattleModel.AllBuffsOnCharGroup",
-                            "group": {
-                              "$type": "BattleModel.PVEPlayerTeam",
-                              "includeDead": false,
-                              "includeEmpty": false
-                            }
-                          }
-                        }
-                      }
-                    },
-                    "right": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 100
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.ThisBuff"
+                  },
+                  "targetField": 4
+                },
+                "op": 4,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 8
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.BonusEffectForSkillProperty",
+                  "isPercent": true,
+                  "property": 1,
+                  "value": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": -50
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.ThisBuff"
+                  },
+                  "targetField": 4
+                },
+                "op": 1,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 8
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+          {
+            "$type": "BattleModel.CharacterInside",
+            "group": {
+              "$type": "BattleModel.PVEPlayerTeam",
+              "includeDead": false,
+              "includeEmpty": false
+            },
+            "left": {
+              "$type": "BattleModel.ThisSkillCaster"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "Key": 1,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 4,
+                    "value": {
                       "$type": "BattleModel.ConstanctInt",
-                      "constant": -30
+                      "constant": 0
                     }
                   }
                 }
@@ -147,16 +169,62 @@
             ],
             "Conditions": [
               {
-                "$type": "BattleModel.CharacterInside",
-                "group": {
-                  "$type": "BattleModel.PVEPlayerTeam",
-                  "includeDead": false,
-                  "includeEmpty": false
+                "$type": "BattleModel.AndConditions",
+                "cond1": {
+                  "$type": "BattleModel.IntCompare",
+                  "left": {
+                    "$type": "BattleModel.BattleActionRecordValue",
+                    "RecordValue": {
+                      "$type": "BattleModel.ThisBattleTurnCount"
+                    }
+                  },
+                  "op": 0,
+                  "right": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 0
+                  }
                 },
-                "left": {
-                  "$type": "BattleModel.ThisSkillCaster"
+                "cond2": {
+                  "$type": "BattleModel.CurrentTurnBelongsTo",
+                  "character": {
+                    "$type": "BattleModel.FrontOfChars",
+                    "group": {
+                      "$type": "BattleModel.PVEEnemyTeam",
+                      "includeDead": true,
+                      "includeEmpty": true
+                    }
+                  }
                 }
               }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 33554432,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 1,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.CountOfConsumedStone"
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
             ]
           }
         ],

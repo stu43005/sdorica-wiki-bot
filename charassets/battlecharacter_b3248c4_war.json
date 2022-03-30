@@ -4,24 +4,36 @@
     "復活魂芯數": 0,
     "技能": {
       "Arrive1": [
-        "對施術者冷卻時間加1"
+        "對施術者"
       ],
       "Retreat1": [
         "對施術者{\"Tag\":65540,\"_keyString\":\"1\",\"$type\":\"BattleModel.DirectKillSkillEffect\"}"
       ],
       "S1": [
-        "對玩家全體穿透(攻擊力 x1)"
+        "對玩家全體攻擊(攻擊力 x1.5)、賦予2回合1層nerf_damage_small(弱化)",
+        "對施術者{\"Ratio\":{\"constant\":1,\"$type\":\"BattleModel.ConstanctFloat\"},\"Tag\":34820,\"_keyString\":\"2\",\"$type\":\"BattleModel.FixedAmrReduceRatioSkillEffect\"}、移除狀態sharp(銳利)、移除狀態b3248c4_war_skillLoop"
       ],
       "S2": [
-        "對玩家全體賦予3回合1層poison(中毒)、賦予3回合1層infection(汙染)"
+        "對玩家全體賦予1回合1層poison(中毒)、攻擊(攻擊力 x1)",
+        "對施術者疊盾(攻擊力 x60)、賦予永久b3248c4_war_skillLoop"
       ]
     },
     "技能組": {
       "S1": [
         {
-          "CoolDown": 4,
+          "CoolDown": 2,
           "技能列表": [
             "施展S1"
+          ],
+          "條件": [
+            "施術者擁有b3248c4_war_skillLoop狀態"
+          ],
+          "目標": ""
+        },
+        {
+          "CoolDown": 3,
+          "技能列表": [
+            "施展S2"
           ],
           "條件": [
           ],
@@ -30,7 +42,7 @@
       ],
       "S2": [
         {
-          "CoolDown": 4,
+          "CoolDown": 2,
           "技能列表": [
             "施展S2"
           ],
@@ -40,30 +52,36 @@
         }
       ]
     },
-    "攻擊力": 150,
-    "攻擊力等級調整後": 141,
-    "敵人AI": "S1 -> S2",
+    "攻擊力": 50,
+    "攻擊力等級調整後": 47,
+    "敵人AI": "S1",
     "消魂設置": {
       "Type1": "S1",
       "Type2": "S2",
       "Type4": "S3"
     },
-    "疊盾": 1000,
-    "疊盾等級調整後": 943,
+    "疊盾": 800,
+    "疊盾等級調整後": 754,
     "站位": "無",
-    "血量": 1000,
-    "血量等級調整後": 943,
+    "血量": 7000,
+    "血量等級調整後": 6603,
     "被動Buff": [
-      "賦予永久true_damage(本角色會施展穿透攻擊。)"
+      "賦予永久shell(尖銳外殼)",
+      "賦予永久adapt(適性)",
+      "賦予永久Sensitive(敏感)"
     ],
     "起始CD": 3,
     "預設CD": 3
   },
   "$type": "BattleModel.EnemyCharacter",
   "ReferenceBuffKeys": [
-    "true_damage",
+    "shell",
+    "adapt",
+    "Sensitive",
+    "nerf_damage_small",
     "poison",
-    "infection",
+    "b3248c4_war_skillLoop",
+    "sharp",
     "poison_trigger"
   ],
   "ReferenceCharacterKeys": [
@@ -79,6 +97,8 @@
     "b3248c4_s01_AtkSmoke02",
     "b3248c4_s01_PlayerSpeedLine01",
     "Common_LineW05",
+    "FSM_AreaSkill_SandAttack02_floor02",
+    "FSM_AreaSkill_SandAttack03",
     "b3248c4_s01_king03",
     "b3248c4_s01_king04",
     "b3248c4_s02_downposion01",
@@ -108,6 +128,11 @@
     "Whoosh_physical_047_fire_fuse_sizzle_short",
     "Whoosh_physical_038",
     "Hit_smash_039_rock_movement_slide_large",
+    "Effect_drone_013_wind_twist_magic",
+    "swhoosh_wind_gust_long_01",
+    "Whoosh_physical_044 short",
+    "Whoosh_physical_050_burst_jet_air_bass_giant",
+    "Movement_natural_005_landslide_scrap",
     "Whoosh_physical_029_steam_sizzle_air",
     "Creature_monster_024set_03_giant_hiss_roar_scream",
     "Creature_humanoid_003set_02_stomach_hungry",
@@ -124,14 +149,13 @@
   ],
   "ReferenceVoiceSFXKeys": [
   ],
-  "_armorCapacity": 1000,
+  "_armorCapacity": 800,
   "_assistantSkill": null,
-  "_bloodCapacity": 1000,
+  "_bloodCapacity": 7000,
   "_characterAI": {
     "$type": "BattleModel.SequenceEnemyAI",
     "OrderList": [
-      "S1",
-      "S2"
+      "S1"
     ]
   },
   "_defaultCoolDown": 3,
@@ -142,7 +166,23 @@
   "_masterRank": 0,
   "_passiveBuff": [
     {
-      "BuffId": "true_damage",
+      "BuffId": "shell",
+      "Forever": true,
+      "LevelStack": 0,
+      "OverwriteDuration": -1,
+      "UserDefineVariable": {
+      }
+    },
+    {
+      "BuffId": "adapt",
+      "Forever": true,
+      "LevelStack": 0,
+      "OverwriteDuration": -1,
+      "UserDefineVariable": {
+      }
+    },
+    {
+      "BuffId": "Sensitive",
       "Forever": true,
       "LevelStack": 0,
       "OverwriteDuration": -1,
@@ -151,7 +191,7 @@
     }
   ],
   "_pose": "Prone",
-  "_power": 150,
+  "_power": 50,
   "_reviveCount": 0,
   "_skills": {
     "Arrive1": {
@@ -168,10 +208,11 @@
           },
           "skillEffects": [
             {
-              "$type": "BattleModel.ChangeCDSkillEffect",
-              "Tag": 1028,
-              "_keyString": "",
-              "_value": 1
+              "$type": "BattleModel.AddBuffSkillEffect",
+              "Tag": 132,
+              "_buffData": [
+              ],
+              "_keyString": ""
             }
           ]
         }
@@ -217,8 +258,8 @@
           },
           "skillEffects": [
             {
-              "$type": "BattleModel.TrueDamageSkillEffect",
-              "Tag": 8193,
+              "$type": "BattleModel.HpDamageSkillEffect",
+              "Tag": 9,
               "_keyString": "1",
               "_skillModifier": {
                 "_constant": 0,
@@ -226,8 +267,62 @@
                   "$type": "BattleModel.SkillCasterPower",
                   "basePower": false
                 },
-                "_ratio": 1
+                "_ratio": 1.5
               }
+            },
+            {
+              "$type": "BattleModel.AddBuffSkillEffect",
+              "Tag": 132,
+              "_buffData": [
+                {
+                  "BuffId": "nerf_damage_small",
+                  "Forever": false,
+                  "LevelStack": 1,
+                  "OverwriteDuration": 2,
+                  "UserDefineVariable": {
+                  }
+                }
+              ],
+              "_keyString": "1"
+            }
+          ]
+        },
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": false,
+          "multi": {
+            "$type": "BattleModel.SelfTeamChars",
+            "excludeSelf": false,
+            "includeDead": false,
+            "includeEmpty": false,
+            "reference": {
+              "$type": "BattleModel.ThisSkillCaster"
+            }
+          },
+          "single": {
+            "$type": "BattleModel.ThisSkillCaster"
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.FixedAmrReduceRatioSkillEffect",
+              "Ratio": {
+                "$type": "BattleModel.ConstanctFloat",
+                "constant": 1
+              },
+              "Tag": 34820,
+              "_keyString": "2"
+            },
+            {
+              "$type": "BattleModel.RemoveBuffSkillEffect",
+              "Tag": 4100,
+              "_buffID": "sharp",
+              "_keyString": "2"
+            },
+            {
+              "$type": "BattleModel.RemoveBuffSkillEffect",
+              "Tag": 4100,
+              "_buffID": "b3248c4_war_skillLoop",
+              "_keyString": "2"
             }
           ]
         }
@@ -261,7 +356,7 @@
                   "BuffId": "poison",
                   "Forever": false,
                   "LevelStack": 1,
-                  "OverwriteDuration": 3,
+                  "OverwriteDuration": 1,
                   "UserDefineVariable": {
                   }
                 }
@@ -269,19 +364,55 @@
               "_keyString": "1"
             },
             {
+              "$type": "BattleModel.HpDamageSkillEffect",
+              "Tag": 9,
+              "_keyString": "1",
+              "_skillModifier": {
+                "_constant": 0,
+                "_parameter": {
+                  "$type": "BattleModel.SkillCasterPower",
+                  "basePower": false
+                },
+                "_ratio": 1
+              }
+            }
+          ]
+        },
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": false,
+          "multi": null,
+          "single": {
+            "$type": "BattleModel.ThisSkillCaster"
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.AmrGainSkillEffect",
+              "Tag": 66,
+              "_keyString": "",
+              "_skillModifier": {
+                "_constant": 0,
+                "_parameter": {
+                  "$type": "BattleModel.SkillCasterPower",
+                  "basePower": false
+                },
+                "_ratio": 50
+              }
+            },
+            {
               "$type": "BattleModel.AddBuffSkillEffect",
               "Tag": 132,
               "_buffData": [
                 {
-                  "BuffId": "infection",
-                  "Forever": false,
-                  "LevelStack": 1,
-                  "OverwriteDuration": 3,
+                  "BuffId": "b3248c4_war_skillLoop",
+                  "Forever": true,
+                  "LevelStack": 0,
+                  "OverwriteDuration": -1,
                   "UserDefineVariable": {
                   }
                 }
               ],
-              "_keyString": "1"
+              "_keyString": ""
             }
           ]
         }
@@ -293,6 +424,13 @@
       "ComboList": [
         {
           "ConditionList": [
+            {
+              "$type": "BattleModel.CharacterHasBuff",
+              "buffId": "b3248c4_war_skillLoop",
+              "character": {
+                "$type": "BattleModel.ThisSkillCaster"
+              }
+            }
           ],
           "SkillList": [
             {
@@ -300,12 +438,40 @@
               ],
               "SkillID": "S1",
               "_conditionalSequences": [
+                {
+                  "ConditionList": [
+                  ],
+                  "_sequenceId": "S1_war"
+                }
               ],
               "seq": "",
               "t": null
             }
           ],
-          "_characterCoolDown": 4,
+          "_characterCoolDown": 2,
+          "assignTarget": null,
+          "icon": 0
+        },
+        {
+          "ConditionList": [
+          ],
+          "SkillList": [
+            {
+              "ConditionList": [
+              ],
+              "SkillID": "S2",
+              "_conditionalSequences": [
+                {
+                  "ConditionList": [
+                  ],
+                  "_sequenceId": "S2_war"
+                }
+              ],
+              "seq": "",
+              "t": null
+            }
+          ],
+          "_characterCoolDown": 3,
           "assignTarget": null,
           "icon": 0
         }
@@ -328,7 +494,7 @@
               "t": null
             }
           ],
-          "_characterCoolDown": 4,
+          "_characterCoolDown": 2,
           "assignTarget": null,
           "icon": 0
         }

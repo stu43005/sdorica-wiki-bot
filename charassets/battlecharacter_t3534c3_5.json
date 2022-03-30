@@ -10,7 +10,8 @@
         "對施術者{\"Tag\":65540,\"_keyString\":\"1\",\"$type\":\"BattleModel.DirectKillSkillEffect\"}"
       ],
       "S1": [
-        "對施術者的隊伍的隨機角色賦予2回合1層bonusAttackPower(強化)"
+        "對施術者的隊伍全體賦予9回合1層bonusAttackPower(強化)",
+        "對施術者賦予永久1層leader(領袖)"
       ],
       "S2": [
         "對施術者的目標破甲(攻擊力 x0.75)"
@@ -38,27 +39,44 @@
       "Type2": "S2",
       "Type4": "S3"
     },
-    "疊盾": 1000,
-    "疊盾等級調整後": 943,
+    "疊盾": 3000,
+    "疊盾等級調整後": 2830,
     "站位": "無",
-    "血量": 1000,
-    "血量等級調整後": 943,
+    "血量": 3000,
+    "血量等級調整後": 2830,
     "被動Buff": [
-      "賦予永久attackwhenattack(本角色被玩家場上角色攻擊後立即執行1次行動。)",
-      "賦予永久1層defense_up_small(減傷)",
-      "賦予永久4層sharp(銳利)",
-      "賦予永久taunt(嘲諷)"
+      "賦予永久3層defense_up_small(減傷)",
+      "賦予永久taunt(嘲諷)",
+      "賦予永久antibody(抗體)",
+      "賦予永久CounterAttack_AddNerf",
+      "賦予永久defenseDestroyer(防禦破壞)"
     ],
     "起始CD": 2,
     "預設CD": 3
   },
   "$type": "BattleModel.EnemyCharacter",
   "ReferenceBuffKeys": [
-    "attackwhenattack",
     "defense_up_small",
-    "sharp",
     "taunt",
-    "bonusAttackPower"
+    "antibody",
+    "CounterAttack_AddNerf",
+    "defenseDestroyer",
+    "bonusAttackPower",
+    "leader",
+    "nerf_damage_small",
+    "weak",
+    "tearing",
+    "poison",
+    "stun",
+    "infection_maintain",
+    "bleeding_maintain",
+    "infection",
+    "frosted",
+    "burn",
+    "tearing_trigger",
+    "tearing_trigger_alert",
+    "poison_trigger",
+    "follower"
   ],
   "ReferenceCharacterKeys": [
   ],
@@ -89,9 +107,9 @@
   ],
   "ReferenceVoiceSFXKeys": [
   ],
-  "_armorCapacity": 1000,
+  "_armorCapacity": 3000,
   "_assistantSkill": null,
-  "_bloodCapacity": 1000,
+  "_bloodCapacity": 3000,
   "_characterAI": {
     "$type": "BattleModel.SequenceEnemyAI",
     "OrderList": [
@@ -106,31 +124,39 @@
   "_masterRank": 0,
   "_passiveBuff": [
     {
-      "BuffId": "attackwhenattack",
-      "Forever": true,
-      "LevelStack": 0,
-      "OverwriteDuration": 1,
-      "UserDefineVariable": {
-      }
-    },
-    {
       "BuffId": "defense_up_small",
       "Forever": true,
-      "LevelStack": 1,
-      "OverwriteDuration": -1,
-      "UserDefineVariable": {
-      }
-    },
-    {
-      "BuffId": "sharp",
-      "Forever": true,
-      "LevelStack": 4,
+      "LevelStack": 3,
       "OverwriteDuration": -1,
       "UserDefineVariable": {
       }
     },
     {
       "BuffId": "taunt",
+      "Forever": true,
+      "LevelStack": 0,
+      "OverwriteDuration": -1,
+      "UserDefineVariable": {
+      }
+    },
+    {
+      "BuffId": "antibody",
+      "Forever": true,
+      "LevelStack": 0,
+      "OverwriteDuration": -1,
+      "UserDefineVariable": {
+      }
+    },
+    {
+      "BuffId": "CounterAttack_AddNerf",
+      "Forever": true,
+      "LevelStack": 0,
+      "OverwriteDuration": -1,
+      "UserDefineVariable": {
+      }
+    },
+    {
+      "BuffId": "defenseDestroyer",
       "Forever": true,
       "LevelStack": 0,
       "OverwriteDuration": -1,
@@ -194,20 +220,17 @@
       "_skillIdentifiers": [
         {
           "CanBeEmpty": false,
-          "IsMultiple": false,
-          "multi": null,
-          "single": {
-            "$type": "BattleModel.RandomOfChars",
-            "group": {
-              "$type": "BattleModel.SelfTeamChars",
-              "excludeSelf": true,
-              "includeDead": false,
-              "includeEmpty": false,
-              "reference": {
-                "$type": "BattleModel.ThisSkillCaster"
-              }
+          "IsMultiple": true,
+          "multi": {
+            "$type": "BattleModel.SelfTeamChars",
+            "excludeSelf": true,
+            "includeDead": false,
+            "includeEmpty": false,
+            "reference": {
+              "$type": "BattleModel.ThisSkillCaster"
             }
           },
+          "single": null,
           "skillEffects": [
             {
               "$type": "BattleModel.AddBuffSkillEffect",
@@ -217,7 +240,32 @@
                   "BuffId": "bonusAttackPower",
                   "Forever": false,
                   "LevelStack": 1,
-                  "OverwriteDuration": 2,
+                  "OverwriteDuration": 9,
+                  "UserDefineVariable": {
+                  }
+                }
+              ],
+              "_keyString": "1"
+            }
+          ]
+        },
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": false,
+          "multi": null,
+          "single": {
+            "$type": "BattleModel.ThisSkillCaster"
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.AddBuffSkillEffect",
+              "Tag": 132,
+              "_buffData": [
+                {
+                  "BuffId": "leader",
+                  "Forever": true,
+                  "LevelStack": 1,
+                  "OverwriteDuration": -1,
                   "UserDefineVariable": {
                   }
                 }
