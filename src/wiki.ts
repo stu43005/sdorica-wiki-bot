@@ -28,6 +28,7 @@ import wikiHomelandMonster from "./wiki/HomelandMonster";
 import wikiLevelUps from "./wiki/LevelUps";
 import wikiMissions from "./wiki/Missions";
 import { wikiMonsterTrapJson } from "./wiki/MonsterTrap";
+import wikiRaidRanks from "./wiki/RaidRanks";
 import wikiResonance from "./wiki/Resonance";
 import wikiRewardGroups from "./wiki/RewardGroups";
 import wikiSideStory from "./wiki/SideStory";
@@ -128,6 +129,7 @@ export async function wikiMain() {
 	await outWiki(bot, 'LevelUps', wikiLevelUps());
 	await outWiki(bot, 'Missions', wikiMissions());
 	await outWikiJson(bot, 'MonsterTrap', wikiMonsterTrapJson());
+	await outWiki(bot, 'RaidRanks', wikiRaidRanks());
 	await outWiki(bot, 'Resonance', wikiResonance());
 	await outWiki(bot, 'RewardGroups', wikiRewardGroups());
 	await outWiki(bot, 'SideStory', wikiSideStory());

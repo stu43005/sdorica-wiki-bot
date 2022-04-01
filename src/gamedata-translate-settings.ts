@@ -765,6 +765,11 @@ export const gamedataTeanslateSettings: GamedataRef[] = [
 		func: localizationItemName(),
 	},
 	{
+		table: "Raids",
+		column: "targetItemId",
+		func: localizationItemName(),
+	},
+	{
 		table: "SkillLabel",
 		column: "skillSet",
 		func: (str) => {
@@ -791,6 +796,11 @@ export const gamedataTeanslateSettings: GamedataRef[] = [
 	{
 		table: "QuestAchievements",
 		column: "giveLinkId1:giveType1",
+		func: localizationItemNameWithType(),
+	},
+	{
+		table: "RaidRanks",
+		column: "giveLinkId1:giveType1,giveLinkId2:giveType2,giveLinkId3:giveType3",
 		func: localizationItemNameWithType(),
 	},
 ];
