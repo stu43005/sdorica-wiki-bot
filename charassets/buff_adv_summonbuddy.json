@@ -2,32 +2,24 @@
   "$interpreted": {
     "Localization": "",
     "動作": {
-      "OnTurnBegin": {
+      "OnEachSkillTargetEffect": {
         "效果": [
           {
             "效果": [
-              "對本角色賦予1回合3層defense_up_small(減傷)"
+              "技能的(Attack)屬性效果增加((施術者的隊伍中符合({\"$type\":\"BattleModel.IsCharacterAlive\"})的角色的角色數量 * -50))%"
             ],
             "條件": [
-              "本角色的隊伍的角色數量 >= 1"
             ]
-          },
-          {
-            "效果": [
-              "對本角色賦予1回合2層damage_absorption(轉盾)"
-            ],
-            "條件": [
-              "本角色的隊伍的角色數量 >= 2"
-            ]
-          },
-          {
-            "效果": [
-              "對本角色賦予1回合3層defense_wall(堅盾)"
-            ],
-            "條件": [
-              "本角色的隊伍的角色數量 >= 3"
-            ]
-          },
+          }
+        ],
+        "條件": [
+          "指定目標是本角色",
+          "施展的技能效果中包含(Attack)屬性",
+          "施術者是玩家的一員"
+        ]
+      },
+      "OnTurnBegin": {
+        "效果": [
           {
             "效果": [
               "對本角色觸發Summon"
@@ -48,152 +40,12 @@
   },
   "$type": "BattleModel.Buff",
   "ReferenceBuffKeys": [
-    "defense_up_small",
-    "damage_absorption",
-    "defense_wall",
-    "damage_absorption_trigger",
-    "FSM_DefenseUp_Normal"
   ],
   "_actionTable": [
     {
       "Key": 1,
       "Value": {
         "Actions": [
-          {
-            "Actions": [
-              {
-                "TargetField": {
-                  "$type": "BattleModel.OperateCharacter",
-                  "character": {
-                    "$type": "BattleModel.ThisBuffOwner"
-                  },
-                  "operation": {
-                    "$type": "BattleModel.AddBuff",
-                    "buffToAdd": {
-                      "BuffId": "defense_up_small",
-                      "Forever": false,
-                      "LevelStack": 3,
-                      "OverwriteDuration": 1,
-                      "UserDefineVariable": {
-                      }
-                    }
-                  }
-                }
-              }
-            ],
-            "Conditions": [
-              {
-                "$type": "BattleModel.IntCompare",
-                "left": {
-                  "$type": "BattleModel.CountOfCharGroup",
-                  "group": {
-                    "$type": "BattleModel.SelfTeamChars",
-                    "excludeSelf": true,
-                    "includeDead": false,
-                    "includeEmpty": false,
-                    "reference": {
-                      "$type": "BattleModel.ThisBuffOwner"
-                    }
-                  }
-                },
-                "op": 4,
-                "right": {
-                  "$type": "BattleModel.ConstanctInt",
-                  "constant": 1
-                }
-              }
-            ]
-          },
-          {
-            "Actions": [
-              {
-                "TargetField": {
-                  "$type": "BattleModel.OperateCharacter",
-                  "character": {
-                    "$type": "BattleModel.ThisBuffOwner"
-                  },
-                  "operation": {
-                    "$type": "BattleModel.AddBuff",
-                    "buffToAdd": {
-                      "BuffId": "damage_absorption",
-                      "Forever": false,
-                      "LevelStack": 2,
-                      "OverwriteDuration": 1,
-                      "UserDefineVariable": {
-                      }
-                    }
-                  }
-                }
-              }
-            ],
-            "Conditions": [
-              {
-                "$type": "BattleModel.IntCompare",
-                "left": {
-                  "$type": "BattleModel.CountOfCharGroup",
-                  "group": {
-                    "$type": "BattleModel.SelfTeamChars",
-                    "excludeSelf": true,
-                    "includeDead": false,
-                    "includeEmpty": false,
-                    "reference": {
-                      "$type": "BattleModel.ThisBuffOwner"
-                    }
-                  }
-                },
-                "op": 4,
-                "right": {
-                  "$type": "BattleModel.ConstanctInt",
-                  "constant": 2
-                }
-              }
-            ]
-          },
-          {
-            "Actions": [
-              {
-                "TargetField": {
-                  "$type": "BattleModel.OperateCharacter",
-                  "character": {
-                    "$type": "BattleModel.ThisBuffOwner"
-                  },
-                  "operation": {
-                    "$type": "BattleModel.AddBuff",
-                    "buffToAdd": {
-                      "BuffId": "defense_wall",
-                      "Forever": false,
-                      "LevelStack": 3,
-                      "OverwriteDuration": 1,
-                      "UserDefineVariable": {
-                      }
-                    }
-                  }
-                }
-              }
-            ],
-            "Conditions": [
-              {
-                "$type": "BattleModel.IntCompare",
-                "left": {
-                  "$type": "BattleModel.CountOfCharGroup",
-                  "group": {
-                    "$type": "BattleModel.SelfTeamChars",
-                    "excludeSelf": true,
-                    "includeDead": false,
-                    "includeEmpty": false,
-                    "reference": {
-                      "$type": "BattleModel.ThisBuffOwner"
-                    }
-                  }
-                },
-                "op": 4,
-                "right": {
-                  "$type": "BattleModel.ConstanctInt",
-                  "constant": 3
-                }
-              }
-            ]
-          },
           {
             "Actions": [
               {
@@ -254,6 +106,77 @@
             "$type": "BattleModel.CurrentTurnBelongsTo",
             "character": {
               "$type": "BattleModel.ThisBuffOwner"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "Key": 1024,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.BonusEffectForSkillProperty",
+                  "isPercent": true,
+                  "property": 1,
+                  "value": {
+                    "$type": "BattleModel.MultiplyInt",
+                    "left": {
+                      "$type": "BattleModel.CountOfCharGroup",
+                      "group": {
+                        "$type": "BattleModel.CharGroupWhere",
+                        "condition": {
+                          "$type": "BattleModel.IsCharacterAlive"
+                        },
+                        "group": {
+                          "$type": "BattleModel.SelfTeamChars",
+                          "excludeSelf": true,
+                          "includeDead": false,
+                          "includeEmpty": false,
+                          "reference": {
+                            "$type": "BattleModel.ThisSkillCaster"
+                          }
+                        }
+                      }
+                    },
+                    "right": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": -50
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+            ]
+          }
+        ],
+        "Conditions": [
+          {
+            "$type": "BattleModel.CharacterEqual",
+            "left": {
+              "$type": "BattleModel.ThisSpecifiedTarget"
+            },
+            "right": {
+              "$type": "BattleModel.ThisBuffOwner"
+            }
+          },
+          {
+            "$type": "BattleModel.ThisSkillEffectTagContains",
+            "containsAll": 1
+          },
+          {
+            "$type": "BattleModel.CharacterInside",
+            "group": {
+              "$type": "BattleModel.PVEPlayerTeam",
+              "includeDead": false,
+              "includeEmpty": false
+            },
+            "left": {
+              "$type": "BattleModel.ThisSkillCaster"
             }
           }
         ]

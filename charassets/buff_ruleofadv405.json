@@ -2,6 +2,19 @@
   "$interpreted": {
     "Localization": "",
     "動作": {
+      "": {
+        "效果": [
+          {
+            "效果": [
+              "對本狀態的變數一改為{\"$type\":\"BattleModel.CountOfConsumedStone\"}"
+            ],
+            "條件": [
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
       "OnEachSkillTargetEffect": {
         "效果": [
           {
@@ -9,7 +22,7 @@
               "技能的(Attack)屬性效果增加(20)%"
             ],
             "條件": [
-              "{\"EraseType\":1,\"$type\":\"BattleModel.ConsumedStoneEraseTypeEqual\"}"
+              "本狀態的變數一 == 1"
             ]
           },
           {
@@ -17,29 +30,51 @@
               "技能的(Attack)屬性效果增加(40)%"
             ],
             "條件": [
-              "({\"EraseType\":3,\"$type\":\"BattleModel.ConsumedStoneEraseTypeEqual\"}) 或 ({\"EraseType\":4,\"$type\":\"BattleModel.ConsumedStoneEraseTypeEqual\"})"
+              "本狀態的變數一 == 2"
             ]
           },
           {
             "效果": [
-              "技能的(Attack)屬性效果增加(80)%"
+              "技能的(Attack)屬性效果增加(60)%"
             ],
             "條件": [
-              "(({\"EraseType\":5,\"$type\":\"BattleModel.ConsumedStoneEraseTypeEqual\"}) 或 ({\"EraseType\":6,\"$type\":\"BattleModel.ConsumedStoneEraseTypeEqual\"})) 或 ({\"EraseType\":2,\"$type\":\"BattleModel.ConsumedStoneEraseTypeEqual\"})"
+              "本狀態的變數一 == 3"
             ]
           },
           {
             "效果": [
-              "技能的(Attack)屬性效果增加(160)%"
+              "技能的(Attack)屬性效果增加(120)%"
             ],
             "條件": [
-              "{\"EraseType\":7,\"$type\":\"BattleModel.ConsumedStoneEraseTypeEqual\"}"
+              "本狀態的變數一 == 4"
+            ]
+          },
+          {
+            "效果": [
+              "技能的(Attack)屬性效果增加(180)%"
+            ],
+            "條件": [
+              "本狀態的變數一 >= 6"
             ]
           }
         ],
         "條件": [
           "{\"SourceType\":\"StoneAction\",\"$type\":\"BattleModel.SkillSetSourceTypeEqual\"}",
           "施術者是玩家的一員"
+        ]
+      },
+      "OnTurnBegin | OnEachSkill": {
+        "效果": [
+          {
+            "效果": [
+              "對本狀態的變數一改為0"
+            ],
+            "條件": [
+              "{\"SourceType\":\"StoneAction\",\"$type\":\"BattleModel.SkillSetSourceTypeEqual\"}"
+            ]
+          }
+        ],
+        "條件": [
         ]
       }
     },
@@ -71,8 +106,19 @@
             ],
             "Conditions": [
               {
-                "$type": "BattleModel.ConsumedStoneEraseTypeEqual",
-                "EraseType": 1
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.ThisBuff"
+                  },
+                  "targetField": 4
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 1
+                }
               }
             ]
           },
@@ -92,49 +138,18 @@
             ],
             "Conditions": [
               {
-                "$type": "BattleModel.OrConditions",
-                "cond1": {
-                  "$type": "BattleModel.ConsumedStoneEraseTypeEqual",
-                  "EraseType": 3
-                },
-                "cond2": {
-                  "$type": "BattleModel.ConsumedStoneEraseTypeEqual",
-                  "EraseType": 4
-                }
-              }
-            ]
-          },
-          {
-            "Actions": [
-              {
-                "TargetField": {
-                  "$type": "BattleModel.BonusEffectForSkillProperty",
-                  "isPercent": true,
-                  "property": 1,
-                  "value": {
-                    "$type": "BattleModel.ConstanctInt",
-                    "constant": 80
-                  }
-                }
-              }
-            ],
-            "Conditions": [
-              {
-                "$type": "BattleModel.OrConditions",
-                "cond1": {
-                  "$type": "BattleModel.OrConditions",
-                  "cond1": {
-                    "$type": "BattleModel.ConsumedStoneEraseTypeEqual",
-                    "EraseType": 5
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.ThisBuff"
                   },
-                  "cond2": {
-                    "$type": "BattleModel.ConsumedStoneEraseTypeEqual",
-                    "EraseType": 6
-                  }
+                  "targetField": 4
                 },
-                "cond2": {
-                  "$type": "BattleModel.ConsumedStoneEraseTypeEqual",
-                  "EraseType": 2
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 2
                 }
               }
             ]
@@ -148,15 +163,90 @@
                   "property": 1,
                   "value": {
                     "$type": "BattleModel.ConstanctInt",
-                    "constant": 160
+                    "constant": 60
                   }
                 }
               }
             ],
             "Conditions": [
               {
-                "$type": "BattleModel.ConsumedStoneEraseTypeEqual",
-                "EraseType": 7
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.ThisBuff"
+                  },
+                  "targetField": 4
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 3
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.BonusEffectForSkillProperty",
+                  "isPercent": true,
+                  "property": 1,
+                  "value": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 120
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.ThisBuff"
+                  },
+                  "targetField": 4
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 4
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.BonusEffectForSkillProperty",
+                  "isPercent": true,
+                  "property": 1,
+                  "value": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 180
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.ThisBuff"
+                  },
+                  "targetField": 4
+                },
+                "op": 4,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 6
+                }
               }
             ]
           }
@@ -177,6 +267,69 @@
               "$type": "BattleModel.ThisSkillCaster"
             }
           }
+        ]
+      }
+    },
+    {
+      "Key": 33554432,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.CountOfConsumedStone"
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 65,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.SkillSetSourceTypeEqual",
+                "SourceType": "StoneAction"
+              }
+            ]
+          }
+        ],
+        "Conditions": [
         ]
       }
     }

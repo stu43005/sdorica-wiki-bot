@@ -34,7 +34,7 @@
         "效果": [
           {
             "效果": [
-              "立即施展技能：對本角色攻擊(最大血量的本狀態的層數 x1%)"
+              "立即施展技能：對{\"$type\":\"BattleModel.BuffAssignedCharacter\"}{\"Ratio\":{\"left\":{\"Integer\":{\"$type\":\"BattleModel.BuffAssignedInteger\"},\"$type\":\"BattleModel.IntegerToFloat\"},\"right\":{\"constant\":0.01,\"$type\":\"BattleModel.ConstanctFloat\"},\"$type\":\"BattleModel.FloatMultiplyFloat\"},\"Tag\":40961,\"_keyString\":\"0\",\"$type\":\"BattleModel.FixedTrueDamageRatioMaxSkillEffect\"}"
             ],
             "條件": [
             ]
@@ -62,34 +62,57 @@
             "Actions": [
               {
                 "TargetField": {
-                  "$type": "BattleModel.DirectSkillEffect",
-                  "skillUnit": {
+                  "$type": "BattleModel.AssignParameterSkillEffect",
+                  "AssignParameter": {
+                    "AssignCharacter": {
+                      "$type": "BattleModel.ThisBuffOwner"
+                    },
+                    "AssignCharacterGroup": {
+                      "$type": "BattleModel.NoneCharacters"
+                    },
+                    "AssignInteger": {
+                      "$type": "BattleModel.IntBuffField",
+                      "buff": {
+                        "$type": "BattleModel.ThisBuff"
+                      },
+                      "targetField": 1
+                    },
+                    "AssignIntegerGroup": {
+                      "$type": "BattleModel.ConstanctIntegerGroup",
+                      "Group": [
+                      ]
+                    }
+                  },
+                  "SkillUnit": {
                     "CanBeEmpty": false,
                     "IsMultiple": false,
                     "multi": null,
                     "single": {
-                      "$type": "BattleModel.ThisBuffOwner"
+                      "$type": "BattleModel.BuffAssignedCharacter"
                     },
                     "skillEffects": [
                       {
-                        "$type": "BattleModel.HpDamageRatioMaxSkillEffect",
-                        "Tag": 32777,
-                        "_keyString": "",
-                        "_skillModifier": {
-                          "_constant": 0,
-                          "_parameter": {
-                            "$type": "BattleModel.IntBuffField",
-                            "buff": {
-                              "$type": "BattleModel.ThisBuff"
-                            },
-                            "targetField": 1
+                        "$type": "BattleModel.FixedTrueDamageRatioMaxSkillEffect",
+                        "Ratio": {
+                          "$type": "BattleModel.FloatMultiplyFloat",
+                          "left": {
+                            "$type": "BattleModel.IntegerToFloat",
+                            "Integer": {
+                              "$type": "BattleModel.BuffAssignedInteger"
+                            }
                           },
-                          "_ratio": 0.01
-                        }
+                          "right": {
+                            "$type": "BattleModel.ConstanctFloat",
+                            "constant": 0.01
+                          }
+                        },
+                        "Tag": 40961,
+                        "_keyString": "0"
                       }
                     ]
                   },
-                  "willTriggerBuff": false
+                  "UseAssignParameter": true,
+                  "WillTriggerBuff": true
                 }
               }
             ],
@@ -172,6 +195,51 @@
     },
     {
       "Key": 8,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.RemoveBuff",
+                    "buffId": "CursePoisonUntilLowHp"
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterCondition",
+                "character": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                },
+                "condition": {
+                  "$type": "BattleModel.IntCompareC",
+                  "left": {
+                    "$type": "BattleModel.IntFieldC",
+                    "targetField": 2
+                  },
+                  "op": 3,
+                  "right": {
+                    "$type": "BattleModel.ConstantIntC",
+                    "constant": 30
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 4097,
       "Value": {
         "Actions": [
           {

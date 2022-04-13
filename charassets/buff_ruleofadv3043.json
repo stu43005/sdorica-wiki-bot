@@ -2,16 +2,14 @@
   "$interpreted": {
     "Localization": "",
     "動作": {
-      "OnEachSkillTargetEffect": {
+      "OnTurnBegin": {
         "效果": [
           {
             "效果": [
-              "{\"property\":1,\"value\":{\"constant\":-1000000,\"$type\":\"BattleModel.ConstanctInt\"},\"isPercent\":false,\"$type\":\"BattleModel.ExtraBonusEffectForSkillProperty\"}",
-              "立即施展技能：對指定目標賦予永久1層dexterity_trigger"
+              "對敵人所有角色賦予永久clumsy(本角色在目標擁有靈巧時無法擊中目標)"
             ],
             "條件": [
-              "指定目標擁有dexterity(靈巧)狀態",
-              "施術者是敵人的一員"
+              "(目前戰鬥回合數 == 0) 且 (目前回合輪到敵人首位)"
             ]
           }
         ],
@@ -25,75 +23,64 @@
   },
   "$type": "BattleModel.Buff",
   "ReferenceBuffKeys": [
-    "dexterity_trigger"
+    "clumsy"
   ],
   "_actionTable": [
     {
-      "Key": 1024,
+      "Key": 1,
       "Value": {
         "Actions": [
           {
             "Actions": [
               {
                 "TargetField": {
-                  "$type": "BattleModel.ExtraBonusEffectForSkillProperty",
-                  "isPercent": false,
-                  "property": 1,
-                  "value": {
-                    "$type": "BattleModel.ConstanctInt",
-                    "constant": -1000000
-                  }
-                }
-              },
-              {
-                "TargetField": {
-                  "$type": "BattleModel.DirectSkillEffect",
-                  "skillUnit": {
-                    "CanBeEmpty": false,
-                    "IsMultiple": false,
-                    "multi": null,
-                    "single": {
-                      "$type": "BattleModel.ThisSpecifiedTarget"
-                    },
-                    "skillEffects": [
-                      {
-                        "$type": "BattleModel.AddBuffSkillEffect",
-                        "Tag": 132,
-                        "_buffData": [
-                          {
-                            "BuffId": "dexterity_trigger",
-                            "Forever": false,
-                            "LevelStack": 1,
-                            "OverwriteDuration": -1,
-                            "UserDefineVariable": {
-                            }
-                          }
-                        ],
-                        "_keyString": ""
-                      }
-                    ]
+                  "$type": "BattleModel.OperateCharacterGroup",
+                  "group": {
+                    "$type": "BattleModel.PVEEnemyTeam",
+                    "includeDead": false,
+                    "includeEmpty": false
                   },
-                  "willTriggerBuff": false
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "clumsy",
+                      "Forever": true,
+                      "LevelStack": 0,
+                      "OverwriteDuration": -1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
                 }
               }
             ],
             "Conditions": [
               {
-                "$type": "BattleModel.CharacterHasBuff",
-                "buffId": "dexterity",
-                "character": {
-                  "$type": "BattleModel.ThisSpecifiedTarget"
-                }
-              },
-              {
-                "$type": "BattleModel.CharacterInside",
-                "group": {
-                  "$type": "BattleModel.PVEEnemyTeam",
-                  "includeDead": false,
-                  "includeEmpty": false
+                "$type": "BattleModel.AndConditions",
+                "cond1": {
+                  "$type": "BattleModel.IntCompare",
+                  "left": {
+                    "$type": "BattleModel.BattleActionRecordValue",
+                    "RecordValue": {
+                      "$type": "BattleModel.ThisBattleTurnCount"
+                    }
+                  },
+                  "op": 0,
+                  "right": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 0
+                  }
                 },
-                "left": {
-                  "$type": "BattleModel.ThisSkillCaster"
+                "cond2": {
+                  "$type": "BattleModel.CurrentTurnBelongsTo",
+                  "character": {
+                    "$type": "BattleModel.FrontOfChars",
+                    "group": {
+                      "$type": "BattleModel.PVEEnemyTeam",
+                      "includeDead": true,
+                      "includeEmpty": true
+                    }
+                  }
                 }
               }
             ]
