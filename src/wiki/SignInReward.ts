@@ -1,4 +1,4 @@
-import { ImperiumData } from "../imperium-data";
+import { ImperiumData, RowWrapper } from "../imperium-data";
 import { localizationString } from "../localization";
 import { arrayUnique } from "../utils";
 import { item2wikiWithType } from "../wiki-item";
@@ -21,37 +21,54 @@ export default function wikiSignInReward() {
 		const day = SignInRewardTable.filter(r => r.get("groupId") == groupId && r.get("category") == "day").sort((a, b) => a.get("param1") - b.get("param1"));
 		const week = SignInRewardTable.filter(r => r.get("groupId") == groupId && r.get("category") == "week").sort((a, b) => a.get("param1") - b.get("param1"));
 		const month = SignInRewardTable.filter(r => r.get("groupId") == groupId && r.get("category") == "month").sort((a, b) => a.get("param1") - b.get("param1"));
-		let str = `== Group ${groupId} ==
-{| class="wikitable" style="text-align: center;"`;
-		for (let i = 0, weekIndex = 0; i < day.length; i += 7, weekIndex++) {
-			const weekRow = week[weekIndex];
-			str += `\n|-\n! - !! ${i + 1} !! ${i + 2} !! ${i + 3} !! ${i + 4} !! ${i + 5} !! ${i + 6} !! ${i + 7}`;
-			str += `\n! 第 ${weekRow.get("param1")} ~ ${weekRow.get("param2")} 天`;
-			str += `\n|-\n! 第 ${Math.floor(i / 7) + 1} 週`;
-			for (let j = 0; j < 7; j++) {
-				str += `\n| `;
-				if (day[i + j]) {
-					str += `${item2wikiWithType(day[i + j].get("giveType"), day[i + j].get("giveLinkId"), day[i + j].get("giveAmount"), {
-						direction: "vertical"
-					})}`;
-				}
-			}
-			str += `\n| ${item2wikiWithType(weekRow.get("giveType"), weekRow.get("giveLinkId"), weekRow.get("giveAmount"), {
-				direction: "vertical"
-			})}`;
+		const special = SignInRewardTable.filter(r => r.get("groupId") == groupId && r.get("category") == "special").sort((a, b) => a.get("param1") - b.get("param1"));
+		let str = `== Group ${groupId} ==`;
+		if (day.length) {
+			str += `\n${buildWeekTable(day, week)}`;
 		}
-		str += `\n|}
-=== month ===
+		if (month.length) {
+			str += `\n=== month ===
 {| class="wikitable"`;
-		for (let i = 0; i < month.length; i++) {
-			const row = month[i];
-			str += `\n|-
+			for (let i = 0; i < month.length; i++) {
+				const row = month[i];
+				str += `\n|-
 ! 第 ${row.get("param1")} ~ ${row.get("param2")} 天
 | ${item2wikiWithType(row.get("giveType"), row.get("giveLinkId"), row.get("giveAmount"))}`;
+			}
+			str += `\n|}`;
 		}
-		str += `\n|}`;
+		if (special.length) {
+			str += `\n=== special ===\n${buildWeekTable(special)}`;
+		}
 		out.push(str);
 	}
 
 	return out.join("\n\n");
+}
+
+function buildWeekTable(days: RowWrapper[], weeks?: RowWrapper[]) {
+	let str = `{| class="wikitable" style="text-align: center;"`;
+	for (let i = 0, weekIndex = 0; i < days.length; i += 7, weekIndex++) {
+		const weekRow = weeks?.[weekIndex];
+		str += `\n|-\n! - !! ${i + 1} !! ${i + 2} !! ${i + 3} !! ${i + 4} !! ${i + 5} !! ${i + 6} !! ${i + 7}`;
+		if (weekRow) {
+			str += `\n! 第 ${weekRow.get("param1")} ~ ${weekRow.get("param2")} 天`;
+		}
+		str += `\n|-\n! 第 ${Math.floor(i / 7) + 1} 週`;
+		for (let j = 0; j < 7; j++) {
+			str += `\n| `;
+			if (days[i + j]) {
+				str += `${item2wikiWithType(days[i + j].get("giveType"), days[i + j].get("giveLinkId"), days[i + j].get("giveAmount"), {
+					direction: "vertical"
+				})}`;
+			}
+		}
+		if (weekRow) {
+			str += `\n| ${item2wikiWithType(weekRow.get("giveType"), weekRow.get("giveLinkId"), weekRow.get("giveAmount"), {
+				direction: "vertical"
+			})}`;
+		}
+	}
+	str += `\n|}`;
+	return str;
 }
