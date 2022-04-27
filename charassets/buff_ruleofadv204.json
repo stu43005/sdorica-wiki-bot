@@ -6,11 +6,10 @@
         "效果": [
           {
             "效果": [
-              "技能的(Heal)屬性效果增加(60)%"
+              "技能效果增加((({\"group\":{\"reference\":{\"$type\":\"BattleModel.ThisSkillCaster\"},\"excludeSelf\":true,\"includeDead\":false,\"includeEmpty\":false,\"$type\":\"BattleModel.SelfTeamChars\"},\"buffId\":\"defense_up_small\",\"$type\":\"BattleModel.BuffsOnCharGroup\"}中的層數)的總和 * 60))%"
             ],
             "條件": [
-              "施術者 {\"Group\":{\"includeDead\":false,\"includeEmpty\":false,\"$type\":\"BattleModel.PVEPlayerTeam\"},\"$type\":\"BattleModel.CharacterInsideC\"}",
-              "施展的技能效果中包含(Heal)屬性"
+              "施術者 {\"Group\":{\"includeDead\":false,\"includeEmpty\":false,\"$type\":\"BattleModel.PVEPlayerTeam\"},\"$type\":\"BattleModel.CharacterInsideC\"}"
             ]
           }
         ],
@@ -36,10 +35,33 @@
                 "TargetField": {
                   "$type": "BattleModel.BonusEffectForSkillProperty",
                   "isPercent": true,
-                  "property": 32,
+                  "property": -1,
                   "value": {
-                    "$type": "BattleModel.ConstanctInt",
-                    "constant": 60
+                    "$type": "BattleModel.MultiplyInt",
+                    "left": {
+                      "$type": "BattleModel.SumOfInts",
+                      "group": {
+                        "$type": "BattleModel.IntsOnBuffGroup",
+                        "group": {
+                          "$type": "BattleModel.BuffsOnCharGroup",
+                          "buffId": "defense_up_small",
+                          "group": {
+                            "$type": "BattleModel.SelfTeamChars",
+                            "excludeSelf": true,
+                            "includeDead": false,
+                            "includeEmpty": false,
+                            "reference": {
+                              "$type": "BattleModel.ThisSkillCaster"
+                            }
+                          }
+                        },
+                        "targetField": 1
+                      }
+                    },
+                    "right": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 60
+                    }
                   }
                 }
               }
@@ -58,10 +80,6 @@
                     "includeEmpty": false
                   }
                 }
-              },
-              {
-                "$type": "BattleModel.ThisSkillEffectTagContains",
-                "containsAll": 32
               }
             ]
           }

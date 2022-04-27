@@ -31,7 +31,7 @@
         "對施術者的目標攻擊(攻擊力 x1)"
       ],
       "Summon": [
-        "對施術者{\"Ratio\":{\"left\":{\"constant\":0.05,\"$type\":\"BattleModel.ConstanctFloat\"},\"right\":{\"Integer\":{\"group\":{\"reference\":{\"$type\":\"BattleModel.ThisSkillCaster\"},\"$type\":\"BattleModel.SelftTeamEmptySlots\"},\"$type\":\"BattleModel.CountOfCharGroup\"},\"$type\":\"BattleModel.IntegerToFloat\"},\"$type\":\"BattleModel.FloatMultiplyFloat\"},\"Tag\":40961,\"_keyString\":\"1\",\"$type\":\"BattleModel.FixedTrueDamageRatioMaxSkillEffect\"}",
+        "對施術者{\"Ratio\":{\"left\":{\"constant\":0.05,\"$type\":\"BattleModel.ConstanctFloat\"},\"right\":{\"Integer\":{\"left\":{\"group\":{\"reference\":{\"$type\":\"BattleModel.ThisSkillCaster\"},\"$type\":\"BattleModel.SelftTeamEmptySlots\"},\"$type\":\"BattleModel.CountOfCharGroup\"},\"right\":{\"Condition\":{\"left\":{\"character\":{\"$type\":\"BattleModel.ThisSkillCaster\"},\"targetField\":13,\"$type\":\"BattleModel.IntCharaterField\"},\"op\":2,\"right\":{\"constant\":50,\"$type\":\"BattleModel.ConstanctInt\"},\"$type\":\"BattleModel.IntCompare\"},\"PassValue\":{\"constant\":1,\"$type\":\"BattleModel.ConstanctInt\"},\"NotPassValue\":{\"constant\":2,\"$type\":\"BattleModel.ConstanctInt\"},\"$type\":\"BattleModel.ConditionalInteger\"},\"$type\":\"BattleModel.MultiplyInt\"},\"$type\":\"BattleModel.IntegerToFloat\"},\"$type\":\"BattleModel.FloatMultiplyFloat\"},\"Tag\":40961,\"_keyString\":\"1\",\"$type\":\"BattleModel.FixedTrueDamageRatioMaxSkillEffect\"}",
         "對施術者隊伍的空位全體召喚敵人(b3431c3_7;;等級變化:0;初始體力:100%;初始疊盾:1%;初始CD:2;死後消失)"
       ]
     },
@@ -312,11 +312,40 @@
                 "right": {
                   "$type": "BattleModel.IntegerToFloat",
                   "Integer": {
-                    "$type": "BattleModel.CountOfCharGroup",
-                    "group": {
-                      "$type": "BattleModel.SelftTeamEmptySlots",
-                      "reference": {
-                        "$type": "BattleModel.ThisSkillCaster"
+                    "$type": "BattleModel.MultiplyInt",
+                    "left": {
+                      "$type": "BattleModel.CountOfCharGroup",
+                      "group": {
+                        "$type": "BattleModel.SelftTeamEmptySlots",
+                        "reference": {
+                          "$type": "BattleModel.ThisSkillCaster"
+                        }
+                      }
+                    },
+                    "right": {
+                      "$type": "BattleModel.ConditionalInteger",
+                      "Condition": {
+                        "$type": "BattleModel.IntCompare",
+                        "left": {
+                          "$type": "BattleModel.IntCharaterField",
+                          "character": {
+                            "$type": "BattleModel.ThisSkillCaster"
+                          },
+                          "targetField": 13
+                        },
+                        "op": 2,
+                        "right": {
+                          "$type": "BattleModel.ConstanctInt",
+                          "constant": 50
+                        }
+                      },
+                      "NotPassValue": {
+                        "$type": "BattleModel.ConstanctInt",
+                        "constant": 2
+                      },
+                      "PassValue": {
+                        "$type": "BattleModel.ConstanctInt",
+                        "constant": 1
                       }
                     }
                   }

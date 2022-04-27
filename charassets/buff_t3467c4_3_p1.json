@@ -2,32 +2,32 @@
   "$interpreted": {
     "Localization": "",
     "動作": {
-      "OnTurnBegin": {
+      "AfterAnyoneDie": {
         "效果": [
           {
             "效果": [
-              "對本角色觸發CounterAttack"
+              "對本角色觸發Revive"
             ],
             "條件": [
-              "本角色隊伍的死亡角色的角色數量 > 0"
             ]
           }
         ],
         "條件": [
-          "目前回合輪到本角色"
+          "死亡或復活的角色是本角色的隊伍的一員",
+          "本角色 {\"$type\":\"BattleModel.IsCharacterAlive\"}"
         ]
       }
     },
     "持續時間": 0,
     "最高層數": 0,
-    "標籤": "NotRemoveWhenDie | Forever"
+    "標籤": "NotRemoveWhenDie | Forever | InfinityTrigger"
   },
   "$type": "BattleModel.Buff",
   "ReferenceBuffKeys": [
   ],
   "_actionTable": [
     {
-      "Key": 1,
+      "Key": 1048576,
       "Value": {
         "Actions": [
           {
@@ -42,10 +42,7 @@
                     "$type": "BattleModel.CastSkillSet",
                     "AssignParameter": {
                       "AssignCharacter": {
-                        "$type": "BattleModel.EnemyAssignee",
-                        "reference": {
-                          "$type": "BattleModel.ThisBuffOwner"
-                        }
+                        "$type": "BattleModel.ThisSkillCaster"
                       },
                       "AssignCharacterGroup": {
                         "$type": "BattleModel.NoneCharacters"
@@ -62,37 +59,38 @@
                     },
                     "UseAssignParameter": true,
                     "resetCasterCD": false,
-                    "skillsetId": "CounterAttack"
+                    "skillsetId": "Revive"
                   }
                 }
               }
             ],
             "Conditions": [
-              {
-                "$type": "BattleModel.IntCompare",
-                "left": {
-                  "$type": "BattleModel.CountOfCharGroup",
-                  "group": {
-                    "$type": "BattleModel.SelfTeamDeadChars",
-                    "reference": {
-                      "$type": "BattleModel.ThisBuffOwner"
-                    }
-                  }
-                },
-                "op": 2,
-                "right": {
-                  "$type": "BattleModel.ConstanctInt",
-                  "constant": 0
-                }
-              }
             ]
           }
         ],
         "Conditions": [
           {
-            "$type": "BattleModel.CurrentTurnBelongsTo",
+            "$type": "BattleModel.CharacterInside",
+            "group": {
+              "$type": "BattleModel.SelfTeamChars",
+              "excludeSelf": true,
+              "includeDead": true,
+              "includeEmpty": false,
+              "reference": {
+                "$type": "BattleModel.ThisBuffOwner"
+              }
+            },
+            "left": {
+              "$type": "BattleModel.DeadOrReviveTarget"
+            }
+          },
+          {
+            "$type": "BattleModel.CharacterCondition",
             "character": {
               "$type": "BattleModel.ThisBuffOwner"
+            },
+            "condition": {
+              "$type": "BattleModel.IsCharacterAlive"
             }
           }
         ]
@@ -103,5 +101,5 @@
   "_maxLevel": 0,
   "_orderTable": {
   },
-  "_tag": 68
+  "_tag": 32836
 }

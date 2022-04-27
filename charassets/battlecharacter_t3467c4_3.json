@@ -6,6 +6,10 @@
       "Arrive1": [
         "對施術者冷卻時間加1"
       ],
+      "CounterAttack": [
+        "對{\"$type\":\"BattleModel.BuffAssignedCharacter\"}攻擊(攻擊力 x1)、移除在ex_generalBuffNerf[強化, 弱化, 減傷, 易傷, 靈巧, 撕裂, 中毒, 轉盾, 盾轉, 再生, 暈眩, 怒氣, 戰意, 領袖, 汙染, 出血, 汙染, 延命, 寒冷, 燃燒]列表的Buff",
+        "對施術者移除在ex_generalBuffNerf[強化, 弱化, 減傷, 易傷, 靈巧, 撕裂, 中毒, 轉盾, 盾轉, 再生, 暈眩, 怒氣, 戰意, 領袖, 汙染, 出血, 汙染, 延命, 寒冷, 燃燒]列表的Buff"
+      ],
       "Retreat1": [
         "對施術者{\"Tag\":65540,\"_keyString\":\"1\",\"$type\":\"BattleModel.DirectKillSkillEffect\"}"
       ],
@@ -13,8 +17,8 @@
         "對施術者的目標攻擊(攻擊力 x1)"
       ],
       "S2": [
-        "對{\"$type\":\"BattleModel.BuffAssignedCharacter\"}吸血攻擊(攻擊力 x0)",
-        "對施術者隊伍的死亡角色全體復活(體力:0.5%;疊盾:0.5%)"
+        "對施術者隊伍的死亡角色全體復活(體力:1%;疊盾:1%)",
+        "對施術者的隊伍全體移除在ex_generalBuffNerf[強化, 弱化, 減傷, 易傷, 靈巧, 撕裂, 中毒, 轉盾, 盾轉, 再生, 暈眩, 怒氣, 戰意, 領袖, 汙染, 出血, 汙染, 延命, 寒冷, 燃燒]列表的Buff"
       ]
     },
     "技能組": {
@@ -22,9 +26,21 @@
         {
           "CoolDown": 0,
           "技能列表": [
+            "施展CounterAttack"
+          ],
+          "條件": [
+          ],
+          "目標": ""
+        }
+      ],
+      "Revive": [
+        {
+          "CoolDown": 0,
+          "技能列表": [
             "施展S2"
           ],
           "條件": [
+            "施術者 {\"$type\":\"BattleModel.IsCharacterAlive\"}"
           ],
           "目標": ""
         }
@@ -49,11 +65,11 @@
       "Type2": "S2",
       "Type4": "S3"
     },
-    "疊盾": 600,
-    "疊盾等級調整後": 566,
+    "疊盾": 1000,
+    "疊盾等級調整後": 943,
     "站位": "無",
-    "血量": 600,
-    "血量等級調整後": 566,
+    "血量": 1000,
+    "血量等級調整後": 943,
     "被動Buff": [
       "賦予永久CounterAttack_OncePerTurn",
       "賦予永久t3467c4_3_P1"
@@ -64,7 +80,42 @@
   "$type": "BattleModel.EnemyCharacter",
   "ReferenceBuffKeys": [
     "CounterAttack_OncePerTurn",
-    "t3467c4_3_P1"
+    "t3467c4_3_P1",
+    "bonusAttackPower",
+    "nerf_damage_small",
+    "defense_up_small",
+    "weak",
+    "dexterity",
+    "tearing",
+    "poison",
+    "damage_absorption",
+    "ArmorToBlood",
+    "regeneration",
+    "stun",
+    "rage",
+    "warfare",
+    "leader",
+    "infection_maintain",
+    "bleeding_maintain",
+    "infection",
+    "undead2",
+    "frosted",
+    "burn",
+    "dexterity_trigger",
+    "dexterity_fightback_0",
+    "dexterity_fightback_1",
+    "dexterity_fightback_2",
+    "dexterity_fightback_3",
+    "dexterity_fightback_4",
+    "b0028sx_dodge",
+    "tearing_trigger",
+    "tearing_trigger_alert",
+    "poison_trigger",
+    "damage_absorption_trigger",
+    "ArmorToBlood_trigger",
+    "regeneration_trigger",
+    "follower",
+    "FSM_Undead_Trigger"
   ],
   "ReferenceCharacterKeys": [
   ],
@@ -102,9 +153,9 @@
   ],
   "ReferenceVoiceSFXKeys": [
   ],
-  "_armorCapacity": 600,
+  "_armorCapacity": 1000,
   "_assistantSkill": null,
-  "_bloodCapacity": 600,
+  "_bloodCapacity": 1000,
   "_characterAI": {
     "$type": "BattleModel.SequenceEnemyAI",
     "OrderList": [
@@ -162,6 +213,116 @@
         }
       ]
     },
+    "CounterAttack": {
+      "$type": "BattleModel.BattleSkill",
+      "_isFallBackIfEmptyTarget": false,
+      "_isResolveTargetEachUnit": false,
+      "_skillIdentifiers": [
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": false,
+          "multi": null,
+          "single": {
+            "$type": "BattleModel.BuffAssignedCharacter"
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.HpDamageSkillEffect",
+              "Tag": 9,
+              "_keyString": "1",
+              "_skillModifier": {
+                "_constant": 0,
+                "_parameter": {
+                  "$type": "BattleModel.SkillCasterPower",
+                  "basePower": false
+                },
+                "_ratio": 1
+              }
+            },
+            {
+              "$type": "BattleModel.RemoveBuffFromGroupedBuffIdSkillEffect",
+              "BuffGroupIds": {
+                "$type": "BattleModel.BuffIdFromLabelList",
+                "BuffLabel": {
+                  "BuffIdList": [
+                    "bonusAttackPower",
+                    "nerf_damage_small",
+                    "defense_up_small",
+                    "weak",
+                    "dexterity",
+                    "tearing",
+                    "poison",
+                    "damage_absorption",
+                    "ArmorToBlood",
+                    "regeneration",
+                    "stun",
+                    "rage",
+                    "warfare",
+                    "leader",
+                    "infection_maintain",
+                    "bleeding_maintain",
+                    "infection",
+                    "undead2",
+                    "frosted",
+                    "burn"
+                  ],
+                  "BuffLabel": "ex_generalBuffNerf"
+                }
+              },
+              "RandomRemoveCount": 0,
+              "RemoveAllBuff": true,
+              "Tag": 4100,
+              "_keyString": "1"
+            }
+          ]
+        },
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": false,
+          "multi": null,
+          "single": {
+            "$type": "BattleModel.ThisSkillCaster"
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.RemoveBuffFromGroupedBuffIdSkillEffect",
+              "BuffGroupIds": {
+                "$type": "BattleModel.BuffIdFromLabelList",
+                "BuffLabel": {
+                  "BuffIdList": [
+                    "bonusAttackPower",
+                    "nerf_damage_small",
+                    "defense_up_small",
+                    "weak",
+                    "dexterity",
+                    "tearing",
+                    "poison",
+                    "damage_absorption",
+                    "ArmorToBlood",
+                    "regeneration",
+                    "stun",
+                    "rage",
+                    "warfare",
+                    "leader",
+                    "infection_maintain",
+                    "bleeding_maintain",
+                    "infection",
+                    "undead2",
+                    "frosted",
+                    "burn"
+                  ],
+                  "BuffLabel": "ex_generalBuffNerf"
+                }
+              },
+              "RandomRemoveCount": 0,
+              "RemoveAllBuff": true,
+              "Tag": 4100,
+              "_keyString": "1"
+            }
+          ]
+        }
+      ]
+    },
     "Retreat1": {
       "$type": "BattleModel.BattleSkill",
       "_isFallBackIfEmptyTarget": false,
@@ -203,7 +364,7 @@
             {
               "$type": "BattleModel.HpDamageSkillEffect",
               "Tag": 9,
-              "_keyString": "",
+              "_keyString": "1",
               "_skillModifier": {
                 "_constant": 0,
                 "_parameter": {
@@ -224,30 +385,6 @@
       "_skillIdentifiers": [
         {
           "CanBeEmpty": false,
-          "IsMultiple": false,
-          "multi": null,
-          "single": {
-            "$type": "BattleModel.BuffAssignedCharacter"
-          },
-          "skillEffects": [
-            {
-              "$type": "BattleModel.HpDamageDrainSkillEffect",
-              "Tag": 9,
-              "_drainRatio": 0,
-              "_keyString": "",
-              "_skillModifier": {
-                "_constant": 0,
-                "_parameter": {
-                  "$type": "BattleModel.SkillCasterPower",
-                  "basePower": false
-                },
-                "_ratio": 0.5
-              }
-            }
-          ]
-        },
-        {
-          "CanBeEmpty": true,
           "IsMultiple": true,
           "multi": {
             "$type": "BattleModel.SelfTeamDeadChars",
@@ -261,10 +398,61 @@
               "$type": "BattleModel.ReviveSkillEffect",
               "RecoverArmorInPercentage": true,
               "RecoverBloodInPercentage": true,
-              "ReviveTargetArmor": 0.5,
-              "ReviveTargetBlood": 0.5,
+              "ReviveTargetArmor": 1,
+              "ReviveTargetBlood": 1,
               "Tag": 4,
-              "_keyString": "0"
+              "_keyString": "1"
+            }
+          ]
+        },
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": true,
+          "multi": {
+            "$type": "BattleModel.SelfTeamChars",
+            "excludeSelf": false,
+            "includeDead": true,
+            "includeEmpty": false,
+            "reference": {
+              "$type": "BattleModel.ThisSkillCaster"
+            }
+          },
+          "single": null,
+          "skillEffects": [
+            {
+              "$type": "BattleModel.RemoveBuffFromGroupedBuffIdSkillEffect",
+              "BuffGroupIds": {
+                "$type": "BattleModel.BuffIdFromLabelList",
+                "BuffLabel": {
+                  "BuffIdList": [
+                    "bonusAttackPower",
+                    "nerf_damage_small",
+                    "defense_up_small",
+                    "weak",
+                    "dexterity",
+                    "tearing",
+                    "poison",
+                    "damage_absorption",
+                    "ArmorToBlood",
+                    "regeneration",
+                    "stun",
+                    "rage",
+                    "warfare",
+                    "leader",
+                    "infection_maintain",
+                    "bleeding_maintain",
+                    "infection",
+                    "undead2",
+                    "frosted",
+                    "burn"
+                  ],
+                  "BuffLabel": "ex_generalBuffNerf"
+                }
+              },
+              "RandomRemoveCount": 0,
+              "RemoveAllBuff": true,
+              "Tag": 4100,
+              "_keyString": "1"
             }
           ]
         }
@@ -276,6 +464,43 @@
       "ComboList": [
         {
           "ConditionList": [
+          ],
+          "SkillList": [
+            {
+              "ConditionList": [
+              ],
+              "SkillID": "CounterAttack",
+              "_conditionalSequences": [
+                {
+                  "ConditionList": [
+                  ],
+                  "_sequenceId": "S2"
+                }
+              ],
+              "seq": "",
+              "t": null
+            }
+          ],
+          "_characterCoolDown": 0,
+          "assignTarget": null,
+          "icon": 0
+        }
+      ],
+      "_isViewSkillSet": false
+    },
+    "Revive": {
+      "ComboList": [
+        {
+          "ConditionList": [
+            {
+              "$type": "BattleModel.CharacterCondition",
+              "character": {
+                "$type": "BattleModel.ThisSkillCaster"
+              },
+              "condition": {
+                "$type": "BattleModel.IsCharacterAlive"
+              }
+            }
           ],
           "SkillList": [
             {

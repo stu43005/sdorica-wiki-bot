@@ -20,7 +20,7 @@
         "效果": [
           {
             "效果": [
-              "技能的(Attack | NormalDamage | BreakArmor | TrueDamage)屬性效果增加((本角色的最大HP + (本角色的最大疊盾 * 2)))"
+              "技能的(Attack | NormalDamage | BreakArmor | TrueDamage)屬性效果增加(((本角色的最大HP * 2) + (本角色的最大疊盾 * 2)))"
             ],
             "條件": [
             ]
@@ -70,11 +70,18 @@
                   "value": {
                     "$type": "BattleModel.PlusInt",
                     "left": {
-                      "$type": "BattleModel.IntCharaterField",
-                      "character": {
-                        "$type": "BattleModel.ThisBuffOwner"
+                      "$type": "BattleModel.MultiplyInt",
+                      "left": {
+                        "$type": "BattleModel.IntCharaterField",
+                        "character": {
+                          "$type": "BattleModel.ThisBuffOwner"
+                        },
+                        "targetField": 1
                       },
-                      "targetField": 1
+                      "right": {
+                        "$type": "BattleModel.ConstanctInt",
+                        "constant": 2
+                      }
                     },
                     "right": {
                       "$type": "BattleModel.MultiplyInt",
