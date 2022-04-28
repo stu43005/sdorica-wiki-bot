@@ -1,6 +1,7 @@
 import numeral from "numeral";
 import { ImperiumData, RowWrapper } from "./imperium-data";
 import { currency2Id, Func1, gamedataString, localizationCharacterNameByHeroId, localizationExploreBuildingName, localizationItemName, localizationMonsterNameById, localizationString, rank } from "./localization";
+import { Chapter } from "./model/chapter";
 import { ExploreItem } from './model/explore-item';
 import { Hero } from "./model/hero";
 import { Item } from './model/item';
@@ -463,6 +464,12 @@ export function item2wikiWithType(type: string, id: string, count?: number, opti
 			const [heroId, rankId] = id.split("_");
 			const hero = Hero.get(heroId)?.toWikiSmallIcon() ?? localizationCharacterNameByHeroId()(heroId);
 			return `${hero} (${rank()(rankId)})` + (count ? ` x${count}` : "");
+		}
+
+		case "Diligent": {
+			const chapter = Chapter.get(id);
+			const diligentId = "1011";
+			return `章節${chapter ? `[[${chapter.getWikiTitle()}]]` : id}${item2wiki(diligentId, count, false, options)}`;
 		}
 	}
 }

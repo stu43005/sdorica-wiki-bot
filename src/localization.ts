@@ -139,6 +139,8 @@ export function localizationItemNameWithType(withCurrencyType = false): Func1 {
 				const [heroId, rankId] = strings[0].split("_");
 				return `${localizationCharacterNameByHeroId()(heroId)}_${rank()(rankId)}`;
 			}
+			case "Diligent":
+				return localizationChapterName()(strings[0]);
 		}
 		return "";
 	};

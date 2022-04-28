@@ -381,6 +381,11 @@ export const gamedataTeanslateSettings: GamedataRef[] = [
 		func: localizationItemName(),
 	},
 	{
+		table: "ExtraProducts",
+		column: "linkId:payType",
+		func: localizationItemNameWithType(),
+	},
+	{
 		table: "ExploreBuilding",
 		column: "item1Id,item2Id,item3Id,item4Id",
 		func: localizationItemName(true),
