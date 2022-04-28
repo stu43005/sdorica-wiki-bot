@@ -24,6 +24,9 @@ function tavernCategoryName(missionName: string) {
 	if (missionName.indexOf("糧食儲備") != -1) {
 		return "糧食儲備";
 	}
+	if (missionName.indexOf("祕境尋寶") != -1) {
+		return "祕境尋寶";
+	}
 	if (missionName.indexOf("秘境") != -1) {
 		return "秘境";
 	}
@@ -36,6 +39,7 @@ function tavernCategoryName(missionName: string) {
 	if (missionName.indexOf("精進計畫") != -1) {
 		return "發展";
 	}
+	return missionName.replace(/【[^】]*】/, "");
 }
 
 export default function wikiTavernMissionCompact() {
