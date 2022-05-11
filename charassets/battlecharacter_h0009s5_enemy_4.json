@@ -20,7 +20,12 @@
       ],
       "S1": [
         "對施術者的目標破甲(攻擊力 x0.75)",
-        "對施術者治療(施術者的最大HP x1.8)"
+        "對施術者治療(施術者的最大HP x1.8)、"
+      ],
+      "S2": [
+        "對施術者的目標攻擊(攻擊力 x1.4)",
+        "對施術者的對方全體攻擊(攻擊力 x0.1)",
+        "對施術者{\"Ratio\":{\"constant\":1,\"$type\":\"BattleModel.ConstanctFloat\"},\"Tag\":34,\"_keyString\":\"\",\"$type\":\"BattleModel.FixedHealRatioMaxSkillEffect\"}"
       ]
     },
     "技能組": {
@@ -39,6 +44,17 @@
         {
           "CoolDown": 2,
           "技能列表": [
+            "施展S2"
+          ],
+          "條件": [
+          ],
+          "目標": "敵人的倒數第2個角色"
+        }
+      ],
+      "S1_ex": [
+        {
+          "CoolDown": 2,
+          "技能列表": [
             "施展S1"
           ],
           "條件": [
@@ -47,8 +63,8 @@
         }
       ]
     },
-    "攻擊力": 30,
-    "攻擊力等級調整後": 28,
+    "攻擊力": 28,
+    "攻擊力等級調整後": 26,
     "敵人AI": "S1",
     "消魂設置": {
     },
@@ -58,16 +74,13 @@
     "血量": 15000,
     "血量等級調整後": 14150,
     "被動Buff": [
-      "賦予永久h3177c4_3_P2",
-      "賦予永久sharp(銳利)",
-      "賦予永久Sensitive(敏感)",
+      "賦予永久h3177c4_3_P2(本角色不受中毒、撕裂影響，且會立即移除自身暈眩。)",
+      "賦予永久1層sharp(銳利)",
       "賦予永久taunt(嘲諷)",
-      "賦予永久h0009s5_enemy_4_P1",
-      "賦予永久h0009s5_enemy_4_P2",
-      "賦予永久h0009s5_enemy_4_P3",
-      "賦予永久h0009s5_enemy_4_P4",
-      "賦予永久h0009s5_enemy_4_P5",
-      "賦予永久add_inhibit_taunt"
+      "賦予永久h0009s5_enemy_4_P1(本角色受到一魂技能攻擊後，行動冷卻時間歸零。)",
+      "賦予永久h0009s5_enemy_4_P2(本角色戰鬥{[var1]}回合後會主動撤退。)",
+      "賦予永久h0009s5_enemy_4_P3(本角色只受自身治癒技能效果影響。)",
+      "賦予永久h0009s5_enemy_4_P5(本角色同伴被攻擊時，本角色立即進行1次行動。)"
     ],
     "起始CD": 0,
     "預設CD": 0
@@ -76,19 +89,24 @@
   "ReferenceBuffKeys": [
     "h3177c4_3_P2",
     "sharp",
-    "Sensitive",
     "taunt",
     "h0009s5_enemy_4_P1",
     "h0009s5_enemy_4_P2",
     "h0009s5_enemy_4_P3",
-    "h0009s5_enemy_4_P4",
-    "h0009s5_enemy_4_P5",
-    "add_inhibit_taunt",
-    "inhibit_taunt"
+    "h0009s5_enemy_4_P5"
   ],
   "ReferenceCharacterKeys": [
   ],
   "ReferenceEffectKeys": [
+    "h0009s5_s02_runsmoke01",
+    "h0009s5_s02_up01",
+    "h0009s5_s02_bright01",
+    "h0009s5_s02_knight01",
+    "h0009s5_s02_splash01",
+    "h0009s5_s02_smoke01",
+    "h0009s5_s02_smoke02",
+    "h0009s5_s02_weapon01",
+    "h0009s5_s02_Hit01",
     "Common_Heal02",
     "h0009s5_s01_heal01",
     "h0009s5_s01_take01",
@@ -102,6 +120,14 @@
   "ReferenceMusicKeys": [
   ],
   "ReferenceSFXKeys": [
+    "step_armour_002",
+    "step_armour_006",
+    "scifi_energy_charge_full_01",
+    "magic_fireball_swoosh_01",
+    "explode_012",
+    "rock_003",
+    "camp_fire_loop_01",
+    "magic_flash_impact_01",
     "whoosh_common_hard_01",
     "liquid_pour_bottle_01",
     "magic_light_033",
@@ -109,6 +135,7 @@
     "Glass_Break_Med_01"
   ],
   "ReferenceVoiceSFXKeys": [
+    "h0009s5_skill_s2",
     "h0009s5_skill_s1",
     "h0022_battle_hit_02_1_short_normal",
     "h0022_battle_hit_02_3_long_strong"
@@ -151,15 +178,7 @@
     {
       "BuffId": "sharp",
       "Forever": true,
-      "LevelStack": 0,
-      "OverwriteDuration": -1,
-      "UserDefineVariable": {
-      }
-    },
-    {
-      "BuffId": "Sensitive",
-      "Forever": true,
-      "LevelStack": 0,
+      "LevelStack": 1,
       "OverwriteDuration": -1,
       "UserDefineVariable": {
       }
@@ -201,23 +220,7 @@
       }
     },
     {
-      "BuffId": "h0009s5_enemy_4_P4",
-      "Forever": true,
-      "LevelStack": 0,
-      "OverwriteDuration": -1,
-      "UserDefineVariable": {
-      }
-    },
-    {
       "BuffId": "h0009s5_enemy_4_P5",
-      "Forever": true,
-      "LevelStack": 0,
-      "OverwriteDuration": -1,
-      "UserDefineVariable": {
-      }
-    },
-    {
-      "BuffId": "add_inhibit_taunt",
       "Forever": true,
       "LevelStack": 0,
       "OverwriteDuration": -1,
@@ -226,7 +229,7 @@
     }
   ],
   "_pose": "Stand",
-  "_power": 30,
+  "_power": 28,
   "_reviveCount": 4,
   "_skills": {
     "Arrive1": {
@@ -328,6 +331,93 @@
                 },
                 "_ratio": 2
               }
+            },
+            {
+              "$type": "BattleModel.AddBuffSkillEffect",
+              "Tag": 132,
+              "_buffData": [
+              ],
+              "_keyString": "1"
+            }
+          ]
+        }
+      ]
+    },
+    "S2": {
+      "$type": "BattleModel.BattleSkill",
+      "_isFallBackIfEmptyTarget": false,
+      "_isResolveTargetEachUnit": false,
+      "_skillIdentifiers": [
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": false,
+          "multi": null,
+          "single": {
+            "$type": "BattleModel.EnemyAssignee",
+            "reference": {
+              "$type": "BattleModel.ThisSkillCaster"
+            }
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.HpDamageSkillEffect",
+              "Tag": 9,
+              "_keyString": "1",
+              "_skillModifier": {
+                "_constant": 0,
+                "_parameter": {
+                  "$type": "BattleModel.SkillCasterPower",
+                  "basePower": false
+                },
+                "_ratio": 1.4
+              }
+            }
+          ]
+        },
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": true,
+          "multi": {
+            "$type": "BattleModel.OppositeTeamChars",
+            "includeDead": false,
+            "includeEmpty": false,
+            "reference": {
+              "$type": "BattleModel.ThisSkillCaster"
+            }
+          },
+          "single": null,
+          "skillEffects": [
+            {
+              "$type": "BattleModel.HpDamageSkillEffect",
+              "Tag": 9,
+              "_keyString": "1",
+              "_skillModifier": {
+                "_constant": 0,
+                "_parameter": {
+                  "$type": "BattleModel.SkillCasterPower",
+                  "basePower": false
+                },
+                "_ratio": 0.1
+              }
+            }
+          ]
+        },
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": false,
+          "multi": null,
+          "single": {
+            "$type": "BattleModel.ThisSkillCaster"
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.FixedHealRatioMaxSkillEffect",
+              "Ratio": {
+                "$type": "BattleModel.ConstanctFloat",
+                "constant": 1
+              },
+              "Tag": 34,
+              "_keyString": ""
             }
           ]
         }
@@ -359,6 +449,41 @@
       "_isViewSkillSet": false
     },
     "S1": {
+      "ComboList": [
+        {
+          "ConditionList": [
+          ],
+          "SkillList": [
+            {
+              "ConditionList": [
+              ],
+              "SkillID": "S2",
+              "_conditionalSequences": [
+              ],
+              "seq": "",
+              "t": null
+            }
+          ],
+          "_characterCoolDown": 2,
+          "assignTarget": {
+            "$type": "BattleModel.IndexOfChars",
+            "backward": false,
+            "group": {
+              "$type": "BattleModel.PVEEnemyTeam",
+              "includeDead": false,
+              "includeEmpty": false
+            },
+            "index": {
+              "$type": "BattleModel.ConstanctInt",
+              "constant": 1
+            }
+          },
+          "icon": 0
+        }
+      ],
+      "_isViewSkillSet": false
+    },
+    "S1_ex": {
       "ComboList": [
         {
           "ConditionList": [

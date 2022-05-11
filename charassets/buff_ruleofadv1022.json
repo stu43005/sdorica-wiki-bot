@@ -26,10 +26,10 @@
           },
           {
             "效果": [
-              "立即施展技能：對玩家首位賦予1回合poison_fsm_03、賦予99回合1層weak(易傷)、攻擊(敵人首位的最大HP x1.8)"
+              "立即施展技能：對玩家首位賦予1回合poison_fsm_03、賦予99回合1層weak(易傷)、攻擊((({\"group\":{\"includeDead\":false,\"includeEmpty\":false,\"$type\":\"BattleModel.PVEEnemyTeam\"},\"Integer\":{\"targetField\":1,\"$type\":\"BattleModel.IntFieldC\"},\"$type\":\"BattleModel.IntegersOfGroupedCharacter\"})的最大值 * 0.045) x1.8)"
             ],
             "條件": [
-              "(本狀態的變數一 == 3) 或 ((本狀態的變數一 == 6) 或 ((本狀態的變數一 == 9) 或 ((本狀態的變數一 == 12) 或 (本狀態的變數一 == 15))))"
+              "(本狀態的變數一 == 3) 或 ((本狀態的變數一 == 5) 或 ((本狀態的變數一 == 7) 或 ((本狀態的變數一 == 9) 或 (本狀態的變數一 == 11))))"
             ]
           },
           {
@@ -38,7 +38,7 @@
               "立即施展技能：對敵人全體賦予永久1層rock_fsm_03、移除狀態invincible(免疫)、破甲(1 x100%)、攻擊(最大血量的1 x100%)"
             ],
             "條件": [
-              "本狀態的變數一 >= 7"
+              "本狀態的變數一 >= 8"
             ]
           }
         ],
@@ -135,16 +135,23 @@
                         "_skillModifier": {
                           "_constant": 0,
                           "_parameter": {
-                            "$type": "BattleModel.IntCharaterField",
-                            "character": {
-                              "$type": "BattleModel.FrontOfChars",
+                            "$type": "BattleModel.MultiplyFloat",
+                            "left": {
+                              "$type": "BattleModel.MaxOfInts",
                               "group": {
-                                "$type": "BattleModel.PVEEnemyTeam",
-                                "includeDead": true,
-                                "includeEmpty": false
+                                "$type": "BattleModel.IntegersOfGroupedCharacter",
+                                "Integer": {
+                                  "$type": "BattleModel.IntFieldC",
+                                  "targetField": 1
+                                },
+                                "group": {
+                                  "$type": "BattleModel.PVEEnemyTeam",
+                                  "includeDead": false,
+                                  "includeEmpty": false
+                                }
                               }
                             },
-                            "targetField": 1
+                            "ratio": 0.045
                           },
                           "_ratio": 1.8
                         }
@@ -187,7 +194,7 @@
                     "op": 0,
                     "right": {
                       "$type": "BattleModel.ConstanctInt",
-                      "constant": 6
+                      "constant": 5
                     }
                   },
                   "cond2": {
@@ -204,7 +211,7 @@
                       "op": 0,
                       "right": {
                         "$type": "BattleModel.ConstanctInt",
-                        "constant": 9
+                        "constant": 7
                       }
                     },
                     "cond2": {
@@ -221,7 +228,7 @@
                         "op": 0,
                         "right": {
                           "$type": "BattleModel.ConstanctInt",
-                          "constant": 12
+                          "constant": 9
                         }
                       },
                       "cond2": {
@@ -236,7 +243,7 @@
                         "op": 0,
                         "right": {
                           "$type": "BattleModel.ConstanctInt",
-                          "constant": 15
+                          "constant": 11
                         }
                       }
                     }
@@ -341,7 +348,7 @@
                 "op": 4,
                 "right": {
                   "$type": "BattleModel.ConstanctInt",
-                  "constant": 7
+                  "constant": 8
                 }
               }
             ]

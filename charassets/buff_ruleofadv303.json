@@ -2,15 +2,32 @@
   "$interpreted": {
     "Localization": "",
     "動作": {
-      "BeforeAnyoneDie": {
+      "OnEachSkillSetEnd": {
         "效果": [
           {
             "效果": [
-              "立即施展技能：對{\"$type\":\"BattleModel.BuffAssignedCharacter\"}將2個魂芯undefined、賦予1回合1層nerf_damage_small(弱化)"
+              "對本狀態的變數一改為0"
             ],
             "條件": [
-              "施術者是玩家的一員",
-              "死亡或復活的角色是敵人的一員"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnEachSkillTargetEffect": {
+        "效果": [
+          {
+            "效果": [
+              "對指定目標賦予永久15層rust(鏽蝕)",
+              "對本狀態的變數一增加1"
+            ],
+            "條件": [
+              "{\"SourceType\":\"StoneAction\",\"$type\":\"BattleModel.SkillSetSourceTypeEqual\"}",
+              "指定目標的隊伍中符合({\"$type\":\"BattleModel.IsCharacterAlive\"})的角色的角色數量 == 0",
+              "本狀態的變數一 == 0",
+              "施展的技能效果中包含(Attack)屬性",
+              "施術者是玩家的一員"
             ]
           }
         ],
@@ -24,105 +41,139 @@
   },
   "$type": "BattleModel.Buff",
   "ReferenceBuffKeys": [
-    "nerf_damage_small"
+    "rust"
   ],
   "_actionTable": [
     {
-      "Key": 131072,
+      "Key": 8,
       "Value": {
         "Actions": [
           {
             "Actions": [
               {
                 "TargetField": {
-                  "$type": "BattleModel.AssignParameterSkillEffect",
-                  "AssignParameter": {
-                    "AssignCharacter": {
-                      "$type": "BattleModel.ThisSkillCaster"
-                    },
-                    "AssignCharacterGroup": {
-                      "$type": "BattleModel.NoneCharacters"
-                    },
-                    "AssignInteger": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 4,
+                    "value": {
                       "$type": "BattleModel.ConstanctInt",
                       "constant": 0
-                    },
-                    "AssignIntegerGroup": {
-                      "$type": "BattleModel.ConstanctIntegerGroup",
-                      "Group": [
-                      ]
                     }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 1024,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisSpecifiedTarget"
                   },
-                  "SkillUnit": {
-                    "CanBeEmpty": false,
-                    "IsMultiple": false,
-                    "multi": null,
-                    "single": {
-                      "$type": "BattleModel.BuffAssignedCharacter"
-                    },
-                    "skillEffects": [
-                      {
-                        "$type": "BattleModel.StoneActionSkillEffect",
-                        "Tag": 516,
-                        "_keyString": "1",
-                        "_stoneAction": {
-                          "BuffFilter": "Normal",
-                          "BuffId": "",
-                          "BuffLabel": null,
-                          "EffectFilter": "Normal",
-                          "StonePositionList": [
-                          ],
-                          "UsePositionSettings": false,
-                          "changeTo": "ToTargetStoneType",
-                          "filter": "IsNotTargetColor",
-                          "isInitStoneFilter": "None",
-                          "order": "UpperLeftToLowerLeft",
-                          "targetStoneCount": 2
-                        }
-                      },
-                      {
-                        "$type": "BattleModel.AddBuffSkillEffect",
-                        "Tag": 132,
-                        "_buffData": [
-                          {
-                            "BuffId": "nerf_damage_small",
-                            "Forever": false,
-                            "LevelStack": 1,
-                            "OverwriteDuration": 1,
-                            "UserDefineVariable": {
-                            }
-                          }
-                        ],
-                        "_keyString": "1"
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "rust",
+                      "Forever": true,
+                      "LevelStack": 15,
+                      "OverwriteDuration": -1,
+                      "UserDefineVariable": {
                       }
-                    ]
-                  },
-                  "UseAssignParameter": true,
-                  "WillTriggerBuff": false
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 1,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 1
+                    }
+                  }
                 }
               }
             ],
             "Conditions": [
               {
-                "$type": "BattleModel.CharacterInside",
-                "group": {
-                  "$type": "BattleModel.PVEPlayerTeam",
-                  "includeDead": true,
-                  "includeEmpty": false
-                },
+                "$type": "BattleModel.SkillSetSourceTypeEqual",
+                "SourceType": "StoneAction"
+              },
+              {
+                "$type": "BattleModel.IntCompare",
                 "left": {
-                  "$type": "BattleModel.ThisSkillCaster"
+                  "$type": "BattleModel.CountOfCharGroup",
+                  "group": {
+                    "$type": "BattleModel.CharGroupWhere",
+                    "condition": {
+                      "$type": "BattleModel.IsCharacterAlive"
+                    },
+                    "group": {
+                      "$type": "BattleModel.SelfTeamChars",
+                      "excludeSelf": true,
+                      "includeDead": false,
+                      "includeEmpty": false,
+                      "reference": {
+                        "$type": "BattleModel.ThisSpecifiedTarget"
+                      }
+                    }
+                  }
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 0
                 }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.ThisBuff"
+                  },
+                  "targetField": 4
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 0
+                }
+              },
+              {
+                "$type": "BattleModel.ThisSkillEffectTagContains",
+                "containsAll": 1
               },
               {
                 "$type": "BattleModel.CharacterInside",
                 "group": {
-                  "$type": "BattleModel.PVEEnemyTeam",
-                  "includeDead": true,
+                  "$type": "BattleModel.PVEPlayerTeam",
+                  "includeDead": false,
                   "includeEmpty": false
                 },
                 "left": {
-                  "$type": "BattleModel.DeadOrReviveTarget"
+                  "$type": "BattleModel.ThisSkillCaster"
                 }
               }
             ]

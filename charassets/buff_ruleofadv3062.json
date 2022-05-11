@@ -1,0 +1,179 @@
+{
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "OnTurnEnd | OnEverySecond": {
+        "效果": [
+          {
+            "效果": [
+              "對施術者的隊伍所有角色{\"BuffGroupIds\":{\"GroupString\":{\"IsNeedBelongBuffLabel\":true,\"BuffLabelData\":{\"BuffLabel\":\"generalBuff\",\"BuffIdList\":[\"bonusAttackPower\",\"defense_up_small\",\"dexterity\",\"damage_absorption\",\"ArmorToBlood\",\"regeneration\",\"rage\",\"warfare\",\"leader\"]},\"IsDistinct\":false,\"$type\":\"BattleModel.AddStoneBuffIdStringList\"},\"$type\":\"BattleModel.BuffIdFromStringGroup\"},\"AddAllBuff\":true,\"RandomAddCount\":0,\"NotRepeatSameBuffId\":false,\"Forever\":false,\"OverwriteDuration\":1,\"LevelStack\":1,\"$type\":\"BattleModel.AddBuffFromGroupedBffId\"}"
+            ],
+            "條件": [
+            ]
+          },
+          {
+            "效果": [
+              "對敵人所有角色賦予永久5層rust(鏽蝕)"
+            ],
+            "條件": [
+              "{\"StringGroup\":{\"IsNeedBelongBuffLabel\":true,\"BuffLabelData\":{\"BuffLabel\":\"generalBuff\",\"BuffIdList\":[\"bonusAttackPower\",\"defense_up_small\",\"dexterity\",\"damage_absorption\",\"ArmorToBlood\",\"regeneration\",\"rage\",\"warfare\",\"leader\"]},\"IsDistinct\":true,\"$type\":\"BattleModel.AddStoneBuffIdStringList\"},\"$type\":\"BattleModel.CountOfGroupString\"} >= 2"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 99,
+    "標籤": "NotRemoveAfterBattle | Forever | InfinityTrigger"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+    "rust",
+    "bonusAttackPower",
+    "defense_up_small",
+    "dexterity",
+    "damage_absorption",
+    "ArmorToBlood",
+    "regeneration",
+    "rage",
+    "warfare",
+    "leader",
+    "dexterity_trigger",
+    "dexterity_fightback_0",
+    "dexterity_fightback_1",
+    "dexterity_fightback_2",
+    "dexterity_fightback_3",
+    "dexterity_fightback_4",
+    "b0028sx_dodge",
+    "damage_absorption_trigger",
+    "ArmorToBlood_trigger",
+    "regeneration_trigger",
+    "follower"
+  ],
+  "_actionTable": [
+    {
+      "Key": 2050,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacterGroup",
+                  "group": {
+                    "$type": "BattleModel.SelfTeamChars",
+                    "excludeSelf": true,
+                    "includeDead": false,
+                    "includeEmpty": false,
+                    "reference": {
+                      "$type": "BattleModel.ThisSkillCaster"
+                    }
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuffFromGroupedBffId",
+                    "AddAllBuff": true,
+                    "BuffGroupIds": {
+                      "$type": "BattleModel.BuffIdFromStringGroup",
+                      "GroupString": {
+                        "$type": "BattleModel.AddStoneBuffIdStringList",
+                        "BuffLabelData": {
+                          "BuffIdList": [
+                            "bonusAttackPower",
+                            "defense_up_small",
+                            "dexterity",
+                            "damage_absorption",
+                            "ArmorToBlood",
+                            "regeneration",
+                            "rage",
+                            "warfare",
+                            "leader"
+                          ],
+                          "BuffLabel": "generalBuff"
+                        },
+                        "IsDistinct": false,
+                        "IsNeedBelongBuffLabel": true
+                      }
+                    },
+                    "Forever": false,
+                    "LevelStack": 1,
+                    "NotRepeatSameBuffId": false,
+                    "OverwriteDuration": 1,
+                    "RandomAddCount": 0
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacterGroup",
+                  "group": {
+                    "$type": "BattleModel.PVEEnemyTeam",
+                    "includeDead": false,
+                    "includeEmpty": false
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "rust",
+                      "Forever": true,
+                      "LevelStack": 5,
+                      "OverwriteDuration": -1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.CountOfGroupString",
+                  "StringGroup": {
+                    "$type": "BattleModel.AddStoneBuffIdStringList",
+                    "BuffLabelData": {
+                      "BuffIdList": [
+                        "bonusAttackPower",
+                        "defense_up_small",
+                        "dexterity",
+                        "damage_absorption",
+                        "ArmorToBlood",
+                        "regeneration",
+                        "rage",
+                        "warfare",
+                        "leader"
+                      ],
+                      "BuffLabel": "generalBuff"
+                    },
+                    "IsDistinct": true,
+                    "IsNeedBelongBuffLabel": true
+                  }
+                },
+                "op": 4,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 2
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 99,
+  "_orderTable": {
+  },
+  "_tag": 32834
+}

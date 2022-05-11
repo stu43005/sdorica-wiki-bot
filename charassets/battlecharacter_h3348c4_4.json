@@ -11,7 +11,8 @@
       ],
       "S1": [
         "對施術者的目標攻擊(攻擊力 x0.7)",
-        "對施術者賦予永久1層sharp(銳利)"
+        "對施術者的對方全體攻擊(攻擊力 x0.1)",
+        "對施術者賦予1回合1層bonusAttackPower(強化)"
       ],
       "S2": [
         "對玩家全體攻擊(攻擊力 x0.5)",
@@ -82,10 +83,9 @@
     "血量等級調整後": 471698,
     "被動Buff": [
       "賦予永久h3348c4_FSM",
-      "賦予永久h3348c4_4_P3",
-      "賦予永久h3177c4_3_P2",
-      "賦予永久h0009s5_enemy_4_P3",
-      "賦予永久add_inhibit_taunt"
+      "賦予永久h3348c4_4_P3(本角色戰鬥10回合後會主動撤退。)",
+      "賦予永久h3177c4_3_P2(本角色不受中毒、撕裂影響，且會立即移除自身暈眩。)",
+      "賦予永久h0009s5_enemy_4_P3(本角色只受自身治癒技能效果影響。)"
     ],
     "起始CD": 0,
     "預設CD": 0
@@ -96,9 +96,8 @@
     "h3348c4_4_P3",
     "h3177c4_3_P2",
     "h0009s5_enemy_4_P3",
-    "add_inhibit_taunt",
-    "sharp",
-    "inhibit_taunt"
+    "bonusAttackPower",
+    "sharp"
   ],
   "ReferenceCharacterKeys": [
     "h3004c3_3"
@@ -212,14 +211,6 @@
       "OverwriteDuration": -1,
       "UserDefineVariable": {
       }
-    },
-    {
-      "BuffId": "add_inhibit_taunt",
-      "Forever": true,
-      "LevelStack": 0,
-      "OverwriteDuration": -1,
-      "UserDefineVariable": {
-      }
     }
   ],
   "_pose": "Stand",
@@ -304,6 +295,34 @@
         },
         {
           "CanBeEmpty": false,
+          "IsMultiple": true,
+          "multi": {
+            "$type": "BattleModel.OppositeTeamChars",
+            "includeDead": false,
+            "includeEmpty": false,
+            "reference": {
+              "$type": "BattleModel.ThisSkillCaster"
+            }
+          },
+          "single": null,
+          "skillEffects": [
+            {
+              "$type": "BattleModel.HpDamageSkillEffect",
+              "Tag": 9,
+              "_keyString": "",
+              "_skillModifier": {
+                "_constant": 0,
+                "_parameter": {
+                  "$type": "BattleModel.SkillCasterPower",
+                  "basePower": false
+                },
+                "_ratio": 0.1
+              }
+            }
+          ]
+        },
+        {
+          "CanBeEmpty": false,
           "IsMultiple": false,
           "multi": null,
           "single": {
@@ -315,10 +334,10 @@
               "Tag": 132,
               "_buffData": [
                 {
-                  "BuffId": "sharp",
-                  "Forever": true,
+                  "BuffId": "bonusAttackPower",
+                  "Forever": false,
                   "LevelStack": 1,
-                  "OverwriteDuration": -1,
+                  "OverwriteDuration": 1,
                   "UserDefineVariable": {
                   }
                 }

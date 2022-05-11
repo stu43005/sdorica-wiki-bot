@@ -1,0 +1,148 @@
+{
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "OnTurnBegin": {
+        "效果": [
+          {
+            "效果": [
+              "對玩家後排觸發S2"
+            ],
+            "條件": [
+              "目前回合輪到玩家後排",
+              "({\"group\":{\"group\":{\"character\":{\"group\":{\"includeDead\":false,\"includeEmpty\":false,\"$type\":\"BattleModel.PVEPlayerTeam\"},\"$type\":\"BattleModel.BackOfChars\"},\"$type\":\"BattleModel.AllBuffsOnChar\"},\"condition\":{\"BuffLabel\":{\"BuffLabel\":\"basicNerf\",\"BuffIdList\":[\"tearing\",\"poison\",\"weak\",\"nerf_damage_small\"]},\"$type\":\"BattleModel.CheckBuffBelongLabel\"},\"$type\":\"BattleModel.BuffGroupWhere\"},\"Integer\":{\"targetField\":1,\"$type\":\"BattleModel.IntFieldB\"},\"$type\":\"BattleModel.IntegersOfGroupedBuff\"})的最大值 >= 2"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 99,
+    "標籤": "Hidden | Forever"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+    "tearing",
+    "poison",
+    "weak",
+    "nerf_damage_small",
+    "tearing_trigger",
+    "tearing_trigger_alert",
+    "poison_trigger"
+  ],
+  "_actionTable": [
+    {
+      "Key": 1,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.BackOfChars",
+                    "group": {
+                      "$type": "BattleModel.PVEPlayerTeam",
+                      "includeDead": false,
+                      "includeEmpty": false
+                    }
+                  },
+                  "operation": {
+                    "$type": "BattleModel.CastSkillSet",
+                    "AssignParameter": {
+                      "AssignCharacter": {
+                        "$type": "BattleModel.NoneCharacter"
+                      },
+                      "AssignCharacterGroup": {
+                        "$type": "BattleModel.NoneCharacters"
+                      },
+                      "AssignInteger": {
+                        "$type": "BattleModel.ConstanctInt",
+                        "constant": 0
+                      },
+                      "AssignIntegerGroup": {
+                        "$type": "BattleModel.ConstanctIntegerGroup",
+                        "Group": [
+                        ]
+                      }
+                    },
+                    "UseAssignParameter": false,
+                    "resetCasterCD": false,
+                    "skillsetId": "S2"
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CurrentTurnBelongsTo",
+                "character": {
+                  "$type": "BattleModel.BackOfChars",
+                  "group": {
+                    "$type": "BattleModel.PVEPlayerTeam",
+                    "includeDead": false,
+                    "includeEmpty": false
+                  }
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.MaxOfInts",
+                  "group": {
+                    "$type": "BattleModel.IntegersOfGroupedBuff",
+                    "Integer": {
+                      "$type": "BattleModel.IntFieldB",
+                      "targetField": 1
+                    },
+                    "group": {
+                      "$type": "BattleModel.BuffGroupWhere",
+                      "condition": {
+                        "$type": "BattleModel.CheckBuffBelongLabel",
+                        "BuffLabel": {
+                          "BuffIdList": [
+                            "tearing",
+                            "poison",
+                            "weak",
+                            "nerf_damage_small"
+                          ],
+                          "BuffLabel": "basicNerf"
+                        }
+                      },
+                      "group": {
+                        "$type": "BattleModel.AllBuffsOnChar",
+                        "character": {
+                          "$type": "BattleModel.BackOfChars",
+                          "group": {
+                            "$type": "BattleModel.PVEPlayerTeam",
+                            "includeDead": false,
+                            "includeEmpty": false
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "op": 4,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 2
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 99,
+  "_orderTable": {
+  },
+  "_tag": 65
+}

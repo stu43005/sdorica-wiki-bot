@@ -6,12 +6,39 @@
         "效果": [
           {
             "效果": [
-              "對本角色觸發S1"
+              "對本角色觸發S1_ex"
+            ],
+            "條件": [
+              "本狀態的變數一 == 1"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnEachSkillSetStart": {
+        "效果": [
+          {
+            "效果": [
+              "對本狀態的變數一改為0"
+            ],
+            "條件": [
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnEachSkillTargetEffect": {
+        "效果": [
+          {
+            "效果": [
+              "對本狀態的變數一改為1"
             ],
             "條件": [
               "指定目標是本角色的隊伍的一員",
-              "施術者是玩家的一員",
-              "施展的技能效果中包含(Attack)屬性"
+              "施展的技能效果中包含(Attack)屬性",
+              "施術者是玩家的一員"
             ]
           }
         ],
@@ -60,7 +87,52 @@
                     },
                     "UseAssignParameter": false,
                     "resetCasterCD": false,
-                    "skillsetId": "S1"
+                    "skillsetId": "S1_ex"
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.ThisBuff"
+                  },
+                  "targetField": 4
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 1
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 1024,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 1
+                    }
                   }
                 }
               }
@@ -82,6 +154,10 @@
                 }
               },
               {
+                "$type": "BattleModel.ThisSkillEffectTagContains",
+                "containsAll": 1
+              },
+              {
                 "$type": "BattleModel.CharacterInside",
                 "group": {
                   "$type": "BattleModel.PVEPlayerTeam",
@@ -91,11 +167,37 @@
                 "left": {
                   "$type": "BattleModel.ThisSkillCaster"
                 }
-              },
-              {
-                "$type": "BattleModel.ThisSkillEffectTagContains",
-                "containsAll": 1
               }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 4,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
             ]
           }
         ],

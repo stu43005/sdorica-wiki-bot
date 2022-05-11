@@ -1,0 +1,121 @@
+{
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "OnEachSkillSetEnd": {
+        "效果": [
+          {
+            "效果": [
+              "立即施展技能：對{\"$type\":\"BattleModel.BuffAssignedCharacter\"}疊盾({\"$type\":\"BattleModel.BuffAssignedInteger\"} x0.12)"
+            ],
+            "條件": [
+              "施展的技能效果中包含(TrueDamage)屬性",
+              "施術者是玩家的一員"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 99,
+    "標籤": "NotRemoveAfterBattle | NotRemoveWhenDie | Forever | InfinityTrigger"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+  ],
+  "_actionTable": [
+    {
+      "Key": 8,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.AssignParameterSkillEffect",
+                  "AssignParameter": {
+                    "AssignCharacter": {
+                      "$type": "BattleModel.ThisSkillCaster"
+                    },
+                    "AssignCharacterGroup": {
+                      "$type": "BattleModel.NoneCharacters"
+                    },
+                    "AssignInteger": {
+                      "$type": "BattleModel.TransitionResultValue",
+                      "ResultValue": {
+                        "$type": "BattleModel.TotalResultsValueOfCharacter",
+                        "CharType": "Sender",
+                        "Character": {
+                          "$type": "BattleModel.ThisSkillCaster"
+                        },
+                        "Results": {
+                          "$type": "BattleModel.ThisSkillSetResult"
+                        },
+                        "ValueType": "HpDamage"
+                      }
+                    },
+                    "AssignIntegerGroup": {
+                      "$type": "BattleModel.ConstanctIntegerGroup",
+                      "Group": [
+                      ]
+                    }
+                  },
+                  "SkillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": null,
+                    "single": {
+                      "$type": "BattleModel.BuffAssignedCharacter"
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.AmrGainSkillEffect",
+                        "Tag": 66,
+                        "_keyString": "",
+                        "_skillModifier": {
+                          "_constant": 0,
+                          "_parameter": {
+                            "$type": "BattleModel.BuffAssignedInteger"
+                          },
+                          "_ratio": 0.1
+                        }
+                      }
+                    ]
+                  },
+                  "UseAssignParameter": true,
+                  "WillTriggerBuff": true
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.ThisSkillEffectTagContains",
+                "containsAll": 8192
+              },
+              {
+                "$type": "BattleModel.CharacterInside",
+                "group": {
+                  "$type": "BattleModel.PVEPlayerTeam",
+                  "includeDead": false,
+                  "includeEmpty": false
+                },
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 99,
+  "_orderTable": {
+  },
+  "_tag": 32838
+}
