@@ -3,7 +3,7 @@ import { localizationQuestSubtitle, localizationString, localizationStringAuto }
 import { questMetadata } from "../wiki-quest";
 import { TemplateString } from './../model/template-string';
 
-const AdventureRuleTable = ImperiumData.fromGamedata().getTable("AdventureRule");
+const ScoreRulesTable = ImperiumData.fromGamedata().getTable("ScoreRules");
 const ChaptersTable = ImperiumData.fromGamedata().getTable("Chapters");
 const QuestsTable = ImperiumData.fromGamedata().getTable("Quests");
 
@@ -19,8 +19,8 @@ export default function wikiAdventure() {
 ! 機制
 ! 詳細內容
 ! 詳細計分方式`;
-	for (let i = 0; i < AdventureRuleTable.length; i++) {
-		const row = AdventureRuleTable.get(i);
+	for (let i = 0; i < ScoreRulesTable.length; i++) {
+		const row = ScoreRulesTable.get(i);
 		const descs: string[] = [];
 		if (row.get("finalArmor")) descs.push(`finalArmor: ${row.get("finalArmor")}`);
 		if (row.get("finalDeathCount")) descs.push(`finalDeathCount: ${row.get("finalDeathCount")}`);
@@ -57,9 +57,10 @@ export default function wikiAdventure() {
 		}
 		if (row.get("waveArmorGain")) {
 			// 計算本場戰鬥中我方角色技能的疊盾量，每{[score]}疊盾量獲得1分，最多{[limit]}分。
-			const [score, limit] = `${row.get("waveArmorGain")}`.split(";");
+			const [pre, limit] = `${row.get("waveArmorGain")}`.split(";");
 			descs.push(new TemplateString(localizationString("ScoreMessage")("gainArmorRule_info")).apply({
-				score, limit,
+				score: 1000 / +pre,
+				limit,
 			}));
 		}
 		if (row.get("waveDeathCount")) {
@@ -71,9 +72,10 @@ export default function wikiAdventure() {
 		}
 		if (row.get("waveHealGain")) {
 			// 計算本場戰鬥中我方角色技能的治癒量，每{[score]}治癒量獲得1分，最多{[limit]}分。
-			const [score, limit] = `${row.get("waveHealGain")}`.split(";");
+			const [pre, limit] = `${row.get("waveHealGain")}`.split(";");
 			descs.push(new TemplateString(localizationString("ScoreMessage")("healRule_info")).apply({
-				score, limit,
+				score: 1000 / +pre,
+				limit,
 			}));
 		}
 		if (row.get("waveHp")) {
@@ -92,9 +94,10 @@ export default function wikiAdventure() {
 		}
 		if (row.get("waveMaxSkillSetDamage")) {
 			// 計算本場戰鬥中我方角色技能造成的最大傷害，每{[score]}傷害獲得1分，最多{[limit]}分。
-			const [score, limit] = `${row.get("waveMaxSkillSetDamage")}`.split(";");
+			const [pre, limit] = `${row.get("waveMaxSkillSetDamage")}`.split(";");
 			descs.push(new TemplateString(localizationString("ScoreMessage")("maxDamageRule_info")).apply({
-				score, limit,
+				score: 1000 / +pre,
+				limit,
 			}));
 		}
 		if (row.get("waveS1Count")) {
@@ -120,9 +123,10 @@ export default function wikiAdventure() {
 		}
 		if (row.get("waveTotalSkillSetDamage")) {
 			// 計算本場戰鬥中我方角色技能造成的傷害，每{[score]}傷害獲得1分，最多{[limit]}分。
-			const [score, limit] = `${row.get("waveTotalSkillSetDamage")}`.split(";");
+			const [pre, limit] = `${row.get("waveTotalSkillSetDamage")}`.split(";");
 			descs.push(new TemplateString(localizationString("ScoreMessage")("totalDamageRule_info")).apply({
-				score, limit,
+				score: 1000 / +pre,
+				limit,
 			}));
 		}
 		advRuleOut += `
