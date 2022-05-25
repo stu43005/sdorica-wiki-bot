@@ -2,16 +2,34 @@
   "$interpreted": {
     "Localization": "",
     "動作": {
+      "OnEachSkillSetEnd": {
+        "效果": [
+          {
+            "效果": [
+              "對本角色的對方中符合(擁有t0032s5_a2_P3狀態)的角色所有角色移除狀態t0032s5_a2_P3"
+            ],
+            "條件": [
+              "本角色是施術者",
+              "施展的技能組是S3"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
       "OnEachSkillTargetEffect": {
         "效果": [
           {
             "效果": [
-              "對指定目標賦予1回合1層stun(暈眩)"
+              "對指定目標賦予1回合1層stun(暈眩)",
+              "對指定目標賦予1回合1層t0032s5_a2_P3"
             ],
             "條件": [
+              "指定目標沒有t0032s5_a2_P3狀態",
               "本角色是施術者",
               "施展的技能組是S3",
-              "指定目標的CD == 1"
+              "指定目標的CD == 1",
+              "施展的技能效果中包含(Attack)屬性"
             ]
           }
         ],
@@ -25,7 +43,8 @@
   },
   "$type": "BattleModel.Buff",
   "ReferenceBuffKeys": [
-    "stun"
+    "stun",
+    "t0032s5_a2_P3"
   ],
   "_actionTable": [
     {
@@ -52,9 +71,38 @@
                     }
                   }
                 }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisSpecifiedTarget"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "t0032s5_a2_P3",
+                      "Forever": false,
+                      "LevelStack": 1,
+                      "OverwriteDuration": 1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
               }
             ],
             "Conditions": [
+              {
+                "$type": "BattleModel.Inverse",
+                "condition": {
+                  "$type": "BattleModel.CharacterHasBuff",
+                  "buffId": "t0032s5_a2_P3",
+                  "character": {
+                    "$type": "BattleModel.ThisSpecifiedTarget"
+                  }
+                }
+              },
               {
                 "$type": "BattleModel.CharacterEqual",
                 "left": {
@@ -82,6 +130,62 @@
                   "$type": "BattleModel.ConstanctInt",
                   "constant": 1
                 }
+              },
+              {
+                "$type": "BattleModel.ThisSkillEffectTagContains",
+                "containsAll": 1
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 8,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacterGroup",
+                  "group": {
+                    "$type": "BattleModel.CharGroupWhere",
+                    "condition": {
+                      "$type": "BattleModel.HasBuff",
+                      "buffId": "t0032s5_a2_P3"
+                    },
+                    "group": {
+                      "$type": "BattleModel.OppositeTeamChars",
+                      "includeDead": false,
+                      "includeEmpty": false,
+                      "reference": {
+                        "$type": "BattleModel.ThisBuffOwner"
+                      }
+                    }
+                  },
+                  "operation": {
+                    "$type": "BattleModel.RemoveBuff",
+                    "buffId": "t0032s5_a2_P3"
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                },
+                "right": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              },
+              {
+                "$type": "BattleModel.ThisSkillSetIdEqual",
+                "id": "S3"
               }
             ]
           }

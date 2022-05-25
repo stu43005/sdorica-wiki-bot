@@ -25,44 +25,24 @@
     "技能組": {
       "CounterAttack": [
         {
-          "CoolDown": 3,
-          "技能列表": [
-            "施展S2"
-          ],
-          "條件": [
-          ],
-          "目標": ""
-        }
-      ],
-      "S1": [
-        {
-          "CoolDown": 0,
-          "技能列表": [
-            "施展S3"
-          ],
-          "條件": [
-            "施術者的目標擁有stun(暈眩)狀態"
-          ],
-          "目標": ""
-        },
-        {
-          "CoolDown": 3,
-          "技能列表": [
-            "施展S4"
-          ],
-          "條件": [
-            "施術者的目標 符合條件 疊盾 == 0"
-          ],
-          "目標": ""
-        },
-        {
-          "CoolDown": 3,
+          "CoolDown": 5,
           "技能列表": [
             "施展S1"
           ],
           "條件": [
           ],
-          "目標": "玩家首位"
+          "目標": "{\"$type\":\"BattleModel.BuffAssignedCharacter\"}"
+        }
+      ],
+      "S1": [
+        {
+          "CoolDown": 5,
+          "技能列表": [
+            "施展S2"
+          ],
+          "條件": [
+          ],
+          "目標": "施術者的對方中疊盾最低的角色"
         }
       ]
     },
@@ -82,7 +62,7 @@
     "被動Buff": [
       "賦予永久CounterAttack_SenderHasNerf(本角色受到有負面狀態的角色攻擊後，立即進行1次反擊。)",
       "賦予永久h0008c3_8_P1(免疫2次攻擊。)",
-      "賦予永久t3247c3_2_P1(本角色的攻擊目標若沒有護盾，則會賦予目標永久暈眩。\n本角色的攻擊目標若擁有暈眩，則會直接擊殺目標。)"
+      "賦予永久b3253c2_2_P1(本角色的攻擊目標若沒有護盾，則會賦予目標2回合暈眩。)"
     ],
     "起始CD": 0,
     "預設CD": 3
@@ -91,7 +71,7 @@
   "ReferenceBuffKeys": [
     "CounterAttack_SenderHasNerf",
     "h0008c3_8_P1",
-    "t3247c3_2_P1",
+    "b3253c2_2_P1",
     "nerf_damage_small",
     "stun",
     "weak",
@@ -170,7 +150,7 @@
       }
     },
     {
-      "BuffId": "t3247c3_2_P1",
+      "BuffId": "b3253c2_2_P1",
       "Forever": true,
       "LevelStack": 0,
       "OverwriteDuration": -1,
@@ -405,15 +385,17 @@
             {
               "ConditionList": [
               ],
-              "SkillID": "S2",
+              "SkillID": "S1",
               "_conditionalSequences": [
               ],
               "seq": "",
               "t": null
             }
           ],
-          "_characterCoolDown": 3,
-          "assignTarget": null,
+          "_characterCoolDown": 5,
+          "assignTarget": {
+            "$type": "BattleModel.BuffAssignedCharacter"
+          },
           "icon": 0
         }
       ],
@@ -423,102 +405,32 @@
       "ComboList": [
         {
           "ConditionList": [
-            {
-              "$type": "BattleModel.CharacterHasBuff",
-              "buffId": "stun",
-              "character": {
-                "$type": "BattleModel.EnemyAssignee",
-                "reference": {
-                  "$type": "BattleModel.ThisSkillCaster"
-                }
-              }
-            }
           ],
           "SkillList": [
             {
               "ConditionList": [
               ],
-              "SkillID": "S3",
-              "_conditionalSequences": [
-                {
-                  "ConditionList": [
-                  ],
-                  "_sequenceId": "S2"
-                }
-              ],
-              "seq": "",
-              "t": null
-            }
-          ],
-          "_characterCoolDown": 0,
-          "assignTarget": null,
-          "icon": 0
-        },
-        {
-          "ConditionList": [
-            {
-              "$type": "BattleModel.CharacterCondition",
-              "character": {
-                "$type": "BattleModel.EnemyAssignee",
-                "reference": {
-                  "$type": "BattleModel.ThisSkillCaster"
-                }
-              },
-              "condition": {
-                "$type": "BattleModel.IntCompareC",
-                "left": {
-                  "$type": "BattleModel.IntFieldC",
-                  "targetField": 4
-                },
-                "op": 0,
-                "right": {
-                  "$type": "BattleModel.ConstantIntC",
-                  "constant": 0
-                }
-              }
-            }
-          ],
-          "SkillList": [
-            {
-              "ConditionList": [
-              ],
-              "SkillID": "S4",
-              "_conditionalSequences": [
-                {
-                  "ConditionList": [
-                  ],
-                  "_sequenceId": "S2"
-                }
-              ],
-              "seq": "",
-              "t": null
-            }
-          ],
-          "_characterCoolDown": 3,
-          "assignTarget": null,
-          "icon": 0
-        },
-        {
-          "ConditionList": [
-          ],
-          "SkillList": [
-            {
-              "ConditionList": [
-              ],
-              "SkillID": "S1",
+              "SkillID": "S2",
               "_conditionalSequences": [
               ],
               "seq": "",
               "t": null
             }
           ],
-          "_characterCoolDown": 3,
+          "_characterCoolDown": 5,
           "assignTarget": {
-            "$type": "BattleModel.FrontOfChars",
+            "$type": "BattleModel.FieldMinChar",
+            "field": {
+              "$type": "BattleModel.IntFieldC",
+              "targetField": 4
+            },
             "group": {
-              "$type": "BattleModel.PVEPlayerTeam",
+              "$type": "BattleModel.OppositeTeamChars",
               "includeDead": false,
-              "includeEmpty": false
+              "includeEmpty": false,
+              "reference": {
+                "$type": "BattleModel.ThisSkillCaster"
+              }
             }
           },
           "icon": 0

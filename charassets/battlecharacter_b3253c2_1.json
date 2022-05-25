@@ -10,7 +10,7 @@
         "對施術者{\"Tag\":65540,\"_keyString\":\"1\",\"$type\":\"BattleModel.DirectKillSkillEffect\"}"
       ],
       "S1": [
-        "對施術者的目標破甲(攻擊力 x0.75)、賦予1回合stumbling(踉蹌)"
+        "對施術者的目標破甲(攻擊力 x0.375)"
       ],
       "S2": [
         "對施術者的目標攻擊(攻擊力 x0.5)"
@@ -19,23 +19,13 @@
     "技能組": {
       "S1": [
         {
-          "CoolDown": 3,
-          "技能列表": [
-            "施展S2"
-          ],
-          "條件": [
-            "施術者的目標 符合條件 疊盾 > 0"
-          ],
-          "目標": "玩家首位"
-        },
-        {
-          "CoolDown": 3,
+          "CoolDown": 4,
           "技能列表": [
             "施展S1"
           ],
           "條件": [
           ],
-          "目標": "玩家首位"
+          "目標": "施術者的對方中疊盾最低的角色"
         }
       ]
     },
@@ -186,23 +176,8 @@
                   "$type": "BattleModel.SkillCasterPower",
                   "basePower": false
                 },
-                "_ratio": 1
+                "_ratio": 0.5
               }
-            },
-            {
-              "$type": "BattleModel.AddBuffSkillEffect",
-              "Tag": 132,
-              "_buffData": [
-                {
-                  "BuffId": "stumbling",
-                  "Forever": false,
-                  "LevelStack": 0,
-                  "OverwriteDuration": 1,
-                  "UserDefineVariable": {
-                  }
-                }
-              ],
-              "_keyString": ""
             }
           ]
         }
@@ -247,57 +222,6 @@
       "ComboList": [
         {
           "ConditionList": [
-            {
-              "$type": "BattleModel.CharacterCondition",
-              "character": {
-                "$type": "BattleModel.EnemyAssignee",
-                "reference": {
-                  "$type": "BattleModel.ThisSkillCaster"
-                }
-              },
-              "condition": {
-                "$type": "BattleModel.IntCompareC",
-                "left": {
-                  "$type": "BattleModel.IntFieldC",
-                  "targetField": 4
-                },
-                "op": 2,
-                "right": {
-                  "$type": "BattleModel.ConstantIntC",
-                  "constant": 0
-                }
-              }
-            }
-          ],
-          "SkillList": [
-            {
-              "ConditionList": [
-              ],
-              "SkillID": "S2",
-              "_conditionalSequences": [
-                {
-                  "ConditionList": [
-                  ],
-                  "_sequenceId": "S1"
-                }
-              ],
-              "seq": "",
-              "t": null
-            }
-          ],
-          "_characterCoolDown": 3,
-          "assignTarget": {
-            "$type": "BattleModel.FrontOfChars",
-            "group": {
-              "$type": "BattleModel.PVEPlayerTeam",
-              "includeDead": false,
-              "includeEmpty": false
-            }
-          },
-          "icon": 0
-        },
-        {
-          "ConditionList": [
           ],
           "SkillList": [
             {
@@ -310,13 +234,20 @@
               "t": null
             }
           ],
-          "_characterCoolDown": 3,
+          "_characterCoolDown": 4,
           "assignTarget": {
-            "$type": "BattleModel.FrontOfChars",
+            "$type": "BattleModel.FieldMinChar",
+            "field": {
+              "$type": "BattleModel.IntFieldC",
+              "targetField": 4
+            },
             "group": {
-              "$type": "BattleModel.PVEPlayerTeam",
+              "$type": "BattleModel.OppositeTeamChars",
               "includeDead": false,
-              "includeEmpty": false
+              "includeEmpty": false,
+              "reference": {
+                "$type": "BattleModel.ThisSkillCaster"
+              }
             }
           },
           "icon": 0

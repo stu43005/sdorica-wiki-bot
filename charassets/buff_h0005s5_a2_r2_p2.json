@@ -10,22 +10,13 @@
             ],
             "條件": [
             ]
-          }
-        ],
-        "條件": [
-        ]
-      },
-      "OnEachSkillTargetEffect": {
-        "效果": [
+          },
           {
             "效果": [
-              "立即施展技能效果：賦予1回合stumbling(踉蹌)",
               "對本狀態的變數一改為1"
             ],
             "條件": [
-              "施術者是本角色",
-              "指定目標的疊盾 == 0",
-              "本狀態的變數一 == 0"
+              "本角色的HP% >= 50"
             ]
           }
         ],
@@ -34,13 +25,11 @@
       }
     },
     "持續時間": 0,
-    "最高層數": 0,
-    "標籤": "Forever"
+    "最高層數": 99,
+    "標籤": "Hidden | Forever"
   },
   "$type": "BattleModel.Buff",
   "ReferenceBuffKeys": [
-    "stumbling",
-    "stun"
   ],
   "_actionTable": [
     {
@@ -67,40 +56,9 @@
             ],
             "Conditions": [
             ]
-          }
-        ],
-        "Conditions": [
-        ]
-      }
-    },
-    {
-      "Key": 1024,
-      "Value": {
-        "Actions": [
+          },
           {
             "Actions": [
-              {
-                "TargetField": {
-                  "$type": "BattleModel.ImmediatelySkillEffect",
-                  "SkillEffect": [
-                    {
-                      "$type": "BattleModel.AddBuffSkillEffect",
-                      "Tag": 132,
-                      "_buffData": [
-                        {
-                          "BuffId": "stumbling",
-                          "Forever": false,
-                          "LevelStack": 0,
-                          "OverwriteDuration": 1,
-                          "UserDefineVariable": {
-                          }
-                        }
-                      ],
-                      "_keyString": "1"
-                    }
-                  ]
-                }
-              },
               {
                 "TargetField": {
                   "$type": "BattleModel.OperateThisBuff",
@@ -119,42 +77,18 @@
             ],
             "Conditions": [
               {
-                "$type": "BattleModel.CharacterEqual",
-                "left": {
-                  "$type": "BattleModel.ThisSkillCaster"
-                },
-                "right": {
-                  "$type": "BattleModel.ThisBuffOwner"
-                }
-              },
-              {
                 "$type": "BattleModel.IntCompare",
                 "left": {
                   "$type": "BattleModel.IntCharaterField",
                   "character": {
-                    "$type": "BattleModel.ThisSpecifiedTarget"
+                    "$type": "BattleModel.ThisBuffOwner"
                   },
-                  "targetField": 4
+                  "targetField": 2
                 },
-                "op": 0,
+                "op": 4,
                 "right": {
                   "$type": "BattleModel.ConstanctInt",
-                  "constant": 0
-                }
-              },
-              {
-                "$type": "BattleModel.IntCompare",
-                "left": {
-                  "$type": "BattleModel.IntBuffField",
-                  "buff": {
-                    "$type": "BattleModel.ThisBuff"
-                  },
-                  "targetField": 4
-                },
-                "op": 0,
-                "right": {
-                  "$type": "BattleModel.ConstanctInt",
-                  "constant": 0
+                  "constant": 50
                 }
               }
             ]
@@ -166,8 +100,8 @@
     }
   ],
   "_duration": 0,
-  "_maxLevel": 0,
+  "_maxLevel": 99,
   "_orderTable": {
   },
-  "_tag": 64
+  "_tag": 65
 }

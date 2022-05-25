@@ -10,7 +10,7 @@
         "對施術者{\"Tag\":65540,\"_keyString\":\"1\",\"$type\":\"BattleModel.DirectKillSkillEffect\"}"
       ],
       "S1": [
-        "對施術者賦予永久2層defense_wall(堅盾)、賦予永久1層removeStone_beAttacked(懲戒)"
+        "對施術者賦予永久1層defense_wall(堅盾)、賦予永久1層removeStone_beAttacked(懲戒)"
       ],
       "S2": [
         "對施術者的目標破甲(攻擊力 x0.75)"
@@ -29,7 +29,7 @@
             "對施術者的對方首位施展S2"
           ],
           "條件": [
-            "施術者 狀態defense_wall(堅盾) {\"left\":{\"targetField\":1,\"$type\":\"BattleModel.IntFieldB\"},\"op\":2,\"right\":{\"Float\":{\"Dividend\":{\"Integer\":{\"RecordValue\":{\"$type\":\"BattleModel.ThisBattleTurnCount\"},\"$type\":\"BattleModel.BattleActionRecordValue\"},\"$type\":\"BattleModel.IntegerToFloat\"},\"Divisor\":{\"constant\":2,\"$type\":\"BattleModel.ConstanctFloat\"},\"$type\":\"BattleModel.DivisionFloat\"},\"$type\":\"BattleModel.FloatToInteger\"},\"$type\":\"BattleModel.IntCompareB_Other\"}"
+            "施術者 狀態defense_wall(堅盾) {\"left\":{\"targetField\":1,\"$type\":\"BattleModel.IntFieldB\"},\"op\":2,\"right\":{\"Float\":{\"Dividend\":{\"Integer\":{\"RecordValue\":{\"$type\":\"BattleModel.ThisBattleTurnCount\"},\"$type\":\"BattleModel.BattleActionRecordValue\"},\"$type\":\"BattleModel.IntegerToFloat\"},\"Divisor\":{\"constant\":4,\"$type\":\"BattleModel.ConstanctFloat\"},\"$type\":\"BattleModel.DivisionFloat\"},\"$type\":\"BattleModel.FloatToInteger\"},\"$type\":\"BattleModel.IntCompareB_Other\"}"
           ],
           "目標": ""
         },
@@ -237,7 +237,7 @@
                 {
                   "BuffId": "defense_wall",
                   "Forever": true,
-                  "LevelStack": 2,
+                  "LevelStack": 1,
                   "OverwriteDuration": 2,
                   "UserDefineVariable": {
                   }
@@ -416,7 +416,7 @@
                         },
                         "Divisor": {
                           "$type": "BattleModel.ConstanctFloat",
-                          "constant": 2
+                          "constant": 4
                         }
                       }
                     }
@@ -444,8 +444,30 @@
                   },
                   "op": 1,
                   "right": {
-                    "$type": "BattleModel.ConstanctInt",
-                    "constant": 20
+                    "$type": "BattleModel.ConditionalInteger",
+                    "Condition": {
+                      "$type": "BattleModel.IntCompare",
+                      "left": {
+                        "$type": "BattleModel.IntCharaterField",
+                        "character": {
+                          "$type": "BattleModel.ThisSkillCaster"
+                        },
+                        "targetField": 13
+                      },
+                      "op": 1,
+                      "right": {
+                        "$type": "BattleModel.ConstanctInt",
+                        "constant": 90
+                      }
+                    },
+                    "NotPassValue": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 10
+                    },
+                    "PassValue": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 5
+                    }
                   }
                 }
               ],

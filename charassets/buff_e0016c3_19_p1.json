@@ -6,82 +6,38 @@
         "效果": [
           {
             "效果": [
-              "立即施展技能：對{\"$type\":\"BattleModel.BuffAssignedCharacter\"}復活(體力:0.6%;疊盾:1%)",
-              "對本狀態的變數一增加1"
+              "立即施展技能：對{\"$type\":\"BattleModel.BuffAssignedCharacter\"}復活(體力:0.25%;疊盾:0.5%)",
+              "對本狀態的變數一增加1",
+              "對本狀態的變數三改為1"
             ],
             "條件": [
               "本角色是死亡或復活的角色",
-              "本狀態的變數一 >= 7"
+              "(本狀態的變數一 mod 3) == 0",
+              "本狀態的變數三 == 0"
             ]
           },
           {
             "效果": [
-              "立即施展技能：對{\"$type\":\"BattleModel.BuffAssignedCharacter\"}復活(體力:0.5%;疊盾:0.9%)",
-              "對本狀態的變數一增加1"
+              "立即施展技能：對{\"$type\":\"BattleModel.BuffAssignedCharacter\"}復活(體力:0.5%;疊盾:1%)",
+              "對本狀態的變數一增加1",
+              "對本狀態的變數三改為1"
             ],
             "條件": [
               "本角色是死亡或復活的角色",
-              "本狀態的變數一 == 6"
+              "(本狀態的變數一 mod 3) == 1",
+              "本狀態的變數三 == 0"
             ]
           },
           {
             "效果": [
-              "立即施展技能：對{\"$type\":\"BattleModel.BuffAssignedCharacter\"}復活(體力:0.42%;疊盾:0.84%)",
-              "對本狀態的變數一增加1"
+              "立即施展技能：對{\"$type\":\"BattleModel.BuffAssignedCharacter\"}復活(體力:0.05%;疊盾:0.1%)",
+              "對本狀態的變數一增加1",
+              "對本狀態的變數三改為1"
             ],
             "條件": [
               "本角色是死亡或復活的角色",
-              "本狀態的變數一 == 5"
-            ]
-          },
-          {
-            "效果": [
-              "立即施展技能：對{\"$type\":\"BattleModel.BuffAssignedCharacter\"}復活(體力:0.3%;疊盾:0.6%)",
-              "對本狀態的變數一增加1"
-            ],
-            "條件": [
-              "本角色是死亡或復活的角色",
-              "本狀態的變數一 == 4"
-            ]
-          },
-          {
-            "效果": [
-              "立即施展技能：對{\"$type\":\"BattleModel.BuffAssignedCharacter\"}復活(體力:0.24%;疊盾:0.48%)",
-              "對本狀態的變數一增加1"
-            ],
-            "條件": [
-              "本角色是死亡或復活的角色",
-              "本狀態的變數一 == 3"
-            ]
-          },
-          {
-            "效果": [
-              "立即施展技能：對{\"$type\":\"BattleModel.BuffAssignedCharacter\"}復活(體力:0.18%;疊盾:0.36%)",
-              "對本狀態的變數一增加1"
-            ],
-            "條件": [
-              "本角色是死亡或復活的角色",
-              "本狀態的變數一 == 2"
-            ]
-          },
-          {
-            "效果": [
-              "立即施展技能：對{\"$type\":\"BattleModel.BuffAssignedCharacter\"}復活(體力:0.12%;疊盾:0.24%)",
-              "對本狀態的變數一增加1"
-            ],
-            "條件": [
-              "本角色是死亡或復活的角色",
-              "本狀態的變數一 == 1"
-            ]
-          },
-          {
-            "效果": [
-              "立即施展技能：對{\"$type\":\"BattleModel.BuffAssignedCharacter\"}復活(體力:0.09%;疊盾:0.18%)",
-              "對本狀態的變數一增加1"
-            ],
-            "條件": [
-              "本角色是死亡或復活的角色",
-              "本狀態的變數一 == 0"
+              "(本狀態的變數一 mod 3) == 2",
+              "本狀態的變數三 == 0"
             ]
           },
           {
@@ -89,6 +45,20 @@
               "立即施展技能：對{\"$type\":\"BattleModel.BuffAssignedCharacter\"}賦予永久summon_FSM"
             ],
             "條件": [
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "AfterAnyoneRevive": {
+        "效果": [
+          {
+            "效果": [
+              "對本狀態的變數三改為0"
+            ],
+            "條件": [
+              "本角色是死亡或復活的角色"
             ]
           }
         ],
@@ -181,8 +151,8 @@
                         "$type": "BattleModel.ReviveSkillEffect",
                         "RecoverArmorInPercentage": true,
                         "RecoverBloodInPercentage": true,
-                        "ReviveTargetArmor": 1,
-                        "ReviveTargetBlood": 0.6,
+                        "ReviveTargetArmor": 0.5,
+                        "ReviveTargetBlood": 0.25,
                         "Tag": 4,
                         "_keyString": ""
                       }
@@ -206,6 +176,21 @@
                     }
                   }
                 }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 16,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 1
+                    }
+                  }
+                }
               }
             ],
             "Conditions": [
@@ -221,16 +206,38 @@
               {
                 "$type": "BattleModel.IntCompare",
                 "left": {
+                  "$type": "BattleModel.ModuleInt",
+                  "left": {
+                    "$type": "BattleModel.IntBuffField",
+                    "buff": {
+                      "$type": "BattleModel.ThisBuff"
+                    },
+                    "targetField": 4
+                  },
+                  "right": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 3
+                  }
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 0
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
                   "$type": "BattleModel.IntBuffField",
                   "buff": {
                     "$type": "BattleModel.ThisBuff"
                   },
-                  "targetField": 4
+                  "targetField": 16
                 },
-                "op": 4,
+                "op": 0,
                 "right": {
                   "$type": "BattleModel.ConstanctInt",
-                  "constant": 7
+                  "constant": 0
                 }
               }
             ]
@@ -269,7 +276,7 @@
                         "$type": "BattleModel.ReviveSkillEffect",
                         "RecoverArmorInPercentage": true,
                         "RecoverBloodInPercentage": true,
-                        "ReviveTargetArmor": 0.9,
+                        "ReviveTargetArmor": 1,
                         "ReviveTargetBlood": 0.5,
                         "Tag": 4,
                         "_keyString": ""
@@ -294,79 +301,6 @@
                     }
                   }
                 }
-              }
-            ],
-            "Conditions": [
-              {
-                "$type": "BattleModel.CharacterEqual",
-                "left": {
-                  "$type": "BattleModel.ThisBuffOwner"
-                },
-                "right": {
-                  "$type": "BattleModel.DeadOrReviveTarget"
-                }
-              },
-              {
-                "$type": "BattleModel.IntCompare",
-                "left": {
-                  "$type": "BattleModel.IntBuffField",
-                  "buff": {
-                    "$type": "BattleModel.ThisBuff"
-                  },
-                  "targetField": 4
-                },
-                "op": 0,
-                "right": {
-                  "$type": "BattleModel.ConstanctInt",
-                  "constant": 6
-                }
-              }
-            ]
-          },
-          {
-            "Actions": [
-              {
-                "TargetField": {
-                  "$type": "BattleModel.AssignParameterSkillEffect",
-                  "AssignParameter": {
-                    "AssignCharacter": {
-                      "$type": "BattleModel.ThisBuffOwner"
-                    },
-                    "AssignCharacterGroup": {
-                      "$type": "BattleModel.NoneCharacters"
-                    },
-                    "AssignInteger": {
-                      "$type": "BattleModel.ConstanctInt",
-                      "constant": 0
-                    },
-                    "AssignIntegerGroup": {
-                      "$type": "BattleModel.ConstanctIntegerGroup",
-                      "Group": [
-                      ]
-                    }
-                  },
-                  "SkillUnit": {
-                    "CanBeEmpty": false,
-                    "IsMultiple": false,
-                    "multi": null,
-                    "single": {
-                      "$type": "BattleModel.BuffAssignedCharacter"
-                    },
-                    "skillEffects": [
-                      {
-                        "$type": "BattleModel.ReviveSkillEffect",
-                        "RecoverArmorInPercentage": true,
-                        "RecoverBloodInPercentage": true,
-                        "ReviveTargetArmor": 0.84,
-                        "ReviveTargetBlood": 0.42,
-                        "Tag": 4,
-                        "_keyString": ""
-                      }
-                    ]
-                  },
-                  "UseAssignParameter": true,
-                  "WillTriggerBuff": true
-                }
               },
               {
                 "TargetField": {
@@ -374,8 +308,8 @@
                   "operation": {
                     "$type": "BattleModel.SetBuffField",
                     "lastIndepedentStack": false,
-                    "setOperator": 1,
-                    "targetField": 4,
+                    "setOperator": 0,
+                    "targetField": 16,
                     "value": {
                       "$type": "BattleModel.ConstanctInt",
                       "constant": 1
@@ -397,369 +331,39 @@
               {
                 "$type": "BattleModel.IntCompare",
                 "left": {
-                  "$type": "BattleModel.IntBuffField",
-                  "buff": {
-                    "$type": "BattleModel.ThisBuff"
+                  "$type": "BattleModel.ModuleInt",
+                  "left": {
+                    "$type": "BattleModel.IntBuffField",
+                    "buff": {
+                      "$type": "BattleModel.ThisBuff"
+                    },
+                    "targetField": 4
                   },
-                  "targetField": 4
-                },
-                "op": 0,
-                "right": {
-                  "$type": "BattleModel.ConstanctInt",
-                  "constant": 5
-                }
-              }
-            ]
-          },
-          {
-            "Actions": [
-              {
-                "TargetField": {
-                  "$type": "BattleModel.AssignParameterSkillEffect",
-                  "AssignParameter": {
-                    "AssignCharacter": {
-                      "$type": "BattleModel.ThisBuffOwner"
-                    },
-                    "AssignCharacterGroup": {
-                      "$type": "BattleModel.NoneCharacters"
-                    },
-                    "AssignInteger": {
-                      "$type": "BattleModel.ConstanctInt",
-                      "constant": 0
-                    },
-                    "AssignIntegerGroup": {
-                      "$type": "BattleModel.ConstanctIntegerGroup",
-                      "Group": [
-                      ]
-                    }
-                  },
-                  "SkillUnit": {
-                    "CanBeEmpty": false,
-                    "IsMultiple": false,
-                    "multi": null,
-                    "single": {
-                      "$type": "BattleModel.BuffAssignedCharacter"
-                    },
-                    "skillEffects": [
-                      {
-                        "$type": "BattleModel.ReviveSkillEffect",
-                        "RecoverArmorInPercentage": true,
-                        "RecoverBloodInPercentage": true,
-                        "ReviveTargetArmor": 0.6,
-                        "ReviveTargetBlood": 0.3,
-                        "Tag": 4,
-                        "_keyString": ""
-                      }
-                    ]
-                  },
-                  "UseAssignParameter": true,
-                  "WillTriggerBuff": true
-                }
-              },
-              {
-                "TargetField": {
-                  "$type": "BattleModel.OperateThisBuff",
-                  "operation": {
-                    "$type": "BattleModel.SetBuffField",
-                    "lastIndepedentStack": false,
-                    "setOperator": 1,
-                    "targetField": 4,
-                    "value": {
-                      "$type": "BattleModel.ConstanctInt",
-                      "constant": 1
-                    }
+                  "right": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 3
                   }
-                }
-              }
-            ],
-            "Conditions": [
-              {
-                "$type": "BattleModel.CharacterEqual",
-                "left": {
-                  "$type": "BattleModel.ThisBuffOwner"
-                },
-                "right": {
-                  "$type": "BattleModel.DeadOrReviveTarget"
-                }
-              },
-              {
-                "$type": "BattleModel.IntCompare",
-                "left": {
-                  "$type": "BattleModel.IntBuffField",
-                  "buff": {
-                    "$type": "BattleModel.ThisBuff"
-                  },
-                  "targetField": 4
-                },
-                "op": 0,
-                "right": {
-                  "$type": "BattleModel.ConstanctInt",
-                  "constant": 4
-                }
-              }
-            ]
-          },
-          {
-            "Actions": [
-              {
-                "TargetField": {
-                  "$type": "BattleModel.AssignParameterSkillEffect",
-                  "AssignParameter": {
-                    "AssignCharacter": {
-                      "$type": "BattleModel.ThisBuffOwner"
-                    },
-                    "AssignCharacterGroup": {
-                      "$type": "BattleModel.NoneCharacters"
-                    },
-                    "AssignInteger": {
-                      "$type": "BattleModel.ConstanctInt",
-                      "constant": 0
-                    },
-                    "AssignIntegerGroup": {
-                      "$type": "BattleModel.ConstanctIntegerGroup",
-                      "Group": [
-                      ]
-                    }
-                  },
-                  "SkillUnit": {
-                    "CanBeEmpty": false,
-                    "IsMultiple": false,
-                    "multi": null,
-                    "single": {
-                      "$type": "BattleModel.BuffAssignedCharacter"
-                    },
-                    "skillEffects": [
-                      {
-                        "$type": "BattleModel.ReviveSkillEffect",
-                        "RecoverArmorInPercentage": true,
-                        "RecoverBloodInPercentage": true,
-                        "ReviveTargetArmor": 0.48,
-                        "ReviveTargetBlood": 0.24,
-                        "Tag": 4,
-                        "_keyString": ""
-                      }
-                    ]
-                  },
-                  "UseAssignParameter": true,
-                  "WillTriggerBuff": true
-                }
-              },
-              {
-                "TargetField": {
-                  "$type": "BattleModel.OperateThisBuff",
-                  "operation": {
-                    "$type": "BattleModel.SetBuffField",
-                    "lastIndepedentStack": false,
-                    "setOperator": 1,
-                    "targetField": 4,
-                    "value": {
-                      "$type": "BattleModel.ConstanctInt",
-                      "constant": 1
-                    }
-                  }
-                }
-              }
-            ],
-            "Conditions": [
-              {
-                "$type": "BattleModel.CharacterEqual",
-                "left": {
-                  "$type": "BattleModel.ThisBuffOwner"
-                },
-                "right": {
-                  "$type": "BattleModel.DeadOrReviveTarget"
-                }
-              },
-              {
-                "$type": "BattleModel.IntCompare",
-                "left": {
-                  "$type": "BattleModel.IntBuffField",
-                  "buff": {
-                    "$type": "BattleModel.ThisBuff"
-                  },
-                  "targetField": 4
-                },
-                "op": 0,
-                "right": {
-                  "$type": "BattleModel.ConstanctInt",
-                  "constant": 3
-                }
-              }
-            ]
-          },
-          {
-            "Actions": [
-              {
-                "TargetField": {
-                  "$type": "BattleModel.AssignParameterSkillEffect",
-                  "AssignParameter": {
-                    "AssignCharacter": {
-                      "$type": "BattleModel.ThisBuffOwner"
-                    },
-                    "AssignCharacterGroup": {
-                      "$type": "BattleModel.NoneCharacters"
-                    },
-                    "AssignInteger": {
-                      "$type": "BattleModel.ConstanctInt",
-                      "constant": 0
-                    },
-                    "AssignIntegerGroup": {
-                      "$type": "BattleModel.ConstanctIntegerGroup",
-                      "Group": [
-                      ]
-                    }
-                  },
-                  "SkillUnit": {
-                    "CanBeEmpty": false,
-                    "IsMultiple": false,
-                    "multi": null,
-                    "single": {
-                      "$type": "BattleModel.BuffAssignedCharacter"
-                    },
-                    "skillEffects": [
-                      {
-                        "$type": "BattleModel.ReviveSkillEffect",
-                        "RecoverArmorInPercentage": true,
-                        "RecoverBloodInPercentage": true,
-                        "ReviveTargetArmor": 0.36,
-                        "ReviveTargetBlood": 0.18,
-                        "Tag": 4,
-                        "_keyString": ""
-                      }
-                    ]
-                  },
-                  "UseAssignParameter": true,
-                  "WillTriggerBuff": true
-                }
-              },
-              {
-                "TargetField": {
-                  "$type": "BattleModel.OperateThisBuff",
-                  "operation": {
-                    "$type": "BattleModel.SetBuffField",
-                    "lastIndepedentStack": false,
-                    "setOperator": 1,
-                    "targetField": 4,
-                    "value": {
-                      "$type": "BattleModel.ConstanctInt",
-                      "constant": 1
-                    }
-                  }
-                }
-              }
-            ],
-            "Conditions": [
-              {
-                "$type": "BattleModel.CharacterEqual",
-                "left": {
-                  "$type": "BattleModel.ThisBuffOwner"
-                },
-                "right": {
-                  "$type": "BattleModel.DeadOrReviveTarget"
-                }
-              },
-              {
-                "$type": "BattleModel.IntCompare",
-                "left": {
-                  "$type": "BattleModel.IntBuffField",
-                  "buff": {
-                    "$type": "BattleModel.ThisBuff"
-                  },
-                  "targetField": 4
-                },
-                "op": 0,
-                "right": {
-                  "$type": "BattleModel.ConstanctInt",
-                  "constant": 2
-                }
-              }
-            ]
-          },
-          {
-            "Actions": [
-              {
-                "TargetField": {
-                  "$type": "BattleModel.AssignParameterSkillEffect",
-                  "AssignParameter": {
-                    "AssignCharacter": {
-                      "$type": "BattleModel.ThisBuffOwner"
-                    },
-                    "AssignCharacterGroup": {
-                      "$type": "BattleModel.NoneCharacters"
-                    },
-                    "AssignInteger": {
-                      "$type": "BattleModel.ConstanctInt",
-                      "constant": 0
-                    },
-                    "AssignIntegerGroup": {
-                      "$type": "BattleModel.ConstanctIntegerGroup",
-                      "Group": [
-                      ]
-                    }
-                  },
-                  "SkillUnit": {
-                    "CanBeEmpty": false,
-                    "IsMultiple": false,
-                    "multi": null,
-                    "single": {
-                      "$type": "BattleModel.BuffAssignedCharacter"
-                    },
-                    "skillEffects": [
-                      {
-                        "$type": "BattleModel.ReviveSkillEffect",
-                        "RecoverArmorInPercentage": true,
-                        "RecoverBloodInPercentage": true,
-                        "ReviveTargetArmor": 0.24,
-                        "ReviveTargetBlood": 0.12,
-                        "Tag": 4,
-                        "_keyString": ""
-                      }
-                    ]
-                  },
-                  "UseAssignParameter": true,
-                  "WillTriggerBuff": true
-                }
-              },
-              {
-                "TargetField": {
-                  "$type": "BattleModel.OperateThisBuff",
-                  "operation": {
-                    "$type": "BattleModel.SetBuffField",
-                    "lastIndepedentStack": false,
-                    "setOperator": 1,
-                    "targetField": 4,
-                    "value": {
-                      "$type": "BattleModel.ConstanctInt",
-                      "constant": 1
-                    }
-                  }
-                }
-              }
-            ],
-            "Conditions": [
-              {
-                "$type": "BattleModel.CharacterEqual",
-                "left": {
-                  "$type": "BattleModel.ThisBuffOwner"
-                },
-                "right": {
-                  "$type": "BattleModel.DeadOrReviveTarget"
-                }
-              },
-              {
-                "$type": "BattleModel.IntCompare",
-                "left": {
-                  "$type": "BattleModel.IntBuffField",
-                  "buff": {
-                    "$type": "BattleModel.ThisBuff"
-                  },
-                  "targetField": 4
                 },
                 "op": 0,
                 "right": {
                   "$type": "BattleModel.ConstanctInt",
                   "constant": 1
                 }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.ThisBuff"
+                  },
+                  "targetField": 16
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 0
+                }
               }
             ]
           },
@@ -797,8 +401,8 @@
                         "$type": "BattleModel.ReviveSkillEffect",
                         "RecoverArmorInPercentage": true,
                         "RecoverBloodInPercentage": true,
-                        "ReviveTargetArmor": 0.18,
-                        "ReviveTargetBlood": 0.09,
+                        "ReviveTargetArmor": 0.1,
+                        "ReviveTargetBlood": 0.05,
                         "Tag": 4,
                         "_keyString": ""
                       }
@@ -822,6 +426,21 @@
                     }
                   }
                 }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 16,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 1
+                    }
+                  }
+                }
               }
             ],
             "Conditions": [
@@ -837,11 +456,33 @@
               {
                 "$type": "BattleModel.IntCompare",
                 "left": {
+                  "$type": "BattleModel.ModuleInt",
+                  "left": {
+                    "$type": "BattleModel.IntBuffField",
+                    "buff": {
+                      "$type": "BattleModel.ThisBuff"
+                    },
+                    "targetField": 4
+                  },
+                  "right": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 3
+                  }
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 2
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
                   "$type": "BattleModel.IntBuffField",
                   "buff": {
                     "$type": "BattleModel.ThisBuff"
                   },
-                  "targetField": 4
+                  "targetField": 16
                 },
                 "op": 0,
                 "right": {
@@ -1115,11 +756,56 @@
         "Conditions": [
         ]
       }
+    },
+    {
+      "Key": 262144,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 16,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                },
+                "right": {
+                  "$type": "BattleModel.DeadOrReviveTarget"
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
     }
   ],
   "_duration": 0,
   "_maxLevel": 99,
-  "_orderTable": {
-  },
+  "_orderTable": [
+    {
+      "Key": 1048576,
+      "Value": {
+        "Order": 9999
+      }
+    }
+  ],
   "_tag": 32836
 }
