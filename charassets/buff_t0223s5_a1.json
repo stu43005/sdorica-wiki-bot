@@ -15,6 +15,7 @@
           }
         ],
         "條件": [
+          "玩家後排 擁有任何一個 有在basicNerf[撕裂, 中毒, 易傷, 弱化]列表內 的狀態"
         ]
       }
     },
@@ -136,6 +137,32 @@
           }
         ],
         "Conditions": [
+          {
+            "$type": "BattleModel.CharacterCondition",
+            "character": {
+              "$type": "BattleModel.BackOfChars",
+              "group": {
+                "$type": "BattleModel.PVEPlayerTeam",
+                "includeDead": false,
+                "includeEmpty": false
+              }
+            },
+            "condition": {
+              "$type": "BattleModel.HasAnyConditionalBuff",
+              "buffCondition": {
+                "$type": "BattleModel.CheckBuffBelongLabel",
+                "BuffLabel": {
+                  "BuffIdList": [
+                    "tearing",
+                    "poison",
+                    "weak",
+                    "nerf_damage_small"
+                  ],
+                  "BuffLabel": "basicNerf"
+                }
+              }
+            }
+          }
         ]
       }
     }

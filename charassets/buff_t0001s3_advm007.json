@@ -28,7 +28,7 @@
           },
           {
             "效果": [
-              "立即施展技能：對{\"$type\":\"BattleModel.BuffAssignedCharacter\"}將4個魂芯undefined",
+              "立即施展技能：對玩家首位的友方指定對象將4個魂芯undefined",
               "對本狀態的變數一改為1"
             ],
             "條件": [
@@ -136,7 +136,12 @@
                   "$type": "BattleModel.AssignParameterSkillEffect",
                   "AssignParameter": {
                     "AssignCharacter": {
-                      "$type": "BattleModel.ThisSkillCaster"
+                      "$type": "BattleModel.FrontOfChars",
+                      "group": {
+                        "$type": "BattleModel.PVEEnemyTeam",
+                        "includeDead": false,
+                        "includeEmpty": false
+                      }
                     },
                     "AssignCharacterGroup": {
                       "$type": "BattleModel.NoneCharacters"
@@ -156,7 +161,15 @@
                     "IsMultiple": false,
                     "multi": null,
                     "single": {
-                      "$type": "BattleModel.BuffAssignedCharacter"
+                      "$type": "BattleModel.FriendAssignee",
+                      "reference": {
+                        "$type": "BattleModel.FrontOfChars",
+                        "group": {
+                          "$type": "BattleModel.PVEPlayerTeam",
+                          "includeDead": true,
+                          "includeEmpty": true
+                        }
+                      }
                     },
                     "skillEffects": [
                       {
@@ -180,8 +193,8 @@
                       }
                     ]
                   },
-                  "UseAssignParameter": true,
-                  "WillTriggerBuff": true
+                  "UseAssignParameter": false,
+                  "WillTriggerBuff": false
                 }
               },
               {
