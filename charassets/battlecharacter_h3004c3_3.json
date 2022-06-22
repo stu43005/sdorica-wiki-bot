@@ -29,11 +29,11 @@
         {
           "CoolDown": 4,
           "技能列表": [
-            "對玩家的隨機角色施展S1"
+            "施展S1"
           ],
           "條件": [
           ],
-          "目標": "玩家的隨機角色"
+          "目標": "施術者的對方中HP最低的角色"
         }
       ]
     },
@@ -273,23 +273,23 @@
                 }
               ],
               "seq": "S1",
-              "t": {
-                "$type": "BattleModel.RandomOfChars",
-                "group": {
-                  "$type": "BattleModel.PVEPlayerTeam",
-                  "includeDead": false,
-                  "includeEmpty": false
-                }
-              }
+              "t": null
             }
           ],
           "_characterCoolDown": 4,
           "assignTarget": {
-            "$type": "BattleModel.RandomOfChars",
+            "$type": "BattleModel.FieldMinChar",
+            "field": {
+              "$type": "BattleModel.IntFieldC",
+              "targetField": 0
+            },
             "group": {
-              "$type": "BattleModel.PVEPlayerTeam",
+              "$type": "BattleModel.OppositeTeamChars",
               "includeDead": false,
-              "includeEmpty": false
+              "includeEmpty": false,
+              "reference": {
+                "$type": "BattleModel.ThisSkillCaster"
+              }
             }
           },
           "icon": 0

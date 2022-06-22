@@ -27,25 +27,10 @@
         "對玩家中符合(是白位)的角色全體賦予永久h0133s5_enemy_P2"
       ],
       "S2": [
-        "對施術者的目標穿透(攻擊力 x1.2)"
+        "對施術者的目標穿透(攻擊力 x1)"
       ],
       "S2_2": [
-        "對玩家中符合(擁有h0133s5_enemy_P2狀態)的角色全體{\"Ratio\":{\"constant\":1,\"$type\":\"BattleModel.ConstanctFloat\"},\"Tag\":32777,\"_keyString\":\"1\",\"$type\":\"BattleModel.FixedArmorDamageRatioMaxSkillEffect\"}、{\"Ratio\":{\"constant\":1,\"$type\":\"BattleModel.ConstanctFloat\"},\"Tag\":32777,\"_keyString\":\"1\",\"$type\":\"BattleModel.FixedHpDamageRatioMaxSkillEffect\"}"
-      ],
-      "S3": [
-        "對施術者的對方全體攻擊(攻擊力 x1.2)"
-      ],
-      "S3_2": [
-        "對敵人的隨機角色攻擊(攻擊力 x1.2)"
-      ],
-      "S3_3": [
-        "對敵人的隨機角色攻擊(攻擊力 x1.2)"
-      ],
-      "S3_4": [
-        "對敵人的隨機角色攻擊(攻擊力 x1.2)"
-      ],
-      "S3_5": [
-        "對施術者將2個非金色魂芯轉為金色魂芯"
+        "對玩家中符合(擁有h0133s5_enemy_P2狀態)的角色全體穿透(攻擊力 x1.5)、賦予2回合1層stun(暈眩)"
       ]
     },
     "技能組": {
@@ -134,7 +119,8 @@
   "$type": "BattleModel.EnemyCharacter",
   "ReferenceBuffKeys": [
     "h0133s5_enemy_P1",
-    "h0133s5_enemy_P2"
+    "h0133s5_enemy_P2",
+    "stun"
   ],
   "ReferenceCharacterKeys": [
   ],
@@ -475,7 +461,7 @@
                   "$type": "BattleModel.SkillCasterPower",
                   "basePower": false
                 },
-                "_ratio": 1.2
+                "_ratio": 1
               }
             }
           ]
@@ -512,200 +498,32 @@
           },
           "skillEffects": [
             {
-              "$type": "BattleModel.FixedArmorDamageRatioMaxSkillEffect",
-              "Ratio": {
-                "$type": "BattleModel.ConstanctFloat",
-                "constant": 1
-              },
-              "Tag": 32777,
-              "_keyString": "1"
+              "$type": "BattleModel.TrueDamageSkillEffect",
+              "Tag": 8193,
+              "_keyString": "1",
+              "_skillModifier": {
+                "_constant": 0,
+                "_parameter": {
+                  "$type": "BattleModel.SkillCasterPower",
+                  "basePower": false
+                },
+                "_ratio": 1.5
+              }
             },
             {
-              "$type": "BattleModel.FixedHpDamageRatioMaxSkillEffect",
-              "Ratio": {
-                "$type": "BattleModel.ConstanctFloat",
-                "constant": 1
-              },
-              "Tag": 32777,
+              "$type": "BattleModel.AddBuffSkillEffect",
+              "Tag": 132,
+              "_buffData": [
+                {
+                  "BuffId": "stun",
+                  "Forever": false,
+                  "LevelStack": 1,
+                  "OverwriteDuration": 2,
+                  "UserDefineVariable": {
+                  }
+                }
+              ],
               "_keyString": "1"
-            }
-          ]
-        }
-      ]
-    },
-    "S3": {
-      "$type": "BattleModel.BattleSkill",
-      "_isFallBackIfEmptyTarget": false,
-      "_isResolveTargetEachUnit": false,
-      "_skillIdentifiers": [
-        {
-          "CanBeEmpty": false,
-          "IsMultiple": true,
-          "multi": {
-            "$type": "BattleModel.OppositeTeamChars",
-            "includeDead": false,
-            "includeEmpty": false,
-            "reference": {
-              "$type": "BattleModel.ThisSkillCaster"
-            }
-          },
-          "single": {
-            "$type": "BattleModel.ThisSkillCaster"
-          },
-          "skillEffects": [
-            {
-              "$type": "BattleModel.HpDamageSkillEffect",
-              "Tag": 9,
-              "_keyString": "1",
-              "_skillModifier": {
-                "_constant": 0,
-                "_parameter": {
-                  "$type": "BattleModel.SkillCasterPower",
-                  "basePower": false
-                },
-                "_ratio": 1.2
-              }
-            }
-          ]
-        }
-      ]
-    },
-    "S3_2": {
-      "$type": "BattleModel.BattleSkill",
-      "_isFallBackIfEmptyTarget": false,
-      "_isResolveTargetEachUnit": false,
-      "_skillIdentifiers": [
-        {
-          "CanBeEmpty": false,
-          "IsMultiple": false,
-          "multi": null,
-          "single": {
-            "$type": "BattleModel.RandomOfChars",
-            "group": {
-              "$type": "BattleModel.PVEEnemyTeam",
-              "includeDead": false,
-              "includeEmpty": false
-            }
-          },
-          "skillEffects": [
-            {
-              "$type": "BattleModel.HpDamageSkillEffect",
-              "Tag": 9,
-              "_keyString": "1",
-              "_skillModifier": {
-                "_constant": 0,
-                "_parameter": {
-                  "$type": "BattleModel.SkillCasterPower",
-                  "basePower": false
-                },
-                "_ratio": 1.2
-              }
-            }
-          ]
-        }
-      ]
-    },
-    "S3_3": {
-      "$type": "BattleModel.BattleSkill",
-      "_isFallBackIfEmptyTarget": false,
-      "_isResolveTargetEachUnit": false,
-      "_skillIdentifiers": [
-        {
-          "CanBeEmpty": false,
-          "IsMultiple": false,
-          "multi": null,
-          "single": {
-            "$type": "BattleModel.RandomOfChars",
-            "group": {
-              "$type": "BattleModel.PVEEnemyTeam",
-              "includeDead": false,
-              "includeEmpty": false
-            }
-          },
-          "skillEffects": [
-            {
-              "$type": "BattleModel.HpDamageSkillEffect",
-              "Tag": 9,
-              "_keyString": "1",
-              "_skillModifier": {
-                "_constant": 0,
-                "_parameter": {
-                  "$type": "BattleModel.SkillCasterPower",
-                  "basePower": false
-                },
-                "_ratio": 1.2
-              }
-            }
-          ]
-        }
-      ]
-    },
-    "S3_4": {
-      "$type": "BattleModel.BattleSkill",
-      "_isFallBackIfEmptyTarget": false,
-      "_isResolveTargetEachUnit": false,
-      "_skillIdentifiers": [
-        {
-          "CanBeEmpty": false,
-          "IsMultiple": false,
-          "multi": null,
-          "single": {
-            "$type": "BattleModel.RandomOfChars",
-            "group": {
-              "$type": "BattleModel.PVEEnemyTeam",
-              "includeDead": false,
-              "includeEmpty": false
-            }
-          },
-          "skillEffects": [
-            {
-              "$type": "BattleModel.HpDamageSkillEffect",
-              "Tag": 9,
-              "_keyString": "1",
-              "_skillModifier": {
-                "_constant": 0,
-                "_parameter": {
-                  "$type": "BattleModel.SkillCasterPower",
-                  "basePower": false
-                },
-                "_ratio": 1.2
-              }
-            }
-          ]
-        }
-      ]
-    },
-    "S3_5": {
-      "$type": "BattleModel.BattleSkill",
-      "_isFallBackIfEmptyTarget": false,
-      "_isResolveTargetEachUnit": false,
-      "_skillIdentifiers": [
-        {
-          "CanBeEmpty": true,
-          "IsMultiple": false,
-          "multi": null,
-          "single": {
-            "$type": "BattleModel.ThisSkillCaster"
-          },
-          "skillEffects": [
-            {
-              "$type": "BattleModel.StoneActionSkillEffect",
-              "Tag": 516,
-              "_keyString": "",
-              "_stoneAction": {
-                "BuffFilter": "Normal",
-                "BuffId": "",
-                "BuffLabel": null,
-                "EffectFilter": "Normal",
-                "StonePositionList": [
-                ],
-                "UsePositionSettings": false,
-                "changeTo": "ToGold",
-                "filter": "IsNotGold",
-                "isInitStoneFilter": "None",
-                "order": "LeftToRight",
-                "targetStoneCount": 2
-              }
             }
           ]
         }

@@ -9,7 +9,7 @@
               "立即施展技能：對玩家首位將7個魂芯轉為黑色魂芯"
             ],
             "條件": [
-              "{\"$type\":\"BattleModel.ThisLevelWaveCount\"} == 1",
+              "({\"$type\":\"BattleModel.ThisLevelWaveCount\"} mod 3) == 1",
               "(目前戰鬥回合數 == 0) 且 (目前回合輪到敵人首位)"
             ]
           },
@@ -18,7 +18,7 @@
               "立即施展技能：對玩家首位將7個魂芯轉為白色魂芯"
             ],
             "條件": [
-              "{\"$type\":\"BattleModel.ThisLevelWaveCount\"} == 2",
+              "({\"$type\":\"BattleModel.ThisLevelWaveCount\"} mod 3) == 2",
               "(目前戰鬥回合數 == 0) 且 (目前回合輪到敵人首位)"
             ]
           },
@@ -27,7 +27,7 @@
               "立即施展技能：對玩家首位將7個魂芯轉為金色魂芯"
             ],
             "條件": [
-              "{\"$type\":\"BattleModel.ThisLevelWaveCount\"} == 3",
+              "({\"$type\":\"BattleModel.ThisLevelWaveCount\"} mod 3) == 0",
               "(目前戰鬥回合數 == 0) 且 (目前回合輪到敵人首位)"
             ]
           }
@@ -95,9 +95,16 @@
               {
                 "$type": "BattleModel.IntCompare",
                 "left": {
-                  "$type": "BattleModel.BattleActionRecordValue",
-                  "RecordValue": {
-                    "$type": "BattleModel.ThisLevelWaveCount"
+                  "$type": "BattleModel.ModuleInt",
+                  "left": {
+                    "$type": "BattleModel.BattleActionRecordValue",
+                    "RecordValue": {
+                      "$type": "BattleModel.ThisLevelWaveCount"
+                    }
+                  },
+                  "right": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 3
                   }
                 },
                 "op": 0,
@@ -183,9 +190,16 @@
               {
                 "$type": "BattleModel.IntCompare",
                 "left": {
-                  "$type": "BattleModel.BattleActionRecordValue",
-                  "RecordValue": {
-                    "$type": "BattleModel.ThisLevelWaveCount"
+                  "$type": "BattleModel.ModuleInt",
+                  "left": {
+                    "$type": "BattleModel.BattleActionRecordValue",
+                    "RecordValue": {
+                      "$type": "BattleModel.ThisLevelWaveCount"
+                    }
+                  },
+                  "right": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 3
                   }
                 },
                 "op": 0,
@@ -271,15 +285,22 @@
               {
                 "$type": "BattleModel.IntCompare",
                 "left": {
-                  "$type": "BattleModel.BattleActionRecordValue",
-                  "RecordValue": {
-                    "$type": "BattleModel.ThisLevelWaveCount"
+                  "$type": "BattleModel.ModuleInt",
+                  "left": {
+                    "$type": "BattleModel.BattleActionRecordValue",
+                    "RecordValue": {
+                      "$type": "BattleModel.ThisLevelWaveCount"
+                    }
+                  },
+                  "right": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 3
                   }
                 },
                 "op": 0,
                 "right": {
                   "$type": "BattleModel.ConstanctInt",
-                  "constant": 3
+                  "constant": 0
                 }
               },
               {
