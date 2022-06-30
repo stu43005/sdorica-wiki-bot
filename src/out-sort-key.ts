@@ -293,9 +293,9 @@ const TABLE_KEYS_BLACKLIST: Record<string, string[]> = {
 	AdventureWeekRank: ["item1Id", "reward1Count", "item2Id", "reward2Count", "item3Id", "reward3Count", "item4Id", "reward4Count"],
 	Chapters: ["requireQuestId"],
 	CharaInfoVoice: ["id"],
+	CharaRankUpVoice: ["id"],
 	CharaSelectVoice: ["id"],
 	CharaVictoryVoice: ["id"],
-	CharaRankUpVoice: ["id"],
 	ChinaBlacklist: ["id"],
 	DisableWords: ["id"],
 	DropItems: ["id", "itemId", "itemCount"],
@@ -307,6 +307,7 @@ const TABLE_KEYS_BLACKLIST: Record<string, string[]> = {
 	RaidRanks: ["id"],
 	RankUpItemRefs: ["id"],
 	RewardGroups: ["rewardType", "rewardItemId", "rewardCount"],
+	SignInReward: ["id"],
 	TavernMissionDrop: ["id"],
 };
 
