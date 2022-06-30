@@ -55,5 +55,9 @@ export function createDnsProxy() {
 	});
 }
 
-// /system/bin/iptables -t nat -A OUTPUT -p udp ! -d 8.8.8.8 --dport 53 -j DNAT --to-destination 192.168.3.65:5333
-// /system/bin/iptables -t nat -D OUTPUT -p udp ! -d 8.8.8.8 --dport 53 -j DNAT --to-destination 192.168.3.65:5333
+/*
+iptables -t nat -A OUTPUT -p udp ! -d 8.8.8.8 --dport 53 -j DNAT --to-destination 192.168.3.65:5333
+
+iptables -t nat -A OUTPUT -p tcp ! -d 130.211.34.123 --dport 443 -j DNAT --to-destination 192.168.3.65:443
+iptables -t nat -A OUTPUT -p tcp ! -d 34.120.179.4 --dport 443 -j DNAT --to-destination 192.168.3.65:443
+*/

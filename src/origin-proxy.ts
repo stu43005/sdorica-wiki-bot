@@ -72,7 +72,7 @@ async function onProxyReq(proxyReq: http.ClientRequest, req: express.Request, re
 		if (inProcess) return;
 		inProcess = true;
 
-		await exec("git reset --hard && git pull", { cwd: DATA_PATH });
+		await exec("git reset --hard && git clean -f && git pull", { cwd: DATA_PATH });
 
 		await outJson(ORIGIN_PATH, Object.assign({}, oldJson, latestUUID));
 		latestUUID = {};

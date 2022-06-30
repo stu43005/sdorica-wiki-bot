@@ -1,6 +1,3 @@
-import { CronJob } from "cron";
-import * as path from "path";
-import requireAll from "require-all";
 import { createDnsProxy } from "./src/dns-server";
 import { registerImperiumLocalLoader } from "./src/imperium-data-local";
 import { Logger } from './src/logger';
@@ -30,14 +27,14 @@ createOriginProxy();
 createDnsProxy();
 
 // init cron
-const jobs: Record<string, () => CronJob> = requireAll({
-	dirname: path.join(__dirname, 'src/crons'),
-	filter: /^([^\.].*)(?<!\.ignore)\.cron\.ts$/,
-	resolve: function (module) {
-		return module.default;
-	},
-});
+// const jobs: Record<string, () => CronJob> = requireAll({
+// 	dirname: path.join(__dirname, 'src/crons'),
+// 	filter: /^([^\.].*)(?<!\.ignore)\.cron\.ts$/,
+// 	resolve: function (module) {
+// 		return module.default;
+// 	},
+// });
 
-Object.values(jobs).forEach(job => {
-	job().start();
-});
+// Object.values(jobs).forEach(job => {
+// 	job().start();
+// });

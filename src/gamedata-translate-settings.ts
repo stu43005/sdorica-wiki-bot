@@ -341,6 +341,11 @@ export const gamedataTeanslateSettings: GamedataRef[] = [
 		func: semicolon(colonFirst(localizationItemName())),
 	},
 	{
+		table: "QuestExtraSettings",
+		column: "sweepDisplayDropItem",
+		func: localizationItemName(),
+	},
+	{
 		table: "RewardGroups",
 		column: "rewardItemId,targetItemId",
 		func: localizationItemName(),
@@ -348,6 +353,11 @@ export const gamedataTeanslateSettings: GamedataRef[] = [
 	{
 		table: "RewardGroups",
 		column: "giveLinkId:giveType",
+		func: localizationItemNameWithType(),
+	},
+	{
+		table: "RewardGroups",
+		column: "targetLinkId:targetType",
 		func: localizationItemNameWithType(),
 	},
 	{
