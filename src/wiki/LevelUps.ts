@@ -18,11 +18,13 @@ export default function wikiLevelUps() {
 			const level = LevelUpsTable.get(i);
 			if (i + 1 < LevelUpsTable.length) {
 				const nextLevel = LevelUpsTable.get(i + 1);
-				str += `\n|-\n| ${level.get("level")} || ${numeral(nextLevel.get(key) - level.get(key)).format("0,0")} || ${numeral(nextLevel.get(key)).format("0,0")}`;
+				if (nextLevel.get(key) != -1) {
+					str += `\n|-\n| ${level.get("level")} || ${numeral(nextLevel.get(key) - level.get(key)).format("0,0")} || ${numeral(nextLevel.get(key)).format("0,0")}`;
+					continue;
+				}
 			}
-			else {
-				str += `\n|-\n| ${level.get("level")}\n| colspan=2 | -封頂-`;
-			}
+			str += `\n|-\n| ${level.get("level")}\n| colspan=2 | -封頂-`;
+			break;
 		}
 		str += `\n|}`;
 		out.push(str);
@@ -36,6 +38,8 @@ export default function wikiLevelUps() {
 ! width=70px | 等級
 ! width=80px | HP
 ! width=80px | ATK`;
+		let privHp = 0;
+		let privAtk = 0;
 		for (let i = 0; i < LevelUpsTable.length; i++) {
 			const row = LevelUpsTable.get(i);
 			const level = row.get("level");
@@ -44,7 +48,13 @@ export default function wikiLevelUps() {
 			if (hp === -1) {
 				break;
 			}
-			str += `\n|-\n| ${level} || ${hp} || ${atk}`;
+			if (key == "rank") {
+				str += `\n|-\n| ${level} || ${hp} || ${atk}`;
+			} else {
+				str += `\n|-\n| ${level} || ${hp}${privHp == 0 ? "" : ` (x ${numeral(hp / privHp).format("0.[000]")})`} || ${atk}${privAtk == 0 ? "" : ` (x ${numeral(atk / privAtk).format("0.[000]")})`}`;
+			}
+			privHp = hp;
+			privAtk = atk;
 		}
 		str += `\n|}`;
 		out.push(str);
