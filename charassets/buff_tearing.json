@@ -34,8 +34,8 @@
         "效果": [
           {
             "效果": [
-              "立即施展技能：對本角色穿透({\"Condition\":{\"character\":{\"$type\":\"BattleModel.ThisBuffOwner\"},\"buffId\":\"adapt\",\"$type\":\"BattleModel.CharacterHasBuff\"},\"PassValue\":{\"left\":{\"buff\":{\"$type\":\"BattleModel.ThisBuff\"},\"targetField\":1,\"$type\":\"BattleModel.IntBuffField\"},\"right\":{\"group\":{\"SingleIntegers\":[{\"constant\":50000,\"$type\":\"BattleModel.ConstanctInt\"},{\"character\":{\"$type\":\"BattleModel.ThisBuffOwner\"},\"targetField\":0,\"$type\":\"BattleModel.IntCharaterField\"}],\"$type\":\"BattleModel.SingleIntegerGroup\"},\"$type\":\"BattleModel.MinOfInts\"},\"$type\":\"BattleModel.MultiplyInt\"},\"NotPassValue\":{\"left\":{\"buff\":{\"$type\":\"BattleModel.ThisBuff\"},\"targetField\":1,\"$type\":\"BattleModel.IntBuffField\"},\"right\":{\"character\":{\"$type\":\"BattleModel.ThisBuffOwner\"},\"targetField\":0,\"$type\":\"BattleModel.IntCharaterField\"},\"$type\":\"BattleModel.MultiplyInt\"},\"$type\":\"BattleModel.ConditionalInteger\"} x0.1)、賦予1回合1層tearing_trigger",
-              "立即施展技能：對本角色賦予1回合1層tearing_trigger_alert"
+              "立即施展技能：對本角色賦予1回合1層tearing_trigger、穿透({\"Condition\":{\"character\":{\"$type\":\"BattleModel.ThisBuffOwner\"},\"buffId\":\"adapt\",\"$type\":\"BattleModel.CharacterHasBuff\"},\"PassValue\":{\"left\":{\"$type\":\"BattleModel.BuffAssignedInteger\"},\"right\":{\"group\":{\"$type\":\"BattleModel.BuffAssignedIntegerGroup\"},\"$type\":\"BattleModel.MinOfInts\"},\"$type\":\"BattleModel.MultiplyInt\"},\"NotPassValue\":{\"$type\":\"BattleModel.BuffAssignedInteger\"},\"$type\":\"BattleModel.ConditionalInteger\"} x0.1)",
+              "對本角色賦予1回合1層tearing_trigger_alert"
             ],
             "條件": [
               "本角色是施術者",
@@ -80,15 +80,91 @@
             "Actions": [
               {
                 "TargetField": {
-                  "$type": "BattleModel.DirectSkillEffect",
-                  "skillUnit": {
-                    "CanBeEmpty": true,
+                  "$type": "BattleModel.AssignParameterSkillEffect",
+                  "AssignParameter": {
+                    "AssignCharacter": {
+                      "$type": "BattleModel.NoneCharacter"
+                    },
+                    "AssignCharacterGroup": {
+                      "$type": "BattleModel.NoneCharacters"
+                    },
+                    "AssignInteger": {
+                      "$type": "BattleModel.MultiplyInt",
+                      "left": {
+                        "$type": "BattleModel.IntBuffField",
+                        "buff": {
+                          "$type": "BattleModel.ThisBuff"
+                        },
+                        "targetField": 1
+                      },
+                      "right": {
+                        "$type": "BattleModel.IntCharaterField",
+                        "character": {
+                          "$type": "BattleModel.ThisBuffOwner"
+                        },
+                        "targetField": 0
+                      }
+                    },
+                    "AssignIntegerGroup": {
+                      "$type": "BattleModel.SingleIntegerGroup",
+                      "SingleIntegers": [
+                        {
+                          "$type": "BattleModel.MultiplyInt",
+                          "left": {
+                            "$type": "BattleModel.IntBuffField",
+                            "buff": {
+                              "$type": "BattleModel.ThisBuff"
+                            },
+                            "targetField": 1
+                          },
+                          "right": {
+                            "$type": "BattleModel.IntCharaterField",
+                            "character": {
+                              "$type": "BattleModel.ThisBuffOwner"
+                            },
+                            "targetField": 0
+                          }
+                        },
+                        {
+                          "$type": "BattleModel.MultiplyInt",
+                          "left": {
+                            "$type": "BattleModel.IntBuffField",
+                            "buff": {
+                              "$type": "BattleModel.ThisBuff"
+                            },
+                            "targetField": 1
+                          },
+                          "right": {
+                            "$type": "BattleModel.ConstanctInt",
+                            "constant": 50000
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  "SkillUnit": {
+                    "CanBeEmpty": false,
                     "IsMultiple": false,
                     "multi": null,
                     "single": {
                       "$type": "BattleModel.ThisBuffOwner"
                     },
                     "skillEffects": [
+                      {
+                        "$type": "BattleModel.AddBuffSkillEffect",
+                        "Tag": 132,
+                        "_buffData": [
+                          {
+                            "BuffId": "tearing_trigger",
+                            "Forever": false,
+                            "LevelStack": 1,
+                            "OverwriteDuration": 1,
+                            "UserDefineVariable": {
+                            }
+                          }
+                        ],
+                        "_keyString": "1"
+                      },
                       {
                         "$type": "BattleModel.TrueDamageSkillEffect",
                         "Tag": 8193,
@@ -105,104 +181,47 @@
                               }
                             },
                             "NotPassValue": {
-                              "$type": "BattleModel.MultiplyInt",
-                              "left": {
-                                "$type": "BattleModel.IntBuffField",
-                                "buff": {
-                                  "$type": "BattleModel.ThisBuff"
-                                },
-                                "targetField": 1
-                              },
-                              "right": {
-                                "$type": "BattleModel.IntCharaterField",
-                                "character": {
-                                  "$type": "BattleModel.ThisBuffOwner"
-                                },
-                                "targetField": 0
-                              }
+                              "$type": "BattleModel.BuffAssignedInteger"
                             },
                             "PassValue": {
                               "$type": "BattleModel.MultiplyInt",
                               "left": {
-                                "$type": "BattleModel.IntBuffField",
-                                "buff": {
-                                  "$type": "BattleModel.ThisBuff"
-                                },
-                                "targetField": 1
+                                "$type": "BattleModel.BuffAssignedInteger"
                               },
                               "right": {
                                 "$type": "BattleModel.MinOfInts",
                                 "group": {
-                                  "$type": "BattleModel.SingleIntegerGroup",
-                                  "SingleIntegers": [
-                                    {
-                                      "$type": "BattleModel.ConstanctInt",
-                                      "constant": 50000
-                                    },
-                                    {
-                                      "$type": "BattleModel.IntCharaterField",
-                                      "character": {
-                                        "$type": "BattleModel.ThisBuffOwner"
-                                      },
-                                      "targetField": 0
-                                    }
-                                  ]
+                                  "$type": "BattleModel.BuffAssignedIntegerGroup"
                                 }
                               }
                             }
                           },
                           "_ratio": 0.1
                         }
-                      },
-                      {
-                        "$type": "BattleModel.AddBuffSkillEffect",
-                        "Tag": 132,
-                        "_buffData": [
-                          {
-                            "BuffId": "tearing_trigger",
-                            "Forever": false,
-                            "LevelStack": 1,
-                            "OverwriteDuration": 1,
-                            "UserDefineVariable": {
-                            }
-                          }
-                        ],
-                        "_keyString": "1"
                       }
                     ]
                   },
-                  "willTriggerBuff": false
+                  "UseAssignParameter": true,
+                  "WillTriggerBuff": false
                 }
               },
               {
                 "TargetField": {
-                  "$type": "BattleModel.DirectSkillEffect",
-                  "skillUnit": {
-                    "CanBeEmpty": false,
-                    "IsMultiple": false,
-                    "multi": null,
-                    "single": {
-                      "$type": "BattleModel.ThisBuffOwner"
-                    },
-                    "skillEffects": [
-                      {
-                        "$type": "BattleModel.AddBuffSkillEffect",
-                        "Tag": 132,
-                        "_buffData": [
-                          {
-                            "BuffId": "tearing_trigger_alert",
-                            "Forever": false,
-                            "LevelStack": 1,
-                            "OverwriteDuration": 1,
-                            "UserDefineVariable": {
-                            }
-                          }
-                        ],
-                        "_keyString": "1"
-                      }
-                    ]
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
                   },
-                  "willTriggerBuff": true
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "tearing_trigger_alert",
+                      "Forever": false,
+                      "LevelStack": 1,
+                      "OverwriteDuration": 1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
                 }
               }
             ],

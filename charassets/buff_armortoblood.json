@@ -48,9 +48,8 @@
         "效果": [
           {
             "效果": [
-              "對本角色賦予1回合ArmorToBlood_trigger",
-              "立即施展技能：對本角色治療((本角色的疊盾 * 本狀態的層數) x0.299997)",
-              "對本角色移除狀態ArmorToBlood_trigger"
+              "對本角色移除狀態ArmorToBlood_trigger",
+              "立即施展技能：對本角色賦予1回合1層ArmorToBlood_trigger、治療({\"$type\":\"BattleModel.BuffAssignedInteger\"} x0.299997)"
             ],
             "條件": [
               "目前回合輪到本角色",
@@ -84,22 +83,45 @@
                     "$type": "BattleModel.ThisBuffOwner"
                   },
                   "operation": {
-                    "$type": "BattleModel.AddBuff",
-                    "buffToAdd": {
-                      "BuffId": "ArmorToBlood_trigger",
-                      "Forever": false,
-                      "LevelStack": 0,
-                      "OverwriteDuration": 1,
-                      "UserDefineVariable": {
-                      }
-                    }
+                    "$type": "BattleModel.RemoveBuff",
+                    "buffId": "ArmorToBlood_trigger"
                   }
                 }
               },
               {
                 "TargetField": {
-                  "$type": "BattleModel.DirectSkillEffect",
-                  "skillUnit": {
+                  "$type": "BattleModel.AssignParameterSkillEffect",
+                  "AssignParameter": {
+                    "AssignCharacter": {
+                      "$type": "BattleModel.NoneCharacter"
+                    },
+                    "AssignCharacterGroup": {
+                      "$type": "BattleModel.NoneCharacters"
+                    },
+                    "AssignInteger": {
+                      "$type": "BattleModel.MultiplyInt",
+                      "left": {
+                        "$type": "BattleModel.IntBuffField",
+                        "buff": {
+                          "$type": "BattleModel.ThisBuff"
+                        },
+                        "targetField": 1
+                      },
+                      "right": {
+                        "$type": "BattleModel.IntCharaterField",
+                        "character": {
+                          "$type": "BattleModel.ThisBuffOwner"
+                        },
+                        "targetField": 4
+                      }
+                    },
+                    "AssignIntegerGroup": {
+                      "$type": "BattleModel.ConstanctIntegerGroup",
+                      "Group": [
+                      ]
+                    }
+                  },
+                  "SkillUnit": {
                     "CanBeEmpty": false,
                     "IsMultiple": false,
                     "multi": null,
@@ -108,46 +130,36 @@
                     },
                     "skillEffects": [
                       {
+                        "$type": "BattleModel.AddBuffSkillEffect",
+                        "Tag": 132,
+                        "_buffData": [
+                          {
+                            "BuffId": "ArmorToBlood_trigger",
+                            "Forever": false,
+                            "LevelStack": 1,
+                            "OverwriteDuration": 1,
+                            "UserDefineVariable": {
+                            }
+                          }
+                        ],
+                        "_keyString": ""
+                      },
+                      {
                         "$type": "BattleModel.HpHealSkillEffect",
                         "Tag": 34,
-                        "_keyString": "1",
+                        "_keyString": "",
                         "_skillModifier": {
                           "_constant": 0,
                           "_parameter": {
-                            "$type": "BattleModel.MultiplyInt",
-                            "left": {
-                              "$type": "BattleModel.IntCharaterField",
-                              "character": {
-                                "$type": "BattleModel.ThisBuffOwner"
-                              },
-                              "targetField": 4
-                            },
-                            "right": {
-                              "$type": "BattleModel.IntBuffField",
-                              "buff": {
-                                "$type": "BattleModel.ThisBuff"
-                              },
-                              "targetField": 1
-                            }
+                            "$type": "BattleModel.BuffAssignedInteger"
                           },
                           "_ratio": 0.33333
                         }
                       }
                     ]
                   },
-                  "willTriggerBuff": true
-                }
-              },
-              {
-                "TargetField": {
-                  "$type": "BattleModel.OperateCharacter",
-                  "character": {
-                    "$type": "BattleModel.ThisBuffOwner"
-                  },
-                  "operation": {
-                    "$type": "BattleModel.RemoveBuff",
-                    "buffId": "ArmorToBlood_trigger"
-                  }
+                  "UseAssignParameter": true,
+                  "WillTriggerBuff": true
                 }
               }
             ],

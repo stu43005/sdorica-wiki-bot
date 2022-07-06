@@ -2,11 +2,11 @@
   "$interpreted": {
     "Localization": "",
     "動作": {
-      "": {
+      "OnEachSkillSetEnd": {
         "效果": [
           {
             "效果": [
-              "對本狀態的變數一改為{\"$type\":\"BattleModel.CountOfConsumedStone\"}"
+              "對本狀態的變數一改為0"
             ],
             "條件": [
             ]
@@ -19,245 +19,33 @@
         "效果": [
           {
             "效果": [
-              "技能的(Attack)屬性效果增加(20)%"
+              "對指定目標賦予永久15層rust(鏽蝕)",
+              "對本狀態的變數一增加1"
             ],
             "條件": [
-              "本狀態的變數一 == 1"
-            ]
-          },
-          {
-            "效果": [
-              "技能的(Attack)屬性效果增加(40)%"
-            ],
-            "條件": [
-              "本狀態的變數一 == 2"
-            ]
-          },
-          {
-            "效果": [
-              "技能的(Attack)屬性效果增加(100)%"
-            ],
-            "條件": [
-              "本狀態的變數一 == 3"
-            ]
-          },
-          {
-            "效果": [
-              "技能的(Attack)屬性效果增加(200)%"
-            ],
-            "條件": [
-              "本狀態的變數一 == 4"
-            ]
-          },
-          {
-            "效果": [
-              "技能的(Attack)屬性效果增加(400)%"
-            ],
-            "條件": [
-              "本狀態的變數一 >= 6"
+              "{\"SourceType\":\"StoneAction\",\"$type\":\"BattleModel.SkillSetSourceTypeEqual\"}",
+              "指定目標的隊伍中符合({\"$type\":\"BattleModel.IsCharacterAlive\"})的角色的角色數量 == 0",
+              "本狀態的變數一 == 0",
+              "施展的技能效果中包含(Attack)屬性",
+              "施術者是玩家的一員"
             ]
           }
         ],
         "條件": [
-          "{\"SourceType\":\"StoneAction\",\"$type\":\"BattleModel.SkillSetSourceTypeEqual\"}",
-          "施術者是玩家的一員"
         ]
       }
     },
     "持續時間": 0,
-    "最高層數": 99,
-    "標籤": "NotRemoveAfterBattle | Forever | InfinityTrigger"
+    "最高層數": 0,
+    "標籤": "NotRemoveAfterBattle | Forever"
   },
   "$type": "BattleModel.Buff",
   "ReferenceBuffKeys": [
+    "rust"
   ],
   "_actionTable": [
     {
-      "Key": 1024,
-      "Value": {
-        "Actions": [
-          {
-            "Actions": [
-              {
-                "TargetField": {
-                  "$type": "BattleModel.BonusEffectForSkillProperty",
-                  "isPercent": true,
-                  "property": 1,
-                  "value": {
-                    "$type": "BattleModel.ConstanctInt",
-                    "constant": 20
-                  }
-                }
-              }
-            ],
-            "Conditions": [
-              {
-                "$type": "BattleModel.IntCompare",
-                "left": {
-                  "$type": "BattleModel.IntBuffField",
-                  "buff": {
-                    "$type": "BattleModel.ThisBuff"
-                  },
-                  "targetField": 4
-                },
-                "op": 0,
-                "right": {
-                  "$type": "BattleModel.ConstanctInt",
-                  "constant": 1
-                }
-              }
-            ]
-          },
-          {
-            "Actions": [
-              {
-                "TargetField": {
-                  "$type": "BattleModel.BonusEffectForSkillProperty",
-                  "isPercent": true,
-                  "property": 1,
-                  "value": {
-                    "$type": "BattleModel.ConstanctInt",
-                    "constant": 40
-                  }
-                }
-              }
-            ],
-            "Conditions": [
-              {
-                "$type": "BattleModel.IntCompare",
-                "left": {
-                  "$type": "BattleModel.IntBuffField",
-                  "buff": {
-                    "$type": "BattleModel.ThisBuff"
-                  },
-                  "targetField": 4
-                },
-                "op": 0,
-                "right": {
-                  "$type": "BattleModel.ConstanctInt",
-                  "constant": 2
-                }
-              }
-            ]
-          },
-          {
-            "Actions": [
-              {
-                "TargetField": {
-                  "$type": "BattleModel.BonusEffectForSkillProperty",
-                  "isPercent": true,
-                  "property": 1,
-                  "value": {
-                    "$type": "BattleModel.ConstanctInt",
-                    "constant": 100
-                  }
-                }
-              }
-            ],
-            "Conditions": [
-              {
-                "$type": "BattleModel.IntCompare",
-                "left": {
-                  "$type": "BattleModel.IntBuffField",
-                  "buff": {
-                    "$type": "BattleModel.ThisBuff"
-                  },
-                  "targetField": 4
-                },
-                "op": 0,
-                "right": {
-                  "$type": "BattleModel.ConstanctInt",
-                  "constant": 3
-                }
-              }
-            ]
-          },
-          {
-            "Actions": [
-              {
-                "TargetField": {
-                  "$type": "BattleModel.BonusEffectForSkillProperty",
-                  "isPercent": true,
-                  "property": 1,
-                  "value": {
-                    "$type": "BattleModel.ConstanctInt",
-                    "constant": 200
-                  }
-                }
-              }
-            ],
-            "Conditions": [
-              {
-                "$type": "BattleModel.IntCompare",
-                "left": {
-                  "$type": "BattleModel.IntBuffField",
-                  "buff": {
-                    "$type": "BattleModel.ThisBuff"
-                  },
-                  "targetField": 4
-                },
-                "op": 0,
-                "right": {
-                  "$type": "BattleModel.ConstanctInt",
-                  "constant": 4
-                }
-              }
-            ]
-          },
-          {
-            "Actions": [
-              {
-                "TargetField": {
-                  "$type": "BattleModel.BonusEffectForSkillProperty",
-                  "isPercent": true,
-                  "property": 1,
-                  "value": {
-                    "$type": "BattleModel.ConstanctInt",
-                    "constant": 400
-                  }
-                }
-              }
-            ],
-            "Conditions": [
-              {
-                "$type": "BattleModel.IntCompare",
-                "left": {
-                  "$type": "BattleModel.IntBuffField",
-                  "buff": {
-                    "$type": "BattleModel.ThisBuff"
-                  },
-                  "targetField": 4
-                },
-                "op": 4,
-                "right": {
-                  "$type": "BattleModel.ConstanctInt",
-                  "constant": 6
-                }
-              }
-            ]
-          }
-        ],
-        "Conditions": [
-          {
-            "$type": "BattleModel.SkillSetSourceTypeEqual",
-            "SourceType": "StoneAction"
-          },
-          {
-            "$type": "BattleModel.CharacterInside",
-            "group": {
-              "$type": "BattleModel.PVEPlayerTeam",
-              "includeDead": true,
-              "includeEmpty": false
-            },
-            "left": {
-              "$type": "BattleModel.ThisSkillCaster"
-            }
-          }
-        ]
-      }
-    },
-    {
-      "Key": 33554432,
+      "Key": 8,
       "Value": {
         "Actions": [
           {
@@ -271,7 +59,8 @@
                     "setOperator": 0,
                     "targetField": 4,
                     "value": {
-                      "$type": "BattleModel.CountOfConsumedStone"
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 0
                     }
                   }
                 }
@@ -284,11 +73,120 @@
         "Conditions": [
         ]
       }
+    },
+    {
+      "Key": 1024,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisSpecifiedTarget"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "rust",
+                      "Forever": true,
+                      "LevelStack": 15,
+                      "OverwriteDuration": -1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 1,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 1
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.SkillSetSourceTypeEqual",
+                "SourceType": "StoneAction"
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.CountOfCharGroup",
+                  "group": {
+                    "$type": "BattleModel.CharGroupWhere",
+                    "condition": {
+                      "$type": "BattleModel.IsCharacterAlive"
+                    },
+                    "group": {
+                      "$type": "BattleModel.SelfTeamChars",
+                      "excludeSelf": true,
+                      "includeDead": false,
+                      "includeEmpty": false,
+                      "reference": {
+                        "$type": "BattleModel.ThisSpecifiedTarget"
+                      }
+                    }
+                  }
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 0
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.ThisBuff"
+                  },
+                  "targetField": 4
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 0
+                }
+              },
+              {
+                "$type": "BattleModel.ThisSkillEffectTagContains",
+                "containsAll": 1
+              },
+              {
+                "$type": "BattleModel.CharacterInside",
+                "group": {
+                  "$type": "BattleModel.PVEPlayerTeam",
+                  "includeDead": false,
+                  "includeEmpty": false
+                },
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
     }
   ],
   "_duration": 0,
-  "_maxLevel": 99,
+  "_maxLevel": 0,
   "_orderTable": {
   },
-  "_tag": 32834
+  "_tag": 66
 }

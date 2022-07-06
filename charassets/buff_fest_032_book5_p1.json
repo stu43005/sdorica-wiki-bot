@@ -1,0 +1,168 @@
+{
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "OnEachSkillTargetEffect": {
+        "效果": [
+          {
+            "效果": [
+              "技能效果增加((20 * 探索Flag\"fest032_Haunt_Fear\"的數值))%"
+            ],
+            "條件": [
+              "施術者是玩家的一員"
+            ]
+          }
+        ],
+        "條件": [
+          "探索Flag\"fest032_Haunt_Own_Book5\"的數值 == 1"
+        ]
+      },
+      "OnTurnBegin": {
+        "效果": [
+          {
+            "效果": [
+              "對本狀態{\"addTag\":32838,\"$type\":\"BattleModel.AddBuffTag\"}"
+            ],
+            "條件": [
+              "目前回合輪到玩家後排",
+              "目前戰鬥回合數 == 0"
+            ]
+          }
+        ],
+        "條件": [
+          "探索Flag\"fest032_Haunt_Own_Book5\"的數值 == 1"
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 99,
+    "標籤": "NotRemoveAfterBattle | NotRemoveWhenDie | Forever | InfinityTrigger"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+  ],
+  "_actionTable": [
+    {
+      "Key": 1,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.AddBuffTag",
+                    "addTag": 32838
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CurrentTurnBelongsTo",
+                "character": {
+                  "$type": "BattleModel.BackOfChars",
+                  "group": {
+                    "$type": "BattleModel.PVEPlayerTeam",
+                    "includeDead": false,
+                    "includeEmpty": false
+                  }
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.BattleActionRecordValue",
+                  "RecordValue": {
+                    "$type": "BattleModel.ThisBattleTurnCount"
+                  }
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 0
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+          {
+            "$type": "BattleModel.IntCompare",
+            "left": {
+              "$type": "BattleModel.ThisTeamExploreFlagValue",
+              "ExploreFlagId": "fest032_Haunt_Own_Book5"
+            },
+            "op": 0,
+            "right": {
+              "$type": "BattleModel.ConstanctInt",
+              "constant": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "Key": 1024,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.BonusEffectForSkillProperty",
+                  "isPercent": true,
+                  "property": -1,
+                  "value": {
+                    "$type": "BattleModel.MultiplyInt",
+                    "left": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 20
+                    },
+                    "right": {
+                      "$type": "BattleModel.ThisTeamExploreFlagValue",
+                      "ExploreFlagId": "fest032_Haunt_Fear"
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterInside",
+                "group": {
+                  "$type": "BattleModel.PVEPlayerTeam",
+                  "includeDead": false,
+                  "includeEmpty": false
+                },
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+          {
+            "$type": "BattleModel.IntCompare",
+            "left": {
+              "$type": "BattleModel.ThisTeamExploreFlagValue",
+              "ExploreFlagId": "fest032_Haunt_Own_Book5"
+            },
+            "op": 0,
+            "right": {
+              "$type": "BattleModel.ConstanctInt",
+              "constant": 1
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 99,
+  "_orderTable": {
+  },
+  "_tag": 32838
+}

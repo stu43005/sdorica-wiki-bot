@@ -63,8 +63,7 @@
         "效果": [
           {
             "效果": [
-              "對本角色賦予1回合1層poison_trigger",
-              "立即施展技能：對本角色穿透({\"Condition\":{\"character\":{\"$type\":\"BattleModel.ThisBuffOwner\"},\"buffId\":\"adapt\",\"$type\":\"BattleModel.CharacterHasBuff\"},\"PassValue\":{\"left\":{\"buff\":{\"$type\":\"BattleModel.ThisBuff\"},\"targetField\":1,\"$type\":\"BattleModel.IntBuffField\"},\"right\":{\"group\":{\"SingleIntegers\":[{\"constant\":50000,\"$type\":\"BattleModel.ConstanctInt\"},{\"character\":{\"$type\":\"BattleModel.ThisBuffOwner\"},\"targetField\":0,\"$type\":\"BattleModel.IntCharaterField\"}],\"$type\":\"BattleModel.SingleIntegerGroup\"},\"$type\":\"BattleModel.MinOfInts\"},\"$type\":\"BattleModel.MultiplyInt\"},\"NotPassValue\":{\"left\":{\"buff\":{\"$type\":\"BattleModel.ThisBuff\"},\"targetField\":1,\"$type\":\"BattleModel.IntBuffField\"},\"right\":{\"character\":{\"$type\":\"BattleModel.ThisBuffOwner\"},\"targetField\":0,\"$type\":\"BattleModel.IntCharaterField\"},\"$type\":\"BattleModel.MultiplyInt\"},\"$type\":\"BattleModel.ConditionalInteger\"} x0.1)"
+              "立即施展技能：對本角色穿透({\"Condition\":{\"character\":{\"$type\":\"BattleModel.ThisBuffOwner\"},\"buffId\":\"adapt\",\"$type\":\"BattleModel.CharacterHasBuff\"},\"PassValue\":{\"group\":{\"$type\":\"BattleModel.BuffAssignedIntegerGroup\"},\"$type\":\"BattleModel.MinOfInts\"},\"NotPassValue\":{\"$type\":\"BattleModel.BuffAssignedInteger\"},\"$type\":\"BattleModel.ConditionalInteger\"} x0.1)、賦予1回合1層poison_trigger"
             ],
             "條件": [
               "目前回合輪到本角色",
@@ -95,25 +94,6 @@
             "Actions": [
               {
                 "TargetField": {
-                  "$type": "BattleModel.OperateCharacter",
-                  "character": {
-                    "$type": "BattleModel.ThisBuffOwner"
-                  },
-                  "operation": {
-                    "$type": "BattleModel.AddBuff",
-                    "buffToAdd": {
-                      "BuffId": "poison_trigger",
-                      "Forever": false,
-                      "LevelStack": 1,
-                      "OverwriteDuration": 1,
-                      "UserDefineVariable": {
-                      }
-                    }
-                  }
-                }
-              },
-              {
-                "TargetField": {
                   "$type": "BattleModel.AssignParameterSkillEffect",
                   "AssignParameter": {
                     "AssignCharacter": {
@@ -125,23 +105,54 @@
                     "AssignInteger": {
                       "$type": "BattleModel.MultiplyInt",
                       "left": {
-                        "$type": "BattleModel.IntCharaterField",
-                        "character": {
-                          "$type": "BattleModel.ThisBuffOwner"
-                        },
-                        "targetField": 0
-                      },
-                      "right": {
                         "$type": "BattleModel.IntBuffField",
                         "buff": {
                           "$type": "BattleModel.ThisBuff"
                         },
                         "targetField": 1
+                      },
+                      "right": {
+                        "$type": "BattleModel.IntCharaterField",
+                        "character": {
+                          "$type": "BattleModel.ThisBuffOwner"
+                        },
+                        "targetField": 0
                       }
                     },
                     "AssignIntegerGroup": {
-                      "$type": "BattleModel.ConstanctIntegerGroup",
-                      "Group": [
+                      "$type": "BattleModel.SingleIntegerGroup",
+                      "SingleIntegers": [
+                        {
+                          "$type": "BattleModel.MultiplyInt",
+                          "left": {
+                            "$type": "BattleModel.IntBuffField",
+                            "buff": {
+                              "$type": "BattleModel.ThisBuff"
+                            },
+                            "targetField": 1
+                          },
+                          "right": {
+                            "$type": "BattleModel.ConstanctInt",
+                            "constant": 50000
+                          }
+                        },
+                        {
+                          "$type": "BattleModel.MultiplyInt",
+                          "left": {
+                            "$type": "BattleModel.IntBuffField",
+                            "buff": {
+                              "$type": "BattleModel.ThisBuff"
+                            },
+                            "targetField": 1
+                          },
+                          "right": {
+                            "$type": "BattleModel.IntCharaterField",
+                            "character": {
+                              "$type": "BattleModel.ThisBuffOwner"
+                            },
+                            "targetField": 0
+                          }
+                        }
                       ]
                     }
                   },
@@ -169,54 +180,32 @@
                               }
                             },
                             "NotPassValue": {
-                              "$type": "BattleModel.MultiplyInt",
-                              "left": {
-                                "$type": "BattleModel.IntBuffField",
-                                "buff": {
-                                  "$type": "BattleModel.ThisBuff"
-                                },
-                                "targetField": 1
-                              },
-                              "right": {
-                                "$type": "BattleModel.IntCharaterField",
-                                "character": {
-                                  "$type": "BattleModel.ThisBuffOwner"
-                                },
-                                "targetField": 0
-                              }
+                              "$type": "BattleModel.BuffAssignedInteger"
                             },
                             "PassValue": {
-                              "$type": "BattleModel.MultiplyInt",
-                              "left": {
-                                "$type": "BattleModel.IntBuffField",
-                                "buff": {
-                                  "$type": "BattleModel.ThisBuff"
-                                },
-                                "targetField": 1
-                              },
-                              "right": {
-                                "$type": "BattleModel.MinOfInts",
-                                "group": {
-                                  "$type": "BattleModel.SingleIntegerGroup",
-                                  "SingleIntegers": [
-                                    {
-                                      "$type": "BattleModel.ConstanctInt",
-                                      "constant": 50000
-                                    },
-                                    {
-                                      "$type": "BattleModel.IntCharaterField",
-                                      "character": {
-                                        "$type": "BattleModel.ThisBuffOwner"
-                                      },
-                                      "targetField": 0
-                                    }
-                                  ]
-                                }
+                              "$type": "BattleModel.MinOfInts",
+                              "group": {
+                                "$type": "BattleModel.BuffAssignedIntegerGroup"
                               }
                             }
                           },
                           "_ratio": 0.1
                         }
+                      },
+                      {
+                        "$type": "BattleModel.AddBuffSkillEffect",
+                        "Tag": 132,
+                        "_buffData": [
+                          {
+                            "BuffId": "poison_trigger",
+                            "Forever": false,
+                            "LevelStack": 1,
+                            "OverwriteDuration": 1,
+                            "UserDefineVariable": {
+                            }
+                          }
+                        ],
+                        "_keyString": ""
                       }
                     ]
                   },

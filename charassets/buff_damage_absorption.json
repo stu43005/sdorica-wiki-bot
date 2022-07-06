@@ -34,8 +34,7 @@
         "效果": [
           {
             "效果": [
-              "對本角色賦予1回合1層damage_absorption_trigger",
-              "立即施展技能：對本角色疊盾((本角色的最大疊盾 * 本狀態的層數) x0.099996)"
+              "立即施展技能：對本角色賦予1回合1層damage_absorption_trigger、疊盾({\"$type\":\"BattleModel.BuffAssignedInteger\"} x0.099996)"
             ],
             "條件": [
               "本角色是指定目標",
@@ -92,27 +91,38 @@
             "Actions": [
               {
                 "TargetField": {
-                  "$type": "BattleModel.OperateCharacter",
-                  "character": {
-                    "$type": "BattleModel.ThisBuffOwner"
-                  },
-                  "operation": {
-                    "$type": "BattleModel.AddBuff",
-                    "buffToAdd": {
-                      "BuffId": "damage_absorption_trigger",
-                      "Forever": false,
-                      "LevelStack": 1,
-                      "OverwriteDuration": 1,
-                      "UserDefineVariable": {
+                  "$type": "BattleModel.AssignParameterSkillEffect",
+                  "AssignParameter": {
+                    "AssignCharacter": {
+                      "$type": "BattleModel.NoneCharacter"
+                    },
+                    "AssignCharacterGroup": {
+                      "$type": "BattleModel.NoneCharacters"
+                    },
+                    "AssignInteger": {
+                      "$type": "BattleModel.MultiplyInt",
+                      "left": {
+                        "$type": "BattleModel.IntBuffField",
+                        "buff": {
+                          "$type": "BattleModel.ThisBuff"
+                        },
+                        "targetField": 1
+                      },
+                      "right": {
+                        "$type": "BattleModel.IntCharaterField",
+                        "character": {
+                          "$type": "BattleModel.ThisBuffOwner"
+                        },
+                        "targetField": 5
                       }
+                    },
+                    "AssignIntegerGroup": {
+                      "$type": "BattleModel.ConstanctIntegerGroup",
+                      "Group": [
+                      ]
                     }
-                  }
-                }
-              },
-              {
-                "TargetField": {
-                  "$type": "BattleModel.DirectSkillEffect",
-                  "skillUnit": {
+                  },
+                  "SkillUnit": {
                     "CanBeEmpty": false,
                     "IsMultiple": false,
                     "multi": null,
@@ -121,34 +131,36 @@
                     },
                     "skillEffects": [
                       {
+                        "$type": "BattleModel.AddBuffSkillEffect",
+                        "Tag": 132,
+                        "_buffData": [
+                          {
+                            "BuffId": "damage_absorption_trigger",
+                            "Forever": false,
+                            "LevelStack": 1,
+                            "OverwriteDuration": 1,
+                            "UserDefineVariable": {
+                            }
+                          }
+                        ],
+                        "_keyString": ""
+                      },
+                      {
                         "$type": "BattleModel.AmrGainSkillEffect",
                         "Tag": 66,
                         "_keyString": "",
                         "_skillModifier": {
                           "_constant": 0,
                           "_parameter": {
-                            "$type": "BattleModel.MultiplyInt",
-                            "left": {
-                              "$type": "BattleModel.IntCharaterField",
-                              "character": {
-                                "$type": "BattleModel.ThisBuffOwner"
-                              },
-                              "targetField": 5
-                            },
-                            "right": {
-                              "$type": "BattleModel.IntBuffField",
-                              "buff": {
-                                "$type": "BattleModel.ThisBuff"
-                              },
-                              "targetField": 1
-                            }
+                            "$type": "BattleModel.BuffAssignedInteger"
                           },
                           "_ratio": 0.08333
                         }
                       }
                     ]
                   },
-                  "willTriggerBuff": true
+                  "UseAssignParameter": true,
+                  "WillTriggerBuff": true
                 }
               }
             ],

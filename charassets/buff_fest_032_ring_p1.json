@@ -1,0 +1,144 @@
+{
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "OnTurnBegin": {
+        "效果": [
+          {
+            "效果": [
+              "對本狀態{\"addTag\":32838,\"$type\":\"BattleModel.AddBuffTag\"}",
+              "對玩家及敵人所有角色{\"BuffGroupIds\":{\"BuffLabel\":{\"BuffLabel\":\"generalSickNoStun\",\"BuffIdList\":[\"nerf_damage_small\",\"weak\",\"tearing\",\"poison\"]},\"$type\":\"BattleModel.BuffIdFromLabelList\"},\"AddAllBuff\":false,\"RandomAddCount\":1,\"NotRepeatSameBuffId\":false,\"Forever\":false,\"OverwriteDuration\":1,\"LevelStack\":1,\"$type\":\"BattleModel.AddBuffFromGroupedBffId\"}"
+            ],
+            "條件": [
+              "目前回合輪到玩家後排",
+              "目前戰鬥回合數 == 0"
+            ]
+          }
+        ],
+        "條件": [
+          "探索Flag\"fest032_Haunt_Own_Ring\"的數值 == 1"
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 99,
+    "標籤": "NotRemoveAfterBattle | NotRemoveWhenDie | Forever | InfinityTrigger"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+    "nerf_damage_small",
+    "weak",
+    "tearing",
+    "poison",
+    "tearing_trigger",
+    "tearing_trigger_alert",
+    "poison_trigger"
+  ],
+  "_actionTable": [
+    {
+      "Key": 1,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.AddBuffTag",
+                    "addTag": 32838
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacterGroup",
+                  "group": {
+                    "$type": "BattleModel.UnionCharGroup",
+                    "group1": {
+                      "$type": "BattleModel.PVEPlayerTeam",
+                      "includeDead": false,
+                      "includeEmpty": false
+                    },
+                    "group2": {
+                      "$type": "BattleModel.PVEEnemyTeam",
+                      "includeDead": false,
+                      "includeEmpty": false
+                    }
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuffFromGroupedBffId",
+                    "AddAllBuff": false,
+                    "BuffGroupIds": {
+                      "$type": "BattleModel.BuffIdFromLabelList",
+                      "BuffLabel": {
+                        "BuffIdList": [
+                          "nerf_damage_small",
+                          "weak",
+                          "tearing",
+                          "poison"
+                        ],
+                        "BuffLabel": "generalSickNoStun"
+                      }
+                    },
+                    "Forever": false,
+                    "LevelStack": 1,
+                    "NotRepeatSameBuffId": false,
+                    "OverwriteDuration": 1,
+                    "RandomAddCount": 1
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CurrentTurnBelongsTo",
+                "character": {
+                  "$type": "BattleModel.BackOfChars",
+                  "group": {
+                    "$type": "BattleModel.PVEPlayerTeam",
+                    "includeDead": false,
+                    "includeEmpty": false
+                  }
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.BattleActionRecordValue",
+                  "RecordValue": {
+                    "$type": "BattleModel.ThisBattleTurnCount"
+                  }
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 0
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+          {
+            "$type": "BattleModel.IntCompare",
+            "left": {
+              "$type": "BattleModel.ThisTeamExploreFlagValue",
+              "ExploreFlagId": "fest032_Haunt_Own_Ring"
+            },
+            "op": 0,
+            "right": {
+              "$type": "BattleModel.ConstanctInt",
+              "constant": 1
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 99,
+  "_orderTable": {
+  },
+  "_tag": 32838
+}

@@ -2,11 +2,24 @@
   "$interpreted": {
     "Localization": "",
     "動作": {
+      "": {
+        "效果": [
+          {
+            "效果": [
+              "對本狀態的變數一改為{\"$type\":\"BattleModel.CountOfConsumedStone\"}"
+            ],
+            "條件": [
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
       "OnTurnBegin": {
         "效果": [
           {
             "效果": [
-              "對敵人所有角色賦予永久inhibit_notConsumeStoneSkill(本角色無視所有非使用魂芯的技能效果。)"
+              "對本狀態的變數一改為0"
             ],
             "條件": [
               "(目前戰鬥回合數 == 0) 且 (目前回合輪到敵人首位)"
@@ -15,17 +28,224 @@
         ],
         "條件": [
         ]
+      },
+      "OnTurnEnd": {
+        "效果": [
+          {
+            "效果": [
+              "對玩家首位的友方指定對象觸發S1",
+              "對玩家首位的友方指定對象觸發S1",
+              "立即施展技能：對玩家首位的友方指定對象將4個魂芯undefined"
+            ],
+            "條件": [
+              "目前回合輪到玩家首位",
+              "本狀態的變數一 >= 4"
+            ]
+          }
+        ],
+        "條件": [
+        ]
       }
     },
     "持續時間": 0,
-    "最高層數": 0,
-    "標籤": "NotRemoveAfterBattle | Forever"
+    "最高層數": 99,
+    "標籤": "NotRemoveAfterBattle | Forever | InfinityTrigger"
   },
   "$type": "BattleModel.Buff",
   "ReferenceBuffKeys": [
-    "inhibit_notConsumeStoneSkill"
   ],
   "_actionTable": [
+    {
+      "Key": 2,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.FriendAssignee",
+                    "reference": {
+                      "$type": "BattleModel.FrontOfChars",
+                      "group": {
+                        "$type": "BattleModel.PVEPlayerTeam",
+                        "includeDead": true,
+                        "includeEmpty": false
+                      }
+                    }
+                  },
+                  "operation": {
+                    "$type": "BattleModel.CastSkillSet",
+                    "AssignParameter": {
+                      "AssignCharacter": {
+                        "$type": "BattleModel.NoneCharacter"
+                      },
+                      "AssignCharacterGroup": {
+                        "$type": "BattleModel.NoneCharacters"
+                      },
+                      "AssignInteger": {
+                        "$type": "BattleModel.ConstanctInt",
+                        "constant": 0
+                      },
+                      "AssignIntegerGroup": {
+                        "$type": "BattleModel.ConstanctIntegerGroup",
+                        "Group": [
+                        ]
+                      }
+                    },
+                    "UseAssignParameter": false,
+                    "resetCasterCD": false,
+                    "skillsetId": "S1"
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.FriendAssignee",
+                    "reference": {
+                      "$type": "BattleModel.FrontOfChars",
+                      "group": {
+                        "$type": "BattleModel.PVEPlayerTeam",
+                        "includeDead": true,
+                        "includeEmpty": false
+                      }
+                    }
+                  },
+                  "operation": {
+                    "$type": "BattleModel.CastSkillSet",
+                    "AssignParameter": {
+                      "AssignCharacter": {
+                        "$type": "BattleModel.NoneCharacter"
+                      },
+                      "AssignCharacterGroup": {
+                        "$type": "BattleModel.NoneCharacters"
+                      },
+                      "AssignInteger": {
+                        "$type": "BattleModel.ConstanctInt",
+                        "constant": 0
+                      },
+                      "AssignIntegerGroup": {
+                        "$type": "BattleModel.ConstanctIntegerGroup",
+                        "Group": [
+                        ]
+                      }
+                    },
+                    "UseAssignParameter": false,
+                    "resetCasterCD": false,
+                    "skillsetId": "S1"
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": null,
+                    "single": {
+                      "$type": "BattleModel.FriendAssignee",
+                      "reference": {
+                        "$type": "BattleModel.FrontOfChars",
+                        "group": {
+                          "$type": "BattleModel.PVEPlayerTeam",
+                          "includeDead": false,
+                          "includeEmpty": false
+                        }
+                      }
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.StoneActionSkillEffect",
+                        "Tag": 516,
+                        "_keyString": "",
+                        "_stoneAction": {
+                          "BuffFilter": "Normal",
+                          "BuffId": "",
+                          "BuffLabel": null,
+                          "EffectFilter": "Normal",
+                          "StonePositionList": [
+                          ],
+                          "UsePositionSettings": false,
+                          "changeTo": "ToFriendAssigneeStoneType",
+                          "filter": "IsNotTargetColor",
+                          "isInitStoneFilter": "None",
+                          "order": "UpperLeftToLowerLeft",
+                          "targetStoneCount": 4
+                        }
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": true
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CurrentTurnBelongsTo",
+                "character": {
+                  "$type": "BattleModel.FrontOfChars",
+                  "group": {
+                    "$type": "BattleModel.PVEPlayerTeam",
+                    "includeDead": true,
+                    "includeEmpty": false
+                  }
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.ThisBuff"
+                  },
+                  "targetField": 4
+                },
+                "op": 4,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 4
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 33554432,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.CountOfConsumedStone"
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
     {
       "Key": 1,
       "Value": {
@@ -34,21 +254,15 @@
             "Actions": [
               {
                 "TargetField": {
-                  "$type": "BattleModel.OperateCharacterGroup",
-                  "group": {
-                    "$type": "BattleModel.PVEEnemyTeam",
-                    "includeDead": true,
-                    "includeEmpty": false
-                  },
+                  "$type": "BattleModel.OperateThisBuff",
                   "operation": {
-                    "$type": "BattleModel.AddBuff",
-                    "buffToAdd": {
-                      "BuffId": "inhibit_notConsumeStoneSkill",
-                      "Forever": true,
-                      "LevelStack": 0,
-                      "OverwriteDuration": -1,
-                      "UserDefineVariable": {
-                      }
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 0
                     }
                   }
                 }
@@ -92,8 +306,8 @@
     }
   ],
   "_duration": 0,
-  "_maxLevel": 0,
+  "_maxLevel": 99,
   "_orderTable": {
   },
-  "_tag": 66
+  "_tag": 32834
 }

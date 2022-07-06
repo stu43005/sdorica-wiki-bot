@@ -1,0 +1,88 @@
+{
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "OnEachSkillTargetEffect": {
+        "效果": [
+          {
+            "效果": [
+              "立即施展技能效果：賦予2回合1層encore(安可)"
+            ],
+            "條件": [
+              "施展的技能效果中包含(Heal)屬性",
+              "指定目標是玩家的一員"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 99,
+    "標籤": "NotRemoveAfterBattle | NotRemoveWhenDie | Forever"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+    "encore"
+  ],
+  "_actionTable": [
+    {
+      "Key": 1024,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.ImmediatelySkillEffect",
+                  "SkillEffect": [
+                    {
+                      "$type": "BattleModel.AddBuffSkillEffect",
+                      "Tag": 132,
+                      "_buffData": [
+                        {
+                          "BuffId": "encore",
+                          "Forever": false,
+                          "LevelStack": 1,
+                          "OverwriteDuration": 2,
+                          "UserDefineVariable": {
+                          }
+                        }
+                      ],
+                      "_keyString": "1"
+                    }
+                  ]
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.ThisSkillEffectTagContains",
+                "containsAll": 32
+              },
+              {
+                "$type": "BattleModel.CharacterInside",
+                "group": {
+                  "$type": "BattleModel.PVEPlayerTeam",
+                  "includeDead": false,
+                  "includeEmpty": false
+                },
+                "left": {
+                  "$type": "BattleModel.ThisSpecifiedTarget"
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 99,
+  "_orderTable": {
+  },
+  "_tag": 70
+}
