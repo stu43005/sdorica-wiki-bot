@@ -34,7 +34,7 @@
         "效果": [
           {
             "效果": [
-              "立即施展技能：對本角色賦予1回合1層tearing_trigger、穿透({\"Condition\":{\"character\":{\"$type\":\"BattleModel.ThisBuffOwner\"},\"buffId\":\"adapt\",\"$type\":\"BattleModel.CharacterHasBuff\"},\"PassValue\":{\"group\":{\"SingleIntegers\":[{\"left\":{\"$type\":\"BattleModel.BuffAssignedInteger\"},\"right\":{\"character\":{\"$type\":\"BattleModel.ThisBuffOwner\"},\"targetField\":0,\"$type\":\"BattleModel.IntCharaterField\"},\"$type\":\"BattleModel.MultiplyInt\"},{\"left\":{\"$type\":\"BattleModel.BuffAssignedInteger\"},\"right\":{\"constant\":50000,\"$type\":\"BattleModel.ConstanctInt\"},\"$type\":\"BattleModel.MultiplyInt\"}],\"$type\":\"BattleModel.SingleIntegerGroup\"},\"$type\":\"BattleModel.MinOfInts\"},\"NotPassValue\":{\"left\":{\"$type\":\"BattleModel.BuffAssignedInteger\"},\"right\":{\"character\":{\"$type\":\"BattleModel.ThisBuffOwner\"},\"targetField\":0,\"$type\":\"BattleModel.IntCharaterField\"},\"$type\":\"BattleModel.MultiplyInt\"},\"$type\":\"BattleModel.ConditionalInteger\"} x0.1)",
+              "立即施展技能：對本角色賦予1回合1層tearing_trigger、穿透([如果(本角色擁有adapt(適性)狀態)條件為真((((本狀態的層數 * 本角色的HP))、((本狀態的層數 * 50000)))的最小值)，否則((本狀態的層數 * 本角色的HP))] x0.1)",
               "對本角色賦予1回合1層tearing_trigger_alert"
             ],
             "條件": [
@@ -142,7 +142,14 @@
                             "NotPassValue": {
                               "$type": "BattleModel.MultiplyInt",
                               "left": {
-                                "$type": "BattleModel.BuffAssignedInteger"
+                                "$type": "BattleModel.BuffAssignedInteger",
+                                "_value": {
+                                  "$type": "BattleModel.IntBuffField",
+                                  "buff": {
+                                    "$type": "BattleModel.ThisBuff"
+                                  },
+                                  "targetField": 1
+                                }
                               },
                               "right": {
                                 "$type": "BattleModel.IntCharaterField",
@@ -160,7 +167,14 @@
                                   {
                                     "$type": "BattleModel.MultiplyInt",
                                     "left": {
-                                      "$type": "BattleModel.BuffAssignedInteger"
+                                      "$type": "BattleModel.BuffAssignedInteger",
+                                      "_value": {
+                                        "$type": "BattleModel.IntBuffField",
+                                        "buff": {
+                                          "$type": "BattleModel.ThisBuff"
+                                        },
+                                        "targetField": 1
+                                      }
                                     },
                                     "right": {
                                       "$type": "BattleModel.IntCharaterField",
@@ -173,7 +187,14 @@
                                   {
                                     "$type": "BattleModel.MultiplyInt",
                                     "left": {
-                                      "$type": "BattleModel.BuffAssignedInteger"
+                                      "$type": "BattleModel.BuffAssignedInteger",
+                                      "_value": {
+                                        "$type": "BattleModel.IntBuffField",
+                                        "buff": {
+                                          "$type": "BattleModel.ThisBuff"
+                                        },
+                                        "targetField": 1
+                                      }
                                     },
                                     "right": {
                                       "$type": "BattleModel.ConstanctInt",

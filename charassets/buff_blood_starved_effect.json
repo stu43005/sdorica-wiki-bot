@@ -6,7 +6,7 @@
         "效果": [
           {
             "效果": [
-              "立即施展技能：對本角色穿透({\"$type\":\"BattleModel.BuffAssignedInteger\"} x1)",
+              "立即施展技能：對本角色穿透((在此回合的目標中，本角色的對方的補血量 * 在本角色的blood_starved(負殛釋放)狀態的層數) x1)",
               "對本角色移除狀態blood_starved_damage",
               "對本角色賦予1回合blood_starved_damage",
               "對本角色移除狀態blood_starved_effect"
@@ -24,7 +24,7 @@
         "效果": [
           {
             "效果": [
-              "立即施展技能：對本角色穿透({\"$type\":\"BattleModel.BuffAssignedInteger\"} x1)",
+              "立即施展技能：對本角色穿透((在此回合的目標中，本角色的對方的補血量 * 在本角色的blood_starved(負殛釋放)狀態的層數) x1)",
               "對本角色移除狀態blood_starved_damage",
               "對本角色賦予1回合blood_starved_damage",
               "對本角色移除狀態blood_starved_effect"
@@ -118,7 +118,40 @@
                         "_skillModifier": {
                           "_constant": 0,
                           "_parameter": {
-                            "$type": "BattleModel.BuffAssignedInteger"
+                            "$type": "BattleModel.BuffAssignedInteger",
+                            "_value": {
+                              "$type": "BattleModel.MultiplyInt",
+                              "left": {
+                                "$type": "BattleModel.TransitionResultValue",
+                                "ResultValue": {
+                                  "$type": "BattleModel.TotalResultsValueOfCharacterGroup",
+                                  "CharType": "Target",
+                                  "Group": {
+                                    "$type": "BattleModel.OppositeTeamChars",
+                                    "includeDead": true,
+                                    "includeEmpty": true,
+                                    "reference": {
+                                      "$type": "BattleModel.ThisBuffOwner"
+                                    }
+                                  },
+                                  "Results": {
+                                    "$type": "BattleModel.ThisTurnResult"
+                                  },
+                                  "ValueType": "Heal"
+                                }
+                              },
+                              "right": {
+                                "$type": "BattleModel.IntBuffField",
+                                "buff": {
+                                  "$type": "BattleModel.BuffOnCharater",
+                                  "buffId": "blood_starved",
+                                  "character": {
+                                    "$type": "BattleModel.ThisBuffOwner"
+                                  }
+                                },
+                                "targetField": 1
+                              }
+                            }
                           },
                           "_ratio": 1
                         }
@@ -297,7 +330,40 @@
                         "_skillModifier": {
                           "_constant": 0,
                           "_parameter": {
-                            "$type": "BattleModel.BuffAssignedInteger"
+                            "$type": "BattleModel.BuffAssignedInteger",
+                            "_value": {
+                              "$type": "BattleModel.MultiplyInt",
+                              "left": {
+                                "$type": "BattleModel.TransitionResultValue",
+                                "ResultValue": {
+                                  "$type": "BattleModel.TotalResultsValueOfCharacterGroup",
+                                  "CharType": "Target",
+                                  "Group": {
+                                    "$type": "BattleModel.OppositeTeamChars",
+                                    "includeDead": true,
+                                    "includeEmpty": true,
+                                    "reference": {
+                                      "$type": "BattleModel.ThisBuffOwner"
+                                    }
+                                  },
+                                  "Results": {
+                                    "$type": "BattleModel.ThisTurnResult"
+                                  },
+                                  "ValueType": "Heal"
+                                }
+                              },
+                              "right": {
+                                "$type": "BattleModel.IntBuffField",
+                                "buff": {
+                                  "$type": "BattleModel.BuffOnCharater",
+                                  "buffId": "blood_starved",
+                                  "character": {
+                                    "$type": "BattleModel.ThisBuffOwner"
+                                  }
+                                },
+                                "targetField": 1
+                              }
+                            }
                           },
                           "_ratio": 1
                         }

@@ -34,7 +34,7 @@
         "效果": [
           {
             "效果": [
-              "立即施展技能：對本角色賦予1回合1層damage_absorption_trigger、疊盾({\"$type\":\"BattleModel.BuffAssignedInteger\"} x0.099996)"
+              "立即施展技能：對本角色賦予1回合1層damage_absorption_trigger、疊盾((本狀態的層數 * 本角色的最大疊盾) x0.099996)"
             ],
             "條件": [
               "本角色是指定目標",
@@ -152,7 +152,24 @@
                         "_skillModifier": {
                           "_constant": 0,
                           "_parameter": {
-                            "$type": "BattleModel.BuffAssignedInteger"
+                            "$type": "BattleModel.BuffAssignedInteger",
+                            "_value": {
+                              "$type": "BattleModel.MultiplyInt",
+                              "left": {
+                                "$type": "BattleModel.IntBuffField",
+                                "buff": {
+                                  "$type": "BattleModel.ThisBuff"
+                                },
+                                "targetField": 1
+                              },
+                              "right": {
+                                "$type": "BattleModel.IntCharaterField",
+                                "character": {
+                                  "$type": "BattleModel.ThisBuffOwner"
+                                },
+                                "targetField": 5
+                              }
+                            }
                           },
                           "_ratio": 0.08333
                         }

@@ -49,7 +49,7 @@
           {
             "效果": [
               "對本角色移除狀態ArmorToBlood_trigger",
-              "立即施展技能：對本角色賦予1回合1層ArmorToBlood_trigger、治療(({\"$type\":\"BattleModel.BuffAssignedInteger\"} * 本角色的疊盾) x0.299997)"
+              "立即施展技能：對本角色賦予1回合1層ArmorToBlood_trigger、治療((本狀態的層數 * 本角色的疊盾) x0.299997)"
             ],
             "條件": [
               "目前回合輪到本角色",
@@ -143,7 +143,14 @@
                           "_parameter": {
                             "$type": "BattleModel.MultiplyInt",
                             "left": {
-                              "$type": "BattleModel.BuffAssignedInteger"
+                              "$type": "BattleModel.BuffAssignedInteger",
+                              "_value": {
+                                "$type": "BattleModel.IntBuffField",
+                                "buff": {
+                                  "$type": "BattleModel.ThisBuff"
+                                },
+                                "targetField": 1
+                              }
                             },
                             "right": {
                               "$type": "BattleModel.IntCharaterField",

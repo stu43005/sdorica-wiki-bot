@@ -6,7 +6,7 @@
         "效果": [
           {
             "效果": [
-              "立即施展技能：對玩家首位的目標攻擊({\"$type\":\"BattleModel.BuffAssignedInteger\"} x1)",
+              "立即施展技能：對玩家首位的目標攻擊((floor(玩家首位的目標的最大HP * 0.3) * 本狀態的層數) x1)",
               "對玩家首位的目標賦予2回合1層poison(中毒)",
               "對本角色移除狀態scroll_curse"
             ],
@@ -22,7 +22,7 @@
         "效果": [
           {
             "效果": [
-              "立即施展技能：對玩家首位的目標攻擊({\"$type\":\"BattleModel.BuffAssignedInteger\"} x1)",
+              "立即施展技能：對玩家首位的目標攻擊((floor(玩家首位的目標的最大HP * 0.3) * 本狀態的層數) x1)",
               "對玩家首位的目標賦予2回合1層poison(中毒)",
               "對本角色移除狀態scroll_curse"
             ],
@@ -115,7 +115,32 @@
                         "_skillModifier": {
                           "_constant": 0,
                           "_parameter": {
-                            "$type": "BattleModel.BuffAssignedInteger"
+                            "$type": "BattleModel.BuffAssignedInteger",
+                            "_value": {
+                              "$type": "BattleModel.MultiplyInt",
+                              "left": {
+                                "$type": "BattleModel.MultiplyFloat",
+                                "left": {
+                                  "$type": "BattleModel.IntCharaterField",
+                                  "character": {
+                                    "$type": "BattleModel.EnemyAssignee",
+                                    "reference": {
+                                      "$type": "BattleModel.FrontOfChars",
+                                      "group": {
+                                        "$type": "BattleModel.PVEPlayerTeam",
+                                        "includeDead": false,
+                                        "includeEmpty": false
+                                      }
+                                    }
+                                  },
+                                  "targetField": 1
+                                },
+                                "ratio": 0.3
+                              },
+                              "right": {
+                                "$type": "BattleModel.ThisBuffLevel"
+                              }
+                            }
                           },
                           "_ratio": 1
                         }
@@ -254,7 +279,32 @@
                         "_skillModifier": {
                           "_constant": 0,
                           "_parameter": {
-                            "$type": "BattleModel.BuffAssignedInteger"
+                            "$type": "BattleModel.BuffAssignedInteger",
+                            "_value": {
+                              "$type": "BattleModel.MultiplyInt",
+                              "left": {
+                                "$type": "BattleModel.MultiplyFloat",
+                                "left": {
+                                  "$type": "BattleModel.IntCharaterField",
+                                  "character": {
+                                    "$type": "BattleModel.EnemyAssignee",
+                                    "reference": {
+                                      "$type": "BattleModel.FrontOfChars",
+                                      "group": {
+                                        "$type": "BattleModel.PVEPlayerTeam",
+                                        "includeDead": false,
+                                        "includeEmpty": false
+                                      }
+                                    }
+                                  },
+                                  "targetField": 1
+                                },
+                                "ratio": 0.3
+                              },
+                              "right": {
+                                "$type": "BattleModel.ThisBuffLevel"
+                              }
+                            }
                           },
                           "_ratio": 1
                         }

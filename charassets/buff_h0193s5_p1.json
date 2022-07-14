@@ -20,7 +20,7 @@
         "效果": [
           {
             "效果": [
-              "立即施展技能：對賦予者攻擊({\"$type\":\"BattleModel.BuffAssignedInteger\"} x1)",
+              "立即施展技能：對賦予者攻擊((在此技能組的目標中，本角色的減少體力 + 在此技能組的目標中，本角色的減少疊盾) x1)",
               "對本角色{\"operation\":{\"buffToAdd\":{\"BuffId\":\"h0193s5_P11\",\"OverwriteDuration\":1,\"Forever\":false,\"LevelStack\":0,\"UserDefineVariable\":{}},\"$type\":\"BattleModel.AddBuff\"},\"viewActionTime\":{\"TriggerTime\":{\"TagName\":\"AddBuff\",\"TagType\":\"SkillProperty\"},\"Index\":\"First\",\"FrameOffset\":0},\"$type\":\"BattleModel.OperateCharacterViewActionTime\"}",
               "對賦予者{\"operation\":{\"buffToAdd\":{\"BuffId\":\"h0193s5_P12\",\"OverwriteDuration\":1,\"Forever\":false,\"LevelStack\":0,\"UserDefineVariable\":{}},\"$type\":\"BattleModel.AddBuff\"},\"viewActionTime\":{\"TriggerTime\":{\"TagName\":\"AddBuff\",\"TagType\":\"SkillProperty\"},\"Index\":\"First\",\"FrameOffset\":5},\"$type\":\"BattleModel.OperateCharacterViewActionTime\"}"
             ],
@@ -134,7 +134,38 @@
                         "_skillModifier": {
                           "_constant": 0,
                           "_parameter": {
-                            "$type": "BattleModel.BuffAssignedInteger"
+                            "$type": "BattleModel.BuffAssignedInteger",
+                            "_value": {
+                              "$type": "BattleModel.PlusInt",
+                              "left": {
+                                "$type": "BattleModel.TransitionResultValue",
+                                "ResultValue": {
+                                  "$type": "BattleModel.TotalResultsValueOfCharacter",
+                                  "CharType": "Target",
+                                  "Character": {
+                                    "$type": "BattleModel.ThisBuffOwner"
+                                  },
+                                  "Results": {
+                                    "$type": "BattleModel.ThisSkillSetResult"
+                                  },
+                                  "ValueType": "HpDamage"
+                                }
+                              },
+                              "right": {
+                                "$type": "BattleModel.TransitionResultValue",
+                                "ResultValue": {
+                                  "$type": "BattleModel.TotalResultsValueOfCharacter",
+                                  "CharType": "Target",
+                                  "Character": {
+                                    "$type": "BattleModel.ThisBuffOwner"
+                                  },
+                                  "Results": {
+                                    "$type": "BattleModel.ThisSkillSetResult"
+                                  },
+                                  "ValueType": "ArmorReduce"
+                                }
+                              }
+                            }
                           },
                           "_ratio": 1
                         }

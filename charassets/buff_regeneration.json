@@ -64,7 +64,7 @@
         "效果": [
           {
             "效果": [
-              "立即施展技能：對本角色治療({\"$type\":\"BattleModel.BuffAssignedInteger\"} x0.099999)、賦予1回合1層regeneration_trigger"
+              "立即施展技能：對本角色治療((本角色的最大HP * 本狀態的層數) x0.099999)、賦予1回合1層regeneration_trigger"
             ],
             "條件": [
             ]
@@ -138,7 +138,24 @@
                         "_skillModifier": {
                           "_constant": 0,
                           "_parameter": {
-                            "$type": "BattleModel.BuffAssignedInteger"
+                            "$type": "BattleModel.BuffAssignedInteger",
+                            "_value": {
+                              "$type": "BattleModel.MultiplyInt",
+                              "left": {
+                                "$type": "BattleModel.IntCharaterField",
+                                "character": {
+                                  "$type": "BattleModel.ThisBuffOwner"
+                                },
+                                "targetField": 1
+                              },
+                              "right": {
+                                "$type": "BattleModel.IntBuffField",
+                                "buff": {
+                                  "$type": "BattleModel.ThisBuff"
+                                },
+                                "targetField": 1
+                              }
+                            }
                           },
                           "_ratio": 0.11111
                         }
