@@ -1,20 +1,26 @@
 import { localizationItemName } from "../../../localization";
 import { groupedBuffStringify, singleBuffStringify } from "../buff/BuffStringify";
 import { BuffEnums } from "../BuffEnums";
+import { conditionStringify } from "../condition/ConditionStringify";
 import { StoneType } from "../StoneSystem/StoneType";
 import { mulitTargetStringify, singleTargetStringify } from "../target/TargetStringify";
 import { AssignedValue } from "./AssignedValue";
 import { BattleActionRecordValue } from "./BattleActionRecordValue";
 import { IBattleActionRecordValue } from "./BattleActionRecordValue/IBattleActionRecordValue";
 import { ThisBattleTurnCount } from "./BattleActionRecordValue/ThisBattleTurnCount";
+import { BuffAssignedInteger } from "./BuffAssignedInteger";
+import { ConditionalInteger } from "./ConditionalInteger";
 import { ConstanctInt } from "./ConstanctInt";
 import { ConstantIntB } from "./ConstantIntB";
 import { ConstantIntC } from "./ConstantIntC";
 import { CountOfBuffGroup } from "./CountOfBuffGroup";
 import { CountOfCharGroup } from "./CountOfCharGroup";
+import { BuffAssignedIntegerGroup } from "./grouped/BuffAssignedIntegerGroup";
+import { ConstanctIntegerGroup } from "./grouped/ConstanctIntegerGroup";
 import { IGroupedInteger } from "./grouped/IGroupedInteger";
 import { IntsOnBuffGroup } from "./grouped/IntsOnBuffGroup";
 import { IntsOnCharGroup } from "./grouped/IntsOnCharGroup";
+import { SingleIntegerGroup } from "./grouped/SingleIntegerGroup";
 import { IntBuffField } from "./IntBuffField";
 import { IntCharaterField } from "./IntCharaterField";
 import { IntFieldB } from "./IntFieldB";
@@ -133,6 +139,10 @@ export function constantStringify(constant: ISingleInteger): string {
 		const obj = constant as AssignedValue;
 		return constantStringify(obj._value);
 	}
+	if (constant.$type == "BattleModel.BuffAssignedInteger") {
+		const obj = constant as BuffAssignedInteger;
+		return constantStringify(obj._value);
+	}
 	if (constant.$type == "BattleModel.TransitionResultValue") {
 		const obj = constant as TransitionResultValue;
 		return transitionResultValueStringify(obj.ResultValue);
@@ -169,6 +179,10 @@ export function constantStringify(constant: ISingleInteger): string {
 	if (constant.$type == "BattleModel.SumOfInts") {
 		const obj = constant as SumOfInts;
 		return `(${groupedIntegerStringify(obj.group)})的總和`;
+	}
+	if (constant.$type == "BattleModel.ConditionalInteger") {
+		const obj = constant as ConditionalInteger;
+		return `[如果(${conditionStringify(obj.Condition)})條件為真(${constantStringify(obj.PassValue)})，否則(${constantStringify(obj.NotPassValue)})]`;
 	}
 	console.error(`Unknown ISingleInteger type: ${constant.$type}`);
 	return JSON.stringify(constant);
@@ -317,6 +331,18 @@ export function groupedIntegerStringify(constant: IGroupedInteger) {
 	if (constant.$type == "BattleModel.IntsOnCharGroup") {
 		const obj = constant as IntsOnCharGroup;
 		return `${mulitTargetStringify(obj.group)}中的${BuffEnums.CharacterIntegerField.toString(obj.targetField)}`;
+	}
+	if (constant.$type == "BattleModel.BuffAssignedIntegerGroup") {
+		const obj = constant as BuffAssignedIntegerGroup;
+		return groupedIntegerStringify(obj._value);
+	}
+	if (constant.$type == "BattleModel.SingleIntegerGroup") {
+		const obj = constant as SingleIntegerGroup;
+		return obj.SingleIntegers.map(singleInteger => `(${constantStringify(singleInteger)})`).join("、");
+	}
+	if (constant.$type == "BattleModel.ConstanctIntegerGroup") {
+		const obj = constant as ConstanctIntegerGroup;
+		return JSON.stringify(obj.Group);
 	}
 	console.error(`Unknown IGroupedInteger type: ${constant.$type}`);
 	return JSON.stringify(constant);

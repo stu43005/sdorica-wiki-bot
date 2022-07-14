@@ -3,6 +3,7 @@ import { buffLabelStringify, singleBuffStringify } from "../buff/BuffStringify";
 import { BuffTag } from "../BuffTag";
 import { constantBuffStringify, constantCharStringify, constantStringify } from "../constant/ConstantStringify";
 import { SkillProperty } from "../SkillProperty";
+import { StoneEraseType } from "../StoneSystem/StoneEraseType";
 import { StoneType } from "../StoneSystem/StoneType";
 import { mulitTargetStringify, singleTargetStringify } from "../target/TargetStringify";
 import { AndConditions } from "./AndConditions";
@@ -30,6 +31,8 @@ import { CharacterEqual } from "./CharacterEqual";
 import { CharacterHasBuff } from "./CharacterHasBuff";
 import { CharacterInside } from "./CharacterInside";
 import { CharGroupCondition } from "./CharGroupCondition";
+import { ConsumedStoneEraseTypeEqual } from "./ConsumedStoneEraseTypeEqual";
+import { ConsumedStoneTypeEqual } from "./ConsumedStoneTypeEqual";
 import { CurrentTurnBelongsTo } from "./CurrentTurnBelongsTo";
 import { IConditionOfBuff } from "./IConditionOfBuff";
 import { IConditionOfCharacter } from "./IConditionOfCharacter";
@@ -55,6 +58,7 @@ function supportedInverse(condition: IConditionOfModel) {
 		case "BattleModel.BuffCondition":
 		case "BattleModel.ThisSkillSetIdEqual":
 		case "BattleModel.RandomCondition":
+		case "BattleModel.AlwaysTrue":
 			return true;
 	}
 	return false;
@@ -68,6 +72,9 @@ export function conditionStringify(condition: IConditionOfModel, isInverse = fal
 			return `${conditionStringify(obj.condition, true)}`;
 		}
 		return `相反(${conditionStringify(obj.condition)})`;
+	}
+	if (condition.$type == "BattleModel.AlwaysTrue") {
+		return `永遠為${isInverse ? "假" : "真"}`;
 	}
 	if (condition.$type == "BattleModel.IntCompare") {
 		const obj = condition as IntCompare;
@@ -149,6 +156,14 @@ export function conditionStringify(condition: IConditionOfModel, isInverse = fal
 		}
 		const pa = Math.floor(obj.lessThan / obj.randBase * 10000) / 100;
 		return `${isInverse ? 100 - pa : pa}%機率`;
+	}
+	if (condition.$type == "BattleModel.ConsumedStoneEraseTypeEqual") {
+		const obj = condition as ConsumedStoneEraseTypeEqual;
+		return `消耗${StoneEraseType.toString(obj.EraseType)}魂芯`;
+	}
+	if (condition.$type == "BattleModel.ConsumedStoneTypeEqual") {
+		const obj = condition as ConsumedStoneTypeEqual;
+		return `消耗${StoneType.toString(obj.Type)}魂芯`;
 	}
 	console.error(`Unknown IConditionOfModel type: ${condition.$type}`);
 	return JSON.stringify(condition);

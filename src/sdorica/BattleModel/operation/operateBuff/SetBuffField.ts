@@ -6,4 +6,5 @@ export interface SetBuffField extends IOperationToBuff {
 	targetField: BuffEnums.BuffIntergerField;
 	setOperator: BuffEnums.SetterOp;
 	value: ISingleInteger;
+	lastIndepedentStack?: boolean;
 }

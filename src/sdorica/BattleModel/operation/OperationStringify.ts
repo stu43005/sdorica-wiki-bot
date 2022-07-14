@@ -1,15 +1,20 @@
 import { localizationBuffName } from "../../../localization";
+import { singleBuffStringify } from "../buff/BuffStringify";
 import { BuffEnums } from "../BuffEnums";
 import { BuffTag } from "../BuffTag";
 import { conditionBuffStringify } from "../condition/ConditionStringify";
 import { AssignedValue } from "../constant/AssignedValue";
+import { BuffAssignedInteger } from "../constant/BuffAssignedInteger";
 import { constantStringify } from "../constant/ConstantStringify";
+import { BuffAssignedIntegerGroup } from "../constant/grouped/BuffAssignedIntegerGroup";
 import { ISingleInteger } from "../constant/ISingleInteger";
 import { addBuff, skillEffectStringify } from "../skilleffect/SkillEffectStringify";
 import { SkillProperty } from "../SkillProperty";
 import { skillUnitStringify } from "../SkillUnit";
+import { BuffAssignedCharacterGroup } from "../target/multi/BuffAssignedCharacterGroup";
+import { BuffAssignedCharacter } from "../target/single/BuffAssignedCharacter";
 import { mulitTargetStringify, singleTargetStringify } from "../target/TargetStringify";
-import { AssignParameterSkillEffect } from "./AssignParameterSkillEffect";
+import { AssignParameter, AssignParameterSkillEffect } from "./AssignParameterSkillEffect";
 import { BonusEffectForSkillProperty } from "./BonusEffectForSkillProperty";
 import { CharacterAddPower } from "./CharacterAddPower";
 import { DirectSkillEffect } from "./DirectSkillEffect";
@@ -26,6 +31,7 @@ import { IOperationToCharacter } from "./operateCharacter/IOperationToCharacter"
 import { OperateCharacterAllConditionalBuffs } from "./operateCharacter/OperateCharacterAllConditionalBuffs";
 import { RemoveBuff } from "./operateCharacter/RemoveBuff";
 import { OperateCharacterGroup } from "./OperateCharacterGroup";
+import { OperateSingleBuff } from "./OperateSingleBuff";
 import { OperateThisBuff } from "./OperateThisBuff";
 
 export function operationStringify(operation: IBaseOperation) {
@@ -41,6 +47,10 @@ export function operationStringify(operation: IBaseOperation) {
 	if (operation.$type == "BattleModel.OperateThisBuff") {
 		const obj = operation as OperateThisBuff;
 		return `對本狀態${operateBuffStringify(obj.operation)}`;
+	}
+	if (operation.$type == "BattleModel.OperateSingleBuff") {
+		const obj = operation as OperateSingleBuff;
+		return `對${singleBuffStringify(obj.buff)}${operateBuffStringify(obj.operation)}`;
 	}
 	if (operation.$type == "BattleModel.BonusEffectForSkillProperty") {
 		const obj = operation as BonusEffectForSkillProperty;
@@ -60,7 +70,11 @@ export function operationStringify(operation: IBaseOperation) {
 	}
 	if (operation.$type == "BattleModel.AssignParameterSkillEffect") {
 		const obj = operation as AssignParameterSkillEffect;
-		assignValue(obj.SkillUnit, obj.AssignValue);
+		if (obj.UseAssignParameter) {
+			assignParameter(obj.SkillUnit, obj.AssignParameter);
+		} else {
+			assignValue(obj.SkillUnit, obj.AssignValue);
+		}
 		return `立即施展技能：${skillUnitStringify(obj.SkillUnit)}`;
 	}
 	if (operation.$type == "BattleModel.ImmediatelySkillEffect") {
@@ -90,6 +104,41 @@ function assignValue(obj: any, value: ISingleInteger) {
 				if (obj.hasOwnProperty(key)) {
 					const element = obj[key];
 					assignValue(element, value);
+				}
+			}
+		}
+	}
+}
+
+function assignParameter(obj: any, value: AssignParameter) {
+	if (obj && typeof obj == "object") {
+		if (obj instanceof Array) {
+			for (let index = 0; index < obj.length; index++) {
+				const element = obj[index];
+				assignParameter(element, value);
+			}
+		}
+		else if (obj.$type == "BattleModel.BuffAssignedCharacter") {
+			const buffAssignedCharacter = obj as BuffAssignedCharacter;
+			buffAssignedCharacter._value = value.AssignCharacter;
+		}
+		else if (obj.$type == "BattleModel.BuffAssignedCharacterGroup") {
+			const buffAssignedCharacterGroup = obj as BuffAssignedCharacterGroup;
+			buffAssignedCharacterGroup._value = value.AssignCharacterGroup;
+		}
+		else if (obj.$type == "BattleModel.BuffAssignedInteger") {
+			const buffAssignedInteger = obj as BuffAssignedInteger;
+			buffAssignedInteger._value = value.AssignInteger;
+		}
+		else if (obj.$type == "BattleModel.BuffAssignedIntegerGroup") {
+			const buffAssignedIntegerGroup = obj as BuffAssignedIntegerGroup;
+			buffAssignedIntegerGroup._value = value.AssignIntegerGroup;
+		}
+		else {
+			for (const key in obj) {
+				if (obj.hasOwnProperty(key)) {
+					const element = obj[key];
+					assignParameter(element, value);
 				}
 			}
 		}

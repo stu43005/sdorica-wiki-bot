@@ -3,6 +3,7 @@ import { constantCharStringify, constantStringify } from "../constant/ConstantSt
 import { SkillUnit } from "../SkillUnit";
 import { IGroupedCharacter } from "./IGroupedCharacter";
 import { ISingleCharacter } from "./ISingleCharacter";
+import { BuffAssignedCharacterGroup } from "./multi/BuffAssignedCharacterGroup";
 import { CharGroupWhere } from "./multi/CharGroupWhere";
 import { CharGroupWhereM } from "./multi/CharGroupWhereM";
 import { OppositeTeamChars } from "./multi/OppositeTeamChars";
@@ -15,6 +16,7 @@ import { SlicedCharGroup } from "./multi/SlicedCharGroup";
 import { ThisSkillEffectTargets } from "./multi/ThisSkillEffectTargets";
 import { UnionCharGroup } from "./multi/UnionCharGroup";
 import { BackOfChars } from "./single/BackOfChars";
+import { BuffAssignedCharacter } from "./single/BuffAssignedCharacter";
 import { CurrentOperateTarget } from "./single/CurrentOperateTarget";
 import { DeadOrReviveTarget } from "./single/DeadOrReviveTarget";
 import { EnemyAssignee } from "./single/EnemyAssignee";
@@ -104,6 +106,13 @@ export function singleTargetStringify(target: ISingleCharacter): string {
 		const obj = target as FieldMaxChar;
 		return `${mulitTargetStringify(obj.group)}中${constantCharStringify(obj.field)}最高的角色`;
 	}
+	if (target.$type == "BattleModel.BuffAssignedCharacter") {
+		const obj = target as BuffAssignedCharacter;
+		return singleTargetStringify(obj._value);
+	}
+	if (target.$type == "BattleModel.NoneCharacter") {
+		return `沒有角色`;
+	}
 	console.error(`Unknown ISingleCharacter type: ${target.$type}`);
 	return JSON.stringify(target);
 }
@@ -157,6 +166,13 @@ export function mulitTargetStringify(target: IGroupedCharacter): string {
 	if (target.$type == "BattleModel.SelftTeamEmptySlots") {
 		const obj = target as SelftTeamEmptySlots;
 		return `${singleTargetStringify(obj.reference)}隊伍的空位`;
+	}
+	if (target.$type == "BattleModel.BuffAssignedCharacterGroup") {
+		const obj = target as BuffAssignedCharacterGroup;
+		return mulitTargetStringify(obj._value);
+	}
+	if (target.$type == "BattleModel.NoneCharacters") {
+		return `沒有角色`;
 	}
 	console.error(`Unknown IGroupedCharacter type: ${target.$type}`);
 	return JSON.stringify(target);
