@@ -137,10 +137,18 @@ export function constantStringify(constant: ISingleInteger): string {
 	}
 	if (constant.$type == "BattleModel.AssignedValue") {
 		const obj = constant as AssignedValue;
+		if (!obj._value) {
+			console.error(`Unknown AssignedValue value`);
+			return JSON.stringify(obj);
+		}
 		return constantStringify(obj._value);
 	}
 	if (constant.$type == "BattleModel.BuffAssignedInteger") {
 		const obj = constant as BuffAssignedInteger;
+		if (!obj._value) {
+			console.error(`Unknown BuffAssignedInteger value`);
+			return JSON.stringify(obj);
+		}
 		return constantStringify(obj._value);
 	}
 	if (constant.$type == "BattleModel.TransitionResultValue") {
@@ -334,6 +342,10 @@ export function groupedIntegerStringify(constant: IGroupedInteger) {
 	}
 	if (constant.$type == "BattleModel.BuffAssignedIntegerGroup") {
 		const obj = constant as BuffAssignedIntegerGroup;
+		if (!obj._value) {
+			console.error(`Unknown BuffAssignedIntegerGroup value`);
+			return JSON.stringify(obj);
+		}
 		return groupedIntegerStringify(obj._value);
 	}
 	if (constant.$type == "BattleModel.SingleIntegerGroup") {

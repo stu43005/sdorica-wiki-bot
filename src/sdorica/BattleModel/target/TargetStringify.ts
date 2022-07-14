@@ -108,6 +108,10 @@ export function singleTargetStringify(target: ISingleCharacter): string {
 	}
 	if (target.$type == "BattleModel.BuffAssignedCharacter") {
 		const obj = target as BuffAssignedCharacter;
+		if (!obj._value) {
+			console.error(`Unknown BuffAssignedCharacter value`);
+			return JSON.stringify(obj);
+		}
 		return singleTargetStringify(obj._value);
 	}
 	if (target.$type == "BattleModel.NoneCharacter") {
@@ -169,6 +173,10 @@ export function mulitTargetStringify(target: IGroupedCharacter): string {
 	}
 	if (target.$type == "BattleModel.BuffAssignedCharacterGroup") {
 		const obj = target as BuffAssignedCharacterGroup;
+		if (!obj._value) {
+			console.error(`Unknown BuffAssignedCharacterGroup value`);
+			return JSON.stringify(obj);
+		}
 		return mulitTargetStringify(obj._value);
 	}
 	if (target.$type == "BattleModel.NoneCharacters") {
