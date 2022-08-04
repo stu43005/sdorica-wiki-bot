@@ -35,6 +35,7 @@ const TABLE_KEYS: Record<string, string[]> = {
 		"giveType3", "giveLinkId3", "giveAmount3",
 	],
 	BuildInAssetBundle: ["type", "effectValue"],
+	BuffInfo: ["id", "localizationNameKey", "localizationInfoKey", "iconKey", "order", "viewable"],
 	ChapterCount: ["id", "name", "dynamicRate", "initial", "max", "regainType", "regainValue", "itemIcon", "payType", "linkId", "amount"],
 	Chapters: [
 		"id", "enable", "isLock",

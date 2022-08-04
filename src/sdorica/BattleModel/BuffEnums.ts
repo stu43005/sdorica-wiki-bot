@@ -12,6 +12,7 @@ export namespace BuffEnums {
 		FullPower, // 9
 		EnemyRank, // 10
 		CoolDown, // 11
+		// TODO: 12,13 ??
 	}
 
 	export namespace CharacterIntegerField {
