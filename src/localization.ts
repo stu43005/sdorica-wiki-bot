@@ -1,4 +1,5 @@
 import { ImperiumData } from "./imperium-data";
+import { TemplateString } from "./model/template-string";
 import { wikiTitleEscape } from "./wiki-utils";
 
 const EMPTY = "";
@@ -6,7 +7,7 @@ const EMPTY = "";
 export type Func1 = (str: string) => string;
 
 export function nothing(): Func1 {
-	return (str) => {
+	return () => {
 		return EMPTY;
 	};
 }
@@ -88,7 +89,7 @@ export function localizationString(tablename: string, keyPrefix: string | ((key:
 }
 
 export function applyStringRefer(str: string): string {
-	return str.replace(/\$(INFO|BUFF)\:\((\w+)(,\(([\w\.,]*)\))?\)/g, (substring: string, type: string, key: string, _, arg: string) => {
+	return str.replace(/\$(INFO|BUFF|TRIG)\:\((\w+)(,\(([\w\.,]*)\))?\)/g, (substring: string, type: string, key: string, _, arg: string) => {
 		if (type === "INFO") {
 			const args = arg.split(",");
 			const str2 = localizationString("BaseSkillInfo")(key).replace(/\$ARG(\d+)/g, (substring, index) => {
@@ -101,6 +102,12 @@ export function applyStringRefer(str: string): string {
 		}
 		if (type === "BUFF") {
 			return localizationString("BaseBuff")(key);
+		}
+		if (type === "TRIG") {
+			return new TemplateString(localizationString("BaseBuff")("format")).apply([
+				localizationString("BaseBuff")("TRIGGER"),
+				localizationString("BaseBuff")(key),
+			]);
 		}
 		return substring;
 	});
