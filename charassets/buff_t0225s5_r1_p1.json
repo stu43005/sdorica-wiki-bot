@@ -21,6 +21,20 @@
         "效果": [
           {
             "效果": [
+              "對本角色的友方指定對象賦予3回合1層damage_absorption(轉盾)",
+              "對本角色的友方指定對象觸發S2",
+              "對本狀態的變數二改為1"
+            ],
+            "條件": [
+              "施展的技能組是S3",
+              "本角色是施術者",
+              "本角色的對方中的所有角色皆 擁有taunt(嘲諷)狀態",
+              "本狀態的變數二 == 0",
+              "本角色 的AssetId不包含＂t0225s5_r1＂字串"
+            ]
+          },
+          {
+            "效果": [
               "對本角色的友方指定對象賦予5回合1層damage_absorption(轉盾)",
               "對本角色的友方指定對象觸發S2",
               "對本狀態的變數二改為1"
@@ -29,7 +43,8 @@
               "施展的技能組是S3",
               "本角色是施術者",
               "本角色的對方中的所有角色皆 擁有taunt(嘲諷)狀態",
-              "本狀態的變數二 == 0"
+              "本狀態的變數二 == 0",
+              "本角色 的AssetId包含＂t0225s5_r1＂字串"
             ]
           },
           {
@@ -51,7 +66,7 @@
             "條件": [
               "施展的技能組是E3",
               "本角色是施術者",
-              "本狀態的變數三 < 2",
+              "本狀態的變數三 < 3",
               "({\"group\":{\"reference\":{\"$type\":\"BattleModel.ThisBuffOwner\"},\"excludeSelf\":false,\"includeDead\":false,\"includeEmpty\":false,\"$type\":\"BattleModel.SelfTeamChars\"},\"buffId\":\"rage\",\"$type\":\"BattleModel.BuffsOnCharGroup\"}中的層數)的總和 >= 9"
             ]
           }
@@ -87,7 +102,7 @@
     },
     "持續時間": 0,
     "最高層數": 99,
-    "標籤": "Hidden"
+    "標籤": "Forever"
   },
   "$type": "BattleModel.Buff",
   "ReferenceBuffKeys": [
@@ -157,6 +172,140 @@
       "Key": 8,
       "Value": {
         "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.FriendAssignee",
+                    "reference": {
+                      "$type": "BattleModel.ThisBuffOwner"
+                    }
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "damage_absorption",
+                      "Forever": false,
+                      "LevelStack": 1,
+                      "OverwriteDuration": 3,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.FriendAssignee",
+                    "reference": {
+                      "$type": "BattleModel.ThisBuffOwner"
+                    }
+                  },
+                  "operation": {
+                    "$type": "BattleModel.CastSkillSet",
+                    "AssignParameter": {
+                      "AssignCharacter": {
+                        "$type": "BattleModel.NoneCharacter"
+                      },
+                      "AssignCharacterGroup": {
+                        "$type": "BattleModel.NoneCharacters"
+                      },
+                      "AssignInteger": {
+                        "$type": "BattleModel.ConstanctInt",
+                        "constant": 0
+                      },
+                      "AssignIntegerGroup": {
+                        "$type": "BattleModel.ConstanctIntegerGroup",
+                        "Group": [
+                        ]
+                      }
+                    },
+                    "UseAssignParameter": false,
+                    "resetCasterCD": false,
+                    "skillsetId": "S2"
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 8,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 1
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.ThisSkillSetIdEqual",
+                "id": "S3"
+              },
+              {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                },
+                "right": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              },
+              {
+                "$type": "BattleModel.CharGroupCondition",
+                "condition": {
+                  "$type": "BattleModel.HasBuff",
+                  "buffId": "taunt"
+                },
+                "everybody": true,
+                "group": {
+                  "$type": "BattleModel.OppositeTeamChars",
+                  "includeDead": false,
+                  "includeEmpty": false,
+                  "reference": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  }
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.ThisBuff"
+                  },
+                  "targetField": 8
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 0
+                }
+              },
+              {
+                "$type": "BattleModel.Inverse",
+                "condition": {
+                  "$type": "BattleModel.CharacterCondition",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "condition": {
+                    "$type": "BattleModel.AssetIdHasSubString",
+                    "subString": "t0225s5_r1"
+                  }
+                }
+              }
+            ]
+          },
           {
             "Actions": [
               {
@@ -274,6 +423,16 @@
                 "right": {
                   "$type": "BattleModel.ConstanctInt",
                   "constant": 0
+                }
+              },
+              {
+                "$type": "BattleModel.CharacterCondition",
+                "character": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                },
+                "condition": {
+                  "$type": "BattleModel.AssetIdHasSubString",
+                  "subString": "t0225s5_r1"
                 }
               }
             ]
@@ -433,7 +592,7 @@
                 "op": 1,
                 "right": {
                   "$type": "BattleModel.ConstanctInt",
-                  "constant": 2
+                  "constant": 3
                 }
               },
               {
@@ -600,5 +759,5 @@
   "_maxLevel": 99,
   "_orderTable": {
   },
-  "_tag": 1
+  "_tag": 64
 }
