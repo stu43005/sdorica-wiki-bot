@@ -82,35 +82,39 @@ export function localizationString(tablename: string, keyPrefix: string | ((key:
 		if (str) {
 			const table = ImperiumData.fromLocalization().getTable(tablename);
 			const row = table.find(r => r.get(key) == (typeof keyPrefix == "function" ? keyPrefix(str) : keyPrefix + str));
-			if (row) return applyStringRefer(row.get(value));
+			if (row) return row.get(value);
 		}
 		return EMPTY;
 	};
 }
 
-export function applyStringRefer(str: string): string {
-	return str.replace(/\$(INFO|BUFF|TRIG)\:\((\w+)(,\(([\w\.,]*)\))?\)/g, (substring: string, type: string, key: string, _, arg: string) => {
-		if (type === "INFO") {
-			const args = arg.split(",");
-			const str2 = localizationString("BaseSkillInfo")(key).replace(/\$ARG(\d+)/g, (substring, index) => {
-				if (args[index - 1]) {
-					return args[index - 1];
-				}
-				return substring;
-			});
-			return applyStringRefer(str2);
-		}
-		if (type === "BUFF") {
-			return localizationString("BaseBuff")(key);
-		}
-		if (type === "TRIG") {
-			return new TemplateString(localizationString("BaseBuff")("format")).apply([
-				localizationString("BaseBuff")("TRIGGER"),
-				localizationString("BaseBuff")(key),
-			]);
-		}
-		return substring;
+export function applyStringRefer(str: string, replacer = stringReferReplacer): string {
+	return str.replace(/\$(INFO|BUFF|TRIG)\:\((\w+)(?:,\(([\w\.,]*)\))?\)/g, (substring: string, type: string, key: string, arg: string) => {
+		const result = replacer(substring, type, key, arg);
+		return applyStringRefer(result, replacer);
 	});
+}
+
+export function stringReferReplacer(substring: string, type: string, key: string, arg: string) {
+	if (type === "INFO") {
+		const args = arg.split(",");
+		return localizationString("BaseSkillInfo")(key).replace(/\$ARG(\d+)/g, (substring, index) => {
+			if (args[index - 1]) {
+				return args[index - 1];
+			}
+			return substring;
+		});
+	}
+	if (type === "BUFF") {
+		return localizationString("BaseBuff")(key);
+	}
+	if (type === "TRIG") {
+		return new TemplateString(localizationString("BaseBuff")("format")).apply([
+			localizationString("BaseBuff")("TRIGGER"),
+			localizationString("BaseBuff")(key),
+		]);
+	}
+	return substring;
 }
 
 export function localizationStringAuto(): Func1 {

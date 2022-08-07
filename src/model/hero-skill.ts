@@ -1,4 +1,4 @@
-import { localizationString } from "../localization";
+import { applyStringRefer, localizationString, stringReferReplacer } from "../localization";
 import { skillinfo } from "../wiki-hero";
 import { HeroRank } from "./enums/hero-rank.enum";
 import { SkillId } from "./enums/skill-id.enum";
@@ -66,7 +66,10 @@ export class HeroSkill {
 		public tips: boolean = false,
 	) {
 		this.name = localizationString("MetagameSkillInfo")(`${skillSet.model}_${skillId}_name`);
-		this.info = localizationString("MetagameSkillInfo")(`${skillSet.model}_${skillId}_skillinfo`);
+		this.info = applyStringRefer(
+			localizationString("MetagameSkillInfo")(`${skillSet.model}_${skillId}_skillinfo`),
+			(...args) => this.infoReplacer(...args),
+		);
 
 		const triggerMatch = this.info.match(/(^|\n+)\s*【觸發限制】：([^$\n]*)($|\n)/);
 		if (triggerMatch) {
@@ -84,6 +87,18 @@ export class HeroSkill {
 				this.unlockRank = p1match[1] as HeroRank;
 			}
 		}
+	}
+
+	infoReplacer(substring: string, type: string, key: string, arg: string) {
+		const result = stringReferReplacer(substring, type, key, arg);
+		// if (type === "BUFF") {
+		// 	return `{{${result}}}`;
+		// }
+		if (type === "TRIG") {
+			this.triggerLimit = localizationString("BaseBuff")(key);
+			return "";
+		}
+		return result;
 	}
 
 	getSkillInfo() {
