@@ -36,6 +36,7 @@ ${values.map(v => `  ${v}`).join("\n")}
 Ref: ExploreComposite.requireBuildingId > ExploreBuilding.id
 Ref: Chapters.dropGroupID > DropItems.groupId
 Ref: Quests.dropGroupId > DropItems.groupId
+Ref: AchievementConditions.conditionGroupId > EvaluateAchievements.conditionGroupId
 `);
 	await outText(path.join(DATA_PATH, `dbml.txt`), out.join("\n\n"));
 })();

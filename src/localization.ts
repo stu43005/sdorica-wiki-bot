@@ -276,7 +276,7 @@ export function localizationHomelandBuildingName(): Func1 {
 
 export function localizationBuffName(orig?: boolean): Func1 {
 	return (str) => {
-		let name = localizationString("Buff")(str);
+		let name = applyStringRefer(localizationString("Buff")(str));
 		if (name) {
 			name = name.split(/(:|：)/)[0];
 			if (orig) {

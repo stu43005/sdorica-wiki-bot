@@ -2,6 +2,7 @@ const KEYS = ["id", "Key", "Chinese", "ChineseSimplified", "English", "Japanese"
 
 const TABLE_KEYS: Record<string, string[]> = {
 	AbilityDrop: ["groupId", "abilityId", "type", "weight"],
+	AchievementConditions: ["conditionGroupId", "type", "param1", "param2", "param3"],
 	AdventureDailyRank: ["id", "groupId", "image", "maxPercentage", "minPercentage",
 		"item1Id", "reward1Count", "item2Id", "reward2Count", "item3Id", "reward3Count", "item4Id", "reward4Count"],
 	AdventureWeekPoint: ["id", "groupId", "points", "item1Id", "reward1Count", "item2Id", "reward2Count", "item3Id", "reward3Count", "item4Id", "reward4Count"],
@@ -60,8 +61,13 @@ const TABLE_KEYS: Record<string, string[]> = {
 		"buffId", "buffLevel", // buffIncrease
 	],
 	DropItems: ["groupId", "subgroupId", "category", "chest", "dropTime", "giveType", "giveLinkId", "giveAmount", "value", "flagOpId"],
+	EvaluateAchievements: [
+		"groupId", "questModeId",
+		"type", "evaluatePoint",
+		"descriptionKey", "conditionGroupId",
+	],
 	Evaluates: [
-		"id", "groupId",
+		"groupId", "questModeId",
 		"evaluateRankIcon", "evaluatePoint",
 		"giveType1", "giveLinkId1", "giveAmount1",
 		"giveType2", "giveLinkId2", "giveAmount2",
@@ -289,6 +295,7 @@ export function sortKeyByTable(tablename?: string) {
 
 const TABLE_KEYS_BLACKLIST: Record<string, string[]> = {
 	AbilityDrop: ["id"],
+	AchievementConditions: ["id"],
 	AdventureDailyRank: ["item1Id", "reward1Count", "item2Id", "reward2Count", "item3Id", "reward3Count", "item4Id", "reward4Count"],
 	AdventureWeekPoint: ["item1Id", "reward1Count", "item2Id", "reward2Count", "item3Id", "reward3Count", "item4Id", "reward4Count"],
 	AdventureWeekRank: ["item1Id", "reward1Count", "item2Id", "reward2Count", "item3Id", "reward3Count", "item4Id", "reward4Count"],
@@ -300,6 +307,8 @@ const TABLE_KEYS_BLACKLIST: Record<string, string[]> = {
 	ChinaBlacklist: ["id"],
 	DisableWords: ["id"],
 	DropItems: ["id", "itemId", "itemCount"],
+	EvaluateAchievements: ["id"],
+	Evaluates: ["id"],
 	ExtraProducts: ["id"],
 	Gashapons: ["id"],
 	GlobalBlacklist: ["id"],
@@ -309,6 +318,7 @@ const TABLE_KEYS_BLACKLIST: Record<string, string[]> = {
 	RankUpItemRefs: ["id"],
 	RewardGroups: ["rewardType", "rewardItemId", "rewardCount"],
 	SignInReward: ["id"],
+	SkillLevel: ["id"],
 	TavernMissionDrop: ["id"],
 };
 

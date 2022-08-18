@@ -823,6 +823,21 @@ export const gamedataTeanslateSettings: GamedataRef[] = [
 		column: "localizationInfoKey,localizationNameKey",
 		func: localizationString("BaseBuff"),
 	},
+	{
+		table: "EvaluateAchievements",
+		column: "descriptionKey",
+		func: localizationString("QuestAchievement"),
+	},
+	{
+		table: "AchievementConditions",
+		column: "conditionGroupId",
+		func: call2(gamedataString("EvaluateAchievements", "conditionGroupId", "descriptionKey"), localizationString("QuestAchievement")),
+	},
+	{
+		table: "LoreChapterSettings",
+		column: "targetItemId",
+		func: localizationItemName(),
+	},
 ];
 
 export function doGamedataTranslation() {
