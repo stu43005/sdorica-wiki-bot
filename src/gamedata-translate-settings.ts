@@ -104,12 +104,12 @@ export const gamedataTeanslateSettings: GamedataRef[] = [
 	{
 		table: "FreeHeroes",
 		column: "chapterIds",
-		func: semicolon(call2(gamedataString("Chapters", "id", "title"), localizationString("RegionName"))),
+		func: semicolon(localizationChapterName()),
 	},
 	{
 		table: "Heroes",
 		column: "storyChapter",
-		func: call2(gamedataString("Chapters", "id", "title"), localizationString("RegionName")),
+		func: localizationChapterName(),
 	},
 	{
 		table: "Heroes",
@@ -164,7 +164,7 @@ export const gamedataTeanslateSettings: GamedataRef[] = [
 	{
 		table: "Quests",
 		column: "chapter",
-		func: call2(gamedataString("Chapters", "id", "title"), localizationString("RegionName")),
+		func: localizationChapterName(),
 	},
 	{
 		table: "Quests",

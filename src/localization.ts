@@ -442,6 +442,14 @@ export function localizationQuestSubtitle(): Func1 {
 	};
 }
 
+export function localizationQuestModeName(): Func1 {
+	return call2(
+		gamedataString("QuestMode", "id", "modeI2"),
+		localizationStringAuto(),
+		(str) => str.trim()
+	);
+}
+
 export function localizationUnlockCondition(): Func1 {
 	return (str) => {
 		const strings = str.split(":");

@@ -37,6 +37,13 @@ Ref: ExploreComposite.requireBuildingId > ExploreBuilding.id
 Ref: Chapters.dropGroupID > DropItems.groupId
 Ref: Quests.dropGroupId > DropItems.groupId
 Ref: AchievementConditions.conditionGroupId > EvaluateAchievements.conditionGroupId
+Ref: EvaluateAchievements.groupId > LoreChapterSettings.evaluateAchievementGroupId
+Ref: Evaluates.groupId > LoreChapterSettings.evaluateGroupId
+Ref: AdventureWeekPoint.groupId > LoreChapterSettings.pointGroupId
+Ref: BattlefieldRanks.groupId > LoreChapterSettings.rankGroupId
+Ref: BattlefieldRanks.groupId > Battlefields.id
+Ref: BattlefieldDropItems.groupId > Battlefields.questLvDropId
+// Ref: QuestExtraSettings.extraMode >
 `);
 	await outText(path.join(DATA_PATH, `dbml.txt`), out.join("\n\n"));
 })();
@@ -62,6 +69,8 @@ function quickInlineRef(columnName: string) {
 	if (columnName === "diligentId") return ` [ref: > Diligents.id]`;
 	if (columnName === "questId") return ` [ref: > Quests.id]`;
 	if (columnName === "heroId") return ` [ref: > Heroes.id]`;
-	if (columnName === "evaluateId") return ` [ref: > Evaluates.groupId]`;
+	if (columnName === "extraSettingId") return ` [ref: > QuestExtraSettings.id]`;
+	if (columnName === "battlefieldId") return ` [ref: > Battlefields.id]`;
+	if (columnName === "questModeId") return ` [ref: > QuestMode.id]`;
 	return "";
 }
