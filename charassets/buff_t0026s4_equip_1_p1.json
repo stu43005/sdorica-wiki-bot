@@ -1,0 +1,245 @@
+{
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "OnEachSkillSetEnd": {
+        "效果": [
+          {
+            "效果": [
+              "對本狀態的變數一改為0"
+            ],
+            "條件": [
+              "本角色是施術者"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnTurnBegin": {
+        "效果": [
+          {
+            "效果": [
+              "對本狀態的變數一改為1"
+            ],
+            "條件": [
+              "目前回合輪到玩家首位"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnTurnEnd": {
+        "效果": [
+          {
+            "效果": [
+              "對敵人首位觸發S2"
+            ],
+            "條件": [
+              "本狀態的變數一 >= 1",
+              "敵人首位的HP > 0",
+              "敵人首位 的AssetId包含＂t0026s4_equip_1＂字串"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      }
+    },
+    "持續時間": 1,
+    "最高層數": 99,
+    "標籤": ""
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+  ],
+  "_actionTable": [
+    {
+      "Key": 2,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.FrontOfChars",
+                    "group": {
+                      "$type": "BattleModel.PVEEnemyTeam",
+                      "includeDead": false,
+                      "includeEmpty": false
+                    }
+                  },
+                  "operation": {
+                    "$type": "BattleModel.CastSkillSet",
+                    "AssignParameter": {
+                      "AssignCharacter": {
+                        "$type": "BattleModel.ThisBuffOwner"
+                      },
+                      "AssignCharacterGroup": {
+                        "$type": "BattleModel.NoneCharacters"
+                      },
+                      "AssignInteger": {
+                        "$type": "BattleModel.ConstanctInt",
+                        "constant": 0
+                      },
+                      "AssignIntegerGroup": {
+                        "$type": "BattleModel.ConstanctIntegerGroup",
+                        "Group": [
+                        ]
+                      }
+                    },
+                    "UseAssignParameter": true,
+                    "resetCasterCD": false,
+                    "skillsetId": "S2"
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.ThisBuff"
+                  },
+                  "targetField": 4
+                },
+                "op": 4,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 1
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntCharaterField",
+                  "character": {
+                    "$type": "BattleModel.FrontOfChars",
+                    "group": {
+                      "$type": "BattleModel.PVEEnemyTeam",
+                      "includeDead": false,
+                      "includeEmpty": false
+                    }
+                  },
+                  "targetField": 0
+                },
+                "op": 2,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 0
+                }
+              },
+              {
+                "$type": "BattleModel.CharacterCondition",
+                "character": {
+                  "$type": "BattleModel.FrontOfChars",
+                  "group": {
+                    "$type": "BattleModel.PVEEnemyTeam",
+                    "includeDead": false,
+                    "includeEmpty": false
+                  }
+                },
+                "condition": {
+                  "$type": "BattleModel.AssetIdHasSubString",
+                  "subString": "t0026s4_equip_1"
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 1,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 1
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CurrentTurnBelongsTo",
+                "character": {
+                  "$type": "BattleModel.FrontOfChars",
+                  "group": {
+                    "$type": "BattleModel.PVEPlayerTeam",
+                    "includeDead": false,
+                    "includeEmpty": false
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 8,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                },
+                "right": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 1,
+  "_maxLevel": 99,
+  "_orderTable": {
+  },
+  "_tag": 0
+}

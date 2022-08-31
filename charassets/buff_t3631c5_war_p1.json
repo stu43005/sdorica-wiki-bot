@@ -1,0 +1,564 @@
+{
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "AfterAnyoneDie": {
+        "效果": [
+          {
+            "效果": [
+              "對本角色觸發Die1"
+            ],
+            "條件": [
+              "敵人的角色數量 == 1",
+              "本角色的13 <= 60"
+            ]
+          },
+          {
+            "效果": [
+              "對本角色賦予永久t3631c5_war_P2(風雲變色)",
+              "對本角色移除狀態t3631c5_war_P1"
+            ],
+            "條件": [
+              "敵人的角色數量 == 1",
+              "本角色的13 > 60"
+            ]
+          },
+          {
+            "效果": [
+              "對本角色賦予永久invincible(免疫)",
+              "對本角色賦予永久antibody(抗體)"
+            ],
+            "條件": [
+              "(目前戰鬥回合數 == 0) 且 (目前回合輪到敵人首位)"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnTurnBegin": {
+        "效果": [
+          {
+            "效果": [
+              "對本角色移除狀態invincible(免疫)",
+              "對本角色移除狀態antibody(抗體)",
+              "對本角色觸發Die1"
+            ],
+            "條件": [
+              "敵人的角色數量 == 1",
+              "本角色的13 <= 60"
+            ]
+          },
+          {
+            "效果": [
+              "對本角色賦予永久t3631c5_war_P2(風雲變色)",
+              "對本角色移除狀態t3631c5_war_P1"
+            ],
+            "條件": [
+              "敵人的角色數量 == 1",
+              "本角色的13 > 60"
+            ]
+          },
+          {
+            "效果": [
+              "對本角色賦予永久invincible(免疫)",
+              "對本角色賦予永久antibody(抗體)"
+            ],
+            "條件": [
+              "(目前戰鬥回合數 == 0) 且 (目前回合輪到敵人首位)"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 99,
+    "標籤": "Hidden | NotRemoveAfterBattle | NotRemoveWhenDie | Forever | DoNotDisplayHit"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+    "t3631c5_war_P2",
+    "invincible",
+    "antibody",
+    "nerf_damage_small",
+    "weak",
+    "tearing",
+    "poison",
+    "stun",
+    "infection_maintain",
+    "bleeding_maintain",
+    "infection",
+    "frosted",
+    "burn",
+    "tearing_trigger",
+    "tearing_trigger_alert",
+    "poison_trigger"
+  ],
+  "_actionTable": [
+    {
+      "Key": 1048576,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.CastSkillSet",
+                    "AssignParameter": {
+                      "AssignCharacter": {
+                        "$type": "BattleModel.NoneCharacter"
+                      },
+                      "AssignCharacterGroup": {
+                        "$type": "BattleModel.NoneCharacters"
+                      },
+                      "AssignInteger": {
+                        "$type": "BattleModel.ConstanctInt",
+                        "constant": 0
+                      },
+                      "AssignIntegerGroup": {
+                        "$type": "BattleModel.ConstanctIntegerGroup",
+                        "Group": [
+                        ]
+                      }
+                    },
+                    "UseAssignParameter": false,
+                    "resetCasterCD": false,
+                    "skillsetId": "Die1"
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.CountOfCharGroup",
+                  "group": {
+                    "$type": "BattleModel.PVEEnemyTeam",
+                    "includeDead": false,
+                    "includeEmpty": false
+                  }
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 1
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntCharaterField",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "targetField": 13
+                },
+                "op": 3,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 60
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "t3631c5_war_P2",
+                      "Forever": true,
+                      "LevelStack": 0,
+                      "OverwriteDuration": -1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.RemoveBuff",
+                    "buffId": "t3631c5_war_P1"
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.CountOfCharGroup",
+                  "group": {
+                    "$type": "BattleModel.PVEEnemyTeam",
+                    "includeDead": false,
+                    "includeEmpty": false
+                  }
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 1
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntCharaterField",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "targetField": 13
+                },
+                "op": 2,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 60
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "invincible",
+                      "Forever": true,
+                      "LevelStack": 0,
+                      "OverwriteDuration": -1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "antibody",
+                      "Forever": true,
+                      "LevelStack": 0,
+                      "OverwriteDuration": -1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.AndConditions",
+                "cond1": {
+                  "$type": "BattleModel.IntCompare",
+                  "left": {
+                    "$type": "BattleModel.BattleActionRecordValue",
+                    "RecordValue": {
+                      "$type": "BattleModel.ThisBattleTurnCount"
+                    }
+                  },
+                  "op": 0,
+                  "right": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 0
+                  }
+                },
+                "cond2": {
+                  "$type": "BattleModel.CurrentTurnBelongsTo",
+                  "character": {
+                    "$type": "BattleModel.FrontOfChars",
+                    "group": {
+                      "$type": "BattleModel.PVEEnemyTeam",
+                      "includeDead": true,
+                      "includeEmpty": true
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 1,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.RemoveBuff",
+                    "buffId": "invincible"
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.RemoveBuff",
+                    "buffId": "antibody"
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.CastSkillSet",
+                    "AssignParameter": {
+                      "AssignCharacter": {
+                        "$type": "BattleModel.NoneCharacter"
+                      },
+                      "AssignCharacterGroup": {
+                        "$type": "BattleModel.NoneCharacters"
+                      },
+                      "AssignInteger": {
+                        "$type": "BattleModel.ConstanctInt",
+                        "constant": 0
+                      },
+                      "AssignIntegerGroup": {
+                        "$type": "BattleModel.ConstanctIntegerGroup",
+                        "Group": [
+                        ]
+                      }
+                    },
+                    "UseAssignParameter": false,
+                    "resetCasterCD": false,
+                    "skillsetId": "Die1"
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.CountOfCharGroup",
+                  "group": {
+                    "$type": "BattleModel.PVEEnemyTeam",
+                    "includeDead": false,
+                    "includeEmpty": false
+                  }
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 1
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntCharaterField",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "targetField": 13
+                },
+                "op": 3,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 60
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "t3631c5_war_P2",
+                      "Forever": true,
+                      "LevelStack": 0,
+                      "OverwriteDuration": -1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.RemoveBuff",
+                    "buffId": "t3631c5_war_P1"
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.CountOfCharGroup",
+                  "group": {
+                    "$type": "BattleModel.PVEEnemyTeam",
+                    "includeDead": false,
+                    "includeEmpty": false
+                  }
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 1
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntCharaterField",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "targetField": 13
+                },
+                "op": 2,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 60
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "invincible",
+                      "Forever": true,
+                      "LevelStack": 0,
+                      "OverwriteDuration": -1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "antibody",
+                      "Forever": true,
+                      "LevelStack": 0,
+                      "OverwriteDuration": -1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.AndConditions",
+                "cond1": {
+                  "$type": "BattleModel.IntCompare",
+                  "left": {
+                    "$type": "BattleModel.BattleActionRecordValue",
+                    "RecordValue": {
+                      "$type": "BattleModel.ThisBattleTurnCount"
+                    }
+                  },
+                  "op": 0,
+                  "right": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 0
+                  }
+                },
+                "cond2": {
+                  "$type": "BattleModel.CurrentTurnBelongsTo",
+                  "character": {
+                    "$type": "BattleModel.FrontOfChars",
+                    "group": {
+                      "$type": "BattleModel.PVEEnemyTeam",
+                      "includeDead": true,
+                      "includeEmpty": true
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 99,
+  "_orderTable": {
+  },
+  "_tag": 4167
+}

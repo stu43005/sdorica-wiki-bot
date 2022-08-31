@@ -14,6 +14,7 @@
           }
         ],
         "條件": [
+          "本角色 {\"$type\":\"BattleModel.IsCharacterAlive\"}"
         ]
       },
       "OnTurnBegin": {
@@ -24,11 +25,13 @@
               "對本狀態的變數一改為1"
             ],
             "條件": [
-              "本狀態的變數一 == 0"
+              "本狀態的變數一 == 0",
+              "目前戰鬥回合數 == 0"
             ]
           }
         ],
         "條件": [
+          "本角色 {\"$type\":\"BattleModel.IsCharacterAlive\"}"
         ]
       }
     },
@@ -73,6 +76,15 @@
           }
         ],
         "Conditions": [
+          {
+            "$type": "BattleModel.CharacterCondition",
+            "character": {
+              "$type": "BattleModel.ThisBuffOwner"
+            },
+            "condition": {
+              "$type": "BattleModel.IsCharacterAlive"
+            }
+          }
         ]
       }
     },
@@ -156,11 +168,34 @@
                   "$type": "BattleModel.ConstanctInt",
                   "constant": 0
                 }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.BattleActionRecordValue",
+                  "RecordValue": {
+                    "$type": "BattleModel.ThisBattleTurnCount"
+                  }
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 0
+                }
               }
             ]
           }
         ],
         "Conditions": [
+          {
+            "$type": "BattleModel.CharacterCondition",
+            "character": {
+              "$type": "BattleModel.ThisBuffOwner"
+            },
+            "condition": {
+              "$type": "BattleModel.IsCharacterAlive"
+            }
+          }
         ]
       }
     }

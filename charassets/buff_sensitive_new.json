@@ -1,0 +1,93 @@
+{
+  "$interpreted": {
+    "Localization": "敏感：本角色的行動冷卻時間被技能效果影響時，立即行動1次。",
+    "動作": {
+      "OnEachSkillTargetEffect": {
+        "效果": [
+          {
+            "效果": [
+              "對本角色{\"resetCasterCD\":false,\"UseAssignParameter\":false,\"AssignParameter\":{\"AssignInteger\":{\"constant\":0,\"$type\":\"BattleModel.ConstanctInt\"},\"AssignIntegerGroup\":{\"Group\":[],\"$type\":\"BattleModel.ConstanctIntegerGroup\"},\"AssignCharacter\":{\"$type\":\"BattleModel.NoneCharacter\"},\"AssignCharacterGroup\":{\"$type\":\"BattleModel.NoneCharacters\"}},\"$type\":\"BattleModel.CastEnemyCurrentSkillSet\"}"
+            ],
+            "條件": [
+              "本角色是指定目標",
+              "施展的技能效果中包含(ChangeCD)屬性"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 99,
+    "標籤": "Forever | InfinityTrigger"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+  ],
+  "_actionTable": [
+    {
+      "Key": 1024,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.CastEnemyCurrentSkillSet",
+                    "AssignParameter": {
+                      "AssignCharacter": {
+                        "$type": "BattleModel.NoneCharacter"
+                      },
+                      "AssignCharacterGroup": {
+                        "$type": "BattleModel.NoneCharacters"
+                      },
+                      "AssignInteger": {
+                        "$type": "BattleModel.ConstanctInt",
+                        "constant": 0
+                      },
+                      "AssignIntegerGroup": {
+                        "$type": "BattleModel.ConstanctIntegerGroup",
+                        "Group": [
+                        ]
+                      }
+                    },
+                    "UseAssignParameter": false,
+                    "resetCasterCD": false
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                },
+                "right": {
+                  "$type": "BattleModel.ThisSpecifiedTarget"
+                }
+              },
+              {
+                "$type": "BattleModel.ThisSkillEffectTagContains",
+                "containsAll": 1024
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 99,
+  "_orderTable": {
+  },
+  "_tag": 32832
+}

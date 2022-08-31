@@ -6,9 +6,10 @@
         "效果": [
           {
             "效果": [
-              "對玩家中符合(的AssetId包含＂0026＂字串)的角色所有角色賦予永久ex_t0026s_equipment01_P2(戰鬥開始時，賦予場上所有魂芯強化。)"
+              "對玩家中符合(的AssetId包含＂t0026＂字串)的角色所有角色賦予永久ex_t0026s_equipment01_P2(戰鬥開始時，賦予場上所有魂芯強化。)"
             ],
             "條件": [
+              "隊伍攜帶探索道具ex_t0026s_equipment02(先祖獵刀)的數量 == 0"
             ]
           }
         ],
@@ -39,11 +40,11 @@
                     "$type": "BattleModel.CharGroupWhere",
                     "condition": {
                       "$type": "BattleModel.AssetIdHasSubString",
-                      "subString": "0026"
+                      "subString": "t0026"
                     },
                     "group": {
                       "$type": "BattleModel.PVEPlayerTeam",
-                      "includeDead": true,
+                      "includeDead": false,
                       "includeEmpty": false
                     }
                   },
@@ -62,6 +63,18 @@
               }
             ],
             "Conditions": [
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.ThisTeamExploreItemCount",
+                  "ExploreItemId": "ex_t0026s_equipment02"
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 0
+                }
+              }
             ]
           }
         ],

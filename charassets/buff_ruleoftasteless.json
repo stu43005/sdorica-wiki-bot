@@ -1,0 +1,253 @@
+{
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "OnEachSkillTargetEffect": {
+        "效果": [
+          {
+            "效果": [
+              "對指定目標賦予1回合1層ruleOfTasteless_HealTrigger"
+            ],
+            "條件": [
+              "指定目標是玩家的一員",
+              "施展的技能效果中包含(Heal)屬性"
+            ]
+          },
+          {
+            "效果": [
+              "對指定目標賦予1回合1層ruleOfTasteless_ArmorTrigger"
+            ],
+            "條件": [
+              "指定目標是玩家的一員",
+              "施展的技能效果中包含(GainArmor)屬性"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnTurnEnd": {
+        "效果": [
+          {
+            "效果": [
+              "立即施展技能：對玩家後排飽食度+({\"group\":{\"includeDead\":false,\"includeEmpty\":false,\"$type\":\"BattleModel.PVEPlayerTeam\"},\"$type\":\"BattleModel.AllBuffsOnCharGroup\"}中有在generalNerf[弱化, 易傷, 撕裂, 中毒, 暈眩, 汙染, 出血, 汙染, 寒冷, 燃燒]列表內的Buff的狀態數量 * 1)"
+            ],
+            "條件": [
+              "目前回合輪到玩家後排"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 99,
+    "標籤": "NotRemoveAfterBattle | NotRemoveWhenDie | Forever | InfinityTrigger"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+    "ruleOfTasteless_HealTrigger",
+    "ruleOfTasteless_ArmorTrigger",
+    "nerf_damage_small",
+    "weak",
+    "tearing",
+    "poison",
+    "stun",
+    "infection_maintain",
+    "bleeding_maintain",
+    "infection",
+    "frosted",
+    "burn",
+    "tearing_trigger",
+    "tearing_trigger_alert",
+    "poison_trigger"
+  ],
+  "_actionTable": [
+    {
+      "Key": 1024,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisSpecifiedTarget"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "ruleOfTasteless_HealTrigger",
+                      "Forever": false,
+                      "LevelStack": 1,
+                      "OverwriteDuration": 1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterInside",
+                "group": {
+                  "$type": "BattleModel.PVEPlayerTeam",
+                  "includeDead": false,
+                  "includeEmpty": false
+                },
+                "left": {
+                  "$type": "BattleModel.ThisSpecifiedTarget"
+                }
+              },
+              {
+                "$type": "BattleModel.ThisSkillEffectTagContains",
+                "containsAll": 32
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisSpecifiedTarget"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "ruleOfTasteless_ArmorTrigger",
+                      "Forever": false,
+                      "LevelStack": 1,
+                      "OverwriteDuration": 1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterInside",
+                "group": {
+                  "$type": "BattleModel.PVEPlayerTeam",
+                  "includeDead": false,
+                  "includeEmpty": false
+                },
+                "left": {
+                  "$type": "BattleModel.ThisSpecifiedTarget"
+                }
+              },
+              {
+                "$type": "BattleModel.ThisSkillEffectTagContains",
+                "containsAll": 64
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 2,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": null,
+                    "single": {
+                      "$type": "BattleModel.BackOfChars",
+                      "group": {
+                        "$type": "BattleModel.PVEPlayerTeam",
+                        "includeDead": false,
+                        "includeEmpty": false
+                      }
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.ChangeHungerSkillEffect",
+                        "Tag": 16384,
+                        "_keyString": "",
+                        "_value": {
+                          "$type": "BattleModel.MultiplyInt",
+                          "left": {
+                            "$type": "BattleModel.CountOfBuffGroup",
+                            "group": {
+                              "$type": "BattleModel.BuffGroupWhere",
+                              "condition": {
+                                "$type": "BattleModel.CheckBuffBelongLabel",
+                                "BuffLabel": {
+                                  "BuffIdList": [
+                                    "nerf_damage_small",
+                                    "weak",
+                                    "tearing",
+                                    "poison",
+                                    "stun",
+                                    "infection_maintain",
+                                    "bleeding_maintain",
+                                    "infection",
+                                    "frosted",
+                                    "burn"
+                                  ],
+                                  "BuffLabel": "generalNerf"
+                                }
+                              },
+                              "group": {
+                                "$type": "BattleModel.AllBuffsOnCharGroup",
+                                "group": {
+                                  "$type": "BattleModel.PVEPlayerTeam",
+                                  "includeDead": false,
+                                  "includeEmpty": false
+                                }
+                              }
+                            }
+                          },
+                          "right": {
+                            "$type": "BattleModel.ConstanctInt",
+                            "constant": 1
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": false
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CurrentTurnBelongsTo",
+                "character": {
+                  "$type": "BattleModel.BackOfChars",
+                  "group": {
+                    "$type": "BattleModel.PVEPlayerTeam",
+                    "includeDead": false,
+                    "includeEmpty": false
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 99,
+  "_orderTable": {
+  },
+  "_tag": 32838
+}

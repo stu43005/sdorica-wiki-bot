@@ -1,0 +1,303 @@
+{
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "OnEachSkillSetEnd": {
+        "效果": [
+          {
+            "效果": [
+              "立即施展技能：對本角色飽食度+3"
+            ],
+            "條件": [
+              "本角色是施術者",
+              "施展的技能效果中包含(Heal)屬性"
+            ]
+          },
+          {
+            "效果": [
+              "對本狀態的變數二改為0"
+            ],
+            "條件": [
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnEachSkillTargetEffect": {
+        "效果": [
+          {
+            "效果": [
+              "技能效果增加(15)%"
+            ],
+            "條件": [
+            ]
+          },
+          {
+            "效果": [
+              "立即施展技能效果：賦予永久1層hyperAttackPower(超級強化)、賦予1回合ex_h0030s_equipment02_P3"
+            ],
+            "條件": [
+              "施展的技能效果中包含(Heal)屬性",
+              "指定目標沒有ex_h0030s_equipment02_P3狀態"
+            ]
+          },
+          {
+            "效果": [
+              "對指定目標賦予1回合1層ex_h0030s_equipment02_P2_trigger",
+              "對本狀態的變數二改為1"
+            ],
+            "條件": [
+              "本狀態的變數二 == 0",
+              "施展的技能效果中包含(Attack)屬性"
+            ]
+          }
+        ],
+        "條件": [
+          "本角色是施術者"
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 99,
+    "標籤": "NotRemoveWhenDie | Forever | InfinityTrigger"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+    "hyperAttackPower",
+    "ex_h0030s_equipment02_P3",
+    "ex_h0030s_equipment02_P2_trigger"
+  ],
+  "_actionTable": [
+    {
+      "Key": 8,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": null,
+                    "single": {
+                      "$type": "BattleModel.ThisBuffOwner"
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.ChangeHungerSkillEffect",
+                        "Tag": 16384,
+                        "_keyString": "",
+                        "_value": {
+                          "$type": "BattleModel.ConstanctInt",
+                          "constant": 3
+                        }
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": false
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                },
+                "right": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              },
+              {
+                "$type": "BattleModel.ThisSkillEffectTagContains",
+                "containsAll": 32
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 8,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 1024,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.BonusEffectForSkillProperty",
+                  "isPercent": true,
+                  "property": -1,
+                  "value": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 15
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.ImmediatelySkillEffect",
+                  "SkillEffect": [
+                    {
+                      "$type": "BattleModel.AddBuffSkillEffect",
+                      "Tag": 132,
+                      "_buffData": [
+                        {
+                          "BuffId": "hyperAttackPower",
+                          "Forever": true,
+                          "LevelStack": 1,
+                          "OverwriteDuration": -1,
+                          "UserDefineVariable": {
+                          }
+                        }
+                      ],
+                      "_keyString": "1"
+                    },
+                    {
+                      "$type": "BattleModel.AddBuffSkillEffect",
+                      "Tag": 132,
+                      "_buffData": [
+                        {
+                          "BuffId": "ex_h0030s_equipment02_P3",
+                          "Forever": false,
+                          "LevelStack": 0,
+                          "OverwriteDuration": 1,
+                          "UserDefineVariable": {
+                          }
+                        }
+                      ],
+                      "_keyString": "1"
+                    }
+                  ]
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.ThisSkillEffectTagContains",
+                "containsAll": 32
+              },
+              {
+                "$type": "BattleModel.Inverse",
+                "condition": {
+                  "$type": "BattleModel.CharacterHasBuff",
+                  "buffId": "ex_h0030s_equipment02_P3",
+                  "character": {
+                    "$type": "BattleModel.ThisSpecifiedTarget"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisSpecifiedTarget"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "ex_h0030s_equipment02_P2_trigger",
+                      "Forever": false,
+                      "LevelStack": 1,
+                      "OverwriteDuration": 1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 8,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 1
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.ThisBuff"
+                  },
+                  "targetField": 8
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 0
+                }
+              },
+              {
+                "$type": "BattleModel.ThisSkillEffectTagContains",
+                "containsAll": 1
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+          {
+            "$type": "BattleModel.CharacterEqual",
+            "left": {
+              "$type": "BattleModel.ThisBuffOwner"
+            },
+            "right": {
+              "$type": "BattleModel.ThisSkillCaster"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 99,
+  "_orderTable": {
+  },
+  "_tag": 32836
+}

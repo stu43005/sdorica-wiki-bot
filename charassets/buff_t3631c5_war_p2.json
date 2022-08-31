@@ -1,0 +1,175 @@
+{
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "OnBuffAdd": {
+        "效果": [
+          {
+            "效果": [
+              "對本角色觸發S2"
+            ],
+            "條件": [
+              "當前事件的狀態是本狀態"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnTurnEnd": {
+        "效果": [
+          {
+            "效果": [
+              "對本角色觸發S3"
+            ],
+            "條件": [
+              "本角色的HP% < 50",
+              "本角色沒有t3631c5_war_P3(雷霆烏雲)狀態"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 99,
+    "標籤": "NotRemoveAfterBattle | NotRemoveWhenDie | Forever"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+  ],
+  "_actionTable": [
+    {
+      "Key": 16384,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.CastSkillSet",
+                    "AssignParameter": {
+                      "AssignCharacter": {
+                        "$type": "BattleModel.NoneCharacter"
+                      },
+                      "AssignCharacterGroup": {
+                        "$type": "BattleModel.NoneCharacters"
+                      },
+                      "AssignInteger": {
+                        "$type": "BattleModel.ConstanctInt",
+                        "constant": 0
+                      },
+                      "AssignIntegerGroup": {
+                        "$type": "BattleModel.ConstanctIntegerGroup",
+                        "Group": [
+                        ]
+                      }
+                    },
+                    "UseAssignParameter": false,
+                    "resetCasterCD": false,
+                    "skillsetId": "S2"
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.BuffEqual",
+                "left": {
+                  "$type": "BattleModel.SpecifiedBuff"
+                },
+                "right": {
+                  "$type": "BattleModel.ThisBuff"
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 2,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.CastSkillSet",
+                    "AssignParameter": {
+                      "AssignCharacter": {
+                        "$type": "BattleModel.NoneCharacter"
+                      },
+                      "AssignCharacterGroup": {
+                        "$type": "BattleModel.NoneCharacters"
+                      },
+                      "AssignInteger": {
+                        "$type": "BattleModel.ConstanctInt",
+                        "constant": 0
+                      },
+                      "AssignIntegerGroup": {
+                        "$type": "BattleModel.ConstanctIntegerGroup",
+                        "Group": [
+                        ]
+                      }
+                    },
+                    "UseAssignParameter": false,
+                    "resetCasterCD": false,
+                    "skillsetId": "S3"
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntCharaterField",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "targetField": 2
+                },
+                "op": 1,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 50
+                }
+              },
+              {
+                "$type": "BattleModel.Inverse",
+                "condition": {
+                  "$type": "BattleModel.CharacterHasBuff",
+                  "buffId": "t3631c5_war_P3",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 99,
+  "_orderTable": {
+  },
+  "_tag": 70
+}

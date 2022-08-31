@@ -1,0 +1,223 @@
+{
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "OnEachSkillSetEnd": {
+        "效果": [
+          {
+            "效果": [
+              "對本角色賦予1回合1層nerf_damage_small(弱化)",
+              "對本角色賦予1回合1層poison(中毒)",
+              "對本狀態的持續時間增加-1"
+            ],
+            "條件": [
+              "施術者是本角色",
+              "本狀態的持續時間 > 1"
+            ]
+          },
+          {
+            "效果": [
+              "對本角色賦予1回合1層nerf_damage_small(弱化)",
+              "對本角色賦予1回合1層poison(中毒)",
+              "對本角色移除狀態t3233c2_war_P1(劇毒黏液)"
+            ],
+            "條件": [
+              "施術者是本角色",
+              "本狀態的持續時間 <= 1"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 99,
+    "標籤": ""
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+    "nerf_damage_small",
+    "poison",
+    "poison_trigger"
+  ],
+  "_actionTable": [
+    {
+      "Key": 8,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "nerf_damage_small",
+                      "Forever": false,
+                      "LevelStack": 1,
+                      "OverwriteDuration": 1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "poison",
+                      "Forever": false,
+                      "LevelStack": 1,
+                      "OverwriteDuration": 1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 1,
+                    "targetField": 0,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": -1
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                },
+                "right": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.ThisBuff"
+                  },
+                  "targetField": 0
+                },
+                "op": 2,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 1
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "nerf_damage_small",
+                      "Forever": false,
+                      "LevelStack": 1,
+                      "OverwriteDuration": 1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "poison",
+                      "Forever": false,
+                      "LevelStack": 1,
+                      "OverwriteDuration": 1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.RemoveBuff",
+                    "buffId": "t3233c2_war_P1"
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                },
+                "right": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.ThisBuff"
+                  },
+                  "targetField": 0
+                },
+                "op": 3,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 1
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 99,
+  "_orderTable": {
+  },
+  "_tag": 0
+}
