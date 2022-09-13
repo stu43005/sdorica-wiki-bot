@@ -838,6 +838,11 @@ export const gamedataTeanslateSettings: GamedataRef[] = [
 		column: "targetItemId",
 		func: localizationItemName(),
 	},
+	{
+		table: "ExtraRewards",
+		column: "giveLinkId:giveType",
+		func: localizationItemNameWithType(),
+	},
 ];
 
 export function doGamedataTranslation() {

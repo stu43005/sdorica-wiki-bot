@@ -5,6 +5,7 @@ import { heroPageTemplate } from "../templates/hero-page";
 import { HeroSmallIconParams, heroSmallIconTemplate } from "../templates/hero-small-icon";
 import { heroName, pointRegexp } from "../wiki-hero";
 import { Chapter } from './chapter';
+import { GenderType } from "./enums/gender-type.enum";
 import { HeroRank } from "./enums/hero-rank.enum";
 import { HeroSlot } from "./enums/hero-slot.enum";
 import { HeroViewableType } from "./enums/hero-viewable-type.enum";
@@ -96,6 +97,8 @@ export class Hero {
 
 	get avatarId(): string { return this.row.get('avatarId'); }
 	get viewable(): HeroViewableType { return this.row.get('viewable'); }
+	get gender(): GenderType { return this.row.get('gender'); }
+	get races(): string { return this.row.get('races'); }
 	resonanceItem: ItemPayRef | null = null;
 
 	#skillSets: HeroSkillSet[] | null = null;
