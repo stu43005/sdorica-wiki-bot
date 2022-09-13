@@ -13,6 +13,7 @@ import wikiAdventure from "./wiki/Adventure";
 import wikiAdventureRank from "./wiki/AdventureRank";
 import { wikiHeroBot } from "./wiki/auto/hero";
 import wikiAvatars from "./wiki/Avatars";
+import wikiBattlefieldDropItems from "./wiki/BattlefieldDropItems";
 import wikiBattlefieldRanks from "./wiki/BattlefieldRanks";
 import wikiChapter from "./wiki/Chapter";
 import wikiCharVoice from "./wiki/CharVoice";
@@ -113,6 +114,7 @@ export async function wikiMain() {
 	await outWiki(bot, 'Adventure', wikiAdventure());
 	await outWiki(bot, 'AdventureRank', wikiAdventureRank());
 	await outWiki(bot, 'Avatars', wikiAvatars());
+	await outWiki(bot, 'BattlefieldDropItems', wikiBattlefieldDropItems());
 	await outWiki(bot, 'BattlefieldRanks', wikiBattlefieldRanks());
 	await outWiki(bot, 'Chapter', wikiChapter());
 	await outWiki(bot, 'CharVoice', wikiCharVoice());
