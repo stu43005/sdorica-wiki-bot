@@ -1,0 +1,181 @@
+{
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "OnBuffAdd": {
+        "效果": [
+          {
+            "效果": [
+              "對當前事件的狀態{\"addTag\":2,\"$type\":\"BattleModel.AddBuffTag\"}"
+            ],
+            "條件": [
+              "當前事件的狀態 有在generalNerf[弱化, 易傷, 撕裂, 中毒, 暈眩, 汙染, 出血, 汙染, 寒冷, 燃燒]列表內"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnEachSkillTargetEffect": {
+        "效果": [
+          {
+            "效果": [
+              "{\"property\":-1,\"value\":{\"constant\":25,\"$type\":\"BattleModel.ConstanctInt\"},\"isPercent\":true,\"$type\":\"BattleModel.ExtraBonusEffectForSkillProperty\"}"
+            ],
+            "條件": [
+              "施術者 擁有任何一個 有在generalNerf[弱化, 易傷, 撕裂, 中毒, 暈眩, 汙染, 出血, 汙染, 寒冷, 燃燒]列表內 的狀態",
+              "本角色是施術者"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 99,
+    "標籤": "Hidden | NotRemoveWhenDie | Forever | InfinityTrigger"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+    "nerf_damage_small",
+    "weak",
+    "tearing",
+    "poison",
+    "stun",
+    "infection_maintain",
+    "bleeding_maintain",
+    "infection",
+    "frosted",
+    "burn",
+    "tearing_trigger",
+    "tearing_trigger_alert",
+    "poison_trigger"
+  ],
+  "_actionTable": [
+    {
+      "Key": 1024,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.ExtraBonusEffectForSkillProperty",
+                  "isPercent": true,
+                  "property": -1,
+                  "value": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 25
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterCondition",
+                "character": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                },
+                "condition": {
+                  "$type": "BattleModel.HasAnyConditionalBuff",
+                  "buffCondition": {
+                    "$type": "BattleModel.CheckBuffBelongLabel",
+                    "BuffLabel": {
+                      "BuffIdList": [
+                        "nerf_damage_small",
+                        "weak",
+                        "tearing",
+                        "poison",
+                        "stun",
+                        "infection_maintain",
+                        "bleeding_maintain",
+                        "infection",
+                        "frosted",
+                        "burn"
+                      ],
+                      "BuffLabel": "generalNerf"
+                    }
+                  }
+                }
+              },
+              {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                },
+                "right": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 16384,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateSingleBuff",
+                  "buff": {
+                    "$type": "BattleModel.SpecifiedBuff"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuffTag",
+                    "addTag": 2
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.BuffCondition",
+                "buff": {
+                  "$type": "BattleModel.SpecifiedBuff"
+                },
+                "condition": {
+                  "$type": "BattleModel.CheckBuffBelongLabel",
+                  "BuffLabel": {
+                    "BuffIdList": [
+                      "nerf_damage_small",
+                      "weak",
+                      "tearing",
+                      "poison",
+                      "stun",
+                      "infection_maintain",
+                      "bleeding_maintain",
+                      "infection",
+                      "frosted",
+                      "burn"
+                    ],
+                    "BuffLabel": "generalNerf"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 99,
+  "_orderTable": [
+    {
+      "Key": 1024,
+      "Value": {
+        "Order": 0
+      }
+    }
+  ],
+  "_tag": 32837
+}

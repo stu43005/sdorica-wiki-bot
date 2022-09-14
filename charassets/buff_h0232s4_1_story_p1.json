@@ -95,6 +95,22 @@
               "本狀態的變數一 == 1",
               "目前回合輪到本角色"
             ]
+          },
+          {
+            "效果": [
+              "立即施展技能：對本角色將14個魂芯轉為金色魂芯"
+            ],
+            "條件": [
+              "(目前戰鬥回合數 == 0) 且 (目前回合輪到玩家首位)"
+            ]
+          },
+          {
+            "效果": [
+              "立即施展技能：對本角色將1個非金色魂芯轉為金色魂芯"
+            ],
+            "條件": [
+              "目前回合輪到本角色"
+            ]
           }
         ],
         "條件": [
@@ -727,6 +743,122 @@
                   "constant": 1
                 }
               },
+              {
+                "$type": "BattleModel.CurrentTurnBelongsTo",
+                "character": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": null,
+                    "single": {
+                      "$type": "BattleModel.ThisBuffOwner"
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.StoneActionSkillEffect",
+                        "Tag": 516,
+                        "_keyString": "1",
+                        "_stoneAction": {
+                          "BuffFilter": "Normal",
+                          "BuffId": "",
+                          "BuffLabel": null,
+                          "EffectFilter": "Normal",
+                          "StonePositionList": [
+                          ],
+                          "UsePositionSettings": false,
+                          "changeTo": "ToGold",
+                          "filter": "IsAnyColor",
+                          "isInitStoneFilter": "None",
+                          "order": "LeftToRight",
+                          "targetStoneCount": 14
+                        }
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": true
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.AndConditions",
+                "cond1": {
+                  "$type": "BattleModel.IntCompare",
+                  "left": {
+                    "$type": "BattleModel.BattleActionRecordValue",
+                    "RecordValue": {
+                      "$type": "BattleModel.ThisBattleTurnCount"
+                    }
+                  },
+                  "op": 0,
+                  "right": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 0
+                  }
+                },
+                "cond2": {
+                  "$type": "BattleModel.CurrentTurnBelongsTo",
+                  "character": {
+                    "$type": "BattleModel.FrontOfChars",
+                    "group": {
+                      "$type": "BattleModel.PVEPlayerTeam",
+                      "includeDead": true,
+                      "includeEmpty": true
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": null,
+                    "single": {
+                      "$type": "BattleModel.ThisBuffOwner"
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.StoneActionSkillEffect",
+                        "Tag": 516,
+                        "_keyString": "1",
+                        "_stoneAction": {
+                          "BuffFilter": "Normal",
+                          "BuffId": "",
+                          "BuffLabel": null,
+                          "EffectFilter": "Normal",
+                          "StonePositionList": [
+                          ],
+                          "UsePositionSettings": false,
+                          "changeTo": "ToGold",
+                          "filter": "IsNotGold",
+                          "isInitStoneFilter": "None",
+                          "order": "LeftToRight",
+                          "targetStoneCount": 1
+                        }
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": true
+                }
+              }
+            ],
+            "Conditions": [
               {
                 "$type": "BattleModel.CurrentTurnBelongsTo",
                 "character": {

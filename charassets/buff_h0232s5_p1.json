@@ -2,33 +2,48 @@
   "$interpreted": {
     "Localization": "",
     "動作": {
+      "OnEachSkillSetEnd": {
+        "效果": [
+          {
+            "效果": [
+              "對本狀態的變數一增加1"
+            ],
+            "條件": [
+              "施術者是本角色",
+              "施展的技能組是S1"
+            ]
+          },
+          {
+            "效果": [
+              "對本狀態的變數一改為0"
+            ],
+            "條件": [
+              "施術者是本角色",
+              "施展的技能組是S1",
+              "本狀態的變數一 == 3"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
       "OnTurnBegin": {
         "效果": [
           {
             "效果": [
-              "對本角色觸發S1"
+              "{\"RepeatCount\":{\"Condition\":{\"left\":{\"group\":{\"group\":{\"character\":{\"$type\":\"BattleModel.ThisBuffOwner\"},\"$type\":\"BattleModel.AllBuffsOnChar\"},\"condition\":{\"BuffLabel\":{\"BuffLabel\":\"generalBuff\",\"BuffIdList\":[\"bonusAttackPower\",\"defense_up_small\",\"dexterity\",\"damage_absorption\",\"ArmorToBlood\",\"regeneration\",\"rage\",\"warfare\",\"leader\"]},\"$type\":\"BattleModel.CheckBuffBelongLabel\"},\"$type\":\"BattleModel.BuffGroupWhere\"},\"$type\":\"BattleModel.CountOfBuffGroup\"},\"op\":4,\"right\":{\"constant\":3,\"$type\":\"BattleModel.ConstanctInt\"},\"$type\":\"BattleModel.IntCompare\"},\"PassValue\":{\"constant\":3,\"$type\":\"BattleModel.ConstanctInt\"},\"NotPassValue\":{\"group\":{\"group\":{\"character\":{\"$type\":\"BattleModel.ThisBuffOwner\"},\"$type\":\"BattleModel.AllBuffsOnChar\"},\"condition\":{\"BuffLabel\":{\"BuffLabel\":\"generalBuff\",\"BuffIdList\":[\"bonusAttackPower\",\"defense_up_small\",\"dexterity\",\"damage_absorption\",\"ArmorToBlood\",\"regeneration\",\"rage\",\"warfare\",\"leader\"]},\"$type\":\"BattleModel.CheckBuffBelongLabel\"},\"$type\":\"BattleModel.BuffGroupWhere\"},\"$type\":\"BattleModel.CountOfBuffGroup\"},\"$type\":\"BattleModel.ConditionalInteger\"},\"Operation\":{\"character\":{\"$type\":\"BattleModel.ThisBuffOwner\"},\"operation\":{\"skillsetId\":\"S1\",\"resetCasterCD\":false,\"UseAssignParameter\":false,\"AssignParameter\":{\"AssignInteger\":{\"constant\":0,\"$type\":\"BattleModel.ConstanctInt\"},\"AssignIntegerGroup\":{\"Group\":[],\"$type\":\"BattleModel.ConstanctIntegerGroup\"},\"AssignCharacter\":{\"$type\":\"BattleModel.NoneCharacter\"},\"AssignCharacterGroup\":{\"$type\":\"BattleModel.NoneCharacters\"}},\"$type\":\"BattleModel.CastSkillSet\"},\"$type\":\"BattleModel.OperateCharacter\"},\"$type\":\"BattleModel.RepeatAction\"}"
             ],
             "條件": [
               "目前回合輪到本角色",
-              "{\"group1\":{\"BuffLabel\":{\"BuffLabel\":\"generalBuff\",\"BuffIdList\":[\"bonusAttackPower\",\"defense_up_small\",\"dexterity\",\"damage_absorption\",\"ArmorToBlood\",\"regeneration\",\"rage\",\"warfare\",\"leader\"]},\"$type\":\"BattleModel.BuffFromLabelList\"},\"group2\":{\"character\":{\"$type\":\"BattleModel.ThisBuffOwner\"},\"$type\":\"BattleModel.AllBuffsOnChar\"},\"$type\":\"BattleModel.IntersectBuffGroupByBuffId\"}的狀態數量 >= 1"
+              "本角色 擁有任何一個 有在generalBuff[強化, 減傷, 靈巧, 轉盾, 盾轉, 再生, 怒氣, 戰意, 領袖]列表內 的狀態"
             ]
           },
           {
             "效果": [
-              "對本角色觸發S1"
+              "對本狀態的變數一改為0"
             ],
             "條件": [
-              "目前回合輪到本角色",
-              "{\"group1\":{\"BuffLabel\":{\"BuffLabel\":\"generalBuff\",\"BuffIdList\":[\"bonusAttackPower\",\"defense_up_small\",\"dexterity\",\"damage_absorption\",\"ArmorToBlood\",\"regeneration\",\"rage\",\"warfare\",\"leader\"]},\"$type\":\"BattleModel.BuffFromLabelList\"},\"group2\":{\"character\":{\"$type\":\"BattleModel.ThisBuffOwner\"},\"$type\":\"BattleModel.AllBuffsOnChar\"},\"$type\":\"BattleModel.IntersectBuffGroupByBuffId\"}的狀態數量 >= 2"
-            ]
-          },
-          {
-            "效果": [
-              "對本角色觸發S1"
-            ],
-            "條件": [
-              "目前回合輪到本角色",
-              "{\"group1\":{\"BuffLabel\":{\"BuffLabel\":\"generalBuff\",\"BuffIdList\":[\"bonusAttackPower\",\"defense_up_small\",\"dexterity\",\"damage_absorption\",\"ArmorToBlood\",\"regeneration\",\"rage\",\"warfare\",\"leader\"]},\"$type\":\"BattleModel.BuffFromLabelList\"},\"group2\":{\"character\":{\"$type\":\"BattleModel.ThisBuffOwner\"},\"$type\":\"BattleModel.AllBuffsOnChar\"},\"$type\":\"BattleModel.IntersectBuffGroupByBuffId\"}的狀態數量 >= 3"
+              "目前回合輪到本角色"
             ]
           }
         ],
@@ -72,32 +87,108 @@
             "Actions": [
               {
                 "TargetField": {
-                  "$type": "BattleModel.OperateCharacter",
-                  "character": {
-                    "$type": "BattleModel.ThisBuffOwner"
+                  "$type": "BattleModel.RepeatAction",
+                  "Operation": {
+                    "$type": "BattleModel.OperateCharacter",
+                    "character": {
+                      "$type": "BattleModel.ThisBuffOwner"
+                    },
+                    "operation": {
+                      "$type": "BattleModel.CastSkillSet",
+                      "AssignParameter": {
+                        "AssignCharacter": {
+                          "$type": "BattleModel.NoneCharacter"
+                        },
+                        "AssignCharacterGroup": {
+                          "$type": "BattleModel.NoneCharacters"
+                        },
+                        "AssignInteger": {
+                          "$type": "BattleModel.ConstanctInt",
+                          "constant": 0
+                        },
+                        "AssignIntegerGroup": {
+                          "$type": "BattleModel.ConstanctIntegerGroup",
+                          "Group": [
+                          ]
+                        }
+                      },
+                      "UseAssignParameter": false,
+                      "resetCasterCD": false,
+                      "skillsetId": "S1"
+                    }
                   },
-                  "operation": {
-                    "$type": "BattleModel.CastSkillSet",
-                    "AssignParameter": {
-                      "AssignCharacter": {
-                        "$type": "BattleModel.NoneCharacter"
+                  "RepeatCount": {
+                    "$type": "BattleModel.ConditionalInteger",
+                    "Condition": {
+                      "$type": "BattleModel.IntCompare",
+                      "left": {
+                        "$type": "BattleModel.CountOfBuffGroup",
+                        "group": {
+                          "$type": "BattleModel.BuffGroupWhere",
+                          "condition": {
+                            "$type": "BattleModel.CheckBuffBelongLabel",
+                            "BuffLabel": {
+                              "BuffIdList": [
+                                "bonusAttackPower",
+                                "defense_up_small",
+                                "dexterity",
+                                "damage_absorption",
+                                "ArmorToBlood",
+                                "regeneration",
+                                "rage",
+                                "warfare",
+                                "leader"
+                              ],
+                              "BuffLabel": "generalBuff"
+                            }
+                          },
+                          "group": {
+                            "$type": "BattleModel.AllBuffsOnChar",
+                            "character": {
+                              "$type": "BattleModel.ThisBuffOwner"
+                            }
+                          }
+                        }
                       },
-                      "AssignCharacterGroup": {
-                        "$type": "BattleModel.NoneCharacters"
-                      },
-                      "AssignInteger": {
+                      "op": 4,
+                      "right": {
                         "$type": "BattleModel.ConstanctInt",
-                        "constant": 0
-                      },
-                      "AssignIntegerGroup": {
-                        "$type": "BattleModel.ConstanctIntegerGroup",
-                        "Group": [
-                        ]
+                        "constant": 3
                       }
                     },
-                    "UseAssignParameter": false,
-                    "resetCasterCD": false,
-                    "skillsetId": "S1"
+                    "NotPassValue": {
+                      "$type": "BattleModel.CountOfBuffGroup",
+                      "group": {
+                        "$type": "BattleModel.BuffGroupWhere",
+                        "condition": {
+                          "$type": "BattleModel.CheckBuffBelongLabel",
+                          "BuffLabel": {
+                            "BuffIdList": [
+                              "bonusAttackPower",
+                              "defense_up_small",
+                              "dexterity",
+                              "damage_absorption",
+                              "ArmorToBlood",
+                              "regeneration",
+                              "rage",
+                              "warfare",
+                              "leader"
+                            ],
+                            "BuffLabel": "generalBuff"
+                          }
+                        },
+                        "group": {
+                          "$type": "BattleModel.AllBuffsOnChar",
+                          "character": {
+                            "$type": "BattleModel.ThisBuffOwner"
+                          }
+                        }
+                      }
+                    },
+                    "PassValue": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 3
+                    }
                   }
                 }
               }
@@ -110,40 +201,29 @@
                 }
               },
               {
-                "$type": "BattleModel.IntCompare",
-                "left": {
-                  "$type": "BattleModel.CountOfBuffGroup",
-                  "group": {
-                    "$type": "BattleModel.IntersectBuffGroupByBuffId",
-                    "group1": {
-                      "$type": "BattleModel.BuffFromLabelList",
-                      "BuffLabel": {
-                        "BuffIdList": [
-                          "bonusAttackPower",
-                          "defense_up_small",
-                          "dexterity",
-                          "damage_absorption",
-                          "ArmorToBlood",
-                          "regeneration",
-                          "rage",
-                          "warfare",
-                          "leader"
-                        ],
-                        "BuffLabel": "generalBuff"
-                      }
-                    },
-                    "group2": {
-                      "$type": "BattleModel.AllBuffsOnChar",
-                      "character": {
-                        "$type": "BattleModel.ThisBuffOwner"
-                      }
+                "$type": "BattleModel.CharacterCondition",
+                "character": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                },
+                "condition": {
+                  "$type": "BattleModel.HasAnyConditionalBuff",
+                  "buffCondition": {
+                    "$type": "BattleModel.CheckBuffBelongLabel",
+                    "BuffLabel": {
+                      "BuffIdList": [
+                        "bonusAttackPower",
+                        "defense_up_small",
+                        "dexterity",
+                        "damage_absorption",
+                        "ArmorToBlood",
+                        "regeneration",
+                        "rage",
+                        "warfare",
+                        "leader"
+                      ],
+                      "BuffLabel": "generalBuff"
                     }
                   }
-                },
-                "op": 4,
-                "right": {
-                  "$type": "BattleModel.ConstanctInt",
-                  "constant": 1
                 }
               }
             ]
@@ -152,32 +232,16 @@
             "Actions": [
               {
                 "TargetField": {
-                  "$type": "BattleModel.OperateCharacter",
-                  "character": {
-                    "$type": "BattleModel.ThisBuffOwner"
-                  },
+                  "$type": "BattleModel.OperateThisBuff",
                   "operation": {
-                    "$type": "BattleModel.CastSkillSet",
-                    "AssignParameter": {
-                      "AssignCharacter": {
-                        "$type": "BattleModel.NoneCharacter"
-                      },
-                      "AssignCharacterGroup": {
-                        "$type": "BattleModel.NoneCharacters"
-                      },
-                      "AssignInteger": {
-                        "$type": "BattleModel.ConstanctInt",
-                        "constant": 0
-                      },
-                      "AssignIntegerGroup": {
-                        "$type": "BattleModel.ConstanctIntegerGroup",
-                        "Group": [
-                        ]
-                      }
-                    },
-                    "UseAssignParameter": false,
-                    "resetCasterCD": false,
-                    "skillsetId": "S1"
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 0
+                    }
                   }
                 }
               }
@@ -188,43 +252,49 @@
                 "character": {
                   "$type": "BattleModel.ThisBuffOwner"
                 }
-              },
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 8,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
               {
-                "$type": "BattleModel.IntCompare",
-                "left": {
-                  "$type": "BattleModel.CountOfBuffGroup",
-                  "group": {
-                    "$type": "BattleModel.IntersectBuffGroupByBuffId",
-                    "group1": {
-                      "$type": "BattleModel.BuffFromLabelList",
-                      "BuffLabel": {
-                        "BuffIdList": [
-                          "bonusAttackPower",
-                          "defense_up_small",
-                          "dexterity",
-                          "damage_absorption",
-                          "ArmorToBlood",
-                          "regeneration",
-                          "rage",
-                          "warfare",
-                          "leader"
-                        ],
-                        "BuffLabel": "generalBuff"
-                      }
-                    },
-                    "group2": {
-                      "$type": "BattleModel.AllBuffsOnChar",
-                      "character": {
-                        "$type": "BattleModel.ThisBuffOwner"
-                      }
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 1,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 1
                     }
                   }
-                },
-                "op": 4,
-                "right": {
-                  "$type": "BattleModel.ConstanctInt",
-                  "constant": 2
                 }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                },
+                "right": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                }
+              },
+              {
+                "$type": "BattleModel.ThisSkillSetIdEqual",
+                "id": "S1"
               }
             ]
           },
@@ -232,75 +302,44 @@
             "Actions": [
               {
                 "TargetField": {
-                  "$type": "BattleModel.OperateCharacter",
-                  "character": {
-                    "$type": "BattleModel.ThisBuffOwner"
-                  },
+                  "$type": "BattleModel.OperateThisBuff",
                   "operation": {
-                    "$type": "BattleModel.CastSkillSet",
-                    "AssignParameter": {
-                      "AssignCharacter": {
-                        "$type": "BattleModel.NoneCharacter"
-                      },
-                      "AssignCharacterGroup": {
-                        "$type": "BattleModel.NoneCharacters"
-                      },
-                      "AssignInteger": {
-                        "$type": "BattleModel.ConstanctInt",
-                        "constant": 0
-                      },
-                      "AssignIntegerGroup": {
-                        "$type": "BattleModel.ConstanctIntegerGroup",
-                        "Group": [
-                        ]
-                      }
-                    },
-                    "UseAssignParameter": false,
-                    "resetCasterCD": false,
-                    "skillsetId": "S1"
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 0
+                    }
                   }
                 }
               }
             ],
             "Conditions": [
               {
-                "$type": "BattleModel.CurrentTurnBelongsTo",
-                "character": {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                },
+                "right": {
                   "$type": "BattleModel.ThisBuffOwner"
                 }
               },
               {
+                "$type": "BattleModel.ThisSkillSetIdEqual",
+                "id": "S1"
+              },
+              {
                 "$type": "BattleModel.IntCompare",
                 "left": {
-                  "$type": "BattleModel.CountOfBuffGroup",
-                  "group": {
-                    "$type": "BattleModel.IntersectBuffGroupByBuffId",
-                    "group1": {
-                      "$type": "BattleModel.BuffFromLabelList",
-                      "BuffLabel": {
-                        "BuffIdList": [
-                          "bonusAttackPower",
-                          "defense_up_small",
-                          "dexterity",
-                          "damage_absorption",
-                          "ArmorToBlood",
-                          "regeneration",
-                          "rage",
-                          "warfare",
-                          "leader"
-                        ],
-                        "BuffLabel": "generalBuff"
-                      }
-                    },
-                    "group2": {
-                      "$type": "BattleModel.AllBuffsOnChar",
-                      "character": {
-                        "$type": "BattleModel.ThisBuffOwner"
-                      }
-                    }
-                  }
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.ThisBuff"
+                  },
+                  "targetField": 4
                 },
-                "op": 4,
+                "op": 0,
                 "right": {
                   "$type": "BattleModel.ConstanctInt",
                   "constant": 3

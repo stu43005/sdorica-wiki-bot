@@ -1,6 +1,6 @@
 {
   "$interpreted": {
-    "Localization": "高階龍神教徒",
+    "Localization": "t3424c4_2",
     "復活魂芯數": 0,
     "技能": {
       "Arrive1": [
@@ -10,21 +10,13 @@
         "對施術者{\"Tag\":65540,\"_keyString\":\"1\",\"$type\":\"BattleModel.DirectKillSkillEffect\"}"
       ],
       "S1": [
-        "對施術者的目標破甲(攻擊力 x0.75)、將2個魂芯undefined"
+        "對敵人全體賦予3回合1層warfare(戰意)"
+      ],
+      "S2": [
+        "對玩家首位破甲(攻擊力 x0.75)"
       ]
     },
     "技能組": {
-      "BeginAction": [
-        {
-          "CoolDown": 1,
-          "技能列表": [
-            "施展S1"
-          ],
-          "條件": [
-          ],
-          "目標": ""
-        }
-      ],
       "S1": [
         {
           "CoolDown": 2,
@@ -35,84 +27,89 @@
           ],
           "目標": ""
         }
+      ],
+      "S2": [
+        {
+          "CoolDown": 3,
+          "技能列表": [
+            "施展S2"
+          ],
+          "條件": [
+          ],
+          "目標": ""
+        }
       ]
     },
     "攻擊力": 50,
     "攻擊力等級調整後": 47,
-    "敵人AI": "S1",
+    "敵人AI": "S1 -> S2 -> S2",
     "消魂設置": {
       "Type1": "S1",
-      "Type2": "S2",
-      "Type4": "S3"
+      "Type2": "S2"
     },
-    "疊盾": 500,
-    "疊盾等級調整後": 471,
+    "疊盾": 800,
+    "疊盾等級調整後": 754,
     "站位": "無",
-    "血量": 500,
-    "血量等級調整後": 471,
+    "血量": 800,
+    "血量等級調整後": 754,
     "被動Buff": [
-      "賦予永久BattleBeginAction(戰鬥開始時，本角色立即施展技能。)",
-      "賦予永久Hint_StoneToTargetColor"
     ],
     "起始CD": 0,
-    "預設CD": 4
+    "預設CD": 2
   },
   "$type": "BattleModel.EnemyCharacter",
   "ReferenceBuffKeys": [
-    "BattleBeginAction",
-    "Hint_StoneToTargetColor"
+    "warfare"
   ],
   "ReferenceCharacterKeys": [
   ],
   "ReferenceEffectKeys": [
-    "h3004c3_s01_fight01",
-    "h3004c3_s01_FightLine01",
-    "Common_Hit04_D"
+    "t3424c4_s01_Sound01",
+    "t3424c4_s01_Roaring01",
+    "Common_SmokeRun02_A",
+    "t3424c4_s02_Hit01",
+    "Common_HitSlash01_C"
   ],
   "ReferenceEmoIconKeys": [
   ],
   "ReferenceMusicKeys": [
   ],
   "ReferenceSFXKeys": [
-    "magic_dark_501",
-    "magic_dark_502",
-    "magic_flash_impact_01",
-    "magic_fireball_hit_01"
+    "step_armour_015",
+    "Musical_014_gong_large",
+    "Musical_007set_04_cymbal_gong_large",
+    "Whoosh_physical_038",
+    "Footsteps_005_large_heavy",
+    "metal_017",
+    "metal_019",
+    "metal_016",
+    "metal_015",
+    "Musical_041_temple_gong_large",
+    "Hit_smash_020_short",
+    "Footsteps_003_comedy_heavy",
+    "Hit_smash_040_general_large"
   ],
   "ReferenceVoiceSFXKeys": [
+    "human_male_middle_royal_fat_07"
   ],
-  "_armorCapacity": 500,
+  "_armorCapacity": 800,
   "_assistantSkill": null,
-  "_bloodCapacity": 500,
+  "_bloodCapacity": 800,
   "_characterAI": {
     "$type": "BattleModel.SequenceEnemyAI",
     "OrderList": [
-      "S1"
+      "S1",
+      "S2",
+      "S2"
     ]
   },
-  "_defaultCoolDown": 4,
+  "_defaultCoolDown": 2,
   "_initialCoolDown": 0,
   "_levelStartBuff": [
   ],
   "_mass": 1,
   "_masterRank": 0,
   "_passiveBuff": [
-    {
-      "BuffId": "BattleBeginAction",
-      "Forever": true,
-      "LevelStack": 0,
-      "OverwriteDuration": -1,
-      "UserDefineVariable": {
-      }
-    },
-    {
-      "BuffId": "Hint_StoneToTargetColor",
-      "Forever": true,
-      "LevelStack": 0,
-      "OverwriteDuration": -1,
-      "UserDefineVariable": {
-      }
-    }
   ],
   "_pose": "Stand",
   "_power": 50,
@@ -170,19 +167,50 @@
       "_skillIdentifiers": [
         {
           "CanBeEmpty": false,
-          "IsMultiple": false,
+          "IsMultiple": true,
           "multi": {
-            "$type": "BattleModel.OppositeTeamChars",
+            "$type": "BattleModel.PVEEnemyTeam",
             "includeDead": false,
-            "includeEmpty": false,
-            "reference": {
-              "$type": "BattleModel.ThisSkillCaster"
-            }
+            "includeEmpty": false
           },
           "single": {
-            "$type": "BattleModel.EnemyAssignee",
-            "reference": {
-              "$type": "BattleModel.ThisSkillCaster"
+            "$type": "BattleModel.ThisSkillCaster"
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.AddBuffSkillEffect",
+              "Tag": 132,
+              "_buffData": [
+                {
+                  "BuffId": "warfare",
+                  "Forever": false,
+                  "LevelStack": 1,
+                  "OverwriteDuration": 3,
+                  "UserDefineVariable": {
+                  }
+                }
+              ],
+              "_keyString": "1"
+            }
+          ]
+        }
+      ]
+    },
+    "S2": {
+      "$type": "BattleModel.BattleSkill",
+      "_isFallBackIfEmptyTarget": false,
+      "_isResolveTargetEachUnit": false,
+      "_skillIdentifiers": [
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": false,
+          "multi": null,
+          "single": {
+            "$type": "BattleModel.FrontOfChars",
+            "group": {
+              "$type": "BattleModel.PVEPlayerTeam",
+              "includeDead": false,
+              "includeEmpty": false
             }
           },
           "skillEffects": [
@@ -198,25 +226,6 @@
                 },
                 "_ratio": 1
               }
-            },
-            {
-              "$type": "BattleModel.StoneActionSkillEffect",
-              "Tag": 516,
-              "_keyString": "1",
-              "_stoneAction": {
-                "BuffFilter": "Normal",
-                "BuffId": "",
-                "BuffLabel": null,
-                "EffectFilter": "Normal",
-                "StonePositionList": [
-                ],
-                "UsePositionSettings": false,
-                "changeTo": "ToTargetStoneType",
-                "filter": "IsNotTargetColor",
-                "isInitStoneFilter": "None",
-                "order": "UpperRightToLowerRight",
-                "targetStoneCount": 2
-              }
             }
           ]
         }
@@ -224,29 +233,6 @@
     }
   },
   "_skillsetTable": {
-    "BeginAction": {
-      "ComboList": [
-        {
-          "ConditionList": [
-          ],
-          "SkillList": [
-            {
-              "ConditionList": [
-              ],
-              "SkillID": "S1",
-              "_conditionalSequences": [
-              ],
-              "seq": "",
-              "t": null
-            }
-          ],
-          "_characterCoolDown": 1,
-          "assignTarget": null,
-          "icon": 0
-        }
-      ],
-      "_isViewSkillSet": false
-    },
     "S1": {
       "ComboList": [
         {
@@ -258,12 +244,40 @@
               ],
               "SkillID": "S1",
               "_conditionalSequences": [
+                {
+                  "ConditionList": [
+                  ],
+                  "_sequenceId": "S1"
+                }
               ],
-              "seq": "S1",
+              "seq": "",
               "t": null
             }
           ],
           "_characterCoolDown": 2,
+          "assignTarget": null,
+          "icon": 0
+        }
+      ],
+      "_isViewSkillSet": false
+    },
+    "S2": {
+      "ComboList": [
+        {
+          "ConditionList": [
+          ],
+          "SkillList": [
+            {
+              "ConditionList": [
+              ],
+              "SkillID": "S2",
+              "_conditionalSequences": [
+              ],
+              "seq": "",
+              "t": null
+            }
+          ],
+          "_characterCoolDown": 3,
           "assignTarget": null,
           "icon": 0
         }
@@ -279,10 +293,6 @@
     {
       "Key": 1,
       "Value": "S2"
-    },
-    {
-      "Key": 2,
-      "Value": "S3"
     }
   ],
   "_stoneType": 0

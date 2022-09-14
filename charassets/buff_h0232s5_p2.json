@@ -9,7 +9,7 @@
               "對本狀態的變數一改為1"
             ],
             "條件": [
-              "{\"Type\":1,\"$type\":\"BattleModel.ConsumedStoneTypeEqual\"}"
+              "消耗金位魂芯"
             ]
           },
           {
@@ -17,7 +17,7 @@
               "對本狀態的變數一改為0"
             ],
             "條件": [
-              "相反({\"Type\":1,\"$type\":\"BattleModel.ConsumedStoneTypeEqual\"})"
+              "相反(消耗金位魂芯)"
             ]
           }
         ],
@@ -44,8 +44,9 @@
               "對本狀態的層數增加1"
             ],
             "條件": [
-              "目前回合輪到玩家首位",
-              "本狀態的變數一 == 0"
+              "目前回合輪到本角色",
+              "本狀態的變數一 == 0",
+              "目前戰鬥回合數 > 0"
             ]
           },
           {
@@ -53,8 +54,23 @@
               "對本狀態的層數增加-1"
             ],
             "條件": [
-              "目前回合輪到玩家首位",
+              "目前回合輪到本角色",
               "本狀態的變數一 == 1"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnTurnBegin | OnEachSkill": {
+        "效果": [
+          {
+            "效果": [
+              "對本狀態的層數改為0"
+            ],
+            "條件": [
+              "施展的技能組是S3",
+              "施術者是本角色"
             ]
           }
         ],
@@ -194,12 +210,7 @@
               {
                 "$type": "BattleModel.CurrentTurnBelongsTo",
                 "character": {
-                  "$type": "BattleModel.FrontOfChars",
-                  "group": {
-                    "$type": "BattleModel.PVEPlayerTeam",
-                    "includeDead": false,
-                    "includeEmpty": false
-                  }
+                  "$type": "BattleModel.ThisBuffOwner"
                 }
               },
               {
@@ -212,6 +223,20 @@
                   "targetField": 4
                 },
                 "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 0
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.BattleActionRecordValue",
+                  "RecordValue": {
+                    "$type": "BattleModel.ThisBattleTurnCount"
+                  }
+                },
+                "op": 2,
                 "right": {
                   "$type": "BattleModel.ConstanctInt",
                   "constant": 0
@@ -241,12 +266,7 @@
               {
                 "$type": "BattleModel.CurrentTurnBelongsTo",
                 "character": {
-                  "$type": "BattleModel.FrontOfChars",
-                  "group": {
-                    "$type": "BattleModel.PVEPlayerTeam",
-                    "includeDead": false,
-                    "includeEmpty": false
-                  }
+                  "$type": "BattleModel.ThisBuffOwner"
                 }
               },
               {
@@ -262,6 +282,52 @@
                 "right": {
                   "$type": "BattleModel.ConstanctInt",
                   "constant": 1
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 65,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateSingleBuff",
+                  "buff": {
+                    "$type": "BattleModel.ThisBuff"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 1,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.ThisSkillSetIdEqual",
+                "id": "S3"
+              },
+              {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                },
+                "right": {
+                  "$type": "BattleModel.ThisBuffOwner"
                 }
               }
             ]
