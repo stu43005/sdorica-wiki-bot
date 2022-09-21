@@ -1,6 +1,6 @@
 import { ImperiumData, RowWrapper } from "../imperium-data";
 import { localizationString } from "../localization";
-import { arrayUnique } from "../utils";
+import { arrayGroupBy, arrayUnique, objectMap } from "../utils";
 import { item2wikiWithType } from "../wiki-item";
 
 const SignInRewardTable = ImperiumData.fromGamedata().getTable("SignInReward");
@@ -18,15 +18,17 @@ export default function wikiSignInReward() {
 
 	for (let i = 0; i < SignInRewardGroupIds.length; i++) {
 		const groupId = SignInRewardGroupIds[i];
-		const day = SignInRewardTable.filter(r => r.get("groupId") == groupId && r.get("category") == "day").sort((a, b) => a.get("param1") - b.get("param1"));
-		const week = SignInRewardTable.filter(r => r.get("groupId") == groupId && r.get("category") == "week").sort((a, b) => a.get("param1") - b.get("param1"));
-		const month = SignInRewardTable.filter(r => r.get("groupId") == groupId && r.get("category") == "month").sort((a, b) => a.get("param1") - b.get("param1"));
-		const special = SignInRewardTable.filter(r => r.get("groupId") == groupId && r.get("category") == "special").sort((a, b) => a.get("param1") - b.get("param1"));
+		const rewards = SignInRewardTable.filter(r => r.get("groupId") == groupId);
+		const categories = objectMap(arrayGroupBy(rewards, r => r.get('category')), (key, rows) => rows.sort((a, b) => a.get("param1") - b.get("param1")));
+
 		let str = `== Group ${groupId} ==`;
-		if (day.length) {
+		const day = categories.day;
+		const week = categories.week;
+		if (day) {
 			str += `\n${buildWeekTable(day, week)}`;
 		}
-		if (month.length) {
+		const month = categories.month;
+		if (month) {
 			str += `\n=== month ===
 {| class="wikitable"`;
 			for (let i = 0; i < month.length; i++) {
@@ -37,8 +39,9 @@ export default function wikiSignInReward() {
 			}
 			str += `\n|}`;
 		}
-		if (special.length) {
-			str += `\n=== special ===\n${buildWeekTable(special)}`;
+		const otherCategoryKeys = Object.keys(categories).filter(k => !['day', 'week', 'month'].includes(k));
+		for (const categoryKey of otherCategoryKeys) {
+			str += `\n=== ${categoryKey} ===\n${buildWeekTable(categories[categoryKey])}`;
 		}
 		out.push(str);
 	}
