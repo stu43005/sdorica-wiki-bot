@@ -4,7 +4,6 @@ import { item2wiki, Item2WikiOptions, item2wikiWithType } from "../wiki-item";
 
 const RankUpItemRefsTable = ImperiumData.fromGamedata().getTable("RankUpItemRefs");
 const RankUpItemsTable = ImperiumData.fromGamedata().getTable("RankUpItems");
-const SublimationTable = ImperiumData.fromGamedata().getTable("sublimation");
 
 export default function wikiResonance() {
 	let out = `==共鳴所需道具數量==
@@ -45,6 +44,7 @@ export default function wikiResonance() {
 		const row = RankUpItemsTable.get(i);
 		const category = row.get('category');
 		const rank1 = row.get('rank');
+
 		const item1 = ResonanceItems[row.get('item1Ref')];
 		const item2 = ResonanceItems[row.get('item2Ref')];
 		const item3 = ResonanceItems[row.get('item3Ref')];
@@ -55,47 +55,89 @@ export default function wikiResonance() {
 		const ext3 = ResonanceItems[row.get('ext3Ref')];
 		const ext4 = ResonanceItems[row.get('ext4Ref')];
 		const ext5 = ResonanceItems[row.get('ext5Ref')];
-		if (category == 'Rank') {
-			const currRankName = rank()(rank1);
-			const privRankName = rank()(String(rank1 - 1));
-			if (!currRankName || !privRankName) {
-				continue;
-			}
-			out += `\n|-\n! ${privRankName}<br/>➡️<br/>${currRankName}`;
-		} else {
-			out += `\n|-\n! +${rank1}`;
-			SubRankUpItemCount['1002'] = (SubRankUpItemCount['1002'] || 0) + row.get('coin');
-			if (item1) SubRankUpItemCount[item1.get('payLinkId')] = (SubRankUpItemCount[item1.get('payLinkId')] || 0) + row.get('item1Count');
-			if (item2) SubRankUpItemCount[item2.get('payLinkId')] = (SubRankUpItemCount[item2.get('payLinkId')] || 0) + row.get('item2Count');
-			if (item3) SubRankUpItemCount[item3.get('payLinkId')] = (SubRankUpItemCount[item3.get('payLinkId')] || 0) + row.get('item3Count');
-			if (item4) SubRankUpItemCount[item4.get('payLinkId')] = (SubRankUpItemCount[item4.get('payLinkId')] || 0) + row.get('item4Count');
-			if (item5) SubRankUpItemCount[item5.get('payLinkId')] = (SubRankUpItemCount[item5.get('payLinkId')] || 0) + row.get('item5Count');
-			if (ext1) SubRankUpItemCount[ext1.get('payLinkId')] = (SubRankUpItemCount[ext1.get('payLinkId')] || 0) + row.get('ext1Count');
-			if (ext2) SubRankUpItemCount[ext2.get('payLinkId')] = (SubRankUpItemCount[ext2.get('payLinkId')] || 0) + row.get('ext2Count');
-			if (ext3) SubRankUpItemCount[ext3.get('payLinkId')] = (SubRankUpItemCount[ext3.get('payLinkId')] || 0) + row.get('ext3Count');
-			if (ext4) SubRankUpItemCount[ext4.get('payLinkId')] = (SubRankUpItemCount[ext4.get('payLinkId')] || 0) + row.get('ext4Count');
-			if (ext5) SubRankUpItemCount[ext5.get('payLinkId')] = (SubRankUpItemCount[ext5.get('payLinkId')] || 0) + row.get('ext5Count');
-		}
-		const items: [RowWrapper, number][] = [
-			[item4, row.get('item4Count')],
-			[item2, row.get('item2Count')],
-			[item1, row.get('item1Count')],
-			[item3, row.get('item3Count')],
-			[item5, row.get('item5Count')],
-			[ext1, row.get('ext1Count')],
-			[ext2, row.get('ext2Count')],
-			[ext3, row.get('ext3Count')],
-			[ext4, row.get('ext4Count')],
-			[ext5, row.get('ext5Count')],
+
+		const items: [RowWrapper, number, string][] = [
+			[item4, row.get('item4Count'), row.get('item4Ref')],
+			[item2, row.get('item2Count'), row.get('item2Ref')],
+			[item1, row.get('item1Count'), row.get('item1Ref')],
+			[item3, row.get('item3Count'), row.get('item3Ref')],
+			[item5, row.get('item5Count'), row.get('item5Ref')],
+			[ext1, row.get('ext1Count'), row.get('ext1Ref')],
+			[ext2, row.get('ext2Count'), row.get('ext2Ref')],
+			[ext3, row.get('ext3Count'), row.get('ext3Ref')],
+			[ext4, row.get('ext4Count'), row.get('ext4Ref')],
+			[ext5, row.get('ext5Count'), row.get('ext5Ref')],
 		];
-		if (row.get('item4Ref') === 'CommonD') {
-			const temp = items[0];
-			items[0] = items[4];
-			items[4] = temp;
+		[
+			["CommonA", "CommonB", "CommonC"],
+			["CharItemB", "CharItemC"],
+			["CharItemD", "CharItemE", "CharItemF"],
+			["CharItemA"],
+			["CommonF"],
+			["CommonE"],
+			["CommonF"],
+		].forEach((keys, keyIndex) => {
+			const baseIndex = keyIndex < 5 ? 0 : 5;
+			for (const key of keys) {
+				for (let itemIndex = baseIndex; itemIndex < Math.min(baseIndex + 5, items.length); itemIndex++) {
+					const item = items[itemIndex];
+					if (item[2] === key) {
+						if (keyIndex !== itemIndex) {
+							[items[keyIndex], items[itemIndex]] = [items[itemIndex], items[keyIndex]];
+							break;
+						}
+					}
+				}
+			}
+		});
+
+		switch (category) {
+			case 'Rank': {
+				const currRankName = rank()(rank1);
+				const privRankName = rank()(String(rank1 - 1));
+				if (!currRankName || !privRankName) {
+					continue;
+				}
+				out += `\n|-\n! ${privRankName}<br/>➡️<br/>${currRankName}`;
+				break;
+			}
+			case 'SubRank':
+				out += `\n|-\n! +${rank1}`;
+				SubRankUpItemCount['1002'] = (SubRankUpItemCount['1002'] || 0) + row.get('coin');
+				if (item1) SubRankUpItemCount[item1.get('payLinkId')] = (SubRankUpItemCount[item1.get('payLinkId')] || 0) + row.get('item1Count');
+				if (item2) SubRankUpItemCount[item2.get('payLinkId')] = (SubRankUpItemCount[item2.get('payLinkId')] || 0) + row.get('item2Count');
+				if (item3) SubRankUpItemCount[item3.get('payLinkId')] = (SubRankUpItemCount[item3.get('payLinkId')] || 0) + row.get('item3Count');
+				if (item4) SubRankUpItemCount[item4.get('payLinkId')] = (SubRankUpItemCount[item4.get('payLinkId')] || 0) + row.get('item4Count');
+				if (item5) SubRankUpItemCount[item5.get('payLinkId')] = (SubRankUpItemCount[item5.get('payLinkId')] || 0) + row.get('item5Count');
+				if (ext1) SubRankUpItemCount[ext1.get('payLinkId')] = (SubRankUpItemCount[ext1.get('payLinkId')] || 0) + row.get('ext1Count');
+				if (ext2) SubRankUpItemCount[ext2.get('payLinkId')] = (SubRankUpItemCount[ext2.get('payLinkId')] || 0) + row.get('ext2Count');
+				if (ext3) SubRankUpItemCount[ext3.get('payLinkId')] = (SubRankUpItemCount[ext3.get('payLinkId')] || 0) + row.get('ext3Count');
+				if (ext4) SubRankUpItemCount[ext4.get('payLinkId')] = (SubRankUpItemCount[ext4.get('payLinkId')] || 0) + row.get('ext4Count');
+				if (ext5) SubRankUpItemCount[ext5.get('payLinkId')] = (SubRankUpItemCount[ext5.get('payLinkId')] || 0) + row.get('ext5Count');
+				break;
+			case 'Sublimation':
+				out += `\n|-\n! [[轉化系統|轉化]]`;
+				items[5] = [ResonanceItems['CommonE'], 1, 'CommonE'];
+				break;
+			default:
+				out += `\n|-\n! ${category}`;
+				break;
 		}
+
 		out += `
 | style="background-color: #ffd700;" | ${item2wiki('1002', row.get('coin'), false, ResonanceItemOptions)}
-${items.map((item, index) => `${index >= 5 ? `| style="background-color: #00ffff;" ` : ""}| ${item[0] ? item2wikiWithType(item[0].get('payType'), item[0].get('payLinkId'), item[1], ResonanceItemOptions) : '-'}`).join("\n")}`;
+${items.map((item, index) => {
+	let str = index >= 5 ? `| style="background-color: #00ffff;" ` : "";
+	if (item?.[0]) {
+		str += `| ${item2wikiWithType(item[0].get('payType'), item[0].get('payLinkId'), item[1], ResonanceItemOptions)}`;
+	} else {
+		str += `| -`;
+	}
+	if (index === 4 && category === 'Sublimation') {
+		str += `➡️<br/>➡️<br/>➡️`;
+	}
+	return str;
+}).join("\n")}`;
 		if (category == 'SubRank' && rank1 == 15) {
 			out += `
 |-
@@ -112,23 +154,6 @@ ${items.map((item, index) => `${index >= 5 ? `| style="background-color: #00ffff
 ! style="background-color: #00ffff;" | -
 ! style="background-color: #00ffff;" | -`;
 		}
-	}
-	const SublimationAngelia = SublimationTable.find(row => row.get('heroId') == '21'/* 安潔莉亞 */);
-	if (SublimationAngelia) {
-		out += `
-|-
-! [[轉化系統|轉化]]
-| style="background-color: #ffd700;" | ${item2wiki('1002', SublimationAngelia.get('coin'), false, ResonanceItemOptions)}
-| ${item2wiki(SublimationAngelia.get('item1Id'), SublimationAngelia.get('item1Count'), false, ResonanceItemOptions)}
-| -
-| -
-| ${item2wiki(SublimationAngelia.get('item2Id'), SublimationAngelia.get('item2Count'), false, ResonanceItemOptions)}
-| ➡️<br/>➡️<br/>➡️
-| style="background-color: #00ffff;" | ${item2wiki(SublimationAngelia.get('ItemID'), SublimationAngelia.get('ItemCount'), false, ResonanceItemOptions)}
-! style="background-color: #00ffff;" | -
-! style="background-color: #00ffff;" | -
-! style="background-color: #00ffff;" | -
-! style="background-color: #00ffff;" | -`;
 	}
 	out += `\n|}
 
