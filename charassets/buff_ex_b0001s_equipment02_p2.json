@@ -1,0 +1,226 @@
+{
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "OnEachSkillTargetEffect": {
+        "效果": [
+          {
+            "效果": [
+              "技能效果增加(15)%"
+            ],
+            "條件": [
+              "本角色是施術者"
+            ]
+          },
+          {
+            "效果": [
+              "技能效果增加((10 * [如果(在本角色的defense_wall(堅盾)狀態的層數 < 100)條件為真(在本角色的defense_wall(堅盾)狀態的層數)，否則(100)]))%"
+            ],
+            "條件": [
+              "本角色是施術者",
+              "本角色擁有defense_wall(堅盾)狀態"
+            ]
+          },
+          {
+            "效果": [
+              "立即施展技能效果：賦予5回合10層defense_wall(堅盾)"
+            ],
+            "條件": [
+              "本角色是指定目標",
+              "本角色的疊盾% == 100",
+              "(施展的技能效果中包含(Heal)屬性) 或 (施展的技能效果中包含(GainArmor)屬性)"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 99,
+    "標籤": "NotRemoveWhenDie | Forever | InfinityTrigger"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+    "defense_wall",
+    "FSM_DefenseUp_Normal"
+  ],
+  "_actionTable": [
+    {
+      "Key": 1024,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.BonusEffectForSkillProperty",
+                  "isPercent": true,
+                  "property": -1,
+                  "value": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 15
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                },
+                "right": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.BonusEffectForSkillProperty",
+                  "isPercent": true,
+                  "property": -1,
+                  "value": {
+                    "$type": "BattleModel.MultiplyInt",
+                    "left": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 10
+                    },
+                    "right": {
+                      "$type": "BattleModel.ConditionalInteger",
+                      "Condition": {
+                        "$type": "BattleModel.IntCompare",
+                        "left": {
+                          "$type": "BattleModel.IntBuffField",
+                          "buff": {
+                            "$type": "BattleModel.BuffOnCharater",
+                            "buffId": "defense_wall",
+                            "character": {
+                              "$type": "BattleModel.ThisBuffOwner"
+                            }
+                          },
+                          "targetField": 1
+                        },
+                        "op": 1,
+                        "right": {
+                          "$type": "BattleModel.ConstanctInt",
+                          "constant": 100
+                        }
+                      },
+                      "NotPassValue": {
+                        "$type": "BattleModel.ConstanctInt",
+                        "constant": 100
+                      },
+                      "PassValue": {
+                        "$type": "BattleModel.IntBuffField",
+                        "buff": {
+                          "$type": "BattleModel.BuffOnCharater",
+                          "buffId": "defense_wall",
+                          "character": {
+                            "$type": "BattleModel.ThisBuffOwner"
+                          }
+                        },
+                        "targetField": 1
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                },
+                "right": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              },
+              {
+                "$type": "BattleModel.CharacterHasBuff",
+                "buffId": "defense_wall",
+                "character": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.ImmediatelySkillEffect",
+                  "SkillEffect": [
+                    {
+                      "$type": "BattleModel.AddBuffSkillEffect",
+                      "Tag": 132,
+                      "_buffData": [
+                        {
+                          "BuffId": "defense_wall",
+                          "Forever": false,
+                          "LevelStack": 10,
+                          "OverwriteDuration": 5,
+                          "UserDefineVariable": {
+                          }
+                        }
+                      ],
+                      "_keyString": ""
+                    }
+                  ]
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                },
+                "right": {
+                  "$type": "BattleModel.ThisSpecifiedTarget"
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntCharaterField",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "targetField": 6
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 100
+                }
+              },
+              {
+                "$type": "BattleModel.OrConditions",
+                "cond1": {
+                  "$type": "BattleModel.ThisSkillEffectTagContains",
+                  "containsAll": 32
+                },
+                "cond2": {
+                  "$type": "BattleModel.ThisSkillEffectTagContains",
+                  "containsAll": 64
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 99,
+  "_orderTable": {
+  },
+  "_tag": 32836
+}
