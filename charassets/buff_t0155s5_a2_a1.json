@@ -2,32 +2,17 @@
   "$interpreted": {
     "Localization": "",
     "動作": {
-      "BeforeAnyoneDie": {
-        "效果": [
-          {
-            "效果": [
-              "對施術者賦予1回合2層warfare(戰意)",
-              "對施術者賦予1回合1層combo",
-              "對施術者觸發S2",
-              "對本狀態的變數一增加1"
-            ],
-            "條件": [
-              "施術者是玩家的一員",
-              "本狀態的變數一 == 0"
-            ]
-          }
-        ],
-        "條件": [
-        ]
-      },
       "OnTurnBegin": {
         "效果": [
           {
             "效果": [
-              "對本狀態的變數一改為0"
+              "立即施展技能：對玩家後排將4個魂芯消除",
+              "對玩家後排觸發S2",
+              "對本狀態的變數一改為1"
             ],
             "條件": [
-              "目前回合輪到本角色"
+              "目前回合輪到本角色",
+              "本狀態的變數一 == 0"
             ]
           }
         ],
@@ -41,59 +26,64 @@
   },
   "$type": "BattleModel.Buff",
   "ReferenceBuffKeys": [
-    "warfare",
-    "combo"
   ],
   "_actionTable": [
     {
-      "Key": 131072,
+      "Key": 1,
       "Value": {
         "Actions": [
           {
             "Actions": [
               {
                 "TargetField": {
-                  "$type": "BattleModel.OperateCharacter",
-                  "character": {
-                    "$type": "BattleModel.ThisSkillCaster"
-                  },
-                  "operation": {
-                    "$type": "BattleModel.AddBuff",
-                    "buffToAdd": {
-                      "BuffId": "warfare",
-                      "Forever": false,
-                      "LevelStack": 2,
-                      "OverwriteDuration": 1,
-                      "UserDefineVariable": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": null,
+                    "single": {
+                      "$type": "BattleModel.BackOfChars",
+                      "group": {
+                        "$type": "BattleModel.PVEPlayerTeam",
+                        "includeDead": false,
+                        "includeEmpty": false
                       }
-                    }
-                  }
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.StoneActionSkillEffect",
+                        "Tag": 516,
+                        "_keyString": "1",
+                        "_stoneAction": {
+                          "BuffFilter": "Normal",
+                          "BuffId": "",
+                          "BuffLabel": null,
+                          "EffectFilter": "Normal",
+                          "StonePositionList": [
+                          ],
+                          "UsePositionSettings": false,
+                          "changeTo": "Erase",
+                          "filter": "IsTargetColor",
+                          "isInitStoneFilter": "None",
+                          "order": "LeftToRight",
+                          "targetStoneCount": 4
+                        }
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": false
                 }
               },
               {
                 "TargetField": {
                   "$type": "BattleModel.OperateCharacter",
                   "character": {
-                    "$type": "BattleModel.ThisSkillCaster"
-                  },
-                  "operation": {
-                    "$type": "BattleModel.AddBuff",
-                    "buffToAdd": {
-                      "BuffId": "combo",
-                      "Forever": false,
-                      "LevelStack": 1,
-                      "OverwriteDuration": 1,
-                      "UserDefineVariable": {
-                      }
+                    "$type": "BattleModel.BackOfChars",
+                    "group": {
+                      "$type": "BattleModel.PVEPlayerTeam",
+                      "includeDead": false,
+                      "includeEmpty": false
                     }
-                  }
-                }
-              },
-              {
-                "TargetField": {
-                  "$type": "BattleModel.OperateCharacter",
-                  "character": {
-                    "$type": "BattleModel.ThisSkillCaster"
                   },
                   "operation": {
                     "$type": "BattleModel.CastSkillSet",
@@ -126,7 +116,7 @@
                   "operation": {
                     "$type": "BattleModel.SetBuffField",
                     "lastIndepedentStack": false,
-                    "setOperator": 1,
+                    "setOperator": 0,
                     "targetField": 4,
                     "value": {
                       "$type": "BattleModel.ConstanctInt",
@@ -138,14 +128,9 @@
             ],
             "Conditions": [
               {
-                "$type": "BattleModel.CharacterInside",
-                "group": {
-                  "$type": "BattleModel.PVEPlayerTeam",
-                  "includeDead": false,
-                  "includeEmpty": false
-                },
-                "left": {
-                  "$type": "BattleModel.ThisSkillCaster"
+                "$type": "BattleModel.CurrentTurnBelongsTo",
+                "character": {
+                  "$type": "BattleModel.ThisBuffOwner"
                 }
               },
               {
@@ -161,42 +146,6 @@
                 "right": {
                   "$type": "BattleModel.ConstanctInt",
                   "constant": 0
-                }
-              }
-            ]
-          }
-        ],
-        "Conditions": [
-        ]
-      }
-    },
-    {
-      "Key": 1,
-      "Value": {
-        "Actions": [
-          {
-            "Actions": [
-              {
-                "TargetField": {
-                  "$type": "BattleModel.OperateThisBuff",
-                  "operation": {
-                    "$type": "BattleModel.SetBuffField",
-                    "lastIndepedentStack": false,
-                    "setOperator": 0,
-                    "targetField": 4,
-                    "value": {
-                      "$type": "BattleModel.ConstanctInt",
-                      "constant": 0
-                    }
-                  }
-                }
-              }
-            ],
-            "Conditions": [
-              {
-                "$type": "BattleModel.CurrentTurnBelongsTo",
-                "character": {
-                  "$type": "BattleModel.ThisBuffOwner"
                 }
               }
             ]

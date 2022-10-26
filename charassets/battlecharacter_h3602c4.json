@@ -1,6 +1,6 @@
 {
   "$interpreted": {
-    "Localization": "h3603c4_1",
+    "Localization": "蟲族精兵",
     "復活魂芯數": 0,
     "技能": {
       "Arrive1": [
@@ -13,13 +13,13 @@
         "對施術者的目標攻擊(攻擊力 x1)"
       ],
       "S2": [
-        "對施術者的對方全體攻擊(攻擊力 x0.7)"
+        "對施術者的隊伍全體賦予1回合1層regeneration(再生)"
       ]
     },
     "技能組": {
       "S1": [
         {
-          "CoolDown": 3,
+          "CoolDown": 4,
           "技能列表": [
             "施展S1"
           ],
@@ -30,7 +30,7 @@
       ],
       "S2": [
         {
-          "CoolDown": 2,
+          "CoolDown": 1,
           "技能列表": [
             "施展S2"
           ],
@@ -40,18 +40,18 @@
         }
       ]
     },
-    "攻擊力": 72,
-    "攻擊力等級調整後": 67,
+    "攻擊力": 60,
+    "攻擊力等級調整後": 56,
     "敵人AI": "S1 -> S2",
     "消魂設置": {
       "Type1": "S1",
       "Type2": "S2"
     },
-    "疊盾": 370,
-    "疊盾等級調整後": 349,
+    "疊盾": 200,
+    "疊盾等級調整後": 188,
     "站位": "無",
-    "血量": 370,
-    "血量等級調整後": 349,
+    "血量": 200,
+    "血量等級調整後": 188,
     "被動Buff": [
     ],
     "起始CD": 0,
@@ -59,45 +59,49 @@
   },
   "$type": "BattleModel.EnemyCharacter",
   "ReferenceBuffKeys": [
+    "regeneration",
+    "regeneration_trigger"
   ],
   "ReferenceCharacterKeys": [
   ],
   "ReferenceEffectKeys": [
     "Common_SmokeRun01_B",
-    "h3603c4_s01_Insect_Move",
-    "h3603c4_s01_Speed_Line01",
-    "h3603c4_s01_Hit",
+    "h3602c4_s01_Ready",
+    "h3602c4_s01_Slash",
+    "Common_HitDash01_A",
+    "h3602c4_s01_Hit",
     "Common_SmokeJump01_A",
     "h3324c3_s01_smoke01",
-    "h3603c4_s02_Ready",
-    "Common_Smoke09",
-    "Common_Smoke11",
-    "h3603c4_s02_Insect_Move"
+    "h3602c4_s02_SpeedLine",
+    "h3602c4_s02_Scales",
+    "Common_Smoke08_D",
+    "Common_LineWS01"
   ],
   "ReferenceEmoIconKeys": [
   ],
   "ReferenceMusicKeys": [
   ],
   "ReferenceSFXKeys": [
-    "step_shoes_021",
-    "Movement_cloth_005set_01_flag",
-    "Movement_natural_017set_02_sand_soft_scratch_rustle_sizzle",
-    "Whoosh_physical_048_steam_sizzle_air",
-    "Movement_natural_013_leaves_blow",
+    "step_shoes_010",
+    "Effect_ice_001_freeze_creak_break",
+    "Movement_misc_054_glass_crystal_break_crash_scrap",
+    "Movement_arms_026_bladed_draw",
+    "Hit_bladed_024set_03_slash_stab_bass",
+    "Movement_misc_029_smash_glass_crash",
+    "Movement_misc_030_smash_glass_crystal_break",
     "Whoosh_physical_025",
-    "Movement_cloth_004set_03_flag_small",
-    "Movement_cloth_002_flag",
-    "bite_piercing_metal_stab_01",
-    "Hit_smash_042_sand_soft_rustle_small_footstep",
-    "magic_dark_001",
-    "Ambience_004_natural_leaves_blow_discharge_short",
-    "Effect_chaos_016_bass_magic_cast"
+    "Movement_wing_004_bat_bird_flap_rustle_multi_large",
+    "Whoosh_physical_062_steam_sizzle_spill_sitcky",
+    "Creature_monster_018set_01_insect_movement_rush",
+    "Whoosh_physical_058_steam_sizzle_spill_sticky_short",
+    "Whoosh_physical_029_steam_sizzle_air",
+    "Movement_wing_003_fan_flap_multi"
   ],
   "ReferenceVoiceSFXKeys": [
   ],
-  "_armorCapacity": 370,
+  "_armorCapacity": 200,
   "_assistantSkill": null,
-  "_bloodCapacity": 370,
+  "_bloodCapacity": 200,
   "_characterAI": {
     "$type": "BattleModel.SequenceEnemyAI",
     "OrderList": [
@@ -114,7 +118,7 @@
   "_passiveBuff": [
   ],
   "_pose": "Stand",
-  "_power": 72,
+  "_power": 60,
   "_reviveCount": 0,
   "_skills": {
     "Arrive1": {
@@ -204,7 +208,8 @@
           "CanBeEmpty": false,
           "IsMultiple": true,
           "multi": {
-            "$type": "BattleModel.OppositeTeamChars",
+            "$type": "BattleModel.SelfTeamChars",
+            "excludeSelf": false,
             "includeDead": false,
             "includeEmpty": false,
             "reference": {
@@ -219,17 +224,19 @@
           },
           "skillEffects": [
             {
-              "$type": "BattleModel.HpDamageSkillEffect",
-              "Tag": 9,
-              "_keyString": "1",
-              "_skillModifier": {
-                "_constant": 0,
-                "_parameter": {
-                  "$type": "BattleModel.SkillCasterPower",
-                  "basePower": false
-                },
-                "_ratio": 0.7
-              }
+              "$type": "BattleModel.AddBuffSkillEffect",
+              "Tag": 132,
+              "_buffData": [
+                {
+                  "BuffId": "regeneration",
+                  "Forever": false,
+                  "LevelStack": 1,
+                  "OverwriteDuration": 1,
+                  "UserDefineVariable": {
+                  }
+                }
+              ],
+              "_keyString": ""
             }
           ]
         }
@@ -253,7 +260,7 @@
               "t": null
             }
           ],
-          "_characterCoolDown": 3,
+          "_characterCoolDown": 4,
           "assignTarget": null,
           "icon": 0
         }
@@ -276,7 +283,7 @@
               "t": null
             }
           ],
-          "_characterCoolDown": 2,
+          "_characterCoolDown": 1,
           "assignTarget": null,
           "icon": 0
         }

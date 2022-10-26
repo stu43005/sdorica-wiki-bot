@@ -34,8 +34,7 @@
               "對本角色賦予3回合1層bonusAttackPower(強化)"
             ],
             "條件": [
-              "目前回合輪到本角色",
-              "目前戰鬥回合數 == 0"
+              "(目前戰鬥回合數 == 0) 且 (目前回合輪到敵人首位)"
             ]
           },
           {
@@ -62,7 +61,7 @@
     },
     "持續時間": 0,
     "最高層數": 99,
-    "標籤": ""
+    "標籤": "NotRemoveWhenDie | Forever"
   },
   "$type": "BattleModel.Buff",
   "ReferenceBuffKeys": [
@@ -116,23 +115,31 @@
             ],
             "Conditions": [
               {
-                "$type": "BattleModel.CurrentTurnBelongsTo",
-                "character": {
-                  "$type": "BattleModel.ThisBuffOwner"
-                }
-              },
-              {
-                "$type": "BattleModel.IntCompare",
-                "left": {
-                  "$type": "BattleModel.BattleActionRecordValue",
-                  "RecordValue": {
-                    "$type": "BattleModel.ThisBattleTurnCount"
+                "$type": "BattleModel.AndConditions",
+                "cond1": {
+                  "$type": "BattleModel.IntCompare",
+                  "left": {
+                    "$type": "BattleModel.BattleActionRecordValue",
+                    "RecordValue": {
+                      "$type": "BattleModel.ThisBattleTurnCount"
+                    }
+                  },
+                  "op": 0,
+                  "right": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 0
                   }
                 },
-                "op": 0,
-                "right": {
-                  "$type": "BattleModel.ConstanctInt",
-                  "constant": 0
+                "cond2": {
+                  "$type": "BattleModel.CurrentTurnBelongsTo",
+                  "character": {
+                    "$type": "BattleModel.FrontOfChars",
+                    "group": {
+                      "$type": "BattleModel.PVEEnemyTeam",
+                      "includeDead": true,
+                      "includeEmpty": true
+                    }
+                  }
                 }
               }
             ]
@@ -411,5 +418,5 @@
   "_maxLevel": 99,
   "_orderTable": {
   },
-  "_tag": 0
+  "_tag": 68
 }

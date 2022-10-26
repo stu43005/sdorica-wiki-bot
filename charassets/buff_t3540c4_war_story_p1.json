@@ -2,33 +2,39 @@
   "$interpreted": {
     "Localization": "",
     "動作": {
-      "OnTurnBegin": {
+      "BeforeAnyoneDie": {
         "效果": [
           {
             "效果": [
-              "對賦予者觸發A1",
-              "對本角色觸發S1"
+              "對本角色觸發S3"
             ],
             "條件": [
-              "(本角色擁有leader(領袖)狀態) 且 (本角色擁有warfare(戰意)狀態)"
+              "本角色是死亡或復活的角色"
+            ]
+          },
+          {
+            "效果": [
+              "對本角色觸發S4"
+            ],
+            "條件": [
+              "死亡或復活的角色是玩家的一員"
             ]
           }
         ],
         "條件": [
-          "目前回合輪到本角色"
         ]
       }
     },
     "持續時間": 0,
     "最高層數": 99,
-    "標籤": "Hidden | NotRemoveWhenDie | Forever"
+    "標籤": "Forever"
   },
   "$type": "BattleModel.Buff",
   "ReferenceBuffKeys": [
   ],
   "_actionTable": [
     {
-      "Key": 1,
+      "Key": 131072,
       "Value": {
         "Actions": [
           {
@@ -37,7 +43,7 @@
                 "TargetField": {
                   "$type": "BattleModel.OperateCharacter",
                   "character": {
-                    "$type": "BattleModel.ThisBuffCaster"
+                    "$type": "BattleModel.ThisBuffOwner"
                   },
                   "operation": {
                     "$type": "BattleModel.CastSkillSet",
@@ -60,10 +66,25 @@
                     },
                     "UseAssignParameter": false,
                     "resetCasterCD": false,
-                    "skillsetId": "A1"
+                    "skillsetId": "S3"
                   }
                 }
-              },
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                },
+                "right": {
+                  "$type": "BattleModel.DeadOrReviveTarget"
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
               {
                 "TargetField": {
                   "$type": "BattleModel.OperateCharacter",
@@ -91,39 +112,27 @@
                     },
                     "UseAssignParameter": false,
                     "resetCasterCD": false,
-                    "skillsetId": "S1"
+                    "skillsetId": "S4"
                   }
                 }
               }
             ],
             "Conditions": [
               {
-                "$type": "BattleModel.AndConditions",
-                "cond1": {
-                  "$type": "BattleModel.CharacterHasBuff",
-                  "buffId": "leader",
-                  "character": {
-                    "$type": "BattleModel.ThisBuffOwner"
-                  }
+                "$type": "BattleModel.CharacterInside",
+                "group": {
+                  "$type": "BattleModel.PVEPlayerTeam",
+                  "includeDead": true,
+                  "includeEmpty": false
                 },
-                "cond2": {
-                  "$type": "BattleModel.CharacterHasBuff",
-                  "buffId": "warfare",
-                  "character": {
-                    "$type": "BattleModel.ThisBuffOwner"
-                  }
+                "left": {
+                  "$type": "BattleModel.DeadOrReviveTarget"
                 }
               }
             ]
           }
         ],
         "Conditions": [
-          {
-            "$type": "BattleModel.CurrentTurnBelongsTo",
-            "character": {
-              "$type": "BattleModel.ThisBuffOwner"
-            }
-          }
         ]
       }
     }
@@ -132,5 +141,5 @@
   "_maxLevel": 99,
   "_orderTable": {
   },
-  "_tag": 69
+  "_tag": 64
 }

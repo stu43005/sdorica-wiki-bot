@@ -1,6 +1,6 @@
 {
   "$interpreted": {
-    "Localization": "h3603c4_1",
+    "Localization": "聯邦狐狸武士",
     "復活魂芯數": 0,
     "技能": {
       "Arrive1": [
@@ -10,10 +10,10 @@
         "對施術者{\"Tag\":65540,\"_keyString\":\"1\",\"$type\":\"BattleModel.DirectKillSkillEffect\"}"
       ],
       "S1": [
-        "對施術者的目標攻擊(攻擊力 x1)"
+        "對施術者的對方首位破甲(攻擊力 x0.45)、破甲(攻擊力 x0.45)"
       ],
       "S2": [
-        "對施術者的對方全體攻擊(攻擊力 x0.7)"
+        "對施術者賦予2回合1層rage(怒氣)"
       ]
     },
     "技能組": {
@@ -40,72 +40,63 @@
         }
       ]
     },
-    "攻擊力": 72,
-    "攻擊力等級調整後": 67,
-    "敵人AI": "S1 -> S2",
+    "攻擊力": 100,
+    "攻擊力等級調整後": 94,
+    "敵人AI": "S2 -> S1",
     "消魂設置": {
       "Type1": "S1",
       "Type2": "S2"
     },
-    "疊盾": 370,
-    "疊盾等級調整後": 349,
+    "疊盾": 600,
+    "疊盾等級調整後": 566,
     "站位": "無",
-    "血量": 370,
-    "血量等級調整後": 349,
+    "血量": 600,
+    "血量等級調整後": 566,
     "被動Buff": [
     ],
     "起始CD": 0,
-    "預設CD": 4
+    "預設CD": 3
   },
   "$type": "BattleModel.EnemyCharacter",
   "ReferenceBuffKeys": [
+    "rage"
   ],
   "ReferenceCharacterKeys": [
   ],
   "ReferenceEffectKeys": [
     "Common_SmokeRun01_B",
-    "h3603c4_s01_Insect_Move",
-    "h3603c4_s01_Speed_Line01",
-    "h3603c4_s01_Hit",
-    "Common_SmokeJump01_A",
-    "h3324c3_s01_smoke01",
-    "h3603c4_s02_Ready",
-    "Common_Smoke09",
-    "Common_Smoke11",
-    "h3603c4_s02_Insect_Move"
+    "t3656c3_s01_slash01",
+    "t3656c3_s01_slash02",
+    "t3656c3_s02_knock01",
+    "b0014c1_01_radia01"
   ],
   "ReferenceEmoIconKeys": [
   ],
   "ReferenceMusicKeys": [
   ],
   "ReferenceSFXKeys": [
-    "step_shoes_021",
-    "Movement_cloth_005set_01_flag",
-    "Movement_natural_017set_02_sand_soft_scratch_rustle_sizzle",
-    "Whoosh_physical_048_steam_sizzle_air",
-    "Movement_natural_013_leaves_blow",
-    "Whoosh_physical_025",
-    "Movement_cloth_004set_03_flag_small",
-    "Movement_cloth_002_flag",
-    "bite_piercing_metal_stab_01",
-    "Hit_smash_042_sand_soft_rustle_small_footstep",
-    "magic_dark_001",
-    "Ambience_004_natural_leaves_blow_discharge_short",
-    "Effect_chaos_016_bass_magic_cast"
+    "step_armour_001",
+    "Whoosh_swing_009_multi",
+    "Hit_smash_040_general_large",
+    "Hit_smash_032_simple_small",
+    "step_armour_005",
+    "Creature_monster_047_roar_fox_beast",
+    "Hit_smash_035_simple_slap",
+    "Hit_smash_024_simple_short"
   ],
   "ReferenceVoiceSFXKeys": [
   ],
-  "_armorCapacity": 370,
+  "_armorCapacity": 600,
   "_assistantSkill": null,
-  "_bloodCapacity": 370,
+  "_bloodCapacity": 600,
   "_characterAI": {
     "$type": "BattleModel.SequenceEnemyAI",
     "OrderList": [
-      "S1",
-      "S2"
+      "S2",
+      "S1"
     ]
   },
-  "_defaultCoolDown": 4,
+  "_defaultCoolDown": 3,
   "_initialCoolDown": 0,
   "_levelStartBuff": [
   ],
@@ -114,7 +105,7 @@
   "_passiveBuff": [
   ],
   "_pose": "Stand",
-  "_power": 72,
+  "_power": 100,
   "_reviveCount": 0,
   "_skills": {
     "Arrive1": {
@@ -172,15 +163,20 @@
           "IsMultiple": false,
           "multi": null,
           "single": {
-            "$type": "BattleModel.EnemyAssignee",
-            "reference": {
-              "$type": "BattleModel.ThisSkillCaster"
+            "$type": "BattleModel.FrontOfChars",
+            "group": {
+              "$type": "BattleModel.OppositeTeamChars",
+              "includeDead": false,
+              "includeEmpty": false,
+              "reference": {
+                "$type": "BattleModel.ThisSkillCaster"
+              }
             }
           },
           "skillEffects": [
             {
-              "$type": "BattleModel.HpDamageSkillEffect",
-              "Tag": 9,
+              "$type": "BattleModel.AmrBreakSkillEffect",
+              "Tag": 17,
               "_keyString": "1",
               "_skillModifier": {
                 "_constant": 0,
@@ -188,7 +184,20 @@
                   "$type": "BattleModel.SkillCasterPower",
                   "basePower": false
                 },
-                "_ratio": 1
+                "_ratio": 0.6
+              }
+            },
+            {
+              "$type": "BattleModel.AmrBreakSkillEffect",
+              "Tag": 17,
+              "_keyString": "2",
+              "_skillModifier": {
+                "_constant": 0,
+                "_parameter": {
+                  "$type": "BattleModel.SkillCasterPower",
+                  "basePower": false
+                },
+                "_ratio": 0.6
               }
             }
           ]
@@ -202,34 +211,26 @@
       "_skillIdentifiers": [
         {
           "CanBeEmpty": false,
-          "IsMultiple": true,
-          "multi": {
-            "$type": "BattleModel.OppositeTeamChars",
-            "includeDead": false,
-            "includeEmpty": false,
-            "reference": {
-              "$type": "BattleModel.ThisSkillCaster"
-            }
-          },
+          "IsMultiple": false,
+          "multi": null,
           "single": {
-            "$type": "BattleModel.EnemyAssignee",
-            "reference": {
-              "$type": "BattleModel.ThisSkillCaster"
-            }
+            "$type": "BattleModel.ThisSkillCaster"
           },
           "skillEffects": [
             {
-              "$type": "BattleModel.HpDamageSkillEffect",
-              "Tag": 9,
-              "_keyString": "1",
-              "_skillModifier": {
-                "_constant": 0,
-                "_parameter": {
-                  "$type": "BattleModel.SkillCasterPower",
-                  "basePower": false
-                },
-                "_ratio": 0.7
-              }
+              "$type": "BattleModel.AddBuffSkillEffect",
+              "Tag": 132,
+              "_buffData": [
+                {
+                  "BuffId": "rage",
+                  "Forever": false,
+                  "LevelStack": 1,
+                  "OverwriteDuration": 2,
+                  "UserDefineVariable": {
+                  }
+                }
+              ],
+              "_keyString": ""
             }
           ]
         }
