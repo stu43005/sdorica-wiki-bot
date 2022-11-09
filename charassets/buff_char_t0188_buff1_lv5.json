@@ -1,0 +1,100 @@
+{
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "OnEachSkillTargetEffect": {
+        "效果": [
+          {
+            "效果": [
+              "技能效果增加(30)%"
+            ],
+            "條件": [
+              "施展的技能組是S1",
+              "(施術者 是金位) 或 (施術者 是黑位)",
+              "施術者是玩家的一員"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 99,
+    "標籤": "NotRemoveAfterBattle | NotRemoveWhenDie | Forever"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+  ],
+  "_actionTable": [
+    {
+      "Key": 1024,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.BonusEffectForSkillProperty",
+                  "isPercent": true,
+                  "property": -1,
+                  "value": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 30
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.ThisSkillSetIdEqual",
+                "id": "S1"
+              },
+              {
+                "$type": "BattleModel.OrConditions",
+                "cond1": {
+                  "$type": "BattleModel.CharacterCondition",
+                  "character": {
+                    "$type": "BattleModel.ThisSkillCaster"
+                  },
+                  "condition": {
+                    "$type": "BattleModel.StoneTypeIs",
+                    "type": 1
+                  }
+                },
+                "cond2": {
+                  "$type": "BattleModel.CharacterCondition",
+                  "character": {
+                    "$type": "BattleModel.ThisSkillCaster"
+                  },
+                  "condition": {
+                    "$type": "BattleModel.StoneTypeIs",
+                    "type": 2
+                  }
+                }
+              },
+              {
+                "$type": "BattleModel.CharacterInside",
+                "group": {
+                  "$type": "BattleModel.PVEPlayerTeam",
+                  "includeDead": false,
+                  "includeEmpty": false
+                },
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 99,
+  "_orderTable": {
+  },
+  "_tag": 70
+}
