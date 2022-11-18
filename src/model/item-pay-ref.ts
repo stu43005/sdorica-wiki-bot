@@ -1,9 +1,9 @@
 import { currency2Id } from "../localization";
-import { Item2WikiOptions, item2wikiWithType } from "../wiki-item";
+import { Item2WikiOptions } from "../wiki-item";
 import { ItemPayType } from "./enums/item-pay-type.enum";
 import { ExploreItem } from "./explore-item";
 import { Item } from "./item";
-import { ItemBase } from "./item-base";
+import { ItemBase } from "./item.base";
 
 export class ItemPayRef {
 	item?: ItemBase;
@@ -13,20 +13,20 @@ export class ItemPayRef {
 		public id: string,
 		public amount: number = 0,
 	) {
-		if (type == ItemPayType.Item) {
-			this.item = Item.get(id);
-		} else if (type == ItemPayType.ExploreItem) {
-			this.item = ExploreItem.get(id);
+		if (this.type == ItemPayType.ExploreItem) {
+			this.item = ExploreItem.get(this.id);
 		} else {
-			const id2 = currency2Id()(type);
-			if (id2) {
-				this.id = id2;
-				this.item = Item.get(id2);
+			if (this.type !== ItemPayType.Item) {
+				this.id = currency2Id()(type);
 			}
+			this.item = Item.get(this.id);
 		}
 	}
 
 	toWiki(options?: Item2WikiOptions) {
-		return item2wikiWithType(this.type, this.id, this.amount, options);
+		return this.item?.toWiki({
+			...options,
+			count: this.amount,
+		}) ?? "";
 	}
 }

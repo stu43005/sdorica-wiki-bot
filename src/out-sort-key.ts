@@ -324,7 +324,7 @@ const TABLE_KEYS_BLACKLIST: Record<string, string[]> = {
 
 export function filterKeyByTable(tablename: string) {
 	if (tablename in TABLE_KEYS_BLACKLIST) {
-		return (value: any[], index: number, array: any[][]): boolean => {
+		return (value: any[]): boolean => {
 			const key = '' + value[value.length - 1];
 			if (TABLE_KEYS_BLACKLIST[tablename].indexOf(key) != -1) {
 				return false;

@@ -1,44 +1,59 @@
+import _ from "lodash";
 import { ImperiumData } from "../imperium-data";
 import { Chapter } from "../model/chapter";
-import { arrayUnique } from "../utils";
-import { item2wiki, item2wikiWithType } from "../wiki-item";
+import { Item } from "../model/item";
+import { ItemGiveRef } from "../model/item-give-ref";
+import { wikiH1, wikiH2, wikiH3 } from "../templates/wikiheader";
+import { wikiPageLink } from "../templates/wikilink";
+import { wikiul } from "../templates/wikilist";
+import { wikitable, WikiTableStruct } from "../templates/wikitable";
 
 const RewardGroupsTable = ImperiumData.fromGamedata().getTable("RewardGroups");
 
 export default function wikiRewardGroups() {
-	const rewardGroupIds = arrayUnique(RewardGroupsTable.rows.map(r => r.get("rewardGroupId")));
-	const out: string[] = [];
-	for (let i = 0; i < rewardGroupIds.length; i++) {
-		const rewardGroupId = rewardGroupIds[i];
-		const items = RewardGroupsTable.filter(r => r.get("rewardGroupId") == rewardGroupId);
-		const targetItems = arrayUnique(items.map(r => r.get("targetItemId")));
+	let out = wikiH1("累積道具獎勵");
 
-		const chapters = Chapter.getAll().filter(ch => ch.rewardGroupId == rewardGroupId);
-		const note = items.map(r => r.get("note")).filter(note => !!note).join(", ");
-		const title = (chapters.length == 1 ? `${chapters[0].getWikiTitle()} (${note})` : note) || rewardGroupId;
-		let str = `== ${title} ==
-${chapters.map(chapter => `\n* [[${chapter.getWikiTitle()}]]`).join('')}`;
+	const rewardGroups = _.groupBy(RewardGroupsTable.rows, (r) => r.get("rewardGroupId"));
+	for (const [rewardGroupId, group] of Object.entries(rewardGroups)) {
+		const note = group.map(r => r.get("note")).filter(Boolean).join(", ");
+		const chapters = Chapter.getByRewardGroupId(rewardGroupId);
+		const title = (chapters.length == 1 ? `${chapters[0].getWikiFullName()} (${note})` : note) || rewardGroupId;
+		out += `\n\n${wikiH2(title, rewardGroupId)}\n${wikiul(chapters.map((chapter) => wikiPageLink("Chapter", "", chapter.getWikiFullName())))}`;
 
-		for (let j = 0; j < targetItems.length; j++) {
-			const targetItem = targetItems[j];
-			const rewardItems = items.filter(r => r.get("targetItemId") == targetItem);
-			str += `\n{| class="wikitable mw-collapsible mw-collapsed"
-! colspan=2 | ${item2wiki(targetItem)}
-|-
-! 累計數量 !! 獎勵`;
-			for (let k = 0; k < rewardItems.length; k++) {
-				const reward = rewardItems[k];
-				const targetCount = reward.get("targetCount");
-				const rewardType = reward.get("giveType");
-				const rewardItemId = reward.get("giveLinkId");
-				const rewardCount = reward.get("giveAmount");
-				str += `\n|-
-| style="text-align: center" | ${targetCount}
-| ${item2wikiWithType(rewardType, rewardItemId, rewardCount)}`;
+		const targetItems = _.groupBy(group, (r) => r.get("targetItemId"));
+		for (const [targetItemId, rewardItems] of Object.entries(targetItems)) {
+			const targetItem = Item.get(targetItemId);
+			const table: WikiTableStruct = {
+				attributes: `class="wikitable mw-collapsible mw-collapsed"`,
+				rows: [
+					[
+						{
+							header: true,
+							attributes: `colspan="2"`,
+							text: targetItem?.toWiki() ?? "",
+						},
+					],
+					[
+						`! 累計數量`,
+						`! 獎勵`,
+					],
+				],
+			};
+
+			for (const row of rewardItems) {
+				const reward = new ItemGiveRef(row.get("giveType"), row.get("giveLinkId"), row.get("giveAmount"));
+				table.rows.push([
+					{
+						attributes: `style="text-align: center"`,
+						text: row.get("targetCount"),
+					},
+					reward.toWiki(),
+				]);
 			}
-			str += `\n|}`;
+
+			out += `\n\n${wikiH3(targetItem?.name ?? "", `${rewardGroupId}_${targetItemId}`)}\n${wikitable(table)}`;
 		}
-		out.push(str);
 	}
-	return out.join("\n\n");
+
+	return out;
 }

@@ -1,6 +1,6 @@
 import { ImperiumData, RowWrapper } from "../imperium-data";
 import { localizationString } from "../localization";
-import { AvatarInfoboxParams, avatarInfoboxTemplate } from './../templates/avatar-infobox';
+import { AvatarInfoboxParams, avatarInfoboxTemplate } from '../templates/avatar-infobox';
 import { ItemCategory } from './enums/item-category.enum';
 import { Hero } from './hero';
 import { Item } from './item';
@@ -25,7 +25,7 @@ export class Avatar {
 	}
 
 	public static getAll() {
-		return allInstances ?? (allInstances = Array.from(this.getAllGenerator()));
+		return allInstances ??= Array.from(this.getAllGenerator());
 	}
 
 	public static *getAllGenerator() {
@@ -42,10 +42,20 @@ export class Avatar {
 
 	description: string;
 
-	#item: Item | undefined = undefined;
-	get item() { return this.#item ?? (this.#item = Item.find(item => item.category == ItemCategory.Avatar && item.effectValue.toString() == this.id)); }
-	#hero: Hero | undefined = undefined;
-	get hero() { return this.#hero ?? (this.#hero = Hero.find(hero => hero.avatarId == this.id)); }
+	#item: Item | undefined | null = null;
+	get item(): Item | undefined {
+		if (this.#item === null) {
+			this.#item = Item.find(item => item.category == ItemCategory.Avatar && item.effectValue.toString() == this.id);
+		}
+		return this.#item;
+	}
+	#hero: Hero | undefined | null = null;
+	get hero(): Hero | undefined {
+		if (this.#hero === null) {
+			this.#hero = Hero.find(hero => hero.avatarId == this.id);
+		}
+		return this.#hero;
+	}
 
 	constructor(private row: RowWrapper) {
 		this.description = localizationString("Avatars")(this.id);

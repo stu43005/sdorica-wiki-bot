@@ -1,7 +1,7 @@
 import { RowWrapper } from "../imperium-data";
 import { itemDropQuestsTemplate } from "../templates/item-drop-quests";
 import { ItemInfoboxParams, itemInfoboxTemplate } from "../templates/item-infobox";
-import { getWikiItemRename, item2wiki, Item2WikiOptions, itemCategoryName } from "../wiki-item";
+import { item2wiki, Item2WikiOptions, itemCategoryName } from "../wiki-item";
 import { wikiTitleEscape } from '../wiki-utils';
 
 export abstract class ItemBase {
@@ -14,15 +14,11 @@ export abstract class ItemBase {
 
 	constructor(protected row: RowWrapper) { }
 
-	toWiki(count?: number, options?: Item2WikiOptions) {
-		return item2wiki(this.id, count, this.isExplore, options);
+	toWiki(options?: Item2WikiOptions) {
+		return item2wiki(this.id, options?.count, this.isExplore, options);
 	}
 
 	getWikiPageName() {
-		const rename = getWikiItemRename(this.id, this.isExplore);
-		if (rename) {
-			return rename;
-		}
 		return wikiTitleEscape(this.name);
 	}
 
@@ -47,16 +43,16 @@ export abstract class ItemBase {
 		return params;
 	}
 
-	getItemInfobox() {
+	toItemInfobox() {
 		return itemInfoboxTemplate(this.getItemInfoboxParams());
 	}
 
-	getWikiDropQuests() {
+	toWikiDropQuests() {
 		return itemDropQuestsTemplate(this.getWikiPageName());
 	}
 
-	getWikiPage() {
-		return this.getItemInfobox();
+	toWikiPage() {
+		return this.toItemInfobox();
 	}
 
 }

@@ -206,7 +206,7 @@ export class RowWrapper {
 				}
 			}
 		}
-		else if (type == "Boolean") {
+		else if (type === "Boolean") {
 			switch (value) {
 				case true:
 				case "true":
@@ -217,6 +217,12 @@ export class RowWrapper {
 					value = false;
 					break;
 			}
+		}
+		else if (type === "String") {
+			value = '' + value;
+		}
+		else if (type === "Integer") {
+			value = +value;
 		}
 		if (typeof value === "string") {
 			value = value.replace('\b', '');

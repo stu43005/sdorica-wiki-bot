@@ -1,90 +1,36 @@
 import numeral from "numeral";
 import { ImperiumData, RowWrapper } from "./imperium-data";
-import { currency2Id, Func1, gamedataString, localizationCharacterNameByHeroId, localizationExploreBuildingName, localizationItemName, localizationMonsterNameById, localizationString, rank } from "./localization";
+import { currency2Id, gamedataString, localizationCharacterNameByHeroId, localizationExploreBuildingName, localizationItemName, localizationMonsterNameById, localizationString, rank } from "./localization";
 import { Chapter } from "./model/chapter";
+import { ItemStackable } from "./model/enums/item-stackable.enum";
 import { ExploreItem } from './model/explore-item';
 import { Hero } from "./model/hero";
 import { Item } from './model/item';
 import { arrayUnique } from "./utils";
-import { wikitemplate, wikiTitleEscape } from "./wiki-utils";
+import { wikitemplate } from "./wiki-utils";
 
-const ItemsTable = ImperiumData.fromGamedata().getTable("Items");
-const DropItemsTable = ImperiumData.fromGamedata().getTable("DropItems");
 const ExploreItemsTable = ImperiumData.fromGamedata().getTable("ExploreItems");
 const ExploreBuildingTable = ImperiumData.fromGamedata().getTable("ExploreBuilding");
 const ExploreCompositeTable = ImperiumData.fromGamedata().getTable("ExploreComposite");
-const HeroSkillsTable = ImperiumData.fromGamedata().getTable("HeroSkills");
-const VoucherGiftsTable = ImperiumData.fromGamedata().getTable("VoucherGifts");
 
 export function getItemJsonData() {
 	const out: Record<string, Record<string, string>> = {
 		"item": Item.getAll()
 			.filter(item => item.enable)
-			.map<[string, string]>(item => [`${item.id}-${item.getWikiPageName()}`, item.getWikiPage()])
+			.map<[string, string]>(item => [`${item.id}-${item.getWikiPageName()}`, item.toWikiPage()])
 			.reduce<Record<string, string>>((p, c) => {
 				p[c[0]] = c[1];
 				return p;
 			}, {}),
 		"ExploreItems": ExploreItem.getAll()
 			.filter(item => item.enable)
-			.map<[string, string]>(item => [`${item.id}-${item.getWikiPageName()}`, item.getWikiPage()])
+			.map<[string, string]>(item => [`${item.id}-${item.getWikiPageName()}`, item.toWikiPage()])
 			.reduce<Record<string, string>>((p, c) => {
 				p[c[0]] = c[1];
 				return p;
 			}, {}),
 	};
 	return out;
-}
-
-export function treasureList(groupId: number, lineStart = '') {
-	const dropitems = DropItemsTable.filter(di => di.get("groupId") == groupId);
-	// groupId,subgroupId,category,chest,dropTime,itemId,itemCount,value,id
-	const dropgroup: RowWrapper[][] = [];
-	dropitems.forEach(di => {
-		const subgroupId = parseInt(di.get("subgroupId"));
-		dropgroup[subgroupId] = dropgroup[subgroupId] || [];
-		dropgroup[subgroupId].push(di);
-	});
-	let str = "";
-	for (const subgroupId in dropgroup) {
-		const subgroup = dropgroup[subgroupId];
-		if (subgroup.length == 1) {
-			str += `\n${lineStart}* ${dropItemListEntry(subgroup[0], subgroup[0].get("value"))}`;
-		}
-		else if (subgroup.length > 1) {
-			str += `\n${lineStart}* 隨機獲得以下${subgroup[0].get("giveType") == "Monster" ? "野獸" : "物品"}其一：`;
-			let weightCount = 0;
-			if (subgroup[0].get("category") == "Weight") {
-				subgroup.forEach(di => {
-					weightCount += Number(di.get("value"));
-				});
-			}
-			subgroup.sort((a, b) => Number(b.get("value")) - Number(a.get("value"))).forEach(di => {
-				str += `\n${lineStart}** ${dropItemListEntry(di, weightCount)}`;
-			});
-		}
-	}
-	return str;
-}
-
-function dropItemListEntry(item: RowWrapper, weightCount = 0) {
-	let str = item2wikiWithType(item.get("giveType"), item.get("giveLinkId"), item.get("giveAmount"));
-	if (item.get("category") == "Chance" && item.get("value") != 10000) {
-		str += `：${item.get("value") / 100}%`;
-	}
-	else if (item.get("category") == "Weight" && weightCount && item.get("value") != weightCount) {
-		str += `：${Math.floor(item.get("value") / weightCount * 10000) / 100}%`;
-	}
-	return str;
-}
-
-export function voucherList(groupId: number) {
-	const items = VoucherGiftsTable.filter(r => r.get('groupId') == groupId);
-	let str = "";
-	for (const item of items) {
-		str += `\n* ${item2wikiWithType(item.get("giveType"), item.get("giveLinkId"), item.get("giveAmount"))}`;
-	}
-	return str;
 }
 
 export function exploreCompositeList(id: string) {
@@ -284,60 +230,6 @@ export function itemCategoryName(row: RowWrapper, itemName: string, itemDescript
 	return ["其他"];
 }
 
-const ItemNameMap: Record<string, string> = {
-	334: "凝粹魂能",
-	3030: "哥哥 (頭像)",
-	3031: "傭兵 (頭像)",
-	3032: "村長 (頭像)",
-	3033: "營站指揮官 (頭像)",
-	3034: "男學院生 (頭像)",
-	3036: "盈月天狐 (頭像)",
-	3055: "噩夢表演家 (頭像)",
-	3083: "聖夜贈禮大師 (頭像)",
-	3091: "城市女王 (頭像)",
-	3093: "「種下種子」",
-	3094: "「保留種子」",
-	3096: "古銅色的誘惑 (頭像)",
-	3097: "搖滾巨星 (頭像)",
-	3098: "貪心偶像 (頭像)",
-	3099: "沙塵指揮者 (頭像)",
-	3100: "熱情海浪 (頭像)",
-	3101: "流光之舞 (頭像)",
-	3102: "魘巫女 (頭像)",
-	3103: "猛夏豪傑 (頭像)",
-	3109: "亂櫻之刀 (頭像)",
-	3110: "善意心魔",
-	3111: "惡意心魔",
-	4001: "傑克的餅乾", /* 傑克的餅乾X100 */
-	7028: "神秘寶箱 (連續登入)",
-	7097: "怦然心動禮盒 (2020)",
-	7100: "神秘寶箱 (Sdorica二週年)",
-	7103: "燦爛夏夜 (2020)",
-	7111: "神秘寶箱 (2020 萬聖節)",
-};
-
-const ExpItemName: Record<string, string> = {
-	1004: "庫倫 (探索)",
-	1033: "魔物警報 (探索道具)",
-	"forest_9": "錫箔彩蛋 (探索)",
-};
-
-export function getWikiItemRename(id: string, isExplore = false) {
-	if (!isExplore && id in ItemNameMap) {
-		return ItemNameMap[id];
-	}
-	else if (!isExplore && isAvatar(id, isExplore)) {
-		const itemName = localizationItemName(isExplore)(id);
-		const sk = HeroSkillsTable.find(skill => skill.get("rank") > 5 && localizationString("HeroSkills", "skill_set_")(skill.get("id")) == itemName);
-		if (sk) {
-			return `${itemName} (頭像)`;
-		}
-	}
-	else if (isExplore && id in ExpItemName) {
-		return ExpItemName[id];
-	}
-}
-
 export interface Item2WikiOptions {
 	/**
 	 * 道具數量
@@ -363,58 +255,37 @@ export interface Item2WikiOptions {
 	M?: string;
 }
 
-export function item2wiki(id: string, count?: number, isExplore = false, options?: Item2WikiOptions) {
-	options = options || {};
-	options.text = typeof options.text === 'undefined' ? 'true' : options.text;
-	if (!id || id == "-1") return "";
-
-	let itemName = localizationItemName(isExplore)(id);
-	if (!itemName) {
-		itemName = id;
+export function item2wiki(id: string, count?: number, isExplore = false, options: Item2WikiOptions = {}) {
+	let item: ExploreItem | Item | undefined;
+	if (isExplore) {
+		item = ExploreItem.get(id);
+	} else {
+		item = Item.get(id);
 	}
-	let suffix = isAvatar(id, isExplore) ? "([[頭像]])" : "";
+	if (!item) return "";
+
+	options.text ??= 'true';
+
+	const avatar = (item.isExplore ? item.transformTo : item)?.avatar;
+	let suffix = avatar ? "([[頭像]])" : "";
 	const args: Record<string, string | number | undefined> = {
-		1: itemName,
+		1: item.getWikiPageName(),
 		text: options.text,
 		size: options.size,
 		count: count,
 	};
 	Object.assign(args, options);
-	const packitem = itemName.match(/^(\d+)\顆([^\(\)]+)$/);
-	const packitem2 = itemName.match(/^([^\(\)]+)\(.*\)$/);
-	const escapedName = wikiTitleEscape(itemName);
-	if (escapedName !== itemName) {
-		args[1] = escapedName;
-		args.text = itemName;
-	}
-	const rename = getWikiItemRename(id, isExplore);
-	if (rename) {
-		args[1] = rename;
-		args.text = itemName;
-	}
-	else if (packitem) {
-		args[1] = wikiTitleEscape(packitem[2]);
-		if (args[1] !== packitem[2]) {
-			args.text = packitem[2];
-		}
-		args.count = Number(packitem[1]);
-	}
-	else if (packitem2) {
-		args[1] = wikiTitleEscape(packitem2[1]);
-		args.text = itemName;
-	}
-	if (!isExplore && gamedataString("Items", "id", "stackable")(id) == "Sell") {
-		const item = ItemsTable.find(r => r.get("id") == id);
-		if (item) {
-			const price = Number(item.get("sellAmount"));
-			const count = Number(args.count);
-			if (price > 1) {
-				suffix += `<sub>(${numeral(price * count).format("0,0")})</sub>`;
-			}
-		}
-	}
-	if (options.text != "true") {
+	if (options.text !== "true") {
 		args.text = options.text;
+	} else if (args[1] !== item.name) {
+		args.text = item.name;
+	}
+	if (!item.isExplore && item.stackable == ItemStackable.Sell) {
+		const price = item.sellItem.amount;
+		const count = args.count ? +args.count : 1;
+		if (price > 1) {
+			suffix += `<sub>(${numeral(price * count).format("0,0")})</sub>`;
+		}
 	}
 	if (args.count) {
 		args.count = numeral(Number(args.count)).format("0,0");
@@ -462,7 +333,7 @@ export function item2wikiWithType(type: string, id: string, count?: number, opti
 
 		case "Hero": {
 			const [heroId, rankId] = id.split("_");
-			const hero = Hero.get(heroId)?.toWikiSmallIcon() ?? localizationCharacterNameByHeroId()(heroId);
+			const hero = Hero.get(heroId)?.toWiki() ?? localizationCharacterNameByHeroId()(heroId);
 			return `${hero} (${rank()(rankId)})` + (count ? ` x${count}` : "");
 		}
 
@@ -474,15 +345,6 @@ export function item2wikiWithType(type: string, id: string, count?: number, opti
 	}
 }
 
-export function itemlist2wiki(list: string, isExplore = false, options?: Item2WikiOptions, separator = "<br/>") {
-	return String(list)
-		.split(";")
-		.filter(s => s != "")
-		.map(item => item.split(":"))
-		.map(item => item2wiki(item[0], item.length > 1 ? Number(item[1]) : undefined, isExplore, options))
-		.join(separator);
-}
-
 export function itemList(row: RowWrapper, count = 4, isExplore = true, size = "20px") {
 	const items: string[] = [];
 	for (let k = 1; k <= count; k++) {
@@ -490,24 +352,4 @@ export function itemList(row: RowWrapper, count = 4, isExplore = true, size = "2
 		if (wiki) items.push(wiki);
 	}
 	return items;
-}
-
-export function itemListWithType(row: RowWrapper, count: number, typeKey: Func1, itemKey: Func1, countKey: Func1, size = "20px") {
-	const items: string[] = [];
-	for (let i = 1; i <= count; i++) {
-		const wiki = item2wikiWithType(row.get(typeKey(i.toString())), row.get(itemKey(i.toString())), row.get(countKey(i.toString())), { size });
-		if (wiki) items.push(wiki);
-	}
-	return items;
-}
-
-function isAvatar(id: string, isExplore = false): boolean {
-	if (isExplore) {
-		if (gamedataString("ExploreItems", "id", "category")(id) == "Transform") {
-			const toItemId = gamedataString("ExploreItems", "id", "effectValue")(id);
-			return isAvatar(toItemId);
-		}
-		return false;
-	}
-	return gamedataString("Items", "id", "category")(id) == "Avatar";
 }

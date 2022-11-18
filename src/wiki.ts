@@ -1,9 +1,11 @@
 import MWBot from "mwbot";
-import path from "path";
+import fs from "node:fs/promises";
+import path from "node:path";
 import { WIKI_PATH } from "./config";
+import { getConstants } from "./localization";
 import { Logger } from "./logger";
 import { outJson, outText } from "./out";
-import { isDevMode, objectEach } from "./utils";
+import { objectEach } from "./utils";
 import { getMWBot } from "./wiki-bot";
 import { getHeroJsonData } from "./wiki-hero";
 import { getItemJsonData } from "./wiki-item";
@@ -15,6 +17,7 @@ import { wikiHeroBot } from "./wiki/auto/hero";
 import wikiAvatars from "./wiki/Avatars";
 import wikiBattlefieldDropItems from "./wiki/BattlefieldDropItems";
 import wikiBattlefieldRanks from "./wiki/BattlefieldRanks";
+import wikiBattlefields from "./wiki/Battlefields";
 import wikiChapter from "./wiki/Chapter";
 import wikiCharVoice from "./wiki/CharVoice";
 import wikiDiligents from "./wiki/Diligents";
@@ -27,19 +30,18 @@ import wikiFreeHeroes from "./wiki/FreeHeroes";
 import wikiHeroes, { wikiHeroesJson } from "./wiki/Heroes";
 import wikiHomelandBuilding from "./wiki/HomelandBuilding";
 import wikiHomelandMonster from "./wiki/HomelandMonster";
+import wikiIndex from "./wiki/index";
 import wikiLevelUps from "./wiki/LevelUps";
 import wikiMissions from "./wiki/Missions";
 import { wikiMonsterTrapJson } from "./wiki/MonsterTrap";
-import wikiRaidRanks from "./wiki/RaidRanks";
+import wikiQuestAchievements from "./wiki/QuestAchievements";
 import wikiResonance from "./wiki/Resonance";
 import wikiRewardGroups from "./wiki/RewardGroups";
-import wikiSideStory from "./wiki/SideStory";
 import wikiSignInReward from "./wiki/SignInReward";
-import wikiStore from "./wiki/Store";
 import wikiTavernMission from "./wiki/TavernMission";
 import wikiTavernMissionCompact from "./wiki/TavernMissionCompact";
 import wikiTavernMissionDrop from "./wiki/TavernMissionDrop";
-import wikiTips from "./wiki/Tips";
+import { wikiTips } from "./wiki/Tips";
 import wikiTreasureItems from "./wiki/TreasureItems";
 
 const logger = new Logger('wiki');
@@ -73,14 +75,22 @@ function wikiItemsData() {
 	return Object.values(itemJson).map(v => Object.values(v).join("\n\n")).join("\n\n##############################\n\n");
 }
 
-
 function wrapHiddenDiv(content: string) {
 	return `<div class="accountcreator-show">\n${content}\n</div>`;
 }
 
+async function applyHtmlTemplate(title: string, body: string) {
+	const template = await fs.readFile(path.join(__dirname, "./wiki/template.html"), { encoding: "utf8" });
+	return template.replace(/<%title%>/g, title).replace(/<%body%>/g, body);
+}
+
 async function outWiki(bot: MWBot | undefined, title: string, out: string) {
-	await outText(path.join(WIKI_PATH, `${title.replace(/:/, '_')}.txt`), out);
-	if (bot && !isDevMode()) {
+	const ext = out.startsWith("#") ? "md" : out.startsWith("<") ? "html" : "txt";
+	if (ext === "html") {
+		out = await applyHtmlTemplate(title, out);
+	}
+	await outText(path.join(WIKI_PATH, `${title.replace(/:/, '_')}.${ext}`), out);
+	if (bot && ext === "txt") {
 		if (title.startsWith('模板:')) {
 			await bot.editOnDifference(title, out);
 		} else {
@@ -91,21 +101,23 @@ async function outWiki(bot: MWBot | undefined, title: string, out: string) {
 
 async function outWikiJson(bot: MWBot | undefined, title: string, data: any) {
 	await outJson(path.join(WIKI_PATH, `${title}.json`), data);
-	if (bot && !isDevMode()) {
+	if (bot) {
 		await bot.editOnDifference(`使用者:小飄飄/bot/${title}.json`, JSON.stringify(data, null, 4));
 	}
 }
 
 async function outWikiConstant(bot: MWBot | undefined, title: string, value: string) {
-	if (value && bot && !isDevMode()) {
+	if (value && bot) {
 		await bot.editOnDifference(`模板:Constant/${title}`, `${value}<noinclude>{{Documentation}}</noinclude>`);
 	}
 }
 
-export async function wikiMain() {
+export async function wikiMain(updateWiki?: boolean) {
 	let bot: MWBot | undefined;
 	try {
-		bot = await getMWBot();
+		if (updateWiki) {
+			bot = await getMWBot();
+		}
 	} catch (error) {
 		logger.log(`[MWBOT] Login failed: ${error}`);
 	}
@@ -114,6 +126,7 @@ export async function wikiMain() {
 	await outWiki(bot, 'Adventure', wikiAdventure());
 	await outWiki(bot, 'AdventureRank', wikiAdventureRank());
 	await outWiki(bot, 'Avatars', wikiAvatars());
+	await outWiki(bot, 'Battlefields', wikiBattlefields());
 	await outWiki(bot, 'BattlefieldDropItems', wikiBattlefieldDropItems());
 	await outWiki(bot, 'BattlefieldRanks', wikiBattlefieldRanks());
 	await outWiki(bot, 'Chapter', wikiChapter());
@@ -134,27 +147,29 @@ export async function wikiMain() {
 	await outWiki(bot, 'LevelUps', wikiLevelUps());
 	await outWiki(bot, 'Missions', wikiMissions());
 	await outWikiJson(bot, 'MonsterTrap', wikiMonsterTrapJson());
-	await outWiki(bot, 'RaidRanks', wikiRaidRanks());
+	await outWiki(bot, 'QuestAchievements', wikiQuestAchievements());
 	await outWiki(bot, 'Resonance', wikiResonance());
 	await outWiki(bot, 'RewardGroups', wikiRewardGroups());
-	await outWiki(bot, 'SideStory', wikiSideStory());
 	await outWiki(bot, 'SignInReward', wikiSignInReward());
-	await outWiki(bot, 'Store', wikiStore());
+	// await outWiki(bot, 'Store', wikiStore());
 	await outWiki(bot, 'TavernMission', wikiTavernMission());
 	await outWiki(bot, 'TavernMissionCompact', wikiTavernMissionCompact());
 	await outWiki(bot, 'TavernMissionDrop', wikiTavernMissionDrop());
 	await outWiki(bot, 'TreasureItems', wikiTreasureItems());
 
-	await outWiki(bot, '模板:Tips', wikiTips());
+	await outWiki(bot, 'Tips', wikiTips());
+	// await outWiki(bot, '模板:Tips', wikiTipsTemplate());
 
-	// await outWikiConstant(bot, 'MaxLevel', getConstants()('playerMaxLv'));
-	// await outWikiConstant(bot, 'MaxResonanceLevel', getConstants()('subrankMax'));
+	await outWikiConstant(bot, 'MaxLevel', getConstants()('playerMaxLv'));
+	await outWikiConstant(bot, 'MaxResonanceLevel', getConstants()('subrankMax'));
 
 	await outText(path.join(WIKI_PATH, "raw/quests.txt"), wikiQuestsData());
 	await outText(path.join(WIKI_PATH, "raw/heroes.txt"), wikiHeroesData());
 	await outText(path.join(WIKI_PATH, "raw/items.txt"), wikiItemsData());
 
-	if (bot && !isDevMode()) {
+	await outWiki(bot, 'index', await wikiIndex());
+
+	if (bot) {
 		await wikiHeroBot(bot);
 		// await wikiMonsterBot(bot);
 		// await wikiRuneRedirectBot(bot);

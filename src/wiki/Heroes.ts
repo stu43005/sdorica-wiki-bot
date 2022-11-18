@@ -1,6 +1,8 @@
+import _ from "lodash";
 import { Hero } from "../model/hero";
 import { heroSlotIconTemplate } from "../templates/hero-slot-icon";
-import { tooltipTemplate } from "../templates/tooltip";
+import { wikiH1, wikiH2 } from "../templates/wikiheader";
+import { wikitable, WikiTableStruct } from "../templates/wikitable";
 import { sortByCharacterModelNo } from "../utils";
 
 function getSortedHeroes() {
@@ -12,40 +14,56 @@ function getSortedHeroes() {
 }
 
 export default function wikiHeroes() {
-	const out: string[] = [`{| class="wikitable table-responsive-autowrap" style="word-break: break-word;"
-! width="6%" | id
-! width="10%" | 模組
-! width="6%" | 站位
-! 名稱
-! 技能書
-! width="6%" | 攻擊
-! width="6%" | 體力
-! width="6%" | 復活
-! 角色故事
-! 共鳴材料`];
+	let out = wikiH1('英雄角色');
+
 	const sortedHeroes = getSortedHeroes();
-	for (const hero of sortedHeroes) {
-		let name = hero.enable ? hero.toWikiSmallIcon() : hero.firstname;
-		if (hero.firstname != hero.internalName) {
-			name = tooltipTemplate(name, hero.internalName);
+	const grouppedHeroes = _.groupBy(
+		sortedHeroes,
+		hero => hero.enable ? "一般" : hero.empty ? "環境" : "停用",
+	);
+
+	for (const [groupId, group] of Object.entries(grouppedHeroes)) {
+		const table: WikiTableStruct = {
+			attributes: `class="wikitable table-responsive-autowrap" style="word-break: break-word;"`,
+			rows: [
+				[
+					`! width="6%" | id`,
+					`! width="10%" | 模組`,
+					`! width="6%" | 站位`,
+					`! 名稱`,
+					`! 技能書`,
+					`! width="6%" | 攻擊`,
+					`! width="6%" | 體力`,
+					`! width="6%" | 復活`,
+					`! 角色故事`,
+					`! 共鳴材料`,
+				],
+			],
+		};
+		for (const hero of group) {
+			const skillbooks = hero.books.map(book => book.bookItem?.toWiki({ text: "" }) ?? '');
+
+			table.rows.push({
+				attributes: hero.enable ? "" : hero.empty ? `style="background-color: #90ee90; color: #1e1e1e;" title="環境"` : `style="background-color: #ccc; color: #1e1e1e;" title="停用"`,
+				ceils: [
+					hero.id,
+					hero.model,
+					hero.empty ? "環境" : heroSlotIconTemplate(hero.slot),
+					hero.toWiki(),
+					skillbooks.join(''),
+					hero.atk,
+					hero.hp,
+					hero.revive || '',
+					hero.storyChapter?.title ? `[[${hero.firstname}《${hero.storyChapter.title}》|${hero.storyChapter.title}]]` : "",
+					hero.resonanceItem?.toWiki({ text: "", count: undefined }) ?? "",
+				],
+			});
 		}
-		const skillbooks = hero.books.map(book => book.getBookItem()?.toWiki(undefined, { text: "" }) ?? '');
 
-		out.push(`|-${hero.enable ? "" : hero.empty ? ` style="background-color: #90ee90" title="環境"` : ` style="background-color: #ccc" title="停用"`}
-| ${hero.id}
-| ${hero.model}
-| ${hero.empty ? "環境" : heroSlotIconTemplate(hero.slot)}
-| ${name}
-| ${skillbooks.join('')}
-| ${hero.atk}
-| ${hero.hp}
-| ${hero.revive || ''}
-| ${hero.storyChapter?.title ? `[[${hero.firstname}《${hero.storyChapter.title}》|${hero.storyChapter.title}]]` : ""}
-| ${hero.resonanceItem?.toWiki({ text: "", count: undefined }) ?? ""}`);
+		out += `\n\n${wikiH2(groupId)}\n${wikitable(table)}`;
 	}
-	out.push(`|}`);
 
-	return out.join("\n");
+	return out;
 }
 
 export function wikiHeroesJson() {

@@ -1,7 +1,7 @@
 import { ImperiumData } from '../../imperium-data';
+import { Logger } from '../../logger';
 import { registerImperiumDataViewerJS } from '../imperium-data-viewerjs';
 import { ViewerJSHelper } from '../viewerjs-helper';
-import { Logger } from './../../logger';
 
 export * from '../../imperium-data';
 export * from "../../lib/FullSerializer/fsSerializer";

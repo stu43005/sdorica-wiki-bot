@@ -125,6 +125,27 @@ export function objectMap<T, U>(obj: Record<string, T>, callback: (key: string, 
 	return out;
 }
 
+/**
+ * Yields the numbers in the given range as an array
+ *
+ * @param start - The start of the range
+ * @param end - The end of the range (inclusive)
+ * @param step - The amount to increment between each number
+ * @example
+ * Basic range
+ * ```ts
+ * range(3, 5); // [3, 4, 5]
+ * ```
+ * @example
+ * Range with a step
+ * ```ts
+ * range(3, 10, 2); // [3, 5, 7, 9]
+ * ```
+ */
+export function range(start: number, end: number, step = 1): number[] {
+	return Array.from({ length: (end - start) / step + 1 }, (_, index) => start + index * step);
+}
+
 export function arrayUnique<T>(arr: T[]) {
 	return [...new Set(arr)];
 }
@@ -164,6 +185,23 @@ export function arraySum<T>(arr: T[], getter: (value: T) => number): number {
 	return sum;
 }
 
+export function arraySortBy(order: string[]) {
+	return (a: string, b: string) => {
+		const ai = order.indexOf(a);
+		const bi = order.indexOf(b);
+		if (ai == -1 && bi == -1) {
+			return a.localeCompare(b);
+		}
+		if (ai == -1) {
+			return 1;
+		}
+		if (bi == -1) {
+			return -1;
+		}
+		return ai - bi;
+	}
+}
+
 export const flipMatrix = (matrix: any[][]) => (
 	matrix.length > 0 ? matrix[0].map((column, index) => (
 		matrix.map(row => row[index])
@@ -173,10 +211,8 @@ export const flipMatrix = (matrix: any[][]) => (
 export const sortByCharacterModelNo = (a: string, b: string) => {
 	a = String(a);
 	b = String(b);
-	const sa = a.replace(/^[a-zA-Z]/, "");
-	const na = parseInt(sa);
-	const sb = b.replace(/^[a-zA-Z]/, "");
-	const nb = parseInt(sb);
+	const na = parseInt(a.replace(/^[a-zA-Z]/, ""), 10);
+	const nb = parseInt(b.replace(/^[a-zA-Z]/, ""), 10);
 	if (isNaN(na) && isNaN(nb)) {
 		return a.localeCompare(b);
 	}
@@ -187,6 +223,20 @@ export const sortByCharacterModelNo = (a: string, b: string) => {
 	}
 	return na - nb;
 };
+
+export function sortCategory(a: string, b: string) {
+	const aMatch = a.match(/^([a-zA-Z]+)(\d+)$/);
+	const bMatch = b.match(/^([a-zA-Z]+)(\d+)$/);
+	if (aMatch && bMatch && aMatch[1] == bMatch[1]) {
+		const aNumber = parseInt(aMatch[2], 10);
+		const bNumber = parseInt(bMatch[2], 10);
+		const diff = aNumber - bNumber;
+		if (diff) {
+			return diff;
+		}
+	}
+	return a.localeCompare(b);
+}
 
 export function jsonBlock(obj: any) {
 	return "```json\n" + JSON.stringify(obj, null, '  ') + "\n```";

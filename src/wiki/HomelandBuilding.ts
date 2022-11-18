@@ -1,34 +1,56 @@
+import _ from "lodash";
 import { ImperiumData } from "../imperium-data";
 import { localizationString } from "../localization";
-import { arrayUnique } from "../utils";
-import { itemListWithType } from "../wiki-item";
+import { wikiH1, wikiH2 } from "../templates/wikiheader";
+import { wikitable, WikiTableStruct } from "../templates/wikitable";
+import { range } from "../utils";
+import { item2wikiWithType } from "../wiki-item";
 
 const HomelandBuildingTable = ImperiumData.fromGamedata().getTable("HomelandBuilding");
 
 export default function wikiHomelandBuilding() {
-	const homelandBuildingIds = arrayUnique(HomelandBuildingTable.rows.map(r => r.get("buildingId")));
-	const out: string[] = [];
-	homelandBuildingIds.forEach(id => {
-		const buildings = HomelandBuildingTable.filter(r => r.get("buildingId") == id);
-		let str = `==${localizationString("Homeland")(buildings[0].get("nameKey")) || buildings[0].get("nameKey")}==
-{| class="wikitable"
-! 等級<!--buildingLv-->
-! 空間<!--spaceNum-->
-! 升級素材
-! 升級獲得營地精驗`;
-		for (let i = 0; i < buildings.length; i++) {
-			const building = buildings[i];
-			const itemlist = itemListWithType(building, 3, (i) => `payType${i}`, (i) => `linkId${i}`, (i) => `amount${i}`).join(" ");
-			str += `
-|-${building.get("enable") ? "" : ` style="background-color: #ccc" title="停用"`}
-| ${building.get("buildingLv")}
-| ${building.get("spaceNum") >= 0 ? building.get("spaceNum") : ""}
-| ${building.get("buildingLv") == 1 ? "" : itemlist}
-| ${building.get("buildingLv") == 1 ? "" : building.get("homeexp")}`;
-		}
-		str += `\n|}`;
-		out.push(str);
-	});
+	let out = wikiH1('冒險營地建築');
 
-	return out.join("\n\n");
+	const homelandBuildings = _.groupBy(HomelandBuildingTable.rows, (r) => r.get('buildingId'));
+	for (const [, group] of Object.entries(homelandBuildings)) {
+		const buildingName = localizationString("Homeland")(group[0].get("nameKey")) || group[0].get("nameKey");
+		const showSpace = group.some((r) => r.get("spaceNum") >= 0);
+		const table: WikiTableStruct = [];
+		if (showSpace) {
+			table.push([
+				`! 等級`,
+				`! 空間`,
+				`! 升級素材`,
+				`! 升級獲得營地精驗`,
+			]);
+		} else {
+			table.push([
+				`! 等級`,
+				`! 升級素材`,
+				`! 升級獲得營地精驗`,
+			]);
+		}
+		for (let index = 0; index < group.length; index++) {
+			const level = group[index];
+			const nextLevel = group[index + 1];
+			const items = nextLevel ? range(1, 3)
+				.map((i) => item2wikiWithType(nextLevel.get(`payType${i}`), nextLevel.get(`linkId${i}`), nextLevel.get(`amount${i}`), { size: "20px" }))
+				.filter(Boolean) : [];
+			table.push({
+				attributes: level.get("enable") ? "" : `style="background-color: #ccc; color: #1e1e1e;" title="停用"`,
+				ceils: [
+					level.get("buildingLv"),
+					...(showSpace ? [
+						level.get("spaceNum"),
+					] : []),
+					items.join(" "),
+					nextLevel?.get("homeexp") ?? "",
+				],
+			});
+		}
+
+		out += `\n\n${wikiH2(buildingName)}\n${wikitable(table)}`;
+	}
+
+	return out;
 }

@@ -178,6 +178,11 @@ export const gamedataTeanslateSettings: GamedataRef[] = [
 	},
 	{
 		table: "Quests",
+		column: "ruleInfo",
+		func: localizationString("Metagame"),
+	},
+	{
+		table: "Quests",
 		column: "extraSettingId",
 		func: gamedataString("QuestExtraSettings", "id", "name"),
 	},
@@ -810,8 +815,13 @@ export const gamedataTeanslateSettings: GamedataRef[] = [
 	},
 	{
 		table: "QuestAchievements",
-		column: "giveLinkId1:giveType1",
+		column: "giveLinkId:giveType",
 		func: localizationItemNameWithType(),
+	},
+	{
+		table: "QuestAchievements",
+		column: "descriptionKey",
+		func: localizationString("QuestAchievement"),
 	},
 	{
 		table: "RaidRanks",

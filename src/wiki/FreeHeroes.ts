@@ -1,32 +1,43 @@
-import * as _ from "lodash";
+import _ from "lodash";
 import { ImperiumData } from "../imperium-data";
-import { call2, gamedataString, localizationCharacterNameByHeroId, localizationString, rank, semicolon } from "../localization";
-import { Hero } from './../model/hero';
-import { HeroSkillSet } from './../model/hero-skillset';
+import { call2, distinct, localizationChapterName, localizationCharacterNameByHeroId, rank, semicolon } from "../localization";
+import { Hero } from '../model/hero';
+import { HeroSkillSet } from '../model/hero-skillset';
+import { wikiH1 } from "../templates/wikiheader";
+import { wikitable, WikiTableStruct } from "../templates/wikitable";
 
 const FreeHeroesTable = ImperiumData.fromGamedata().getTable("FreeHeroes");
 
 export default function wikiFreeHeroes() {
-	const advs = FreeHeroesTable.filter(row => semicolon(call2(gamedataString("Chapters", "id", "title"), localizationString("RegionName")))(row.get('chapterIds')).includes('幻境試煉'));
-	const advGroups = _.groupBy(advs, row => row.get('groupId'));
-	let out = `== 幻境試煉 ==
-{| class="wikitable"
-! groupId
-! 角色
-! 階級
-! 技能組`;
+	const advGroups = _.groupBy(FreeHeroesTable.rows, row => row.get('groupId'));
+	const table: WikiTableStruct = [
+		["! groupId", "! 章節", "! 角色", "! 階級", "! 技能組"]
+	];
 	for (const [groupId, group] of Object.entries(advGroups)) {
 		for (let i = 0; i < group.length; i++) {
 			const row = group[i];
 			const heroId: string = row.get('heroId');
-			const hero = Hero.get(heroId)?.toWikiSmallIcon() ?? localizationCharacterNameByHeroId()(heroId);
+			const hero = Hero.get(heroId)?.toWiki() ?? localizationCharacterNameByHeroId()(heroId);
 			const skillSets = HeroSkillSet.getList(row.get('skillSetIds'));
-			out += `\n|-${i === 0 ? `\n| rowspan="${group.length}" | ${groupId}` : ''}
-| ${hero}
-| ${rank()(row.get('rank'))}
-| ${skillSets.map(s => typeof s === 'string' ? s : `(${s.rankPlus})${s.name}`).join('<br/>')}`;
+			const chapters = call2(semicolon(localizationChapterName()), distinct())(row.get('chapterIds'));
+			table.push([
+				...(i === 0 ? [
+					{
+						header: true,
+						attributes: `rowspan="${group.length}"`,
+						text: groupId,
+					},
+					{
+						header: true,
+						attributes: `rowspan="${group.length}"`,
+						text: chapters,
+					},
+				] : []),
+				hero,
+				rank()(row.get('rank')),
+				skillSets.map(s => typeof s === 'string' ? s : `(${s.rankPlus})${s.name}`).join('<br/>')
+			]);
 		}
 	}
-	out += `\n|}`;
-	return out;
+	return `${wikiH1('幻境試煉免費英雄')}\n${wikitable(table)}`;
 }

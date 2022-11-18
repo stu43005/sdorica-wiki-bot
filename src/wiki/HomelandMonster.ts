@@ -1,15 +1,20 @@
+import _ from "lodash";
+import numeral from "numeral";
 import { ImperiumData } from "../imperium-data";
 import { gbw, localizationCharacterName, localizationMonsterSkillName, localizationMonsterSpecialityName, localizationString } from "../localization";
-import { arrayUnique } from "../utils";
+import { wikiH1, wikiHr } from "../templates/wikiheader";
+import { wikiimage } from "../templates/wikiimage";
+import { wikitable, WikiTableStruct } from "../templates/wikitable";
+import { wikiNextLine } from "../wiki-utils";
 
 const AbilityDropTable = ImperiumData.fromGamedata().getTable("AbilityDrop");
 const HomelandMonsterTable = ImperiumData.fromGamedata().getTable("HomelandMonster");
 
 function abilityDrop(groupId: string) {
 	const entries = AbilityDropTable.filter(r => r.get("groupId") == groupId);
-	const weightCount = entries.reduce((prev, cur) => prev + Number(cur.get("weight")), 0);
+	const weightSum = _.sumBy(entries, (r) => +r.get('weight'));
 	return entries.map(r => {
-		let str = "";
+		let str: string = r.get("abilityId");
 		switch (r.get("type")) {
 			case "Skill":
 				str = localizationMonsterSkillName()(r.get("abilityId"));
@@ -18,46 +23,72 @@ function abilityDrop(groupId: string) {
 				str = localizationMonsterSpecialityName()(r.get("abilityId"));
 				break;
 		}
-		str = `[[檔案:${str}_Icon.png|24px]] ${str}`;
-		if (weightCount && r.get("weight") != weightCount) {
-			str += `：${Math.floor(r.get("weight") / weightCount * 10000) / 100}%`;
+		str = `${wikiimage(`${str}_Icon.png`, { width: 24 })} ${str}`;
+		if (weightSum && r.get("weight") != weightSum) {
+			str += `：${numeral(r.get("weight") / weightSum).format('0.[00]%')}`;
 		}
 		return str;
-	}).join("<br/>");
+	}).join("\n");
 }
 
 export default function wikiHomelandMonster() {
-	const out: string[] = [];
-	out.push(`{| class="wikitable"
-|-
-! 站位
-! 名稱
-! style="width: 20%" | 說明
-! 技能1
-! 技能2<br/><small>5星解鎖</small>
-! 特長1<br/><small>3星解鎖</small>
-! 特長2<br/><small>7星解鎖</small>`);
-	const monsterIds = arrayUnique(HomelandMonsterTable.rows.map(r => r.get("monsterId")));
-	for (let i = 0; i < monsterIds.length; i++) {
-		const monsterId = monsterIds[i];
-		const monsters = HomelandMonsterTable.filter(r => r.get("monsterId") == monsterId);
-		const monsterFirst = monsters[0];
+	let out = wikiH1('獸廄野獸');
+
+	const table: WikiTableStruct = [
+		[
+			`! 站位`,
+			`! 名稱`,
+			`! style="width: 20%" | 說明`,
+			`! 技能1`,
+			{
+				header: true,
+				text: wikiNextLine(`技能2\n<small>5星解鎖</small>`),
+			},
+			{
+				header: true,
+				text: wikiNextLine(`特長1\n<small>3星解鎖</small>`),
+			},
+			{
+				header: true,
+				text: wikiNextLine(`特長2\n<small>7星解鎖</small>`),
+			},
+		],
+	];
+
+	const monsters = _.groupBy(HomelandMonsterTable.rows, (r) => r.get("monsterId"));
+	for (const [, group] of Object.entries(monsters)) {
+		const monsterFirst = group[0];
 		const name = localizationCharacterName()(monsterFirst.get("keyName")) || monsterFirst.get("keyName");
 
-		const speciality1s = arrayUnique(monsters.map(r => r.get("speciality1"))).map(n => `rank ${monsters.filter(r => r.get("speciality1") == n).map(r => r.get("rank")).join(", ")}:<br/>${abilityDrop(n)}`).join(`\n----\n`);
-		const speciality2s = arrayUnique(monsters.map(r => r.get("speciality2"))).map(n => `rank ${monsters.filter(r => r.get("speciality2") == n).map(r => r.get("rank")).join(", ")}:<br/>${abilityDrop(n)}`).join(`\n----\n`);
+		const speciality1List = Object.entries(_.groupBy(group, (r) => r.get("speciality1")))
+			.map(([speciality1, group1]) => {
+				const ranks: string[] = group1.map(r => r.get("rank"));
+				return `rank ${ranks.join(", ")}:\n${abilityDrop(speciality1)}`;
+			})
+			.join(`\n${wikiHr()}\n`);
 
-		const str = `|-
-| {{站位圖標|${gbw()(monsterFirst.get("monsterType"))}位}}
-| style="text-align: center; width: 70px;" | [[檔案:${name}_Mob.png|70px]]<br/>[[${name}]]
-| ${localizationString("MonsterInfo")(monsterFirst.get("monsterDescKey"))}
-| ${abilityDrop(monsterFirst.get("skill1"))}
-| ${abilityDrop(monsterFirst.get("skill2"))}
-| ${speciality1s}
-| ${speciality2s}`;
-		out.push(str);
+		const speciality2List = Object.entries(_.groupBy(group, (r) => r.get("speciality2")))
+			.map(([speciality2, group2]) => {
+				const ranks: string[] = group2.map(r => r.get("rank"));
+				return `rank ${ranks.join(", ")}:\n${abilityDrop(speciality2)}`;
+			})
+			.join(`\n${wikiHr()}\n`);
+
+		table.push([
+			`{{站位圖標|${gbw()(monsterFirst.get("monsterType"))}位}}`,
+			{
+				attributes: `style="text-align: center; width: 70px;"`,
+				text: `{{野獸圖標|${name}}}`,
+			},
+			localizationString("MonsterInfo")(monsterFirst.get("monsterDescKey")),
+			wikiNextLine(abilityDrop(monsterFirst.get("skill1"))),
+			wikiNextLine(abilityDrop(monsterFirst.get("skill2"))),
+			wikiNextLine(speciality1List),
+			wikiNextLine(speciality2List),
+		]);
 	}
-	out.push(`|}`);
 
-	return out.join("\n");
+	out += `\n${wikitable(table)}`;
+
+	return out;
 }

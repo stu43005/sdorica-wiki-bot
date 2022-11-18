@@ -43,10 +43,9 @@ export async function wikiItemImageBot(bot: MWBot) {
 			await getImage(`assets/game/ui/item/mid/${item.isExplore ? 'explore/' : ''}${iconKey}_m.png`, path.join(IMAGES_PATH, `${wikiPageName} M Icon.png`));
 
 			if (!item.isExplore) {
-				const avatar = item.getAvatar();
-				if (avatar) {
-					await getImage(`assets/game/character/character_image/iconl/${avatar.asset}_iconl.png`, path.join(IMAGES_PATH, `${wikiPageName} Avatar Icon L.png`));
-					await getImage(`assets/game/character/character_image/icon/${avatar.asset}_icon.png`, path.join(IMAGES_PATH, `${wikiPageName} Avatar Icon.png`));
+				if (item.avatar) {
+					await getImage(`assets/game/character/character_image/iconl/${item.avatar.asset}_iconl.png`, path.join(IMAGES_PATH, `${wikiPageName} Avatar Icon L.png`));
+					await getImage(`assets/game/character/character_image/icon/${item.avatar.asset}_icon.png`, path.join(IMAGES_PATH, `${wikiPageName} Avatar Icon.png`));
 				}
 			}
 

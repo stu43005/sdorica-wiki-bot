@@ -25,7 +25,7 @@ export function wikiTitleEscape(title: string) {
 }
 
 export function wikiNextLine(text: string) {
-	return String(text).replace(/\r?\n/g, "<br/>");
+	return String(text).replace(/\r?\n/g, "<br/>\n");
 }
 
 /**

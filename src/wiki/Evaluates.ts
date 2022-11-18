@@ -1,6 +1,12 @@
+import _ from "lodash";
 import { ImperiumData } from "../imperium-data";
 import { gamedataString, localizationQuestModeName } from "../localization";
+import { wikiH1, wikiH2 } from "../templates/wikiheader";
+import { wikiimage } from "../templates/wikiimage";
+import { wikitable, WikiTableCeil, WikiTableStruct } from "../templates/wikitable";
+import { range } from "../utils";
 import { item2wikiWithType } from "../wiki-item";
+import { wikiNextLine } from "../wiki-utils";
 
 const EvaluatesTable = ImperiumData.fromGamedata().getTable("Evaluates");
 
@@ -20,36 +26,46 @@ const evaluateRankIconName: Record<string, string> = {
 };
 
 export default function wikiEvaluates() {
-	const out: string[] = [];
+	let out = wikiH1("戰鬥評價");
 
-	const groups = [...new Set(EvaluatesTable.rows.map(row => row.get("groupId")))];
-	for (const groupId of groups) {
-		const groupedEvaluates = EvaluatesTable.filter(row => row.get("groupId") === groupId);
-		const modes = [...new Set(groupedEvaluates.map(row => row.get("questModeId")))];
-		let str = `== ${groupId} ==
-{| class="wikitable mw-collapsible"
-|-
-! 模式 !! 評價 !! 點數
-! colspan="2" | 獲得戰利品`;
-		for (const mode of modes) {
-			const modeRanks = groupedEvaluates.filter(row => row.get("questModeId") === mode);
-			str += `\n|-
-! rowspan="${modeRanks.length}" | [[File:${modeImageName[gamedataString("QuestMode", "id", "modeImage")(mode)]}|50px]]<br/>${localizationQuestModeName()(mode)}`;
-			for (let index = 0; index < modeRanks.length; index++) {
-				const rank = modeRanks[index];
-				if (index > 0) {
-					str += "\n|-";
-				}
-				str += `
-| [[File:${evaluateRankIconName[rank.get("evaluateRankIcon")]}|64px]]
-| ${rank.get("evaluatePoint")}
-| ${item2wikiWithType(rank.get("giveType1"), rank.get("giveLinkId1"), rank.get("giveAmount1"))}
-| ${item2wikiWithType(rank.get("giveType2"), rank.get("giveLinkId2"), rank.get("giveAmount2"))}`;
+	const groups = _.groupBy(EvaluatesTable.rows, (r) => r.get("groupId"));
+	for (const [groupId, group] of Object.entries(groups)) {
+		const table: WikiTableStruct = {
+			attributes: `class="wikitable mw-collapsible"`,
+			rows: [
+				[
+					`! 模式`,
+					`! 評價`,
+					`! 點數`,
+					`! colspan="2" | 獲得戰利品`,
+				],
+			],
+		};
+
+		const modes = _.groupBy(group, (r) => r.get("questModeId"));
+		for (const [questModeId, mode] of Object.entries(modes)) {
+			const modeImage = gamedataString("QuestMode", "id", "modeImage")(questModeId);
+			for (let index = 0; index < mode.length; index++) {
+				const entry = mode[index];
+				table.rows.push([
+					...(index === 0 ? [
+						{
+							header: true,
+							attributes: `rowspan="${mode.length}"`,
+							text: wikiNextLine(`${wikiimage(modeImageName[modeImage], { width: 50 })}\n${localizationQuestModeName()(questModeId)}`),
+						},
+					] : []),
+					wikiimage(evaluateRankIconName[entry.get("evaluateRankIcon")], { width: 64 }),
+					entry.get("evaluatePoint"),
+					...range(1, 2).map((i): WikiTableCeil => ({
+						text: item2wikiWithType(entry.get(`giveType${i}`), entry.get(`giveLinkId${i}`), entry.get(`giveAmount${i}`)),
+					})),
+				]);
 			}
 		}
-		str += `\n|}`;
-		out.push(str);
+
+		out += `\n\n${wikiH2(groupId)}\n${wikitable(table)}`;
 	}
 
-	return out.join("\n\n");
+	return out;
 }

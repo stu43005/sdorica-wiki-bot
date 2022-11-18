@@ -2,6 +2,7 @@ import { ImperiumData, RowWrapper } from "../imperium-data";
 import { localizationString } from "../localization";
 import { HeroRankParams, heroRankTemplate } from "../templates/hero-rank";
 import { heroSkinTemplate } from "../templates/hero-skin";
+import { HeroSmallIconParams } from "../templates/hero-small-icon";
 import { HeroRank } from "./enums/hero-rank.enum";
 import { HeroSkillType } from "./enums/hero-skill-type.enum";
 import { ItemCategory } from "./enums/item-category.enum";
@@ -19,6 +20,7 @@ import { Item } from "./item";
 const HeroSkillsTable = ImperiumData.fromGamedata().getTable("HeroSkills");
 
 const instances: Record<string, HeroSkillSet> = {};
+let allInstances: HeroSkillSet[] | null = null;
 
 export class HeroSkillSet implements IHeroSkillSet {
 	public static get(row: RowWrapper): HeroSkillSet;
@@ -51,12 +53,23 @@ export class HeroSkillSet implements IHeroSkillSet {
 		return list.map(str => this.get(str) ?? str);
 	}
 
-	private static find(predicate: (value: HeroSkillSet, index: number) => boolean): HeroSkillSet | undefined {
-		const item = HeroSkillsTable.find((row, index) => {
-			const item2 = HeroSkillSet.get(row);
-			return predicate(item2, index);
-		});
-		return item && HeroSkillSet.get(item);
+	private static find(predicate: (value: HeroSkillSet) => boolean): HeroSkillSet | undefined {
+		for (const item of this.getAllGenerator()) {
+			if (predicate(item)) {
+				return item;
+			}
+		}
+	}
+
+	public static getAll() {
+		return allInstances ??= Array.from(this.getAllGenerator());
+	}
+
+	public static *getAllGenerator() {
+		for (let i = 0; i < HeroSkillsTable.length; i++) {
+			const row = HeroSkillsTable.get(i);
+			yield HeroSkillSet.get(row);
+		}
 	}
 
 	get id(): string { return this.row.get('id'); }
@@ -67,6 +80,7 @@ export class HeroSkillSet implements IHeroSkillSet {
 	name: string;
 
 	get type(): HeroSkillType { return this.row.get('heroSkillType'); }
+	get rankId(): number { return +this.row.get('rank'); }
 	get rank(): HeroRank { return this.getRank(); }
 	get rankPlus(): string { return this.rank; }
 	get isBook(): boolean { return this.isAlt || this.isSkin; }
@@ -94,12 +108,20 @@ export class HeroSkillSet implements IHeroSkillSet {
 
 	#info: HeroInfo | null = null;
 	get info(): HeroInfo {
-		return this.#info ?? (this.#info = new HeroInfo(this.model));
+		return this.#info ??= new HeroInfo(this.model);
 	}
 
 	#skillLevels: HeroSkillLevel[] | null = null;
 	get skillLevels() {
-		return this.#skillLevels ?? (this.#skillLevels = HeroSkillLevel.getBySkillSetId(this.id));
+		return this.#skillLevels ??= HeroSkillLevel.getBySkillSetId(this.id);
+	}
+
+	#bookItem: Item | undefined | null = null;
+	get bookItem(): Item | undefined {
+		if (this.#bookItem === null) {
+			this.#bookItem = Item.find(item => item.category == ItemCategory.HeroSkill && item.effectValue.toString() == this.id);
+		}
+		return this.#bookItem;
 	}
 
 	constructor(private row: RowWrapper) {
@@ -113,7 +135,7 @@ export class HeroSkillSet implements IHeroSkillSet {
 	}
 
 	private getRank() {
-		switch (Number(this.row.get("rank"))) {
+		switch (this.rankId) {
 			case 2: return HeroRank.N;
 			case 3: return HeroRank.R;
 			case 4: return HeroRank.SR;
@@ -125,7 +147,7 @@ export class HeroSkillSet implements IHeroSkillSet {
 			case HeroSkillType.Skin:
 				return HeroRank.Skin;
 		}
-		const bookItemName = this.getBookItem()?.name.replace(/【.*】/, "");
+		const bookItemName = this.bookItem?.name.replace(/【.*】/, "");
 		switch (bookItemName) {
 			case "技能書":
 				return HeroRank.Alt;
@@ -133,10 +155,6 @@ export class HeroSkillSet implements IHeroSkillSet {
 				return HeroRank.Skin;
 		}
 		return HeroRank.Unknown;
-	}
-
-	getBookItem() {
-		return Item.find(item => item.category == ItemCategory.HeroSkill && item.effectValue.toString() == this.id);
 	}
 
 	static toWikiPage(self: IHeroSkillSet) {
@@ -177,6 +195,10 @@ export class HeroSkillSet implements IHeroSkillSet {
 			聲優: self.info?.cv,
 		});
 		return heroRankTemplate(params);
+	}
+
+	toWiki(options?: HeroSmallIconParams) {
+		return `${this.hero?.toWiki(options)} (${this.rank})`;
 	}
 
 	toJSON() {

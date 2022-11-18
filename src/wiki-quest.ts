@@ -1,12 +1,9 @@
-import converter from "number-to-chinese-words";
 import { ImperiumData, RowWrapper } from "./imperium-data";
 import { TemplateFormatter } from "./lib/TemplateFormatter";
 import { localizationCharacterName, localizationItemName, localizationString, rank } from "./localization";
-import { Logger } from './logger';
+import { questWikiLinkRename } from "./model/config/quest";
 import { applyAtk, calcStatistics, heroName, skillinfo } from "./wiki-hero";
-import { wikitemplate, wikiTitleEscape } from "./wiki-utils";
-
-const logger = new Logger('wiki-quest');
+import { wikitemplate } from "./wiki-utils";
 
 const ChaptersTable = ImperiumData.fromGamedata().getTable("Chapters");
 const DropItemsTable = ImperiumData.fromGamedata().getTable("DropItems");
@@ -261,13 +258,7 @@ interface QuestMetadata {
 	wikilink: string;
 }
 
-const questWikiLinkMap: Record<string, string> = {
-	3426: "吸吮 (挑戰)",
-	3430: "窒息 (挑戰)",
-	600017: "炎日軍團(探索)",
-	600020: "沙漠市集(探索)",
-};
-
+// TODO: moved to quest model, remove
 export function questMetadata(quest: RowWrapper, chapter?: RowWrapper): QuestMetadata {
 	if (!chapter) {
 		chapter = ChaptersTable.find(c => c.get("id") == quest.get("chapter"));
@@ -373,8 +364,8 @@ export function questMetadata(quest: RowWrapper, chapter?: RowWrapper): QuestMet
 			}
 		}
 	}
-	if (quest && quest.get("id") in questWikiLinkMap) {
-		wikilink = questWikiLinkMap[quest.get("id")];
+	if (quest && quest.get("id") in questWikiLinkRename) {
+		wikilink = questWikiLinkRename[quest.get("id")];
 	}
 	return {
 		rawname,
@@ -385,136 +376,6 @@ export function questMetadata(quest: RowWrapper, chapter?: RowWrapper): QuestMet
 		name,
 		wikilink,
 	};
-}
-
-export function getChapterType(chapter: RowWrapper) {
-	const chapterId = chapter.get("id");
-	const chapterCategory = chapter.get("category");
-	const chapterGroup = chapter.get("group");
-	const chapterTitle = chapter.get("title") + "";
-	const chapterImage = chapter.get("mainImage") + "";
-
-	switch (chapterCategory) {
-		case "Main": { // 主線
-			const mainImage = chapterImage.match(/(S2_)?(S3_)?ch(\d+)/);
-			if (mainImage) {
-				if (mainImage[1]) {
-					return "Sdorica -mirage-";
-				}
-				if (mainImage[2]) {
-					return "Sdorica -eclipse-";
-				}
-				return "Sdorica -sunset-";
-			}
-			break;
-		}
-
-		case "Region":
-			return "區域探索";
-		case "Challenge":
-			return "挑戰關卡";
-		case "Tutorial":
-			return "教學關卡";
-		case "Explore":
-			return "探索系統";
-
-		case "Event": { // 活動
-			if (chapterTitle.startsWith("week")) {
-				return "每日限時活動";
-			}
-			if (chapterImage == "daily01") {
-				return "結晶蒐集";
-			}
-			if (chapterImage == "daily02") {
-				return "與英雄共舞";
-			}
-			if (chapterGroup == "Adventure") {
-				return "幻境試煉";
-			}
-			if (chapterGroup == "Multiplayer") {
-				return "與夥伴合奏";
-			}
-			const ssChapter = ChaptersTable.find(c => c.get("group") == "SideStory" && c.get("category") == "SideStory" && c.get("title") == chapterTitle);
-			if (ssChapter) {
-				return "角色故事";
-			}
-			const questCharU01 = QuestsTable.find(r => r.get("chapter") == chapterId && !!(r.get("levelId") + "").match(/char_(.*)_u01/));
-			if (questCharU01) {
-				return "角色故事";
-			}
-			return "活動關卡";
-		}
-		case "SideStory":
-			return "角色故事";
-		case "Battlefield":
-			return "戰場";
-	}
-	logger.error(`Unknown main chapter: ${chapterCategory}`);
-	debugger;
-	return "Unknown";
-}
-
-export interface ChapterMetadata {
-	group: string;
-	name: string;
-	title: string;
-	imageName: string;
-}
-
-// TODO: move to chapter model
-export function chapterMetadata(chapter: RowWrapper): ChapterMetadata {
-	const out: ChapterMetadata = {
-		group: getChapterType(chapter),
-		name: localizationString("RegionName")(chapter.get("name")),
-		title: localizationString("RegionName")(chapter.get("title")),
-		imageName: "",
-	};
-	out.imageName = out.title;
-	const nameNumber = getNumber(out.name);
-
-	switch (out.group) {
-		case "Sdorica -sunset-":
-			out.imageName = `第${converter.toWords(nameNumber)}章`;
-			break;
-
-		case "Sdorica -mirage-":
-			out.name = `S2 ${out.name}`;
-			out.imageName = `S2第${converter.toWords(nameNumber)}章`;
-			break;
-
-		case "Sdorica -eclipse-":
-			out.name = `S3 ${out.name}`;
-			out.imageName = `S3第${converter.toWords(nameNumber)}章`;
-			break;
-
-		case "活動關卡":
-		case "每日限時活動":
-		case "結晶蒐集":
-		case "與英雄共舞":
-		case "幻境試煉":
-		case "與夥伴合奏":
-		case "角色故事": {
-			const chapterId = chapter.get("id");
-			const quests = QuestsTable.filter(q => q.get("chapter") == chapterId && q.get("enable"));
-			const firstQuest = quests[0];
-			out.title = questMetadata(firstQuest, chapter).ch;
-			out.imageName = out.title;
-			break;
-		}
-	}
-
-	out.name = wikiTitleEscape(out.name);
-	out.title = wikiTitleEscape(out.title);
-	out.imageName = wikiTitleEscape(out.imageName);
-	return out;
-}
-
-function getNumber(str: string) {
-	const m = str.match(/(\d+)/);
-	if (m) {
-		return Number(m[1]);
-	}
-	return NaN;
 }
 
 interface Team<T> {
@@ -552,7 +413,7 @@ function teamlimitHero(data: TeamLimitData): string {
 		return "";
 	}
 	if (!data.hero.get("enable")) {
-		const skills = HeroSkillsTable.find((s) => s.get("heroId") == data.hero!.get("id") && s.get("rank") == data.rank);
+		const skills = HeroSkillsTable.find((s) => s.get("heroId") == data.hero?.get("id") && s.get("rank") == data.rank);
 		let skillSet = `${data.hero.get("model")}s${data.rank}`;
 		if (skills) {
 			skillSet = skills.get("skillSet");

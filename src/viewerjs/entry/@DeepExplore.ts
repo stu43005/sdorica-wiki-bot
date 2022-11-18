@@ -1,8 +1,9 @@
 import { localizationString } from '../../localization';
+import { DropItemsGroup } from '../../model/drop-items';
 import { LevelEventAsset } from '../../sdorica/LevelEventAsset';
 import { InterpretedEncounterEventObject, InterpretedSceneSwitchEventPointObject } from '../leveldata-tarns-event';
 import { ViewerJSHelper } from '../viewerjs-helper';
-import { containerSearchAuto, getLevelEventPath, ImperiumData, treasureList } from './$ViewerInit';
+import { containerSearchAuto, getLevelEventPath, ImperiumData } from './$ViewerInit';
 
 export default async function (helper: ViewerJSHelper) {
 	// load imperium data
@@ -17,7 +18,7 @@ export default async function (helper: ViewerJSHelper) {
 		};
 		if (dropItemGroupId && Number(dropItemGroupId) > 1) {
 			out["dropItemGroupId"] = dropItemGroupId;
-			out["dropItem"] = treasureList(Number(dropItemGroupId));
+			out["dropItem"] = DropItemsGroup.get(+dropItemGroupId).toWiki();
 		}
 		if (levelset.has(level)) {
 			out["duplicate"] = "已重複關卡，請用 Ctrl+F 搜尋此關卡。";

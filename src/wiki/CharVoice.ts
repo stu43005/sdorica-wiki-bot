@@ -1,8 +1,10 @@
+import _ from "lodash";
 import { ImperiumData } from "../imperium-data";
 import { Hero } from "../model/hero";
 import { HeroSkillSet } from "../model/hero-skillset";
 import { IHeroSkillSet } from "../model/hero-skillset.interface";
-import { arrayGroupBy } from "../utils";
+import { wikiH1 } from "../templates/wikiheader";
+import { wikitable, WikiTableStruct } from "../templates/wikitable";
 import { wikiNextLine } from "../wiki-utils";
 
 const CharaInfoVoiceTable = ImperiumData.fromGamedata().getTable("CharaInfoVoice");
@@ -24,9 +26,6 @@ interface VoiceData {
 
 export default function wikiCharVoice() {
 	const voiceData: VoiceData[] = [];
-
-	let out = `{| class="wikitable" style="word-break: break-all;"
-! 角色階級 !! 魂冊語音 !! 選擇角色語音 !! 出戰語音 !! 勝利語音 !! 階級提升語音`;
 	for (const infoVoice of CharaInfoVoiceTable) {
 		const model: string = infoVoice.get('prefabId');
 		const skillSet = HeroSkillSet.getByModel(model);
@@ -40,26 +39,26 @@ export default function wikiCharVoice() {
 			infoVoice.get('sfxCharaInfo03'),
 			infoVoice.get('sfxCharaInfo04'),
 			infoVoice.get('sfxCharaInfo05'),
-		].filter(s => s);
+		].filter(Boolean);
 		const select: string[] = [
 			selectVoice?.get('sfxCharaSelect01'),
 			selectVoice?.get('sfxCharaSelect02'),
 			selectVoice?.get('sfxCharaSelect03'),
-		].filter(s => s);
+		].filter(Boolean);
 		const start: string[] = [
 			selectVoice?.get('sfxStart01'),
 			selectVoice?.get('sfxStart02'),
-		].filter(s => s);
+		].filter(Boolean);
 		const victory: string[] = [
 			victoryVoice?.get('sfxVictory01'),
 			victoryVoice?.get('sfxVictory02'),
 			victoryVoice?.get('sfxVictory03'),
 			victoryVoice?.get('sfxVictory04'),
 			victoryVoice?.get('sfxVictory05'),
-		].filter(s => s);
+		].filter(Boolean);
 		const rankUp: string[] = [
 			rankUpVoice?.get('sfxRankUp01'),
-		].filter(s => s);
+		].filter(Boolean);
 
 		voiceData.push({
 			model,
@@ -70,33 +69,50 @@ export default function wikiCharVoice() {
 			start,
 			victory,
 			rankUp,
-			groupKey: `${info}${select}${start}${victory}${rankUp}`
+			groupKey: `${info};${select};${start};${victory};${rankUp}`
 		});
 	}
-	const voiceGroupedData = arrayGroupBy(voiceData, v => v.groupKey);
-	for (const voices of Object.values(voiceGroupedData)) {
-		const groupedHeros = Object.values(arrayGroupBy(voices, v => typeof v.hero === 'string' ? v.hero : v.hero.id));
-		out += `
-|-
-| ${wikiNextLine(groupedHeros.map(h =>
-	`${
-		typeof h[0].hero === 'string'
-		? h[0].hero
-		: h[0].hero.toWikiSmallIcon()
-	} (${
-		h.map(s =>
-			typeof s.skillSet === 'string'
-			? s.skillSet
-			: s.skillSet.rank
-		).join(', ')
-	})`
-).join(',\n'))}
-| ${wikiNextLine(voices[0].info.join(',\n'))}
-| ${wikiNextLine(voices[0].select.join(',\n'))}
-| ${wikiNextLine(voices[0].start.join(',\n'))}
-| ${wikiNextLine(voices[0].victory.join(',\n'))}
-| ${wikiNextLine(voices[0].rankUp.join(',\n'))}`;
+
+	let out = wikiH1("角色語音");
+	const table: WikiTableStruct = {
+		attributes: `class="wikitable" style="word-break: break-all;"`,
+		rows: [
+			[
+				`! 角色階級`,
+				`! 魂冊語音`,
+				`! 選擇角色語音`,
+				`! 出戰語音`,
+				`! 勝利語音`,
+				`! 階級提升語音`,
+			],
+		],
+	};
+
+	const voiceGroups = _.groupBy(voiceData, (v) => v.groupKey);
+	for (const [, group] of Object.entries(voiceGroups)) {
+		const heroGroups = _.groupBy(group, (v) => typeof v.hero === 'string' ? v.hero : v.hero.id);
+		const heroList = Object.values(heroGroups).map((vs) => `${
+			typeof vs[0].hero === 'string'
+			? vs[0].hero
+			: vs[0].hero.toWiki()
+		} (${
+			vs.map((s) =>
+				typeof s.skillSet === 'string'
+				? s.skillSet
+				: s.skillSet.rank
+			).join(', ')
+		})`);
+
+		table.rows.push([
+			wikiNextLine(heroList.join(',\n')),
+			wikiNextLine(group[0].info.join(',\n')),
+			wikiNextLine(group[0].select.join(',\n')),
+			wikiNextLine(group[0].start.join(',\n')),
+			wikiNextLine(group[0].victory.join(',\n')),
+			wikiNextLine(group[0].rankUp.join(',\n')),
+		]);
 	}
-	out += `\n|}`;
+	out += `\n\n${wikitable(table)}`;
+
 	return out;
 }

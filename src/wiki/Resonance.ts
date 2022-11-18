@@ -1,28 +1,40 @@
 import { ImperiumData, RowWrapper } from "../imperium-data";
 import { rank } from "../localization";
+import { wikiH1, wikiH2 } from "../templates/wikiheader";
+import { wikitable, WikiTableCeil, WikiTableStruct } from "../templates/wikitable";
 import { item2wiki, Item2WikiOptions, item2wikiWithType } from "../wiki-item";
+import { wikiNextLine } from "../wiki-utils";
 
 const RankUpItemRefsTable = ImperiumData.fromGamedata().getTable("RankUpItemRefs");
 const RankUpItemsTable = ImperiumData.fromGamedata().getTable("RankUpItems");
 
 export default function wikiResonance() {
-	let out = `==共鳴所需道具數量==
+	let out = `${wikiH1('共鳴')}\n\n${wikiH2('共鳴所需道具數量')}\n角色提升至共鳴階級或突破所需消耗的道具數量如下表：`;
 
-角色提升至共鳴階級或突破所需消耗的道具數量如下表：
+	const table: WikiTableStruct = {
+		attributes: `class="wikitable" style="text-align:center;"`,
+		rows: [
+			[
+				`! rowspan="2" | 共鳴階級`,
+				`! rowspan="2" style="background-color: #ffd700; color: #1e1e1e;" | [[庫倫]]`,
+				`! colspan="5" | 一般共鳴`,
+				`! colspan="5" | 替代共鳴`,
+			],
+			[
+				`! 淚`,
+				`! 區域限定道具`,
+				`! 共鳴魂能`,
+				`! [[魂能結晶]]`,
+				`! [[精煉魂能]]`,
+				`! style="background-color: #00ffff; color: #1e1e1e;" | [[起源魂石]]`,
+				`! style="background-color: #00ffff; color: #1e1e1e;" | [[精煉記憶石]]`,
+				`! style="background-color: #00ffff; color: #1e1e1e;" | -`,
+				`! style="background-color: #00ffff; color: #1e1e1e;" | -`,
+				`! style="background-color: #00ffff; color: #1e1e1e;" | -`,
+			],
+		],
+	};
 
-{| class="wikitable" style="text-align:center;"
-|-
-! rowspan="2" | 共鳴階級
-! rowspan="2" style="background-color: #ffd700;" | [[庫倫]]
-! colspan="5" | 一般共鳴
-! colspan="5" | 替代共鳴
-|-
-! 淚 !! 區域限定道具 !! 共鳴魂能 !! [[魂能結晶]] !! [[精煉魂能]]
-! style="background-color: #00ffff;" | [[起源魂石]]
-! style="background-color: #00ffff;" | [[精煉記憶石]]
-! style="background-color: #00ffff;" |
-! style="background-color: #00ffff;" |
-! style="background-color: #00ffff;" |`;
 	const ResonanceItems: Record<string, RowWrapper> = {};
 	for (let i = 0; i < RankUpItemRefsTable.length; i++) {
 		const row = RankUpItemRefsTable.get(i);
@@ -91,6 +103,7 @@ export default function wikiResonance() {
 			}
 		});
 
+		const ceil: WikiTableCeil[] = [];
 		switch (category) {
 			case 'Rank': {
 				const currRankName = rank()(rank1);
@@ -98,11 +111,17 @@ export default function wikiResonance() {
 				if (!currRankName || !privRankName) {
 					continue;
 				}
-				out += `\n|-\n! ${privRankName}<br/>➡️<br/>${currRankName}`;
+				ceil.push({
+					header: true,
+					text: wikiNextLine(`${privRankName}\n➡️\n${currRankName}`),
+				});
 				break;
 			}
 			case 'SubRank':
-				out += `\n|-\n! +${rank1}`;
+				ceil.push({
+					header: true,
+					text: `+${rank1}`,
+				});
 				SubRankUpItemCount['1002'] = (SubRankUpItemCount['1002'] || 0) + row.get('coin');
 				if (item1) SubRankUpItemCount[item1.get('payLinkId')] = (SubRankUpItemCount[item1.get('payLinkId')] || 0) + row.get('item1Count');
 				if (item2) SubRankUpItemCount[item2.get('payLinkId')] = (SubRankUpItemCount[item2.get('payLinkId')] || 0) + row.get('item2Count');
@@ -116,47 +135,70 @@ export default function wikiResonance() {
 				if (ext5) SubRankUpItemCount[ext5.get('payLinkId')] = (SubRankUpItemCount[ext5.get('payLinkId')] || 0) + row.get('ext5Count');
 				break;
 			case 'Sublimation':
-				out += `\n|-\n! [[轉化系統|轉化]]`;
+				ceil.push({
+					header: true,
+					text: `[[轉化系統|轉化]]`,
+				});
 				items[5] = [ResonanceItems['CommonE'], 1, 'CommonE'];
 				break;
 			default:
-				out += `\n|-\n! ${category}`;
+				ceil.push({
+					header: true,
+					text: category,
+				});
 				break;
 		}
 
-		out += `
-| style="background-color: #ffd700;" | ${item2wiki('1002', row.get('coin'), false, ResonanceItemOptions)}
-${items.map((item, index) => {
-	let str = index >= 5 ? `| style="background-color: #00ffff;" ` : "";
-	if (item?.[0]) {
-		str += `| ${item2wikiWithType(item[0].get('payType'), item[0].get('payLinkId'), item[1], ResonanceItemOptions)}`;
-	} else {
-		str += `| -`;
-	}
-	if (index === 4 && category === 'Sublimation') {
-		str += `➡️<br/>➡️<br/>➡️`;
-	}
-	return str;
-}).join("\n")}`;
+		ceil.push({
+			attributes: `style="background-color: #ffd700; color: #1e1e1e;"`,
+			text: item2wiki('1002', row.get('coin'), false, ResonanceItemOptions),
+		}, ...items.map((item, index): WikiTableCeil => ({
+			attributes: index >= 5 ? `style="background-color: #00ffff; color: #1e1e1e;"` : "",
+			text: index === 4 && category === 'Sublimation' ? wikiNextLine(`➡️\n➡️\n➡️`) :
+				item?.[0] ? item2wikiWithType(item[0].get('payType'), item[0].get('payLinkId'), item[1], ResonanceItemOptions) :
+				"-",
+		})));
+		table.rows.push(ceil);
+
 		if (category == 'SubRank' && rank1 == 15) {
-			out += `
-|-
-! +1 ~ +15<br/>合計
-! style="background-color: #ffd700;" | ${item2wiki('1002', SubRankUpItemCount['1002'], false, ResonanceItemOptions)}
-! ${item2wiki(ResonanceItems['CommonB'].get('payLinkId'), SubRankUpItemCount[ResonanceItems['CommonB'].get('payLinkId')], false, ResonanceItemOptions)}
-! ${item2wiki(ResonanceItems['CharItemC'].get('payLinkId'), SubRankUpItemCount[ResonanceItems['CharItemC'].get('payLinkId')], false, ResonanceItemOptions)}
-! ${item2wiki(ResonanceItems['CharItemF'].get('payLinkId'), SubRankUpItemCount[ResonanceItems['CharItemF'].get('payLinkId')], false, ResonanceItemOptions)}
-! ${item2wiki(ResonanceItems['CharItemA'].get('payLinkId'), SubRankUpItemCount[ResonanceItems['CharItemA'].get('payLinkId')], false, ResonanceItemOptions)}
-! ${item2wiki(ResonanceItems['CommonD'].get('payLinkId'), SubRankUpItemCount[ResonanceItems['CommonD'].get('payLinkId')], false, ResonanceItemOptions)}
-! style="background-color: #00ffff;" | ${item2wiki(ResonanceItems['CommonE'].get('payLinkId'), SubRankUpItemCount[ResonanceItems['CommonE'].get('payLinkId')], false, ResonanceItemOptions)}
-! style="background-color: #00ffff;" | -
-! style="background-color: #00ffff;" | -
-! style="background-color: #00ffff;" | -
-! style="background-color: #00ffff;" | -`;
+			table.rows.push({
+				headerBar: true,
+				ceils: [
+					wikiNextLine(`+1 ~ +15\n合計`),
+					{
+						attributes: `style="background-color: #ffd700; color: #1e1e1e;"`,
+						text: item2wiki('1002', SubRankUpItemCount['1002'], false, ResonanceItemOptions),
+					},
+					item2wiki(ResonanceItems['CommonB'].get('payLinkId'), SubRankUpItemCount[ResonanceItems['CommonB'].get('payLinkId')], false, ResonanceItemOptions),
+					item2wiki(ResonanceItems['CharItemC'].get('payLinkId'), SubRankUpItemCount[ResonanceItems['CharItemC'].get('payLinkId')], false, ResonanceItemOptions),
+					item2wiki(ResonanceItems['CharItemF'].get('payLinkId'), SubRankUpItemCount[ResonanceItems['CharItemF'].get('payLinkId')], false, ResonanceItemOptions),
+					item2wiki(ResonanceItems['CharItemA'].get('payLinkId'), SubRankUpItemCount[ResonanceItems['CharItemA'].get('payLinkId')], false, ResonanceItemOptions),
+					item2wiki(ResonanceItems['CommonD'].get('payLinkId'), SubRankUpItemCount[ResonanceItems['CommonD'].get('payLinkId')], false, ResonanceItemOptions),
+					{
+						attributes: `style="background-color: #00ffff; color: #1e1e1e;"`,
+						text: item2wiki(ResonanceItems['CommonE'].get('payLinkId'), SubRankUpItemCount[ResonanceItems['CommonE'].get('payLinkId')], false, ResonanceItemOptions),
+					},
+					{
+						attributes: `style="background-color: #00ffff; color: #1e1e1e;"`,
+						text: "-",
+					},
+					{
+						attributes: `style="background-color: #00ffff; color: #1e1e1e;"`,
+						text: "-",
+					},
+					{
+						attributes: `style="background-color: #00ffff; color: #1e1e1e;"`,
+						text: "-",
+					},
+					{
+						attributes: `style="background-color: #00ffff; color: #1e1e1e;"`,
+						text: "-",
+					},
+				],
+			});
 		}
 	}
-	out += `\n|}
 
-''註：本表以[[安潔莉亞]]共鳴道具為例，不同角色可能需要不同的道具。''`;
+	out += `\n${wikitable(table)}\n\n''註：本表以[[安潔莉亞]]共鳴道具為例，不同角色可能需要不同的道具。''`;
 	return out;
 }

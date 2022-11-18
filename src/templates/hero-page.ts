@@ -13,7 +13,7 @@ export interface HeroPageParams {
 	一階?: string;
 	二階?: string;
 	三階?: string;
-	Alt?: string;
+	Alt?: string[];
 	Skin?: string[];
 	冬青少女?: boolean;
 
@@ -35,6 +35,7 @@ export function heroPageTemplate(params: HeroPageParams) {
 		1: "{{{1|}}}",
 		2: "{{{2|}}}",
 		...params,
+		Alt: params.Alt?.join(','),
 		Skin: params.Skin?.join(','),
 	}, TemplateFormatter.FORMAT.BLOCK);
 }

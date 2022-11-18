@@ -1,10 +1,13 @@
 import { ImperiumData, RowWrapper } from "../imperium-data";
 import { itemNameNormalization, localizationString } from "../localization";
-import { exploreCompositeList, exploreUsingList, treasureList } from "../wiki-item";
+import { wikiH2 } from "../templates/wikiheader";
+import { exploreCompositeList, exploreUsingList } from "../wiki-item";
+import { exploreItemRename } from "./config/item";
+import { DropItemsGroup } from "./drop-items";
 import { ExploreItemPortable } from "./enums/explore-item-portable.enum";
 import { ExploreItemsCategory } from "./enums/explore-items-category.enum";
 import { Item } from "./item";
-import { ItemBase } from "./item-base";
+import { ItemBase } from "./item.base";
 
 const ExploreItemsTable = ImperiumData.fromGamedata().getTable("ExploreItems");
 
@@ -25,16 +28,16 @@ export class ExploreItem extends ItemBase {
 		return instances[id];
 	}
 
-	public static find(predicate: (value: ExploreItem, index: number) => boolean): ExploreItem | undefined {
-		const item = ExploreItemsTable.find((row, index) => {
-			const item2 = ExploreItem.get(row);
-			return predicate(item2, index);
-		});
-		return item && ExploreItem.get(item);
+	public static find(predicate: (value: ExploreItem) => boolean): ExploreItem | undefined {
+		for (const item of this.getAllGenerator()) {
+			if (predicate(item)) {
+				return item;
+			}
+		}
 	}
 
 	public static getAll() {
-		return allInstances ?? (allInstances = Array.from(this.getAllGenerator()));
+		return allInstances ??= Array.from(this.getAllGenerator());
 	}
 
 	public static *getAllGenerator() {
@@ -70,6 +73,28 @@ export class ExploreItem extends ItemBase {
 	get tab(): string { return this.row.get('tab'); } // enum:ExploreItemsTab
 	get target(): string { return this.row.get('target'); } // enum:ExploreItemsTarget
 
+	#transformTo: Item | undefined | null = null;
+	get transformTo(): Item | undefined {
+		if (this.category !== ExploreItemsCategory.Transform) {
+			return undefined;
+		}
+		if (this.#transformTo === null) {
+			this.#transformTo = Item.get(this.effectValue);
+		}
+		return this.#transformTo;
+	}
+
+	#treasureItems: DropItemsGroup | undefined | null = null;
+	get treasureItems(): DropItemsGroup | undefined {
+		if (this.category !== ExploreItemsCategory.Treasure) {
+			return undefined;
+		}
+		if (this.#treasureItems === null) {
+			this.#treasureItems = DropItemsGroup.get(+this.effectValue);
+		}
+		return this.#treasureItems;
+	}
+
 	constructor(row: RowWrapper) {
 		super(row);
 		this.name = itemNameNormalization(localizationString("ExpItem")(row.get('localizationKeyName')) || this.iconKey);
@@ -77,9 +102,14 @@ export class ExploreItem extends ItemBase {
 		this.description = localizationString("ExpItem")(row.get('localizationKeyDescription'));
 	}
 
-	getTransformTo() {
-		if (this.category != ExploreItemsCategory.Transform) { return; }
-		return Item.get(this.effectValue);
+	getWikiPageName() {
+		if (exploreItemRename[this.id]) {
+			return exploreItemRename[this.id];
+		}
+		if (this.transformTo) {
+			return this.transformTo.getWikiPageName();
+		}
+		return super.getWikiPageName();
 	}
 
 	getItemInfoboxParams() {
@@ -92,28 +122,28 @@ export class ExploreItem extends ItemBase {
 		return params;
 	}
 
-	getWikiTreasureList(heading = '== 開啟寶箱獲得道具 ==') {
+	toWikiTreasureList() {
 		if (this.category == ExploreItemsCategory.Treasure) {
-			return heading + treasureList(+this.effectValue);
+			return `${wikiH2('開啟寶箱獲得道具')}\n${this.treasureItems?.toWiki()}`;
 		}
 		return '';
 	}
 
-	getWikiCompositeList() {
+	toWikiCompositeList() {
 		return exploreCompositeList(this.id);
 	}
 
-	getWikiUsingList() {
+	toWikiUsingList() {
 		return exploreUsingList(this.id);
 	}
 
-	getWikiPage() {
+	toWikiPage() {
 		return [
-			this.getItemInfobox(),
-			this.getWikiDropQuests(),
-			this.getWikiTreasureList(),
-			this.getWikiCompositeList(),
-			this.getWikiUsingList(),
+			this.toItemInfobox(),
+			this.toWikiDropQuests(),
+			this.toWikiTreasureList(),
+			this.toWikiCompositeList(),
+			this.toWikiUsingList(),
 		].filter(a => a).join('\n');
 	}
 

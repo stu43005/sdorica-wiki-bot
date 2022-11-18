@@ -3,6 +3,7 @@ import { characterNameNormalization, localizationString } from "../localization"
 import { heroBaseTemplate } from "../templates/hero-base";
 import { heroPageTemplate } from "../templates/hero-page";
 import { HeroSmallIconParams, heroSmallIconTemplate } from "../templates/hero-small-icon";
+import { tooltipTemplate } from "../templates/tooltip";
 import { heroName, pointRegexp } from "../wiki-hero";
 import { Chapter } from './chapter';
 import { GenderType } from "./enums/gender-type.enum";
@@ -33,20 +34,21 @@ export class Hero {
 		return instances[id];
 	}
 
-	public static getBySideStory(chapterId: string): Hero | undefined {
+	public static getBySideStory(chapterOrId: Chapter | string): Hero | undefined {
+		const chapterId = typeof chapterOrId === 'string' ? chapterOrId : chapterOrId.id;
 		return Hero.find(hero => hero.storyChapter?.id == chapterId);
 	}
 
-	public static find(predicate: (value: Hero, index: number) => boolean): Hero | undefined {
-		const item = HeroesTable.find((row, index) => {
-			const item2 = Hero.get(row);
-			return predicate(item2, index);
-		});
-		return item && Hero.get(item);
+	public static find(predicate: (value: Hero) => boolean): Hero | undefined {
+		for (const item of this.getAllGenerator()) {
+			if (predicate(item)) {
+				return item;
+			}
+		}
 	}
 
 	public static getAll() {
-		return allInstances ?? (allInstances = Array.from(this.getAllGenerator()));
+		return allInstances ??= Array.from(this.getAllGenerator());
 	}
 
 	public static *getAllGenerator() {
@@ -92,25 +94,46 @@ export class Hero {
 	get storyChapter(): Chapter | undefined {
 		const storyChapter = this.row.get('storyChapter');
 		if (!storyChapter) return undefined;
-		return this.#storyChapter ?? (this.#storyChapter = Chapter.get(storyChapter));
+		return this.#storyChapter ??= Chapter.get(storyChapter);
 	}
 
 	get avatarId(): string { return this.row.get('avatarId'); }
 	get viewable(): HeroViewableType { return this.row.get('viewable'); }
 	get gender(): GenderType { return this.row.get('gender'); }
 	get races(): string { return this.row.get('races'); }
-	resonanceItem: ItemPayRef | null = null;
+
+	#resonanceItem: ItemPayRef | undefined | null = null;
+	get resonanceItem(): ItemPayRef | undefined {
+		if (this.#resonanceItem === null) {
+			const rankUpItem = RankUpItemRefsTable.find(r => r.get('category') == 'HeroID' && r.get('param1') == this.id && r.get('refId') == 'CharItemC');
+			if (rankUpItem) {
+				this.#resonanceItem = new ItemPayRef(rankUpItem.get("payType"), rankUpItem.get("payLinkId"), rankUpItem.get("payAmount"));
+			} else {
+				this.#resonanceItem = undefined;
+			}
+		}
+		return this.#resonanceItem;
+	}
 
 	#skillSets: HeroSkillSet[] | null = null;
 	get skillSets(): HeroSkillSet[] {
-		return this.#skillSets ?? (this.#skillSets = HeroSkillSet.getByHeroId(this.id).filter(s => s.name));
+		return this.#skillSets ??= HeroSkillSet.getByHeroId(this.id).filter(s => s.name);
 	}
 	#skillSetWithLevels: IHeroSkillSet[] | null = null;
 	get skillSetWithLevels() {
-		return this.#skillSetWithLevels ?? (this.#skillSetWithLevels = this.skillSets.reduce<IHeroSkillSet[]>((p, c) => [...p, c, ...c.skillLevels], []));
+		return this.#skillSetWithLevels ??= this.skillSets.reduce<IHeroSkillSet[]>((p, c) => [...p, c, ...c.skillLevels], []);
 	}
+	/**
+	 * 技能書及造型書
+	 */
 	get books() { return this.skillSets.filter(s => s.isBook); }
-	get alt() { return this.skillSets.find(s => s.isAlt); }
+	/**
+	 * 技能書
+	 */
+	get alts() { return this.skillSets.filter(s => s.isAlt); }
+	/**
+	 * 造型書
+	 */
 	get skins() { return this.skillSets.filter(s => s.isSkin); }
 	get N() { return this.skillSets.find(s => s.rank === HeroRank.N); }
 	get R() { return this.skillSets.find(s => s.rank === HeroRank.R); }
@@ -144,17 +167,22 @@ export class Hero {
 			}
 		}
 		this.koreanName = koreanName;
+	}
 
-		const rankUpItem = RankUpItemRefsTable.find(r => r.get('category') == 'HeroID' && r.get('param1') == this.id && r.get('refId') == 'CharItemC');
-		if (rankUpItem) {
-			this.resonanceItem = new ItemPayRef(rankUpItem.get("payType"), rankUpItem.get("payLinkId"), rankUpItem.get("payAmount"));
-		}
+	getSkillSet(rankId: number) {
+		return this.skillSets.find(ss => ss.rankId === rankId);
 	}
 
 	/**
 	 * 取得`{{角色小圖示}}`模板
 	 */
-	toWikiSmallIcon(options: HeroSmallIconParams = {}) {
+	toWiki(options: HeroSmallIconParams = {}) {
+		if (!this.enable) {
+			if (this.firstname != this.internalName) {
+				return tooltipTemplate(this.firstname, this.internalName);
+			}
+			return this.firstname;
+		}
 		return heroSmallIconTemplate(this.firstname, {
 			text: 'true',
 			...options,
@@ -181,7 +209,7 @@ export class Hero {
 			"一階": this.R?.name,
 			"二階": this.SR?.name,
 			"三階": this.SSR?.name,
-			"Alt": this.alt?.name,
+			"Alt": this.alts.map(alt => alt.name),
 			"Skin": this.skins.filter(skin => skin.id != '2027').map(skin => skin.name),
 			"冬青少女": hasSkin2027,
 

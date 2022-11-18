@@ -11,6 +11,7 @@ import { ItemPayRef } from "./item-pay-ref";
 const SkillLevelTable = ImperiumData.fromGamedata().getTable("SkillLevel");
 
 const instances: Record<string, HeroSkillLevel> = {};
+let allInstances: HeroSkillLevel[] | null = null;
 
 export class HeroSkillLevel implements IHeroSkillSet {
 	public static get(row: RowWrapper): HeroSkillLevel;
@@ -36,12 +37,23 @@ export class HeroSkillLevel implements IHeroSkillSet {
 		return HeroSkillLevel.find(s => s.model == skillSet);
 	}
 
-	private static find(predicate: (value: HeroSkillLevel, index: number) => boolean): HeroSkillLevel | undefined {
-		const item = SkillLevelTable.find((row, index) => {
-			const item2 = HeroSkillLevel.get(row);
-			return predicate(item2, index);
-		});
-		return item && HeroSkillLevel.get(item);
+	private static find(predicate: (value: HeroSkillLevel) => boolean): HeroSkillLevel | undefined {
+		for (const item of this.getAllGenerator()) {
+			if (predicate(item)) {
+				return item;
+			}
+		}
+	}
+
+	public static getAll() {
+		return allInstances ??= Array.from(this.getAllGenerator());
+	}
+
+	public static *getAllGenerator() {
+		for (let i = 0; i < SkillLevelTable.length; i++) {
+			const row = SkillLevelTable.get(i);
+			yield HeroSkillLevel.get(row);
+		}
 	}
 
 	get id(): string { return this.row.get('id'); }

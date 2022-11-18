@@ -36,6 +36,13 @@ export function semicolon(cb: Func1): Func1 {
 	};
 }
 
+export function distinct(separator = ";"): Func1 {
+	return (str) => {
+		const ss = [...new Set(str.split(separator))];
+		return ss.join(";");
+	};
+}
+
 export function colonFirst(cb: Func1): Func1 {
 	return (str) => {
 		const first = str.split(":")[0];
@@ -428,18 +435,6 @@ export function localizationQuestName(): Func1 {
 		gamedataString("Quests", "id", "levelId"),
 		localizationString("QuestName")
 	);
-}
-
-export function localizationQuestSubtitle(): Func1 {
-	return (str) => {
-		switch (String(str)) {
-			case "Story": return "故事";
-			case "Battle": return "戰鬥";
-			case "Challenge": return "挑戰";
-			case "Activity": return "活動";
-		}
-		return str;
-	};
 }
 
 export function localizationQuestModeName(): Func1 {

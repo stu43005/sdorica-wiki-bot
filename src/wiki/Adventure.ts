@@ -1,26 +1,27 @@
 import { ImperiumData } from "../imperium-data";
-import { localizationQuestSubtitle, localizationString, localizationStringAuto } from "../localization";
-import { questMetadata } from "../wiki-quest";
-import { TemplateString } from './../model/template-string';
+import { localizationString } from "../localization";
+import { Chapter } from "../model/chapter";
+import { ChapterGroup } from "../model/enums/chapter-group.enum";
+import { TemplateString } from '../model/template-string';
+import { wikiH1, wikiH2, wikiH3 } from "../templates/wikiheader";
+import { wikiSectionLink } from "../templates/wikilink";
+import { wikitable, WikiTableStruct } from "../templates/wikitable";
+import { wikiNextLine } from "../wiki-utils";
 
 const ScoreRulesTable = ImperiumData.fromGamedata().getTable("ScoreRules");
-const ChaptersTable = ImperiumData.fromGamedata().getTable("Chapters");
-const QuestsTable = ImperiumData.fromGamedata().getTable("Quests");
 
 function advRuleNumber(v: number) {
 	return v < 0 ? `扣${v * -1}` : `獲得${v}`;
 }
 
 export default function wikiAdventure() {
-	const out: string[] = [];
-	out.push(`===計分機制===`);
+	let out = wikiH1("幻境試煉");
 
-	let advRuleOut = `{| class="wikitable"
-! 機制
-! 詳細內容
-! 詳細計分方式`;
-	for (let i = 0; i < ScoreRulesTable.length; i++) {
-		const row = ScoreRulesTable.get(i);
+	out += `\n\n${wikiH2("計分機制")}`;
+	const rulesTable: WikiTableStruct = [
+		["! 機制", "! 詳細內容", "! 詳細計分方式"]
+	];
+	for (const row of ScoreRulesTable.rows) {
 		const descs: string[] = [];
 		if (row.get("finalArmor")) descs.push(`finalArmor: ${row.get("finalArmor")}`);
 		if (row.get("finalDeathCount")) descs.push(`finalDeathCount: ${row.get("finalDeathCount")}`);
@@ -129,63 +130,76 @@ export default function wikiAdventure() {
 				limit,
 			}));
 		}
-		advRuleOut += `
-|-
-! <h5 class="norm">${localizationString("ScoreMessage", (s) => s + "_title")(row.get("id")) || row.get("id")}</h5>
-| ${localizationString("ScoreMessage", (s) => s + "_text")(row.get("id")).replace(/\n/g, "<br/>")}
-| ${descs.join("<br/>\n")}`;
+		const id = row.get("id");
+		const title = localizationString("ScoreMessage", (s) => s + "_title")(id);
+		const text = localizationString("ScoreMessage", (s) => s + "_text")(id);
+		rulesTable.push([
+			{
+				header: true,
+				text: wikiH3(title || id, id, true),
+			},
+			wikiNextLine(text),
+			wikiNextLine(descs.join("\n")),
+		]);
 	}
-	advRuleOut += `\n|}`;
-	out.push(advRuleOut);
+	out += `\n\n${wikitable(rulesTable)}`;
 
-	const AdvChapters = ChaptersTable.filter(ch => ch.get("group") == "Adventure");
-	for (let i = 0; i < AdvChapters.length; i++) {
-		const row = AdvChapters[i];
-		const chID = Number(row.get("id"));
-		const quests = QuestsTable.filter(q => q.get("chapter") == chID && q.get("enable"));
+	const chapters = Chapter.getByGroup(ChapterGroup.Adventure);
+	for (const chapter of chapters) {
+		const idNumber = +chapter.id;
+		const quests = chapter.quests.filter(quest => quest.enable);
 		if (quests.length > 0) {
-			let str = ``;
-			if (chID < 20018) {
-				switch (chID % 10) {
+			if (idNumber < 20018) {
+				switch (idNumber % 10) {
 					case 1:
-						str += `=== 星期一/月曜日 ===`;
+						out += `\n\n${wikiH2('星期一/月曜日', chapter.id)}`;
 						break;
 					case 2:
-						str += `=== 星期二/火曜日 ===`;
+						out += `\n\n${wikiH2('星期二/火曜日', chapter.id)}`;
 						break;
 					case 3:
-						str += `=== 星期三/水曜日 ===`;
+						out += `\n\n${wikiH2('星期三/水曜日', chapter.id)}`;
 						break;
 					case 4:
-						str += `=== 星期四/木曜日 ===`;
+						out += `\n\n${wikiH2('星期四/木曜日', chapter.id)}`;
 						break;
 					case 5:
-						str += `=== 星期五/金曜日 ===`;
+						out += `\n\n${wikiH2('星期五/金曜日', chapter.id)}`;
 						break;
 					case 6:
-						str += `=== 星期六/土曜日 ===`;
+						out += `\n\n${wikiH2('星期六/土曜日', chapter.id)}`;
 						break;
 					case 7:
-						str += `=== 星期日/日曜日 ===`;
+						out += `\n\n${wikiH2('星期日/日曜日', chapter.id)}`;
 						break;
 					default:
-						str += `=== ${chID} ===`;
+						out += `\n\n${wikiH2(chapter.id)}`;
 						break;
 				}
 			}
 			else {
-				str += `=== ${chID} ===`;
+				out += `\n\n${wikiH2(chapter.id)}`;
 			}
-			str += `\n{|`;
+
+			const table: WikiTableStruct = [
+				["! 類型", "! 等級", "! 關卡名稱", "! 關卡計分制"]
+			];
 			for (let j = 0; j < quests.length; j++) {
 				const quest = quests[j];
-				const { name: qname } = questMetadata(quest, row);
-				str += `\n{{旅途|${localizationQuestSubtitle()(quest.get("subtitle"))}|${quest.get("recommendLevel")}|||${qname}}}\n| style="padding-left: 10px;" | [[#${localizationStringAuto()(quest.get("displayDropText")) || `${quest.get("displayDropText")}`.split("/").at(-1)}]]`;
+				const rule = quest.drop.displayDropText.split("/").at(-1) || "";
+				table.push([
+					quest.subtitle,
+					quest.recommendLevel,
+					quest.title,
+					{
+						attributes: `style="padding-left: 10px;"`,
+						text: wikiSectionLink(quest.extraSetting?.scoreRule ?? rule, rule),
+					},
+				]);
 			}
-			str += `\n|}`;
-			out.push(str);
+			out += `\n\n${wikitable(table)}`;
 		}
 	}
 
-	return out.join("\n\n");
+	return out;
 }

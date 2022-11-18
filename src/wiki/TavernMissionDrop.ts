@@ -1,63 +1,74 @@
+import _ from "lodash";
+import numeral from "numeral";
 import { ImperiumData } from "../imperium-data";
-import { gamedataString, localizationHomelandBuildingName, localizationTavernMissionName } from "../localization";
-import { arrayUnique } from "../utils";
+import { localizationHomelandBuildingName } from "../localization";
+import { TavernMission } from "../model/tavern-mission";
+import { wikiH1, wikiH2 } from "../templates/wikiheader";
+import { wikitable, WikiTableStruct } from "../templates/wikitable";
 
 const TavernMissionDropTable = ImperiumData.fromGamedata().getTable("TavernMissionDrop");
 
+function getTavernMissionTypeName(type: string, param1: string, param2: number) {
+	switch (type) {
+		case "HomeLevel":
+			return `冒險營地 Lv.${param1}`;
+		case "Building":
+			return `${localizationHomelandBuildingName()(param1)} Lv.${param2}`;
+		case "PlayerLevel":
+			return `諦視者 Lv.${param1}`;
+		case "Normal":
+			return "一般";
+		case "Novice":
+			return "新手";
+	}
+	return "";
+}
+
 export default function wikiTavernMissionDrop() {
-	const out: string[] = [];
-	const TavernMissionDropEnabled = TavernMissionDropTable.filter(r => gamedataString("TavernMission", "id", "enable")(r.get("missionId")) == "true");
-	const TavernMissionDropTypes = arrayUnique(TavernMissionDropEnabled.map(r => `${r.get("type")},${r.get("param1")},${r.get("param2")}`));
-	for (let i = 0; i < TavernMissionDropTypes.length; i++) {
-		const type = TavernMissionDropTypes[i].split(",");
-		let str = ``;
-		switch (type[0]) {
-			case "HomeLevel":
-				str += `==冒險營地 Lv.${type[1]}==`;
-				break;
-			case "Building":
-				str += `==${localizationHomelandBuildingName()(type[1])} Lv.${type[2]}==`;
-				break;
-			case "PlayerLevel":
-				str += `==諦視者 Lv.${type[1]}==`;
-				break;
-			case "Normal":
-				str += `==一般==`;
-				break;
-			case "Novice":
-				str += `==新手==`;
-				break;
-		}
-		str += `
-{| class="wikitable"
-! group !! 選擇數量 !! 任務 !! 出現機率`;
-		const TavernMissionDropTyped = TavernMissionDropEnabled.filter(r => r.get("type") == type[0] && r.get("param1") == type[1] && r.get("param2") == type[2]);
-		const groupIds = arrayUnique(TavernMissionDropTyped.map(r => r.get("groupId")));
-		for (let j = 0; j < groupIds.length; j++) {
-			const groupId = groupIds[j];
-			const TavernMissionDropTypedGroupd = TavernMissionDropTyped.filter(r => r.get("groupId") == groupId);
-			const choiceNumRow = TavernMissionDropTable.find(r => r.get("groupId") == groupId && r.get("choiceNum") != -1);
-			const choiceNum = choiceNumRow ? Number(choiceNumRow.get("choiceNum")) : 1;
-			const weightCount = TavernMissionDropTypedGroupd.reduce((prev, cur) => prev + Number(cur.get("weight")), 0) / choiceNum;
-			for (let k = 0; k < TavernMissionDropTypedGroupd.length; k++) {
-				const row = TavernMissionDropTypedGroupd[k];
-				if (k == 0) {
-					str += `
-|-
-| rowspan="${TavernMissionDropTypedGroupd.length}" | ${row.get("groupId")}
-| rowspan="${TavernMissionDropTypedGroupd.length}" | ${choiceNum}`;
-				}
-				else {
-					str += `\n|-`;
-				}
-				str += `
-| ${localizationTavernMissionName(true)(row.get("missionId"))}
-| ${Math.floor(row.get("weight") / weightCount * 10000) / 100}%`;
+	let out = wikiH1(`篝火出現任務`);
+
+	const TavernMissionDropEnabled = TavernMissionDropTable.filter(r => TavernMission.get(r.get("missionId"))?.enable);
+	const dropTypes = _.groupBy(TavernMissionDropEnabled, (r) => `${r.get("type")},${r.get("param1")},${r.get("param2")},${r.get("param3")}`);
+	for (const [typeKey, group1] of Object.entries(dropTypes)) {
+		const [type, param1, param2] = typeKey.split(",");
+
+		out += `\n\n${wikiH2(getTavernMissionTypeName(type, param1, +param2))}`;
+		const table: WikiTableStruct = [
+			[
+				`! groupId`,
+				`! 選擇數量`,
+				`! 任務`,
+				`! 出現機率`,
+			],
+		];
+
+		const groups = _.groupBy(group1, (r) => r.get("groupId"));
+		for (const [groupId, group2] of Object.entries(groups)) {
+			const choiceNumRow = group2.find(r => r.get("choiceNum") != -1);
+			const choiceNum = choiceNumRow ? +choiceNumRow.get("choiceNum") : 1;
+			const weightSum = _.sumBy(group2, (r) => +r.get('weight')) / choiceNum;
+			for (let k = 0; k < group2.length; k++) {
+				const row = group2[k];
+				const mission = TavernMission.get(row.get("missionId"));
+				table.push([
+					...(k === 0 ? [
+						{
+							attributes: `rowspan="${group2.length}"`,
+							text: groupId,
+						},
+						{
+							attributes: `rowspan="${group2.length}"`,
+							text: choiceNum,
+						},
+					] : []),
+					mission.nameWithRank,
+					numeral(row.get("weight") / weightSum).format('0.[00]%'),
+				]);
 			}
 		}
-		str += `\n|}`;
-		out.push(str);
+
+		out += `\n${wikitable(table)}`;
 	}
 
-	return out.join("\n\n");
+	return out;
 }

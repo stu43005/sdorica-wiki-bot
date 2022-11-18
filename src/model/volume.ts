@@ -1,7 +1,7 @@
-import { Chapter } from './chapter';
 import { ImperiumData, RowWrapper } from "../imperium-data";
 import { localizationString } from "../localization";
-import { StateCondition } from "./enums/state-condition.enum";
+import { Chapter } from './chapter';
+import { StateCondition, stateConditionText } from "./enums/state-condition.enum";
 import { VolumeEnum } from './enums/volume.enum';
 
 const VolumeTable = ImperiumData.fromGamedata().getTable("Volume");
@@ -23,8 +23,16 @@ export class Volume {
 		return instances[volume];
 	}
 
+	public static find(predicate: (value: Volume) => boolean): Volume | undefined {
+		for (const item of this.getAllGenerator()) {
+			if (predicate(item)) {
+				return item;
+			}
+		}
+	}
+
 	public static getAll() {
-		return allInstances ?? (allInstances = Array.from(this.getAllGenerator()));
+		return allInstances ??= Array.from(this.getAllGenerator());
 	}
 
 	public static *getAllGenerator() {
@@ -51,20 +59,25 @@ export class Volume {
 
 	get visibleCondition(): StateCondition { return this.row.get('visibleCondition'); }
 	get visibleConditionParam(): string { return this.row.get('param1'); }
+	visibleConditionText: string;
 	get unlockCondition(): StateCondition { return this.row.get('unlockCondition'); }
 	get unlockConditionParam(): string { return this.row.get('param2'); }
+	unlockConditionText: string;
 	unlockText: string;
 	unlockNoteText: string;
 
 	#chapters: Chapter[] | null = null;
 	get chapters(): Chapter[] {
-		return this.#chapters ?? (this.#chapters = Chapter.getByVolume(this));
+		return this.#chapters ??= Chapter.getByVolume(this);
 	}
 
 	constructor(private row: RowWrapper) {
 		this.name = localizationString("Metagame")(row.get('name')) || row.get('name');
 		this.unlockText = localizationString("LockMessage")(row.get('unlockText'));
 		this.unlockNoteText = localizationString("LockMessage")(row.get('unlockNoteText'));
+
+		this.visibleConditionText = stateConditionText(this.visibleCondition, this.visibleConditionParam);
+		this.unlockConditionText = stateConditionText(this.unlockCondition, this.unlockConditionParam);
 	}
 
 }

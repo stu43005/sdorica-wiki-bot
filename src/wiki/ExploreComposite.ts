@@ -1,60 +1,99 @@
+import _ from "lodash";
 import { ImperiumData } from "../imperium-data";
-import { item2wiki, itemList } from "../wiki-item";
+import { localizationExploreBuildingName } from "../localization";
+import { wikiH1, wikiH2 } from "../templates/wikiheader";
+import { wikitable, WikiTableStruct } from "../templates/wikitable";
+import { range } from "../utils";
+import { item2wiki } from "../wiki-item";
 
 const ExploreBuildingTable = ImperiumData.fromGamedata().getTable("ExploreBuilding");
 const ExploreCompositeTable = ImperiumData.fromGamedata().getTable("ExploreComposite");
 
 export default function wikiExploreComposite() {
-	const out: string[] = [];
+	let out = wikiH1("探索合成表");
 
-	for (let i = 0; i < ExploreBuildingTable.length; i++) {
-		const building = ExploreBuildingTable.get(i);
-		const composites = ExploreCompositeTable.filter(comp => comp.get("requireBuildingId") == building.get("id") && comp.get("enable"));
-		let str = `==${building.get("type")} Lv ${building.get("level")}==
+	const groups = _.groupBy(
+		ExploreCompositeTable.filter((r) => r.get("enable")),
+		(r) => r.get('requireBuildingId'),
+	);
+	for (const [requireBuildingId, group] of Object.entries(groups)) {
+		const building = ExploreBuildingTable.find((r) => r.get("id") === requireBuildingId);
 
-{| class="wikitable"
-! 設施等級 !! 道具名稱 !! 合成素材 !! 合成條件
-`;
-		for (let j = 0; j < composites.length; j++) {
-			const row = composites[j];
-			const items = itemList(row);
-			const reset = row.get("resetDay") != -1 ? `<br/>(${row.get("maxCount")}次/${row.get("resetDay")}日)` : "";
-			str += `|-
-| style="text-align:center" | Lv ${building.get("level")}
-| ${item2wiki(row.get("itemId"), undefined, true)}${reset}
-| ${items.join(" ")}
-| ${row.get("requireFlagId") ? `style="text-align: center" | {{?}}` : `style="text-align: center" | -`}
-`;
+		const table: WikiTableStruct = [
+			[
+				`! 設施等級`,
+				`! 道具名稱`,
+				`! 合成素材`,
+				`! 合成條件`,
+			],
+		];
+		for (const entry of group) {
+			const items = range(1, 4)
+				.map((i) => item2wiki(entry.get(`item${i}Id`), entry.get(`item${i}Count`), true, { size: "20px" }))
+				.filter(Boolean);
+			const reset = entry.get("resetDay") != -1 ? `\n(${entry.get("maxCount")}次/${entry.get("resetDay")}日)` : "";
+
+			table.push({
+				attributes: entry.get("enable") ? "" : `style="background-color: #ccc; color: #1e1e1e;" title="停用"`,
+				ceils: [
+					{
+						attributes: `style="text-align:center"`,
+						text: `Lv ${building?.get("level") ?? "?"}`,
+					},
+					`${item2wiki(entry.get("itemId"), undefined, true)}${reset}`,
+					items.join(" "),
+					{
+						attributes: `style="text-align: center"`,
+						text: entry.get("requireFlagId") ? `{{?}}` : "-",
+					},
+				],
+			});
 		}
-		str += `|}`;
-		if (composites.length) {
-			out.push(str);
-		}
+
+		const header = building ? `${localizationExploreBuildingName()(building.get("type"))} Lv ${building.get("level")}` : `requireBuildingId: ${requireBuildingId}`;
+		out += `\n\n${wikiH2(header)}\n${wikitable(table)}`;
 	}
 
-	const otherComposites = ExploreCompositeTable.filter(comp => !comp.get("enable"));
+	const otherComposites = ExploreCompositeTable.filter((r) => !r.get("enable"));
 	if (otherComposites.length > 0) {
-		let str = `==其他停用製作項目==
+		const table: WikiTableStruct = [
+			[
+				`! 設施`,
+				`! 道具名稱`,
+				`! 合成素材`,
+				`! 合成條件`,
+			],
+		];
+		for (const entry of otherComposites) {
+			if (+entry.get("itemId") >= 1 && +entry.get("itemId") <= 11) continue;
 
-{| class="wikitable"
-! 設施 !! 道具名稱 !! 合成素材 !! 合成條件
-`;
-		for (let j = 0; j < otherComposites.length; j++) {
-			const row = otherComposites[j];
-			if (Number(row.get("itemId")) >= 1 && Number(row.get("itemId")) <= 11) continue;
-			const items = itemList(row);
-			const reset = row.get("resetDay") != -1 ? `<br/>(${row.get("maxCount")}次/${row.get("resetDay")}日)` : "";
-			const building = ExploreBuildingTable.find(b => b.get("id") == row.get("requireBuildingId"));
-			str += `|-
-| style="text-align:center" | ${building ? `${building.get("type")} Lv ${building.get("level")}` : row.get("requireBuildingId")}
-| ${item2wiki(row.get("itemId"), undefined, true)}${reset}
-| ${items.join(" ")}
-| ${row.get("requireFlagId") ? `style="text-align: center" | {{?}}` : `style="text-align: center" | -`}
-`;
+			const items = range(1, 4)
+				.map((i) => item2wiki(entry.get(`item${i}Id`), entry.get(`item${i}Count`), true, { size: "20px" }))
+				.filter(Boolean);
+			const reset = entry.get("resetDay") != -1 ? `\n(${entry.get("maxCount")}次/${entry.get("resetDay")}日)` : "";
+
+			const building = ExploreBuildingTable.find((r) => r.get("id") === entry.get("requireBuildingId"));
+			const header = building ? `${localizationExploreBuildingName()(building.get("type"))} Lv ${building.get("level")}` : entry.get("requireBuildingId");
+
+			table.push({
+				attributes: entry.get("enable") ? "" : `style="background-color: #ccc; color: #1e1e1e;" title="停用"`,
+				ceils: [
+					{
+						attributes: `style="text-align:center"`,
+						text: header,
+					},
+					`${item2wiki(entry.get("itemId"), undefined, true)}${reset}`,
+					items.join(" "),
+					{
+						attributes: `style="text-align: center"`,
+						text: entry.get("requireFlagId") ? `{{?}}` : "-",
+					},
+				],
+			});
 		}
-		str += `|}`;
-		out.push(str);
+
+		out += `\n\n${wikiH2("其他停用製作項目")}\n${wikitable(table)}`;
 	}
 
-	return out.join("\n\n------------------------------\n\n");
+	return out;
 }

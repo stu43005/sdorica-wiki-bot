@@ -1,43 +1,65 @@
 import numeral from "numeral";
 import { ImperiumData } from "../imperium-data";
+import { wikiH1, wikiH2 } from "../templates/wikiheader";
+import { wikitable, WikiTableStruct } from "../templates/wikitable";
 
 const LevelUpsTable = ImperiumData.fromGamedata().getTable("LevelUps");
 
 export default function wikiLevelUps() {
-	const out: string[] = [];
+	let out = wikiH1('等級');
 
-	const LevelUpKeys = ["exp", "heroexp", "homeexp", "monsterexp"];
-	for (const key of LevelUpKeys) {
-		let str = `== ${key} ==
-{| class="wikitable" style="text-align:center; font-family: Consolas, Monaco, monospace;"
-|-
-! width=70px | 等級
-! width=80px | 魂能
-! width=80px | 累加魂能`;
+	const expKeys = ["exp", "heroexp", "homeexp", "monsterexp"];
+	for (const key of expKeys) {
+		const table: WikiTableStruct = {
+			attributes: `class="wikitable" style="text-align:center; font-family: Consolas, Monaco, monospace;"`,
+			rows: [
+				[
+					`! style="min-width: 80px;" | 等級`,
+					`! style="min-width: 80px;" | 魂能`,
+					`! style="min-width: 80px;" | 累加魂能`,
+				],
+			],
+		};
 		for (let i = 0; i < LevelUpsTable.length; i++) {
 			const level = LevelUpsTable.get(i);
 			if (i + 1 < LevelUpsTable.length) {
 				const nextLevel = LevelUpsTable.get(i + 1);
 				if (nextLevel.get(key) != -1) {
-					str += `\n|-\n| ${level.get("level")} || ${numeral(nextLevel.get(key) - level.get(key)).format("0,0")} || ${numeral(nextLevel.get(key)).format("0,0")}`;
-					continue;
+					const diff = nextLevel.get(key) - level.get(key);
+					if (diff > 0) {
+						table.rows.push([
+							level.get("level"),
+							numeral(diff).format("0,0"),
+							numeral(nextLevel.get(key)).format("0,0"),
+						]);
+						continue;
+					}
 				}
 			}
-			str += `\n|-\n| ${level.get("level")}\n| colspan=2 | -封頂-`;
+			table.rows.push([
+				level.get("level"),
+				{
+					attributes: `colspan=2`,
+					text: `-封頂-`
+				},
+			]);
 			break;
 		}
-		str += `\n|}`;
-		out.push(str);
+		out += `\n\n${wikiH2(key)}\n${wikitable(table)}`;
 	}
 
-	const LevelUpKeys2 = ['level', 'rank', 'subrank'];
-	for (const key of LevelUpKeys2) {
-		let str = `== ${key} ==
-{| class="wikitable" style="text-align:center; font-family: Consolas, Monaco, monospace;"
-|-
-! width=70px | 等級
-! width=80px | HP
-! width=80px | ATK`;
+	const levelKeys = ['level', 'rank', 'subrank'];
+	for (const key of levelKeys) {
+		const table: WikiTableStruct = {
+			attributes: `class="wikitable" style="text-align:center; font-family: Consolas, Monaco, monospace;"`,
+			rows: [
+				[
+					`! style="min-width: 80px;" | 等級`,
+					`! style="min-width: 80px;" | HP`,
+					`! style="min-width: 80px;" | ATK`,
+				],
+			],
+		};
 		let privHp = 0;
 		let privAtk = 0;
 		for (let i = 0; i < LevelUpsTable.length; i++) {
@@ -48,17 +70,16 @@ export default function wikiLevelUps() {
 			if (hp === -1) {
 				break;
 			}
-			if (key == "rank") {
-				str += `\n|-\n| ${level} || ${hp} || ${atk}`;
-			} else {
-				str += `\n|-\n| ${level} || ${hp}${privHp == 0 ? "" : ` (x ${numeral(hp / privHp).format("0.[000]")})`} || ${atk}${privAtk == 0 ? "" : ` (x ${numeral(atk / privAtk).format("0.[000]")})`}`;
-			}
+			table.rows.push([
+				level,
+				`${hp}${privHp == 0 ? "" : ` (x ${numeral(hp / privHp).format("0.[000]")})`}`,
+				`${atk}${privAtk == 0 ? "" : ` (x ${numeral(atk / privAtk).format("0.[000]")})`}`,
+			]);
 			privHp = hp;
 			privAtk = atk;
 		}
-		str += `\n|}`;
-		out.push(str);
+		out += `\n\n${wikiH2(key)}\n${wikitable(table)}`;
 	}
 
-	return out.join("\n\n");
+	return out;
 }

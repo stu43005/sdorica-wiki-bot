@@ -28,14 +28,26 @@ export class ChapterCount {
 	get dynamicRate(): boolean { return !!this.row.get('dynamicRate'); }
 
 	get initial(): number { return +this.row.get('initial'); }
+	/**
+	 * 累積最大關卡次數
+	 */
 	get max(): number { return +this.row.get('max'); }
 
 	get regainType(): ChapteCountType { return this.row.get('regainType'); }
 	get regainValue(): number { return +this.row.get('regainValue'); }
+	/**
+	 * 自動恢復關卡次數
+	 */
 	regainString: string;
 
 	get itemIcon(): boolean { return !!this.row.get('itemIcon'); }
+	/**
+	 * 增加可完成次數消耗1
+	 */
 	payItem: ItemPayRef;
+	/**
+	 * 增加可完成次數消耗2
+	 */
 	payItem2: ItemPayRef;
 
 	constructor(private row: RowWrapper) {

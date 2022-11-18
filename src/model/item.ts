@@ -1,15 +1,20 @@
 import { ImperiumData, RowWrapper } from "../imperium-data";
 import { itemNameNormalization, localizationString } from "../localization";
-import { treasureList, voucherList } from "../wiki-item";
+import { wikiH2 } from "../templates/wikiheader";
 import { Avatar } from './avatar';
+import { DropItemsGroup } from "./drop-items";
 import { ExploreItemsCategory } from './enums/explore-items-category.enum';
 import { ItemCategory } from './enums/item-category.enum';
 import { ItemStackable } from './enums/item-stackable.enum';
 import { ExploreItem } from './explore-item';
-import { ItemBase } from './item-base';
+import { ItemBase } from './item.base';
+import { ItemGiveList } from "./item-give-list";
 import { ItemGiveRef } from "./item-give-ref";
+import { itemRename } from "./config/item";
+import { HeroSkillSet } from "./hero-skillset";
 
 const ItemsTable = ImperiumData.fromGamedata().getTable("Items");
+const VoucherGiftsTable = ImperiumData.fromGamedata().getTable("VoucherGifts");
 
 const instances: Record<string, Item> = {};
 let allInstances: Item[] | null = null;
@@ -28,16 +33,16 @@ export class Item extends ItemBase {
 		return instances[id];
 	}
 
-	public static find(predicate: (value: Item, index: number) => boolean): Item | undefined {
-		const item = ItemsTable.find((row, index) => {
-			const item2 = Item.get(row);
-			return predicate(item2, index);
-		});
-		return item && Item.get(item);
+	public static find(predicate: (value: Item) => boolean): Item | undefined {
+		for (const item of this.getAllGenerator()) {
+			if (predicate(item)) {
+				return item;
+			}
+		}
 	}
 
 	public static getAll() {
-		return allInstances ?? (allInstances = Array.from(this.getAllGenerator()));
+		return allInstances ??= Array.from(this.getAllGenerator());
 	}
 
 	public static *getAllGenerator() {
@@ -50,7 +55,6 @@ export class Item extends ItemBase {
 	readonly isExplore = false;
 
 	get id(): string { return this.row.get('id'); }
-	get no(): number { return +this.id; }
 	get category(): ItemCategory { return this.row.get('category'); }
 	get effectValue(): number { return +this.row.get('effectValue'); }
 	get iconKey(): string { return this.row.get('iconKey'); }
@@ -60,8 +64,62 @@ export class Item extends ItemBase {
 	description: string;
 	get internalName(): string { return this.row.get('name'); }
 
+	#enable: boolean | null = null;
 	get enable() {
-		if (this.no > 20000 && this.no < 30000) {
+		return this.#enable ??= this.getEnable();
+	}
+
+	#sellItem: ItemGiveRef | null = null;
+	get sellItem(): ItemGiveRef {
+		return this.#sellItem ??= new ItemGiveRef(this.row.get('sellType'), this.row.get('sellLinkId'), this.row.get('sellAmount'));
+	}
+
+	get stackable(): ItemStackable { return this.row.get('stackable'); }
+	get viewable(): boolean { return !!this.row.get('viewable'); }
+	get stackingNum(): number { return +this.row.get('stackingNum'); }
+
+	#avatar: Avatar | undefined | null = null;
+	get avatar(): Avatar | undefined {
+		if (this.category !== ItemCategory.Avatar) {
+			return undefined;
+		}
+		if (this.#avatar === null) {
+			this.#avatar = Avatar.get(this.effectValue.toString());
+		}
+		return this.#avatar;
+	}
+
+	#treasureItems: DropItemsGroup | undefined | null = null;
+	get treasureItems(): DropItemsGroup | undefined {
+		if (this.category !== ItemCategory.Treasure) {
+			return undefined;
+		}
+		if (this.#treasureItems === null) {
+			this.#treasureItems = DropItemsGroup.get(this.effectValue);
+		}
+		return this.#treasureItems;
+	}
+
+	#voucherGifts: ItemGiveList | undefined | null = null;
+	get voucherGifts(): ItemGiveList | undefined {
+		if (this.category !== ItemCategory.Voucher) {
+			return undefined;
+		}
+		if (this.#voucherGifts === null) {
+			const items = VoucherGiftsTable.filter(r => r.get('groupId') == this.effectValue);
+			this.#voucherGifts = new ItemGiveList(items.map(item => new ItemGiveRef(item.get("giveType"), item.get("giveLinkId"), item.get("giveAmount"))));
+		}
+		return this.#voucherGifts;
+	}
+
+	constructor(row: RowWrapper) {
+		super(row);
+		this.name = itemNameNormalization(localizationString("Item")(row.get('localizationKeyName')) || this.internalName || this.iconKey);
+		this.description = localizationString("Item")(row.get('localizationKeyDescription'));
+	}
+
+	private getEnable() {
+		if (+this.id > 20000 && +this.id < 30000) {
 			// 由ExploreItem轉移過來的道具
 			if (ExploreItem.find(item => item.category == ExploreItemsCategory.Transform && item.effectValue == this.id)) return true;
 			// 同樣道具同時存在在ExploreItem (用作關卡獎勵圖示)，無用
@@ -70,29 +128,24 @@ export class Item extends ItemBase {
 		return true;
 	}
 
-	#sellItem: ItemGiveRef | null = null;
-	get sellItem(): ItemGiveRef {
-		return this.#sellItem ?? (this.#sellItem = new ItemGiveRef(this.row.get('sellType'), this.row.get('sellLinkId'), this.row.get('sellAmount')));
-	}
-
-	get stackable(): ItemStackable { return this.row.get('stackable'); }
-	get viewable(): boolean { return !!this.row.get('viewable'); }
-	get stackingNum(): number { return +this.row.get('stackingNum'); }
-
-	constructor(row: RowWrapper) {
-		super(row);
-		this.name = itemNameNormalization(localizationString("Item")(row.get('localizationKeyName')) || this.internalName || this.iconKey);
-		this.description = localizationString("Item")(row.get('localizationKeyDescription'));
-	}
-
-	getAvatar() {
-		if (this.category == ItemCategory.Avatar) {
-			return Avatar.get(this.effectValue.toString());
+	getWikiPageName() {
+		if (itemRename[this.id]) {
+			return itemRename[this.id];
 		}
+		if (this.category == ItemCategory.Avatar) {
+			const sk = HeroSkillSet.getAll().find(skillset => skillset.isBook && skillset.name == this.name);
+			if (sk) {
+				return super.getWikiPageName() + ' (頭像)';
+			}
+		}
+		if (this.stackable == ItemStackable.Sell && this.sellItem?.item && this.sellItem?.item !== this) {
+			return this.sellItem.item.getWikiPageName();
+		}
+		return super.getWikiPageName();
 	}
 
 	getTransformExploreItems() {
-		return ExploreItem.getAll().filter(item => item.getTransformTo() == this);
+		return ExploreItem.getAll().filter(item => item.transformTo == this);
 	}
 
 	getItemInfoboxParams() {
@@ -115,25 +168,25 @@ export class Item extends ItemBase {
 		return params;
 	}
 
-	getWikiTreasureList(heading = '== 開啟寶箱獲得道具 ==') {
+	getWikiTreasureList() {
 		if (this.category == ItemCategory.Treasure) {
-			return heading + treasureList(this.effectValue);
+			return `${wikiH2('開啟寶箱獲得道具')}\n${this.treasureItems?.toWiki()}`;
 
 		} else if (this.category == ItemCategory.Voucher) {
-			return '== 自選項目 ==' + voucherList(this.effectValue);
+			return `${wikiH2('自選項目')}\n${this.voucherGifts?.toWiki()}`;
 		}
 		return '';
 	}
 
 	getWikiCompositeList() {
-		return this.getTransformExploreItems().map(item => item.getWikiCompositeList()).join('');
+		return this.getTransformExploreItems().map(item => item.toWikiCompositeList()).join('');
 	}
 
-	getWikiPage() {
+	toWikiPage() {
 		return [
-			this.getItemInfobox(),
-			this.getAvatar()?.getAvatarInfobox() ?? '',
-			this.getWikiDropQuests(),
+			this.toItemInfobox(),
+			this.avatar?.getAvatarInfobox() ?? '',
+			this.toWikiDropQuests(),
 			this.getWikiTreasureList(),
 			this.getWikiCompositeList(),
 		].filter(a => a).join('\n');

@@ -1,42 +1,46 @@
+import _ from "lodash";
 import { ImperiumData } from "../imperium-data";
-import { arrayUnique } from "../utils";
+import { wikiH1, wikiH2 } from "../templates/wikiheader";
+import { wikiimage } from "../templates/wikiimage";
+import { wikitable, WikiTableCeil, WikiTableStruct } from "../templates/wikitable";
+import { range } from "../utils";
 import { item2wikiWithType } from "../wiki-item";
+import { wikiNextLine } from "../wiki-utils";
+import { weekRankImage } from "./AdventureRank";
 
 const BattlefieldRanksTable = ImperiumData.fromGamedata().getTable("BattlefieldRanks");
 
 export default function wikiBattlefieldRanks() {
-	const out: string[] = [];
-	const weekRankGroups = arrayUnique(BattlefieldRanksTable.rows.map(r => r.get("groupId")));
-	const weekRankImage: Record<string, string> = {
-		"rank_week_01": "幻境試煉_週排名_01_Icon.png",
-		"rank_week_02": "幻境試煉_週排名_02_Icon.png",
-		"rank_week_03": "幻境試煉_週排名_03_Icon.png",
-		"rank_week_04": "幻境試煉_週排名_04_Icon.png",
-		"rank_week_05": "幻境試煉_週排名_05_Icon.png",
-	};
+	let out = wikiH1("戰場排名獎勵");
 
-	out.push(`==本週總積分、排名與獎勵==`);
-	for (let i = 0; i < weekRankGroups.length; i++) {
-		const groupId = weekRankGroups[i];
-		let str = `===group ${groupId}===
-{| class="wikitable mw-collapsible"
-|-
-! colspan="2" | 排名
-! colspan="4" | 獎勵`;
-		const entries = BattlefieldRanksTable.filter(r => r.get("groupId") == groupId);
-		for (let j = 0; j < entries.length; j++) {
-			const entry = entries[j];
-			str += `\n|-
-| style="text-align: center;" | [[File:${weekRankImage[entry.get("rankIcon")]}|64px]]
-| style="text-align: center;" | No.${entry.get("maxRanking")}<br>｜<br>${entry.get("minRanking") == -1 ? "∞" : `No.${entry.get("minRanking")}`}
-| ${item2wikiWithType(entry.get("giveType1"), entry.get("giveLinkId1"), entry.get("giveAmount1"))}
-| ${item2wikiWithType(entry.get("giveType2"), entry.get("giveLinkId2"), entry.get("giveAmount2"))}
-| ${item2wikiWithType(entry.get("giveType3"), entry.get("giveLinkId3"), entry.get("giveAmount3"))}
-| ${item2wikiWithType(entry.get("giveType4"), entry.get("giveLinkId4"), entry.get("giveAmount4"))}`;
+	const weekRankGroups = _.groupBy(BattlefieldRanksTable.rows, (r) => r.get("groupId"));
+	for (const [groupId, group] of Object.entries(weekRankGroups)) {
+		const table: WikiTableStruct = {
+			attributes: `class="wikitable mw-collapsible"`,
+			rows: [
+				[
+					`! colspan="2" | 排名`,
+					`! colspan="4" | 獎勵`,
+				],
+			],
+		};
+		for (const entry of group) {
+			table.rows.push([
+				{
+					attributes: `style="text-align: center;"`,
+					text: wikiimage(weekRankImage[entry.get("rankIcon")], { width: 64 }),
+				},
+				{
+					attributes: `style="text-align: center;"`,
+					text: wikiNextLine(`No.${entry.get("maxRanking")}\n｜\n${entry.get("minRanking") == -1 ? "∞" : `No.${entry.get("minRanking")}`}`),
+				},
+				...range(1, 4).map((i): WikiTableCeil => ({
+					text: item2wikiWithType(entry.get(`giveType${i}`), entry.get(`giveLinkId${i}`), entry.get(`giveAmount${i}`)),
+				})),
+			]);
 		}
-		str += `\n|}`;
-		out.push(str);
+		out += `\n\n${wikiH2(groupId)}\n${wikitable(table)}`;
 	}
 
-	return out.join("\n\n");
+	return out;
 }

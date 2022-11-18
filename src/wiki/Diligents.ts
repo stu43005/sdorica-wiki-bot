@@ -1,66 +1,91 @@
+import _ from "lodash";
 import numeral from "numeral";
 import { ImperiumData } from "../imperium-data";
-import { localizationChapterName, localizationItemNameWithType, localizationString } from "../localization";
+import { localizationItemNameWithType, localizationString } from "../localization";
+import { Chapter } from "../model/chapter";
 import { TemplateString } from "../model/template-string";
-import { arrayGroupBy } from "../utils";
+import { wikiH1, wikiH2 } from "../templates/wikiheader";
+import { wikiPageLink } from "../templates/wikilink";
+import { wikitable, WikiTableStruct } from "../templates/wikitable";
 import { item2wiki } from "../wiki-item";
 
 const DiligentGroupsTable = ImperiumData.fromGamedata().getTable("DiligentGroups");
 const DiligentsTable = ImperiumData.fromGamedata().getTable("Diligents");
 
 export default function wikiDiligents() {
-	const out: string[] = [];
+	let out = wikiH1("閱歷值");
 
-	const diligentGroups = arrayGroupBy(DiligentGroupsTable.rows, (row) => row.get("chapterId"));
-	for (const chapterId of Object.keys(diligentGroups)) {
-		const levelGroups = diligentGroups[chapterId].sort((a, b) => a.get("diligentAmount") - b.get("diligentAmount"));
-		const levelDiligents = levelGroups.map(levelRow => DiligentsTable.filter(row => levelRow.get("levelGroup") == row.get("levelGroup")));
-		const levelEffects: string[][] = [];
-		const diligentId: string = levelGroups[0]?.get("diligentId");
+	const diligentGroups = _.groupBy(DiligentGroupsTable.rows, (r) => r.get("chapterId"));
+	for (const [chapterId, group] of Object.entries(diligentGroups)) {
+		const chapter = Chapter.get(chapterId);
+		const levels = group
+			.sort((a, b) => a.get("diligentAmount") - b.get("diligentAmount"))
+			.map(level => {
+				const diligents = DiligentsTable.filter(row => level.get("levelGroup") == row.get("levelGroup"));
+				return {
+					level,
+					diligentId: level.get("diligentId") as string,
+					diligentAmount: +level.get("diligentAmount"),
+					diligents: diligents.map(diligent => ({
+						diligent,
+						diligentType: diligent.get("diligentType") as string,
+						effect: new TemplateString(localizationString("Diligents")(diligent.get("diligentI2Key"))).apply({
+							giveLinkId: localizationItemNameWithType()(`${diligent.get("giveLinkId")}:${diligent.get("giveType")}`),
+							giveAmount: diligent.get("giveAmount"),
+							abilityIncrease: diligent.get("abilityIncrease"),
+							buffId: diligent.get("buffId"),
+							buffLevel: diligent.get("buffLevel"),
+						}),
+					})),
+				};
+			});
 
-		let str = `=== ${chapterId}:${localizationChapterName()(chapterId)} ===
-{| class="wikitable mw-collapsible"
-|-
-! 階段 !! ${item2wiki(diligentId)} !! 效果`;
-
-		for (let level = 0; level < levelGroups.length; level++) {
-			const levelGroup = levelGroups[level];
-			const diligents = levelDiligents[level];
-			const effects: string[] = levelEffects[level] = [];
-			const rowspan = diligents.length;
-
-			str += `\n|-
-! rowspan="${rowspan}" | ${level}
-| rowspan="${rowspan}" | ${numeral(+levelGroup.get("diligentAmount")).format("0,0")}`;
-
-			for (let j = 0; j < diligents.length; j++) {
-				const diligent = diligents[j];
-				let style = "";
-				if (diligent.get("diligentType") == "empty") {
-					style += "color: #ccc;";
+		const diligentId = levels[0].diligentId;
+		const table: WikiTableStruct = {
+			attributes: `class="wikitable mw-collapsible"`,
+			rows: [
+				[
+					`! 階段`,
+					{
+						header: true,
+						text: item2wiki(diligentId),
+					},
+					`! 效果`,
+				],
+			],
+		};
+		for (let i = 0; i < levels.length; i++) {
+			const level = levels[i];
+			for (let j = 0; j < level.diligents.length; j++) {
+				const diligent = level.diligents[j];
+				const styles: string[] = [];
+				if (diligent.diligentType === "empty") {
+					styles.push("color: #ccc;");
 				}
-				const effect = effects[j] = new TemplateString(localizationString("Diligents")(diligent.get("diligentI2Key"))).apply({
-					giveLinkId: localizationItemNameWithType()(`${diligent.get("giveLinkId")}:${diligent.get("giveType")}`),
-					giveAmount: diligent.get("giveAmount"),
-					abilityIncrease: diligent.get("abilityIncrease"),
-					buffId: diligent.get("buffId"),
-					buffLevel: diligent.get("buffLevel"),
-				});
-				if (level > 0 && !levelEffects[level - 1].find(e => e === effect)) {
-					style += "background-color: #90ee90;";
+				if (i > 0 && !levels[i - 1].diligents.find(e => e.effect === diligent.effect)) {
+					styles.push("background-color: #90ee90; color: #1e1e1e;");
 				}
-
-				if (j > 0) {
-					str += "\n|-";
-				}
-				str += `\n|${style ? ` style="${style}" ` : ""}| ${effect}`;
+				table.rows.push([
+					...(j === 0 ? [
+						{
+							attributes: `rowspan="${level.diligents.length}"`,
+							text: i,
+						},
+						{
+							attributes: `rowspan="${level.diligents.length}"`,
+							text: numeral(level.diligentAmount).format("0,0"),
+						},
+					] : []),
+					{
+						attributes: styles.length ? `style="${styles.join(" ")}"` : "",
+						text: diligent.effect,
+					},
+				]);
 			}
 		}
 
-		str += `\n|}`
-
-		out.push(str);
+		out += `\n\n${wikiH2(chapter ? wikiPageLink("Chapter", chapter.getWikiFullName(), chapterId) : chapterId)}\n${wikitable(table)}`;
 	}
 
-	return out.join("\n\n");
+	return out;
 }
