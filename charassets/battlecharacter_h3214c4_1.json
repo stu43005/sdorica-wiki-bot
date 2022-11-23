@@ -1,6 +1,6 @@
 {
   "$interpreted": {
-    "Localization": "克麗歐",
+    "Localization": "h3214c4_1",
     "復活魂芯數": 0,
     "技能": {
       "Arrive1": [
@@ -10,72 +10,92 @@
         "對施術者{\"Tag\":65540,\"_keyString\":\"1\",\"$type\":\"BattleModel.DirectKillSkillEffect\"}"
       ],
       "S1": [
-        "對敵人中HP最低的角色治療(攻擊力 x0.9)"
+        "對施術者的目標穿透(攻擊力 x1)"
       ],
-      "S2": [
-        "對施術者的目標攻擊(攻擊力 x1)"
+      "alert": [
+        "對施術者的目標冷卻時間加0"
       ]
     },
     "技能組": {
       "S1": [
         {
-          "CoolDown": 0,
+          "CoolDown": 2,
           "技能列表": [
-            "施展S2",
             "施展S1"
           ],
           "條件": [
           ],
-          "目標": ""
+          "目標": "玩家的隨機角色"
         }
       ]
     },
-    "攻擊力": 60,
-    "攻擊力等級調整後": 56,
+    "攻擊力": 200,
+    "攻擊力等級調整後": 188,
     "敵人AI": "S1",
     "消魂設置": {
       "Type1": "S1",
       "Type2": "S2",
       "Type4": "S3"
     },
-    "疊盾": 125,
-    "疊盾等級調整後": 117,
+    "疊盾": 1400,
+    "疊盾等級調整後": 1320,
     "站位": "無",
-    "血量": 100,
-    "血量等級調整後": 94,
+    "血量": 1400,
+    "血量等級調整後": 1320,
     "被動Buff": [
+      "賦予永久true_damage(本角色會施展穿透攻擊。)",
+      "賦予永久2層defense_up_small(減傷)",
+      "賦予永久Suck(吸吮)"
     ],
-    "起始CD": 2,
+    "起始CD": 3,
     "預設CD": 3
   },
   "$type": "BattleModel.EnemyCharacter",
   "ReferenceBuffKeys": [
+    "true_damage",
+    "defense_up_small",
+    "Suck",
+    "Suck_target",
+    "bonusAttackPower",
+    "dexterity",
+    "damage_absorption",
+    "ArmorToBlood",
+    "regeneration",
+    "rage",
+    "warfare",
+    "leader",
+    "dexterity_trigger",
+    "dexterity_fightback_0",
+    "dexterity_fightback_1",
+    "dexterity_fightback_2",
+    "dexterity_fightback_3",
+    "dexterity_fightback_4",
+    "b0028sx_dodge",
+    "damage_absorption_trigger",
+    "ArmorToBlood_trigger",
+    "regeneration_trigger",
+    "follower"
   ],
   "ReferenceCharacterKeys": [
   ],
   "ReferenceEffectKeys": [
-    "h0040c3_s02_ShineTrail",
-    "h0040c3_s02_fight",
-    "h0040c3_s02_FightLine",
-    "Common_Hit04_B",
-    "h0040c3_s01_ShineLight",
-    "Common_Heal01"
+    "h0018s4_s01_fight",
+    "h0010s4_s02_FightLine",
+    "Common_Hit04_C"
   ],
   "ReferenceEmoIconKeys": [
   ],
   "ReferenceMusicKeys": [
   ],
   "ReferenceSFXKeys": [
-    "swoosh_046",
-    "magic_dark_005",
-    "swoosh_045",
-    "magic_dark_004"
+    "swoosh_042",
+    "magic_dark_003"
   ],
   "ReferenceVoiceSFXKeys": [
   ],
-  "_armorCapacity": 125,
+  "_armorCapacity": 1400,
   "_assistantSkill": null,
-  "_bloodCapacity": 100,
+  "_bloodCapacity": 1400,
   "_characterAI": {
     "$type": "BattleModel.SequenceEnemyAI",
     "OrderList": [
@@ -83,15 +103,39 @@
     ]
   },
   "_defaultCoolDown": 3,
-  "_initialCoolDown": 2,
+  "_initialCoolDown": 3,
   "_levelStartBuff": [
   ],
   "_mass": 1,
-  "_masterRank": 2,
+  "_masterRank": 0,
   "_passiveBuff": [
+    {
+      "BuffId": "true_damage",
+      "Forever": true,
+      "LevelStack": 0,
+      "OverwriteDuration": -1,
+      "UserDefineVariable": {
+      }
+    },
+    {
+      "BuffId": "defense_up_small",
+      "Forever": true,
+      "LevelStack": 2,
+      "OverwriteDuration": -1,
+      "UserDefineVariable": {
+      }
+    },
+    {
+      "BuffId": "Suck",
+      "Forever": true,
+      "LevelStack": 0,
+      "OverwriteDuration": -1,
+      "UserDefineVariable": {
+      }
+    }
   ],
   "_pose": "Stand",
-  "_power": 60,
+  "_power": 200,
   "_reviveCount": 0,
   "_skills": {
     "Arrive1": {
@@ -149,21 +193,15 @@
           "IsMultiple": false,
           "multi": null,
           "single": {
-            "$type": "BattleModel.FieldMinChar",
-            "field": {
-              "$type": "BattleModel.IntFieldC",
-              "targetField": 0
-            },
-            "group": {
-              "$type": "BattleModel.PVEEnemyTeam",
-              "includeDead": false,
-              "includeEmpty": false
+            "$type": "BattleModel.EnemyAssignee",
+            "reference": {
+              "$type": "BattleModel.ThisSkillCaster"
             }
           },
           "skillEffects": [
             {
-              "$type": "BattleModel.HpHealSkillEffect",
-              "Tag": 34,
+              "$type": "BattleModel.TrueDamageSkillEffect",
+              "Tag": 8193,
               "_keyString": "1",
               "_skillModifier": {
                 "_constant": 0,
@@ -178,7 +216,7 @@
         }
       ]
     },
-    "S2": {
+    "alert": {
       "$type": "BattleModel.BattleSkill",
       "_isFallBackIfEmptyTarget": false,
       "_isResolveTargetEachUnit": false,
@@ -195,17 +233,10 @@
           },
           "skillEffects": [
             {
-              "$type": "BattleModel.HpDamageSkillEffect",
-              "Tag": 9,
-              "_keyString": "1",
-              "_skillModifier": {
-                "_constant": 0,
-                "_parameter": {
-                  "$type": "BattleModel.SkillCasterPower",
-                  "basePower": false
-                },
-                "_ratio": 1
-              }
+              "$type": "BattleModel.ChangeCDSkillEffect",
+              "Tag": 1028,
+              "_keyString": "",
+              "_value": 0
             }
           ]
         }
@@ -222,15 +253,6 @@
             {
               "ConditionList": [
               ],
-              "SkillID": "S2",
-              "_conditionalSequences": [
-              ],
-              "seq": "",
-              "t": null
-            },
-            {
-              "ConditionList": [
-              ],
               "SkillID": "S1",
               "_conditionalSequences": [
               ],
@@ -238,8 +260,15 @@
               "t": null
             }
           ],
-          "_characterCoolDown": 0,
-          "assignTarget": null,
+          "_characterCoolDown": 2,
+          "assignTarget": {
+            "$type": "BattleModel.RandomOfChars",
+            "group": {
+              "$type": "BattleModel.PVEPlayerTeam",
+              "includeDead": false,
+              "includeEmpty": false
+            }
+          },
           "icon": 0
         }
       ],

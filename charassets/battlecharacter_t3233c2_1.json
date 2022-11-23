@@ -1,6 +1,6 @@
 {
   "$interpreted": {
-    "Localization": "克麗歐",
+    "Localization": "t3233c2_1",
     "復活魂芯數": 0,
     "技能": {
       "Arrive1": [
@@ -10,18 +10,28 @@
         "對施術者{\"Tag\":65540,\"_keyString\":\"1\",\"$type\":\"BattleModel.DirectKillSkillEffect\"}"
       ],
       "S1": [
-        "對敵人中HP最低的角色治療(攻擊力 x0.9)"
+        "對施術者的對方中HP最低的角色攻擊(攻擊力 x1)、將8個魂芯undefined"
       ],
       "S2": [
-        "對施術者的目標攻擊(攻擊力 x1)"
+        "對施術者"
       ]
     },
     "技能組": {
+      "BeginAction": [
+        {
+          "CoolDown": 5,
+          "技能列表": [
+            "施展S1"
+          ],
+          "條件": [
+          ],
+          "目標": ""
+        }
+      ],
       "S1": [
         {
-          "CoolDown": 0,
+          "CoolDown": 3,
           "技能列表": [
-            "施展S2",
             "施展S1"
           ],
           "條件": [
@@ -30,68 +40,98 @@
         }
       ]
     },
-    "攻擊力": 60,
-    "攻擊力等級調整後": 56,
+    "攻擊力": 100,
+    "攻擊力等級調整後": 94,
     "敵人AI": "S1",
     "消魂設置": {
       "Type1": "S1",
       "Type2": "S2",
       "Type4": "S3"
     },
-    "疊盾": 125,
-    "疊盾等級調整後": 117,
+    "疊盾": 800,
+    "疊盾等級調整後": 754,
     "站位": "無",
-    "血量": 100,
-    "血量等級調整後": 94,
+    "血量": 800,
+    "血量等級調整後": 754,
     "被動Buff": [
+      "賦予永久BattleBeginAction(戰鬥開始時，本角色立即施展技能。)",
+      "賦予永久Hint_MinHpTarget(本角色攻擊血量最少的我方角色。)",
+      "賦予永久Hint_StoneToTargetColor(本角色的技能會產生跟目標相同顏色的魂芯。)"
     ],
-    "起始CD": 2,
-    "預設CD": 3
+    "起始CD": 0,
+    "預設CD": 0
   },
   "$type": "BattleModel.EnemyCharacter",
   "ReferenceBuffKeys": [
+    "BattleBeginAction",
+    "Hint_MinHpTarget",
+    "Hint_StoneToTargetColor"
   ],
   "ReferenceCharacterKeys": [
   ],
   "ReferenceEffectKeys": [
-    "h0040c3_s02_ShineTrail",
-    "h0040c3_s02_fight",
-    "h0040c3_s02_FightLine",
-    "Common_Hit04_B",
-    "h0040c3_s01_ShineLight",
-    "Common_Heal01"
+    "Common_SmokeRun01_B",
+    "t3301c3_s01_Saliva",
+    "t3233c2_s01_Saliva_Move",
+    "Common_Smoke04",
+    "t3301c3_s01_Saliva_Hit"
   ],
   "ReferenceEmoIconKeys": [
   ],
   "ReferenceMusicKeys": [
   ],
   "ReferenceSFXKeys": [
-    "swoosh_046",
-    "magic_dark_005",
-    "swoosh_045",
-    "magic_dark_004"
+    "Footsteps_001set_02_splash_large",
+    "Creature_monster_044set_01_frog_gero_vocal",
+    "Effect_beam_001set_02_liquid_spit_splash_fail_balloon_release",
+    "Hit_smash_012_general",
+    "Effect_splash_001_spit_bubble"
   ],
   "ReferenceVoiceSFXKeys": [
   ],
-  "_armorCapacity": 125,
+  "_armorCapacity": 800,
   "_assistantSkill": null,
-  "_bloodCapacity": 100,
+  "_bloodCapacity": 800,
   "_characterAI": {
     "$type": "BattleModel.SequenceEnemyAI",
     "OrderList": [
       "S1"
     ]
   },
-  "_defaultCoolDown": 3,
-  "_initialCoolDown": 2,
+  "_defaultCoolDown": 0,
+  "_initialCoolDown": 0,
   "_levelStartBuff": [
   ],
   "_mass": 1,
-  "_masterRank": 2,
+  "_masterRank": 0,
   "_passiveBuff": [
+    {
+      "BuffId": "BattleBeginAction",
+      "Forever": true,
+      "LevelStack": 0,
+      "OverwriteDuration": -1,
+      "UserDefineVariable": {
+      }
+    },
+    {
+      "BuffId": "Hint_MinHpTarget",
+      "Forever": true,
+      "LevelStack": 0,
+      "OverwriteDuration": -1,
+      "UserDefineVariable": {
+      }
+    },
+    {
+      "BuffId": "Hint_StoneToTargetColor",
+      "Forever": true,
+      "LevelStack": 0,
+      "OverwriteDuration": -1,
+      "UserDefineVariable": {
+      }
+    }
   ],
   "_pose": "Stand",
-  "_power": 60,
+  "_power": 100,
   "_reviveCount": 0,
   "_skills": {
     "Arrive1": {
@@ -155,15 +195,18 @@
               "targetField": 0
             },
             "group": {
-              "$type": "BattleModel.PVEEnemyTeam",
+              "$type": "BattleModel.OppositeTeamChars",
               "includeDead": false,
-              "includeEmpty": false
+              "includeEmpty": false,
+              "reference": {
+                "$type": "BattleModel.ThisSkillCaster"
+              }
             }
           },
           "skillEffects": [
             {
-              "$type": "BattleModel.HpHealSkillEffect",
-              "Tag": 34,
+              "$type": "BattleModel.HpDamageSkillEffect",
+              "Tag": 9,
               "_keyString": "1",
               "_skillModifier": {
                 "_constant": 0,
@@ -172,6 +215,25 @@
                   "basePower": false
                 },
                 "_ratio": 1
+              }
+            },
+            {
+              "$type": "BattleModel.StoneActionSkillEffect",
+              "Tag": 516,
+              "_keyString": "1",
+              "_stoneAction": {
+                "BuffFilter": "Normal",
+                "BuffId": "",
+                "BuffLabel": null,
+                "EffectFilter": "Normal",
+                "StonePositionList": [
+                ],
+                "UsePositionSettings": false,
+                "changeTo": "ToTargetStoneType",
+                "filter": "IsNotTargetColor",
+                "isInitStoneFilter": "None",
+                "order": "UpperLeftToLowerLeft",
+                "targetStoneCount": 8
               }
             }
           ]
@@ -188,46 +250,21 @@
           "IsMultiple": false,
           "multi": null,
           "single": {
-            "$type": "BattleModel.EnemyAssignee",
-            "reference": {
-              "$type": "BattleModel.ThisSkillCaster"
-            }
+            "$type": "BattleModel.ThisSkillCaster"
           },
           "skillEffects": [
-            {
-              "$type": "BattleModel.HpDamageSkillEffect",
-              "Tag": 9,
-              "_keyString": "1",
-              "_skillModifier": {
-                "_constant": 0,
-                "_parameter": {
-                  "$type": "BattleModel.SkillCasterPower",
-                  "basePower": false
-                },
-                "_ratio": 1
-              }
-            }
           ]
         }
       ]
     }
   },
   "_skillsetTable": {
-    "S1": {
+    "BeginAction": {
       "ComboList": [
         {
           "ConditionList": [
           ],
           "SkillList": [
-            {
-              "ConditionList": [
-              ],
-              "SkillID": "S2",
-              "_conditionalSequences": [
-              ],
-              "seq": "",
-              "t": null
-            },
             {
               "ConditionList": [
               ],
@@ -238,7 +275,30 @@
               "t": null
             }
           ],
-          "_characterCoolDown": 0,
+          "_characterCoolDown": 5,
+          "assignTarget": null,
+          "icon": 0
+        }
+      ],
+      "_isViewSkillSet": false
+    },
+    "S1": {
+      "ComboList": [
+        {
+          "ConditionList": [
+          ],
+          "SkillList": [
+            {
+              "ConditionList": [
+              ],
+              "SkillID": "S1",
+              "_conditionalSequences": [
+              ],
+              "seq": "",
+              "t": null
+            }
+          ],
+          "_characterCoolDown": 3,
           "assignTarget": null,
           "icon": 0
         }

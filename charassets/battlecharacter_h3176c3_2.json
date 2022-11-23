@@ -1,6 +1,6 @@
 {
   "$interpreted": {
-    "Localization": "克麗歐",
+    "Localization": "h3176c3_2",
     "復活魂芯數": 0,
     "技能": {
       "Arrive1": [
@@ -10,18 +10,17 @@
         "對施術者{\"Tag\":65540,\"_keyString\":\"1\",\"$type\":\"BattleModel.DirectKillSkillEffect\"}"
       ],
       "S1": [
-        "對敵人中HP最低的角色治療(攻擊力 x0.9)"
+        "對施術者的目標攻擊(攻擊力 x1)"
       ],
       "S2": [
-        "對施術者的目標攻擊(攻擊力 x1)"
+        "對施術者"
       ]
     },
     "技能組": {
       "S1": [
         {
-          "CoolDown": 0,
+          "CoolDown": 4,
           "技能列表": [
-            "施展S2",
             "施展S1"
           ],
           "條件": [
@@ -30,68 +29,90 @@
         }
       ]
     },
-    "攻擊力": 60,
-    "攻擊力等級調整後": 56,
-    "敵人AI": "S1",
+    "攻擊力": 30,
+    "攻擊力等級調整後": 28,
+    "敵人AI": "",
     "消魂設置": {
       "Type1": "S1",
       "Type2": "S2",
       "Type4": "S3"
     },
-    "疊盾": 125,
-    "疊盾等級調整後": 117,
+    "疊盾": 800,
+    "疊盾等級調整後": 754,
     "站位": "無",
-    "血量": 100,
-    "血量等級調整後": 94,
+    "血量": 800,
+    "血量等級調整後": 754,
     "被動Buff": [
+      "賦予永久3層damage_absorption(轉盾)",
+      "賦予永久taunt(嘲諷)"
     ],
-    "起始CD": 2,
-    "預設CD": 3
+    "起始CD": 0,
+    "預設CD": 4
   },
   "$type": "BattleModel.EnemyCharacter",
   "ReferenceBuffKeys": [
+    "damage_absorption",
+    "taunt",
+    "damage_absorption_trigger"
   ],
   "ReferenceCharacterKeys": [
   ],
   "ReferenceEffectKeys": [
-    "h0040c3_s02_ShineTrail",
-    "h0040c3_s02_fight",
-    "h0040c3_s02_FightLine",
-    "Common_Hit04_B",
-    "h0040c3_s01_ShineLight",
-    "Common_Heal01"
+    "h3162c2_s01_rock01",
+    "h3162c2_s01_hit01"
   ],
   "ReferenceEmoIconKeys": [
   ],
   "ReferenceMusicKeys": [
   ],
   "ReferenceSFXKeys": [
-    "swoosh_046",
-    "magic_dark_005",
-    "swoosh_045",
-    "magic_dark_004"
+    "Movement_arms_009set_02_chain",
+    "Movement_natural_009set_01_rock_slide",
+    "step_rock_003",
+    "Movement_arms_009set_03_chain_tiny",
+    "Whoosh_swing_007",
+    "Whoosh_swing_003_large",
+    "Movement_arms_009set_05_chain",
+    "rock_503",
+    "punch_028",
+    "step_rock_002"
   ],
   "ReferenceVoiceSFXKeys": [
   ],
-  "_armorCapacity": 125,
+  "_armorCapacity": 800,
   "_assistantSkill": null,
-  "_bloodCapacity": 100,
+  "_bloodCapacity": 800,
   "_characterAI": {
     "$type": "BattleModel.SequenceEnemyAI",
     "OrderList": [
-      "S1"
     ]
   },
-  "_defaultCoolDown": 3,
-  "_initialCoolDown": 2,
+  "_defaultCoolDown": 4,
+  "_initialCoolDown": 0,
   "_levelStartBuff": [
   ],
   "_mass": 1,
-  "_masterRank": 2,
+  "_masterRank": 0,
   "_passiveBuff": [
+    {
+      "BuffId": "damage_absorption",
+      "Forever": true,
+      "LevelStack": 3,
+      "OverwriteDuration": -1,
+      "UserDefineVariable": {
+      }
+    },
+    {
+      "BuffId": "taunt",
+      "Forever": true,
+      "LevelStack": 0,
+      "OverwriteDuration": -1,
+      "UserDefineVariable": {
+      }
+    }
   ],
   "_pose": "Stand",
-  "_power": 60,
+  "_power": 30,
   "_reviveCount": 0,
   "_skills": {
     "Arrive1": {
@@ -149,21 +170,15 @@
           "IsMultiple": false,
           "multi": null,
           "single": {
-            "$type": "BattleModel.FieldMinChar",
-            "field": {
-              "$type": "BattleModel.IntFieldC",
-              "targetField": 0
-            },
-            "group": {
-              "$type": "BattleModel.PVEEnemyTeam",
-              "includeDead": false,
-              "includeEmpty": false
+            "$type": "BattleModel.EnemyAssignee",
+            "reference": {
+              "$type": "BattleModel.ThisSkillCaster"
             }
           },
           "skillEffects": [
             {
-              "$type": "BattleModel.HpHealSkillEffect",
-              "Tag": 34,
+              "$type": "BattleModel.HpDamageSkillEffect",
+              "Tag": 9,
               "_keyString": "1",
               "_skillModifier": {
                 "_constant": 0,
@@ -188,25 +203,9 @@
           "IsMultiple": false,
           "multi": null,
           "single": {
-            "$type": "BattleModel.EnemyAssignee",
-            "reference": {
-              "$type": "BattleModel.ThisSkillCaster"
-            }
+            "$type": "BattleModel.ThisSkillCaster"
           },
           "skillEffects": [
-            {
-              "$type": "BattleModel.HpDamageSkillEffect",
-              "Tag": 9,
-              "_keyString": "1",
-              "_skillModifier": {
-                "_constant": 0,
-                "_parameter": {
-                  "$type": "BattleModel.SkillCasterPower",
-                  "basePower": false
-                },
-                "_ratio": 1
-              }
-            }
           ]
         }
       ]
@@ -222,15 +221,6 @@
             {
               "ConditionList": [
               ],
-              "SkillID": "S2",
-              "_conditionalSequences": [
-              ],
-              "seq": "",
-              "t": null
-            },
-            {
-              "ConditionList": [
-              ],
               "SkillID": "S1",
               "_conditionalSequences": [
               ],
@@ -238,7 +228,7 @@
               "t": null
             }
           ],
-          "_characterCoolDown": 0,
+          "_characterCoolDown": 4,
           "assignTarget": null,
           "icon": 0
         }

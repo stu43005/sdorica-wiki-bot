@@ -1,6 +1,6 @@
 {
   "$interpreted": {
-    "Localization": "克麗歐",
+    "Localization": "h3226c3_1",
     "復活魂芯數": 0,
     "技能": {
       "Arrive1": [
@@ -10,46 +10,61 @@
         "對施術者{\"Tag\":65540,\"_keyString\":\"1\",\"$type\":\"BattleModel.DirectKillSkillEffect\"}"
       ],
       "S1": [
-        "對敵人中HP最低的角色治療(攻擊力 x0.9)"
+        "對施術者治療(攻擊力 x0.9)、將7個魂芯由隨機的順序加入賦予1回合1層tearing(撕裂)"
       ],
       "S2": [
-        "對施術者的目標攻擊(攻擊力 x1)"
+        "對施術者的目標攻擊(攻擊力 x1)、賦予3回合1層tearing(撕裂)"
       ]
     },
     "技能組": {
-      "S1": [
+      "BeginAction": [
         {
-          "CoolDown": 0,
+          "CoolDown": 3,
           "技能列表": [
-            "施展S2",
             "施展S1"
           ],
           "條件": [
           ],
           "目標": ""
         }
+      ],
+      "S2": [
+        {
+          "CoolDown": 3,
+          "技能列表": [
+            "施展S2"
+          ],
+          "條件": [
+          ],
+          "目標": "施術者的對方後排"
+        }
       ]
     },
-    "攻擊力": 60,
-    "攻擊力等級調整後": 56,
-    "敵人AI": "S1",
+    "攻擊力": 200,
+    "攻擊力等級調整後": 188,
+    "敵人AI": "S2",
     "消魂設置": {
       "Type1": "S1",
       "Type2": "S2",
       "Type4": "S3"
     },
-    "疊盾": 125,
-    "疊盾等級調整後": 117,
+    "疊盾": 1000,
+    "疊盾等級調整後": 943,
     "站位": "無",
-    "血量": 100,
-    "血量等級調整後": 94,
+    "血量": 1000,
+    "血量等級調整後": 943,
     "被動Buff": [
+      "賦予永久BattleBeginAction(戰鬥開始時，本角色立即施展技能。)"
     ],
     "起始CD": 2,
     "預設CD": 3
   },
   "$type": "BattleModel.EnemyCharacter",
   "ReferenceBuffKeys": [
+    "BattleBeginAction",
+    "tearing",
+    "tearing_trigger",
+    "tearing_trigger_alert"
   ],
   "ReferenceCharacterKeys": [
   ],
@@ -73,13 +88,13 @@
   ],
   "ReferenceVoiceSFXKeys": [
   ],
-  "_armorCapacity": 125,
+  "_armorCapacity": 1000,
   "_assistantSkill": null,
-  "_bloodCapacity": 100,
+  "_bloodCapacity": 1000,
   "_characterAI": {
     "$type": "BattleModel.SequenceEnemyAI",
     "OrderList": [
-      "S1"
+      "S2"
     ]
   },
   "_defaultCoolDown": 3,
@@ -89,9 +104,17 @@
   "_mass": 1,
   "_masterRank": 2,
   "_passiveBuff": [
+    {
+      "BuffId": "BattleBeginAction",
+      "Forever": true,
+      "LevelStack": 0,
+      "OverwriteDuration": -1,
+      "UserDefineVariable": {
+      }
+    }
   ],
   "_pose": "Stand",
-  "_power": 60,
+  "_power": 200,
   "_reviveCount": 0,
   "_skills": {
     "Arrive1": {
@@ -149,16 +172,7 @@
           "IsMultiple": false,
           "multi": null,
           "single": {
-            "$type": "BattleModel.FieldMinChar",
-            "field": {
-              "$type": "BattleModel.IntFieldC",
-              "targetField": 0
-            },
-            "group": {
-              "$type": "BattleModel.PVEEnemyTeam",
-              "includeDead": false,
-              "includeEmpty": false
-            }
+            "$type": "BattleModel.ThisSkillCaster"
           },
           "skillEffects": [
             {
@@ -172,6 +186,33 @@
                   "basePower": false
                 },
                 "_ratio": 1
+              }
+            },
+            {
+              "$type": "BattleModel.StoneBuffSkillEffect",
+              "Tag": 132,
+              "_keyString": "1",
+              "_stoneBuffAction": {
+                "BuffFilter": "Normal",
+                "BuffId": "",
+                "BuffLabel": null,
+                "EffectFilter": "Normal",
+                "StonePositionList": [
+                ],
+                "UsePositionSettings": false,
+                "action": "Add",
+                "buff": {
+                  "BuffId": "tearing",
+                  "Forever": false,
+                  "LevelStack": 1,
+                  "OverwriteDuration": 1,
+                  "UserDefineVariable": {
+                  }
+                },
+                "filter": "IsAnyColor",
+                "isInitStoneFilter": "None",
+                "order": "Random",
+                "targetStoneCount": 7
               }
             }
           ]
@@ -206,6 +247,21 @@
                 },
                 "_ratio": 1
               }
+            },
+            {
+              "$type": "BattleModel.AddBuffSkillEffect",
+              "Tag": 132,
+              "_buffData": [
+                {
+                  "BuffId": "tearing",
+                  "Forever": false,
+                  "LevelStack": 1,
+                  "OverwriteDuration": 3,
+                  "UserDefineVariable": {
+                  }
+                }
+              ],
+              "_keyString": "1"
             }
           ]
         }
@@ -213,7 +269,30 @@
     }
   },
   "_skillsetTable": {
-    "S1": {
+    "BeginAction": {
+      "ComboList": [
+        {
+          "ConditionList": [
+          ],
+          "SkillList": [
+            {
+              "ConditionList": [
+              ],
+              "SkillID": "S1",
+              "_conditionalSequences": [
+              ],
+              "seq": "",
+              "t": null
+            }
+          ],
+          "_characterCoolDown": 3,
+          "assignTarget": null,
+          "icon": 0
+        }
+      ],
+      "_isViewSkillSet": false
+    },
+    "S2": {
       "ComboList": [
         {
           "ConditionList": [
@@ -227,19 +306,20 @@
               ],
               "seq": "",
               "t": null
-            },
-            {
-              "ConditionList": [
-              ],
-              "SkillID": "S1",
-              "_conditionalSequences": [
-              ],
-              "seq": "",
-              "t": null
             }
           ],
-          "_characterCoolDown": 0,
-          "assignTarget": null,
+          "_characterCoolDown": 3,
+          "assignTarget": {
+            "$type": "BattleModel.BackOfChars",
+            "group": {
+              "$type": "BattleModel.OppositeTeamChars",
+              "includeDead": false,
+              "includeEmpty": false,
+              "reference": {
+                "$type": "BattleModel.ThisSkillCaster"
+              }
+            }
+          },
           "icon": 0
         }
       ],

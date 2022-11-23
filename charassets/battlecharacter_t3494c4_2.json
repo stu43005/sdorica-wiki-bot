@@ -1,6 +1,6 @@
 {
   "$interpreted": {
-    "Localization": "克麗歐",
+    "Localization": "t3494c4_2",
     "復活魂芯數": 0,
     "技能": {
       "Arrive1": [
@@ -10,19 +10,31 @@
         "對施術者{\"Tag\":65540,\"_keyString\":\"1\",\"$type\":\"BattleModel.DirectKillSkillEffect\"}"
       ],
       "S1": [
-        "對敵人中HP最低的角色治療(攻擊力 x0.9)"
+        "對施術者的隊伍全體治療(攻擊力 x1.8)"
       ],
       "S2": [
         "對施術者的目標攻擊(攻擊力 x1)"
+      ],
+      "alert": [
+        "對施術者的目標冷卻時間加0"
       ]
     },
     "技能組": {
       "S1": [
         {
-          "CoolDown": 0,
+          "CoolDown": 4,
           "技能列表": [
-            "施展S2",
             "施展S1"
+          ],
+          "條件": [
+            "施術者的隊伍中的任意角色 符合條件 HP% != 100"
+          ],
+          "目標": ""
+        },
+        {
+          "CoolDown": 4,
+          "技能列表": [
+            "施展S2"
           ],
           "條件": [
           ],
@@ -30,22 +42,22 @@
         }
       ]
     },
-    "攻擊力": 60,
-    "攻擊力等級調整後": 56,
+    "攻擊力": 40,
+    "攻擊力等級調整後": 37,
     "敵人AI": "S1",
     "消魂設置": {
       "Type1": "S1",
       "Type2": "S2",
       "Type4": "S3"
     },
-    "疊盾": 125,
-    "疊盾等級調整後": 117,
+    "疊盾": 600,
+    "疊盾等級調整後": 566,
     "站位": "無",
-    "血量": 100,
-    "血量等級調整後": 94,
+    "血量": 600,
+    "血量等級調整後": 566,
     "被動Buff": [
     ],
-    "起始CD": 2,
+    "起始CD": 3,
     "預設CD": 3
   },
   "$type": "BattleModel.EnemyCharacter",
@@ -54,28 +66,43 @@
   "ReferenceCharacterKeys": [
   ],
   "ReferenceEffectKeys": [
-    "h0040c3_s02_ShineTrail",
-    "h0040c3_s02_fight",
-    "h0040c3_s02_FightLine",
-    "Common_Hit04_B",
-    "h0040c3_s01_ShineLight",
-    "Common_Heal01"
+    "t3494c4_s01_Water01",
+    "Common_Heal01",
+    "Common_emo_Heart",
+    "Common_SmokeDown03_A",
+    "t3493c4_s01_Check01",
+    "t3494c4_s02_Slash01",
+    "t3494c4_s02_Slash02",
+    "t3494c4_s02_Bamboo01",
+    "Common_HitDash01_A"
   ],
   "ReferenceEmoIconKeys": [
   ],
   "ReferenceMusicKeys": [
   ],
   "ReferenceSFXKeys": [
-    "swoosh_046",
-    "magic_dark_005",
-    "swoosh_045",
-    "magic_dark_004"
+    "Movement_misc_043_bone_creak_squeak",
+    "Hit_smash_031_simple_small",
+    "Effect_ice_001_freeze_creak_break",
+    "Effect_splash_024set_03_blood_spill_sticky",
+    "Effect_flash_055set_02_general_heal_medium",
+    "Hit_smash_005set_02_egg",
+    "Creature_misc_006_eat_crunchy",
+    "Effect_ice_004set_01_crunch_creak_break_bone_movement",
+    "Movement_misc_068set_01_bone_wood_break_thin_scrap",
+    "Effect_splash_023_blood_sticky_break",
+    "Swish_Arm_Swing_short_01",
+    "Movement_misc_065set_01_fan_whoosh_rustle_wing_flag",
+    "whoosh_common_hard_02",
+    "impact_arrow_hit_wood_01",
+    "Hit_smash_029_large_scrap",
+    "Hit_smash_035_simple_slap"
   ],
   "ReferenceVoiceSFXKeys": [
   ],
-  "_armorCapacity": 125,
+  "_armorCapacity": 600,
   "_assistantSkill": null,
-  "_bloodCapacity": 100,
+  "_bloodCapacity": 600,
   "_characterAI": {
     "$type": "BattleModel.SequenceEnemyAI",
     "OrderList": [
@@ -83,7 +110,7 @@
     ]
   },
   "_defaultCoolDown": 3,
-  "_initialCoolDown": 2,
+  "_initialCoolDown": 3,
   "_levelStartBuff": [
   ],
   "_mass": 1,
@@ -91,7 +118,7 @@
   "_passiveBuff": [
   ],
   "_pose": "Stand",
-  "_power": 60,
+  "_power": 40,
   "_reviveCount": 0,
   "_skills": {
     "Arrive1": {
@@ -146,32 +173,29 @@
       "_skillIdentifiers": [
         {
           "CanBeEmpty": false,
-          "IsMultiple": false,
-          "multi": null,
-          "single": {
-            "$type": "BattleModel.FieldMinChar",
-            "field": {
-              "$type": "BattleModel.IntFieldC",
-              "targetField": 0
-            },
-            "group": {
-              "$type": "BattleModel.PVEEnemyTeam",
-              "includeDead": false,
-              "includeEmpty": false
+          "IsMultiple": true,
+          "multi": {
+            "$type": "BattleModel.SelfTeamChars",
+            "excludeSelf": false,
+            "includeDead": false,
+            "includeEmpty": false,
+            "reference": {
+              "$type": "BattleModel.ThisSkillCaster"
             }
           },
+          "single": null,
           "skillEffects": [
             {
               "$type": "BattleModel.HpHealSkillEffect",
               "Tag": 34,
-              "_keyString": "1",
+              "_keyString": "",
               "_skillModifier": {
                 "_constant": 0,
                 "_parameter": {
                   "$type": "BattleModel.SkillCasterPower",
                   "basePower": false
                 },
-                "_ratio": 1
+                "_ratio": 2
               }
             }
           ]
@@ -210,11 +234,80 @@
           ]
         }
       ]
+    },
+    "alert": {
+      "$type": "BattleModel.BattleSkill",
+      "_isFallBackIfEmptyTarget": false,
+      "_isResolveTargetEachUnit": false,
+      "_skillIdentifiers": [
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": false,
+          "multi": null,
+          "single": {
+            "$type": "BattleModel.EnemyAssignee",
+            "reference": {
+              "$type": "BattleModel.ThisSkillCaster"
+            }
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.ChangeCDSkillEffect",
+              "Tag": 1028,
+              "_keyString": "",
+              "_value": 0
+            }
+          ]
+        }
+      ]
     }
   },
   "_skillsetTable": {
     "S1": {
       "ComboList": [
+        {
+          "ConditionList": [
+            {
+              "$type": "BattleModel.CharGroupCondition",
+              "condition": {
+                "$type": "BattleModel.IntCompareC",
+                "left": {
+                  "$type": "BattleModel.IntFieldC",
+                  "targetField": 2
+                },
+                "op": 5,
+                "right": {
+                  "$type": "BattleModel.ConstantIntC",
+                  "constant": 100
+                }
+              },
+              "everybody": false,
+              "group": {
+                "$type": "BattleModel.SelfTeamChars",
+                "excludeSelf": false,
+                "includeDead": false,
+                "includeEmpty": false,
+                "reference": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              }
+            }
+          ],
+          "SkillList": [
+            {
+              "ConditionList": [
+              ],
+              "SkillID": "S1",
+              "_conditionalSequences": [
+              ],
+              "seq": "",
+              "t": null
+            }
+          ],
+          "_characterCoolDown": 4,
+          "assignTarget": null,
+          "icon": 0
+        },
         {
           "ConditionList": [
           ],
@@ -227,18 +320,9 @@
               ],
               "seq": "",
               "t": null
-            },
-            {
-              "ConditionList": [
-              ],
-              "SkillID": "S1",
-              "_conditionalSequences": [
-              ],
-              "seq": "",
-              "t": null
             }
           ],
-          "_characterCoolDown": 0,
+          "_characterCoolDown": 4,
           "assignTarget": null,
           "icon": 0
         }

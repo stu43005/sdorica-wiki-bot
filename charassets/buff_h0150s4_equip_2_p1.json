@@ -6,27 +6,27 @@
         "效果": [
           {
             "效果": [
-              "對本角色觸發CounterTriggerSkill",
-              "對本狀態的變數一增加1"
+              "對本角色觸發S4",
+              "對本狀態的變數一改為0"
             ],
             "條件": [
+              "本狀態的變數一 == 1"
             ]
           }
         ],
         "條件": [
-          "相反({\"SourceType\":\"StoneAction\",\"$type\":\"BattleModel.SkillSetSourceTypeEqual\"})",
-          "施術者是本角色的對方的一員",
-          "{\"left\":{\"$type\":\"BattleModel.ThisSkillSet\"},\"right\":{\"BattleStringLabel\":{\"BattleStringLabel\":\"SkillSetNames\",\"StringList\":[\"S1\",\"S2\",\"S3\",\"E3\",\"E6\"]},\"$type\":\"BattleModel.StringListFromBattleStringLabel\"},\"$type\":\"BattleModel.StringContainedInGroup\"}",
-          "本狀態 符合條件 變數一 < 變數二"
         ]
       },
-      "OnTurnBegin": {
+      "OnEachSkillTargetEffect": {
         "效果": [
           {
             "效果": [
-              "對本狀態的變數一改為0"
+              "對本狀態的變數一改為1"
             ],
             "條件": [
+              "施術者是本角色的隊伍的一員",
+              "本角色是指定目標",
+              "施展的技能效果中包含(Attack)屬性"
             ]
           }
         ],
@@ -36,7 +36,7 @@
     },
     "持續時間": 0,
     "最高層數": 99,
-    "標籤": "InfinityTrigger"
+    "標籤": "Hidden | Forever"
   },
   "$type": "BattleModel.Buff",
   "ReferenceBuffKeys": [
@@ -75,98 +75,10 @@
                     },
                     "UseAssignParameter": false,
                     "resetCasterCD": false,
-                    "skillsetId": "CounterTriggerSkill"
+                    "skillsetId": "S4"
                   }
                 }
               },
-              {
-                "TargetField": {
-                  "$type": "BattleModel.OperateThisBuff",
-                  "operation": {
-                    "$type": "BattleModel.SetBuffField",
-                    "lastIndepedentStack": false,
-                    "setOperator": 1,
-                    "targetField": 4,
-                    "value": {
-                      "$type": "BattleModel.ConstanctInt",
-                      "constant": 1
-                    }
-                  }
-                }
-              }
-            ],
-            "Conditions": [
-            ]
-          }
-        ],
-        "Conditions": [
-          {
-            "$type": "BattleModel.Inverse",
-            "condition": {
-              "$type": "BattleModel.SkillSetSourceTypeEqual",
-              "SourceType": "StoneAction"
-            }
-          },
-          {
-            "$type": "BattleModel.CharacterInside",
-            "group": {
-              "$type": "BattleModel.OppositeTeamChars",
-              "includeDead": false,
-              "includeEmpty": false,
-              "reference": {
-                "$type": "BattleModel.ThisBuffOwner"
-              }
-            },
-            "left": {
-              "$type": "BattleModel.ThisSkillCaster"
-            }
-          },
-          {
-            "$type": "BattleModel.StringContainedInGroup",
-            "left": {
-              "$type": "BattleModel.ThisSkillSet"
-            },
-            "right": {
-              "$type": "BattleModel.StringListFromBattleStringLabel",
-              "BattleStringLabel": {
-                "BattleStringLabel": "SkillSetNames",
-                "StringList": [
-                  "S1",
-                  "S2",
-                  "S3",
-                  "E3",
-                  "E6"
-                ]
-              }
-            }
-          },
-          {
-            "$type": "BattleModel.BuffCondition",
-            "buff": {
-              "$type": "BattleModel.ThisBuff"
-            },
-            "condition": {
-              "$type": "BattleModel.IntCompareB",
-              "left": {
-                "$type": "BattleModel.IntFieldB",
-                "targetField": 4
-              },
-              "op": 1,
-              "right": {
-                "$type": "BattleModel.IntFieldB",
-                "targetField": 8
-              }
-            }
-          }
-        ]
-      }
-    },
-    {
-      "Key": 1,
-      "Value": {
-        "Actions": [
-          {
-            "Actions": [
               {
                 "TargetField": {
                   "$type": "BattleModel.OperateThisBuff",
@@ -184,6 +96,79 @@
               }
             ],
             "Conditions": [
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.ThisBuff"
+                  },
+                  "targetField": 4
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 1
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 1024,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 1
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterInside",
+                "group": {
+                  "$type": "BattleModel.SelfTeamChars",
+                  "excludeSelf": false,
+                  "includeDead": false,
+                  "includeEmpty": false,
+                  "reference": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  }
+                },
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              },
+              {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                },
+                "right": {
+                  "$type": "BattleModel.ThisSpecifiedTarget"
+                }
+              },
+              {
+                "$type": "BattleModel.ThisSkillEffectTagContains",
+                "containsAll": 1
+              }
             ]
           }
         ],
@@ -196,5 +181,5 @@
   "_maxLevel": 99,
   "_orderTable": {
   },
-  "_tag": 32768
+  "_tag": 65
 }

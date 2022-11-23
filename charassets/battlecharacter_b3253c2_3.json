@@ -1,6 +1,6 @@
 {
   "$interpreted": {
-    "Localization": "克麗歐",
+    "Localization": "b3253c2_3",
     "復活魂芯數": 0,
     "技能": {
       "Arrive1": [
@@ -10,72 +10,103 @@
         "對施術者{\"Tag\":65540,\"_keyString\":\"1\",\"$type\":\"BattleModel.DirectKillSkillEffect\"}"
       ],
       "S1": [
-        "對敵人中HP最低的角色治療(攻擊力 x0.9)"
+        "對施術者的目標破甲(攻擊力 x0.75)"
       ],
       "S2": [
-        "對施術者的目標攻擊(攻擊力 x1)"
+        "對施術者將99個白色魂芯消除",
+        "對施術者的對方全體攻擊(1000 x1)"
       ]
     },
     "技能組": {
       "S1": [
         {
-          "CoolDown": 0,
+          "CoolDown": 5,
           "技能列表": [
-            "施展S2",
+            "施展S2"
+          ],
+          "條件": [
+            "目前戰鬥回合數 == 0"
+          ],
+          "目標": ""
+        },
+        {
+          "CoolDown": 1,
+          "技能列表": [
             "施展S1"
           ],
           "條件": [
           ],
-          "目標": ""
+          "目標": "施術者的對方首位"
         }
       ]
     },
-    "攻擊力": 60,
-    "攻擊力等級調整後": 56,
+    "攻擊力": 200,
+    "攻擊力等級調整後": 188,
     "敵人AI": "S1",
     "消魂設置": {
       "Type1": "S1",
       "Type2": "S2",
       "Type4": "S3"
     },
-    "疊盾": 125,
-    "疊盾等級調整後": 117,
+    "疊盾": 800,
+    "疊盾等級調整後": 754,
     "站位": "無",
-    "血量": 100,
-    "血量等級調整後": 94,
+    "血量": 800,
+    "血量等級調整後": 754,
     "被動Buff": [
+      "賦予永久StayInhibitUntilAttack(潛伏)"
     ],
-    "起始CD": 2,
+    "起始CD": 1,
     "預設CD": 3
   },
   "$type": "BattleModel.EnemyCharacter",
   "ReferenceBuffKeys": [
+    "StayInhibitUntilAttack",
+    "inhibit_enemy_skill",
+    "inhibit_general_nerf",
+    "nerf_damage_small",
+    "weak",
+    "tearing",
+    "poison",
+    "stun",
+    "infection_maintain",
+    "bleeding_maintain",
+    "infection",
+    "frosted",
+    "burn",
+    "tearing_trigger",
+    "tearing_trigger_alert",
+    "poison_trigger"
   ],
   "ReferenceCharacterKeys": [
   ],
   "ReferenceEffectKeys": [
-    "h0040c3_s02_ShineTrail",
-    "h0040c3_s02_fight",
-    "h0040c3_s02_FightLine",
-    "Common_Hit04_B",
-    "h0040c3_s01_ShineLight",
-    "Common_Heal01"
+    "b3253c2_s02_Eye",
+    "b3253c2_s01_Attack"
   ],
   "ReferenceEmoIconKeys": [
   ],
   "ReferenceMusicKeys": [
   ],
   "ReferenceSFXKeys": [
-    "swoosh_046",
-    "magic_dark_005",
-    "swoosh_045",
-    "magic_dark_004"
+    "Whoosh_ethereal_007_ghost_fly",
+    "Whoosh_ethereal_042set01_dodge_comedy",
+    "Effect_flash_039_light_buff_magic_chime",
+    "Effect_flash_053_light_ding",
+    "Effect_flash_013_light_long",
+    "Creature_monster_008set_01_small_twitter_vocal",
+    "Whoosh_ethereal_042set03_dodge_comedy",
+    "Hit_smash_003_general_short",
+    "Hit_smash_032_simple_small",
+    "Hit_smash_035_simple_slap",
+    "Whoosh_ethereal_042set02_dodge_comedy",
+    "Hit_smash_031_simple_small"
   ],
   "ReferenceVoiceSFXKeys": [
   ],
-  "_armorCapacity": 125,
+  "_armorCapacity": 800,
   "_assistantSkill": null,
-  "_bloodCapacity": 100,
+  "_bloodCapacity": 800,
   "_characterAI": {
     "$type": "BattleModel.SequenceEnemyAI",
     "OrderList": [
@@ -83,15 +114,23 @@
     ]
   },
   "_defaultCoolDown": 3,
-  "_initialCoolDown": 2,
+  "_initialCoolDown": 1,
   "_levelStartBuff": [
   ],
   "_mass": 1,
   "_masterRank": 2,
   "_passiveBuff": [
+    {
+      "BuffId": "StayInhibitUntilAttack",
+      "Forever": true,
+      "LevelStack": 0,
+      "OverwriteDuration": -1,
+      "UserDefineVariable": {
+      }
+    }
   ],
   "_pose": "Stand",
-  "_power": 60,
+  "_power": 200,
   "_reviveCount": 0,
   "_skills": {
     "Arrive1": {
@@ -149,21 +188,15 @@
           "IsMultiple": false,
           "multi": null,
           "single": {
-            "$type": "BattleModel.FieldMinChar",
-            "field": {
-              "$type": "BattleModel.IntFieldC",
-              "targetField": 0
-            },
-            "group": {
-              "$type": "BattleModel.PVEEnemyTeam",
-              "includeDead": false,
-              "includeEmpty": false
+            "$type": "BattleModel.EnemyAssignee",
+            "reference": {
+              "$type": "BattleModel.ThisSkillCaster"
             }
           },
           "skillEffects": [
             {
-              "$type": "BattleModel.HpHealSkillEffect",
-              "Tag": 34,
+              "$type": "BattleModel.AmrBreakSkillEffect",
+              "Tag": 17,
               "_keyString": "1",
               "_skillModifier": {
                 "_constant": 0,
@@ -188,11 +221,42 @@
           "IsMultiple": false,
           "multi": null,
           "single": {
-            "$type": "BattleModel.EnemyAssignee",
+            "$type": "BattleModel.ThisSkillCaster"
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.StoneActionSkillEffect",
+              "Tag": 516,
+              "_keyString": "1",
+              "_stoneAction": {
+                "BuffFilter": "Normal",
+                "BuffId": "",
+                "BuffLabel": null,
+                "EffectFilter": "Normal",
+                "StonePositionList": [
+                ],
+                "UsePositionSettings": false,
+                "changeTo": "Erase",
+                "filter": "IsWhite",
+                "isInitStoneFilter": "None",
+                "order": "LeftToRight",
+                "targetStoneCount": 99
+              }
+            }
+          ]
+        },
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": true,
+          "multi": {
+            "$type": "BattleModel.OppositeTeamChars",
+            "includeDead": false,
+            "includeEmpty": false,
             "reference": {
               "$type": "BattleModel.ThisSkillCaster"
             }
           },
+          "single": null,
           "skillEffects": [
             {
               "$type": "BattleModel.HpDamageSkillEffect",
@@ -201,8 +265,8 @@
               "_skillModifier": {
                 "_constant": 0,
                 "_parameter": {
-                  "$type": "BattleModel.SkillCasterPower",
-                  "basePower": false
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 1000
                 },
                 "_ratio": 1
               }
@@ -217,6 +281,20 @@
       "ComboList": [
         {
           "ConditionList": [
+            {
+              "$type": "BattleModel.IntCompare",
+              "left": {
+                "$type": "BattleModel.BattleActionRecordValue",
+                "RecordValue": {
+                  "$type": "BattleModel.ThisBattleTurnCount"
+                }
+              },
+              "op": 0,
+              "right": {
+                "$type": "BattleModel.ConstanctInt",
+                "constant": 0
+              }
+            }
           ],
           "SkillList": [
             {
@@ -227,7 +305,16 @@
               ],
               "seq": "",
               "t": null
-            },
+            }
+          ],
+          "_characterCoolDown": 5,
+          "assignTarget": null,
+          "icon": 0
+        },
+        {
+          "ConditionList": [
+          ],
+          "SkillList": [
             {
               "ConditionList": [
               ],
@@ -238,8 +325,18 @@
               "t": null
             }
           ],
-          "_characterCoolDown": 0,
-          "assignTarget": null,
+          "_characterCoolDown": 1,
+          "assignTarget": {
+            "$type": "BattleModel.FrontOfChars",
+            "group": {
+              "$type": "BattleModel.OppositeTeamChars",
+              "includeDead": false,
+              "includeEmpty": false,
+              "reference": {
+                "$type": "BattleModel.ThisSkillCaster"
+              }
+            }
+          },
           "icon": 0
         }
       ],
