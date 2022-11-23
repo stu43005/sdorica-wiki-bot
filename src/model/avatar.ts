@@ -1,6 +1,7 @@
 import { ImperiumData, RowWrapper } from "../imperium-data";
 import { localizationString } from "../localization";
 import { AvatarInfoboxParams, avatarInfoboxTemplate } from '../templates/avatar-infobox';
+import { AvatarType } from "./enums/avatar-type.enum";
 import { ItemCategory } from './enums/item-category.enum';
 import { Hero } from './hero';
 import { Item } from './item';
@@ -37,6 +38,7 @@ export class Avatar {
 
 	get id(): string { return this.row.get('id'); }
 	get asset(): string { return this.row.get('asset'); }
+	get category(): AvatarType { return this.row.get('category'); }
 	get enable(): boolean { return !!this.row.get('enable'); }
 	get order(): number { return +this.row.get('order'); }
 

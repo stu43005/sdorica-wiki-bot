@@ -41,7 +41,7 @@ const TABLE_KEYS: Record<string, string[]> = {
 	Chapters: [
 		"id", "enable", "isLock",
 		"category", "group", "volume", /* 分類 */
-		"order", "mainImage",
+		"order", "mainImage", "mainImageType", "mainImageIcons",
 		"name", "title", "titleIsHide", "titleViewType", /* 標題 */
 		"visibleCondition", "param1", /* 顯示條件 */
 		"unlockCondition", "param2", "unlockText", /* 解鎖條件&文字 */
@@ -223,6 +223,13 @@ const TABLE_KEYS: Record<string, string[]> = {
 		"idG", "typeG", "rankG", "subrankG", "skillG", "skillLevelG", "lvG",
 		"idSP1", "typeSP1", "rankSP1", "subrankSP1", "skillSP1", "skillLevelSP1", "lvSP1",
 		"idSP2", "typeSP2", "rankSP2", "subrankSP2", "skillSP2", "skillLevelSP2", "lvSP2",
+	],
+	Triggers: [
+		"id", "groupId", "enable",
+		"titleKey", "descriptionKey",
+		"triggerType", "jumpType", "effectValue",
+		"param1", "param2",
+		"order",
 	],
 	SignInReward: ["id", "category", "groupId", "param1", "param2", "giveType", "giveLinkId", "giveAmount"],
 	Volume: ["order", "volume", "enable", "name", "title",

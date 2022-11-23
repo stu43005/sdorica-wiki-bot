@@ -7,6 +7,7 @@ import { chapterTitleRename } from './config/chapter';
 import { DropItemsGroup } from "./drop-items";
 import { ChapterCategory } from "./enums/chapter-category.enum";
 import { ChapterGroup } from "./enums/chapter-group.enum";
+import { ChapterMainImageType } from "./enums/chapter-main-image-type.enum";
 import { TimeDisplayType } from "./enums/chapter-time-display-type.enum";
 import { TitleViewType } from "./enums/chapter-title-view-type.enum";
 import { ChapterWikiGroup } from './enums/chapter-wiki-group.enum';
@@ -98,6 +99,8 @@ export class Chapter {
 	get group(): ChapterGroup { return this.row.get('group'); }
 	get order(): number { return +this.row.get('order'); }
 	get mainImage(): string { return this.row.get('mainImage') + ''; }
+	get mainImageType(): ChapterMainImageType { return this.row.get('mainImageType'); }
+	get mainImageIcons(): string { return this.row.get('mainImageIcons'); }
 	get region(): number { return +this.row.get('region'); }
 
 	name: string;
@@ -145,7 +148,7 @@ export class Chapter {
 	/**
 	 * 累積道具獎勵
 	 *
-	 * {@link rewardGroupType}=`Normal`: 對應 `RewardGroups` 表
+	 * 對應 `RewardGroups` 表
 	 */
 	get rewardGroupId(): string {
 		const rewardGroupId = this.row.get('rewardGroupId');

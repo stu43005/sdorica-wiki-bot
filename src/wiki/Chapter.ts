@@ -34,8 +34,8 @@ export default function wikiChapter() {
 				...(chapter.dropGroup ? [
 					`章節完成獎勵：${chapter.dropGroup.toWiki()}`,
 				] : []),
-				...(chapter.rewardGroupId && chapter.rewardGroupType == RewardGroupType.Normal ? [
-					`累積道具獎勵：${wikiPageLink("RewardGroups", "", chapter.rewardGroupId)}`,
+				...(chapter.rewardGroupId ? [
+					`${chapter.rewardGroupType === RewardGroupType.AchievementReward ? "成就獎勵" : "累積道具獎勵"}：${wikiPageLink("RewardGroups", "", chapter.rewardGroupId)}`,
 				] : []),
 				...(chapter.isDiligentEnable ? [
 					`有閱歷值：${wikiPageLink("Diligents", "", chapter.getWikiFullName())}`,

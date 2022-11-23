@@ -62,6 +62,7 @@ export class QuestExtraSetting {
 	get achievementId(): string { return this.row.get('achievementId'); }
 
 	get dropShow(): boolean { return !!this.row.get('dropShow'); }
+	get end(): boolean { return !!this.row.get('end'); }
 	get extraMode(): string { return this.row.get('extraMode'); }
 
 	/**

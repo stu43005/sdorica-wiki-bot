@@ -104,6 +104,7 @@ export function getAchievementConditions(conditionGroupId: string): string[] {
 			case "StoneCount":
 				descs.push(`使用${param1}魂芯 ${param2} ${param3}個`);
 				break;
+			// TODO: GoldSkillTagCount,BlackSkillTagCount,WhiteSkillTagCount,SkillTagCount,FriendBuffCount,EnemyBuffCount,BuffCount,GoldTriggerCount,BlackTriggerCount,WhiteTriggerCount,TriggerCount,KillCount,TotalDamage, Race
 		}
 	}
 	return descs;
