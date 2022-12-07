@@ -1,0 +1,554 @@
+{
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "AfterSummonAnyone": {
+        "效果": [
+          {
+            "效果": [
+              "對召喚的目標賦予1回合1層summon_FSM"
+            ],
+            "條件": [
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnBuffAdd": {
+        "效果": [
+          {
+            "效果": [
+              "對本角色{\"BuffGroupIds\":{\"BuffLabel\":{\"BuffLabel\":\"generalBuff\",\"BuffIdList\":[\"bonusAttackPower\",\"defense_up_small\",\"dexterity\",\"damage_absorption\",\"ArmorToBlood\",\"regeneration\",\"rage\",\"warfare\",\"leader\"]},\"$type\":\"BattleModel.BuffIdFromLabelList\"},\"RemoveAllBuff\":true,\"RandomRemoveCount\":0,\"$type\":\"BattleModel.RemoveBuffFromGroupedBuffId\"}",
+              "對本角色{\"BuffGroupIds\":{\"BuffLabel\":{\"BuffLabel\":\"generalNerf\",\"BuffIdList\":[\"nerf_damage_small\",\"weak\",\"tearing\",\"poison\",\"stun\",\"infection_maintain\",\"bleeding_maintain\",\"infection\",\"frosted\",\"burn\"]},\"$type\":\"BattleModel.BuffIdFromLabelList\"},\"RemoveAllBuff\":true,\"RandomRemoveCount\":0,\"$type\":\"BattleModel.RemoveBuffFromGroupedBuffId\"}"
+            ],
+            "條件": [
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnEachSkillTargetEffect": {
+        "效果": [
+          {
+            "效果": [
+              "技能效果增加(-999999)"
+            ],
+            "條件": [
+              "本角色是指定目標",
+              "施展的技能效果中包含(Attack)屬性"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnTurnBegin": {
+        "效果": [
+          {
+            "效果": [
+              "對玩家所有角色賦予永久n3658c3_poison(毒氣在蔓延...)"
+            ],
+            "條件": [
+              "目前回合輪到本角色"
+            ]
+          },
+          {
+            "效果": [
+              "對本角色{\"value\":{\"constant\":1,\"$type\":\"BattleModel.ConstanctInt\"},\"$type\":\"BattleModel.AddCharacterCD\"}"
+            ],
+            "條件": [
+              "目前回合輪到本角色"
+            ]
+          },
+          {
+            "效果": [
+              "對本角色賦予永久n3658c3_plus"
+            ],
+            "條件": [
+              "目前回合輪到本角色",
+              "本角色沒有n3658c3_plus狀態",
+              "本角色沒有n3658c3_minus狀態"
+            ]
+          },
+          {
+            "效果": [
+              "立即施展技能：對本角色隊伍的空位的隨機角色召喚敵人(\n\t* m3606c3_4_gold;;等級變化:50;初始體力:100%;初始疊盾:0%;初始CD:1;死後消失 : 22.22222222222222%\n\t* m3607c3_4_gold;;等級變化:50;初始體力:100%;初始疊盾:0%;初始CD:1;死後消失 : 22.22222222222222%\n\t* m3608c3_4_gold;;等級變化:50;初始體力:100%;初始疊盾:0%;初始CD:1;死後消失 : 22.22222222222222%\n\t* m3606c3_4;;等級變化:50;初始體力:100%;初始疊盾:0%;初始CD:4;死後消失 : 11.11111111111111%\n\t* m3607c3_4;;等級變化:50;初始體力:100%;初始疊盾:0%;初始CD:4;死後消失 : 11.11111111111111%\n\t* m3608c3_4;;等級變化:50;初始體力:100%;初始疊盾:0%;初始CD:4;死後消失 : 11.11111111111111%\n)"
+            ],
+            "條件": [
+              "目前回合輪到本角色",
+              "本角色隊伍的空位的角色數量 > 0"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 99,
+    "標籤": "Forever"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+    "n3658c3_poison",
+    "n3658c3_plus",
+    "summon_FSM",
+    "bonusAttackPower",
+    "defense_up_small",
+    "dexterity",
+    "damage_absorption",
+    "ArmorToBlood",
+    "regeneration",
+    "rage",
+    "warfare",
+    "leader",
+    "nerf_damage_small",
+    "weak",
+    "tearing",
+    "poison",
+    "stun",
+    "infection_maintain",
+    "bleeding_maintain",
+    "infection",
+    "frosted",
+    "burn",
+    "poison_trigger",
+    "dexterity_trigger",
+    "dexterity_fightback_0",
+    "dexterity_fightback_1",
+    "dexterity_fightback_2",
+    "dexterity_fightback_3",
+    "dexterity_fightback_4",
+    "b0028sx_dodge",
+    "damage_absorption_trigger",
+    "ArmorToBlood_trigger",
+    "regeneration_trigger",
+    "follower",
+    "tearing_trigger",
+    "tearing_trigger_alert"
+  ],
+  "_actionTable": [
+    {
+      "Key": 1,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacterGroup",
+                  "group": {
+                    "$type": "BattleModel.PVEPlayerTeam",
+                    "includeDead": false,
+                    "includeEmpty": false
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "n3658c3_poison",
+                      "Forever": true,
+                      "LevelStack": 0,
+                      "OverwriteDuration": -1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CurrentTurnBelongsTo",
+                "character": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddCharacterCD",
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 1
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CurrentTurnBelongsTo",
+                "character": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "n3658c3_plus",
+                      "Forever": true,
+                      "LevelStack": 0,
+                      "OverwriteDuration": -1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CurrentTurnBelongsTo",
+                "character": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                }
+              },
+              {
+                "$type": "BattleModel.Inverse",
+                "condition": {
+                  "$type": "BattleModel.CharacterHasBuff",
+                  "buffId": "n3658c3_plus",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  }
+                }
+              },
+              {
+                "$type": "BattleModel.Inverse",
+                "condition": {
+                  "$type": "BattleModel.CharacterHasBuff",
+                  "buffId": "n3658c3_minus",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": null,
+                    "single": {
+                      "$type": "BattleModel.RandomOfChars",
+                      "group": {
+                        "$type": "BattleModel.SelftTeamEmptySlots",
+                        "reference": {
+                          "$type": "BattleModel.ThisBuffOwner"
+                        }
+                      }
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.SummonEnemySkillEffect",
+                        "IsShowArrive": true,
+                        "Reference": {
+                          "$type": "BattleModel.SummonCharacterInPreset",
+                          "WeightedCharacterArgs": [
+                            {
+                              "CharacterArg": {
+                                "AssetName": "m3606c3_4_gold",
+                                "State": {
+                                  "DisapearAfterDead": true,
+                                  "InitArmorRatio": 0,
+                                  "InitBloodRatio": 1,
+                                  "InitCd": 1,
+                                  "LevelAdjustment": 50
+                                },
+                                "SummonCasterLevel": 1
+                              },
+                              "Weight": 2
+                            },
+                            {
+                              "CharacterArg": {
+                                "AssetName": "m3607c3_4_gold",
+                                "State": {
+                                  "DisapearAfterDead": true,
+                                  "InitArmorRatio": 0,
+                                  "InitBloodRatio": 1,
+                                  "InitCd": 1,
+                                  "LevelAdjustment": 50
+                                },
+                                "SummonCasterLevel": 1
+                              },
+                              "Weight": 2
+                            },
+                            {
+                              "CharacterArg": {
+                                "AssetName": "m3608c3_4_gold",
+                                "State": {
+                                  "DisapearAfterDead": true,
+                                  "InitArmorRatio": 0,
+                                  "InitBloodRatio": 1,
+                                  "InitCd": 1,
+                                  "LevelAdjustment": 50
+                                },
+                                "SummonCasterLevel": 1
+                              },
+                              "Weight": 2
+                            },
+                            {
+                              "CharacterArg": {
+                                "AssetName": "m3606c3_4",
+                                "State": {
+                                  "DisapearAfterDead": true,
+                                  "InitArmorRatio": 0,
+                                  "InitBloodRatio": 1,
+                                  "InitCd": 4,
+                                  "LevelAdjustment": 50
+                                },
+                                "SummonCasterLevel": 1
+                              },
+                              "Weight": 1
+                            },
+                            {
+                              "CharacterArg": {
+                                "AssetName": "m3607c3_4",
+                                "State": {
+                                  "DisapearAfterDead": true,
+                                  "InitArmorRatio": 0,
+                                  "InitBloodRatio": 1,
+                                  "InitCd": 4,
+                                  "LevelAdjustment": 50
+                                },
+                                "SummonCasterLevel": 1
+                              },
+                              "Weight": 1
+                            },
+                            {
+                              "CharacterArg": {
+                                "AssetName": "m3608c3_4",
+                                "State": {
+                                  "DisapearAfterDead": true,
+                                  "InitArmorRatio": 0,
+                                  "InitBloodRatio": 1,
+                                  "InitCd": 4,
+                                  "LevelAdjustment": 50
+                                },
+                                "SummonCasterLevel": 1
+                              },
+                              "Weight": 1
+                            }
+                          ]
+                        },
+                        "Tag": 260,
+                        "_keyString": ""
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": true
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CurrentTurnBelongsTo",
+                "character": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.CountOfCharGroup",
+                  "group": {
+                    "$type": "BattleModel.SelftTeamEmptySlots",
+                    "reference": {
+                      "$type": "BattleModel.ThisBuffOwner"
+                    }
+                  }
+                },
+                "op": 2,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 0
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 1024,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.BonusEffectForSkillProperty",
+                  "isPercent": false,
+                  "property": -1,
+                  "value": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": -999999
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                },
+                "right": {
+                  "$type": "BattleModel.ThisSpecifiedTarget"
+                }
+              },
+              {
+                "$type": "BattleModel.ThisSkillEffectTagContains",
+                "containsAll": 1
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 16384,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.RemoveBuffFromGroupedBuffId",
+                    "BuffGroupIds": {
+                      "$type": "BattleModel.BuffIdFromLabelList",
+                      "BuffLabel": {
+                        "BuffIdList": [
+                          "bonusAttackPower",
+                          "defense_up_small",
+                          "dexterity",
+                          "damage_absorption",
+                          "ArmorToBlood",
+                          "regeneration",
+                          "rage",
+                          "warfare",
+                          "leader"
+                        ],
+                        "BuffLabel": "generalBuff"
+                      }
+                    },
+                    "RandomRemoveCount": 0,
+                    "RemoveAllBuff": true
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.RemoveBuffFromGroupedBuffId",
+                    "BuffGroupIds": {
+                      "$type": "BattleModel.BuffIdFromLabelList",
+                      "BuffLabel": {
+                        "BuffIdList": [
+                          "nerf_damage_small",
+                          "weak",
+                          "tearing",
+                          "poison",
+                          "stun",
+                          "infection_maintain",
+                          "bleeding_maintain",
+                          "infection",
+                          "frosted",
+                          "burn"
+                        ],
+                        "BuffLabel": "generalNerf"
+                      }
+                    },
+                    "RandomRemoveCount": 0,
+                    "RemoveAllBuff": true
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 524288,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisSummonedTarget"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "summon_FSM",
+                      "Forever": false,
+                      "LevelStack": 1,
+                      "OverwriteDuration": 1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 99,
+  "_orderTable": {
+  },
+  "_tag": 64
+}

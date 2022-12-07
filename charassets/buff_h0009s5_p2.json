@@ -6,9 +6,10 @@
         "效果": [
           {
             "效果": [
-              "對本角色賦予99回合taunt(嘲諷)"
+              "對本角色賦予永久taunt(嘲諷)"
             ],
             "條件": [
+              "本角色沒有taunt(嘲諷)狀態"
             ]
           }
         ],
@@ -41,7 +42,7 @@
                     "$type": "BattleModel.AddBuff",
                     "buffToAdd": {
                       "BuffId": "taunt",
-                      "Forever": false,
+                      "Forever": true,
                       "LevelStack": 0,
                       "OverwriteDuration": 99,
                       "UserDefineVariable": {
@@ -52,6 +53,16 @@
               }
             ],
             "Conditions": [
+              {
+                "$type": "BattleModel.Inverse",
+                "condition": {
+                  "$type": "BattleModel.CharacterHasBuff",
+                  "buffId": "taunt",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  }
+                }
+              }
             ]
           }
         ],

@@ -1,0 +1,137 @@
+{
+  "$interpreted": {
+    "Localization": "玩家角色移除中毒狀態時，賦予該角色3回合中毒。",
+    "動作": {
+      "OnBuffRemoveFromAnyone": {
+        "效果": [
+          {
+            "效果": [
+              "立即施展技能：對{\"Buff\":{\"$type\":\"BattleModel.SpecifiedBuff\"},\"$type\":\"BattleModel.OwnerOfSingleBuff\"}賦予3回合1層poison(中毒)"
+            ],
+            "條件": [
+              "當前事件的狀態 {\"Condition\":{\"Group\":{\"includeDead\":true,\"includeEmpty\":false,\"$type\":\"BattleModel.PVEPlayerTeam\"},\"$type\":\"BattleModel.CharacterInsideC\"},\"$type\":\"BattleModel.BuffOwnerCondition\"}",
+              "當前事件的狀態 是＂poison(中毒)＂"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 1,
+    "標籤": "NotRemoveWhenDie | Forever | InfinityTrigger"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+    "poison",
+    "poison_trigger"
+  ],
+  "_actionTable": [
+    {
+      "Key": 16777216,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.AssignParameterSkillEffect",
+                  "AssignParameter": {
+                    "AssignCharacter": {
+                      "$type": "BattleModel.OwnerOfSingleBuff",
+                      "Buff": {
+                        "$type": "BattleModel.SpecifiedBuff"
+                      }
+                    },
+                    "AssignCharacterGroup": {
+                      "$type": "BattleModel.NoneCharacters"
+                    },
+                    "AssignInteger": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 0
+                    },
+                    "AssignIntegerGroup": {
+                      "$type": "BattleModel.ConstanctIntegerGroup",
+                      "Group": [
+                      ]
+                    }
+                  },
+                  "SkillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": null,
+                    "single": {
+                      "$type": "BattleModel.BuffAssignedCharacter",
+                      "_value": {
+                        "$type": "BattleModel.OwnerOfSingleBuff",
+                        "Buff": {
+                          "$type": "BattleModel.SpecifiedBuff"
+                        }
+                      }
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.AddBuffSkillEffect",
+                        "Tag": 132,
+                        "_buffData": [
+                          {
+                            "BuffId": "poison",
+                            "Forever": false,
+                            "LevelStack": 1,
+                            "OverwriteDuration": 3,
+                            "UserDefineVariable": {
+                            }
+                          }
+                        ],
+                        "_keyString": ""
+                      }
+                    ]
+                  },
+                  "UseAssignParameter": true,
+                  "WillTriggerBuff": true
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.BuffCondition",
+                "buff": {
+                  "$type": "BattleModel.SpecifiedBuff"
+                },
+                "condition": {
+                  "$type": "BattleModel.BuffOwnerCondition",
+                  "Condition": {
+                    "$type": "BattleModel.CharacterInsideC",
+                    "Group": {
+                      "$type": "BattleModel.PVEPlayerTeam",
+                      "includeDead": true,
+                      "includeEmpty": false
+                    }
+                  }
+                }
+              },
+              {
+                "$type": "BattleModel.BuffCondition",
+                "buff": {
+                  "$type": "BattleModel.SpecifiedBuff"
+                },
+                "condition": {
+                  "$type": "BattleModel.CheckBuffMatchBuffId",
+                  "subString": "poison"
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 1,
+  "_orderTable": {
+  },
+  "_tag": 32836
+}

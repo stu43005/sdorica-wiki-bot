@@ -1,0 +1,275 @@
+{
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "OnTurnBegin": {
+        "效果": [
+          {
+            "效果": [
+              "對玩家中符合(的AssetId包含＂h0010＂字串)的角色所有角色賦予1回合1層question",
+              "對玩家中符合(的AssetId包含＂h0010＂字串)的角色所有角色賦予永久n3658c3_remind_1(換個角度解讀或許有幫助，蒂卡該怎麼做呢...)"
+            ],
+            "條件": [
+              "本角色 擁有任何一個 (符合條件 變數二 > 變數五) 且 (((是＂n3658c3_1_controllerB＂) 或 (是＂n3658c3_1_controllerG＂)) 或 (是＂n3658c3_1_controllerW＂)) 的狀態",
+              "玩家中符合(的AssetId包含＂h0010＂字串)的角色中的所有角色皆 沒有n3658c3_remind_1(換個角度解讀或許有幫助，蒂卡該怎麼做呢...)狀態"
+            ]
+          },
+          {
+            "效果": [
+              "對玩家中符合(的AssetId包含＂h0010＂字串)的角色所有角色移除狀態n3658c3_remind_1(換個角度解讀或許有幫助，蒂卡該怎麼做呢...)"
+            ],
+            "條件": [
+              "本角色 沒有任何一個 (符合條件 變數二 > 變數五) 且 (((是＂n3658c3_1_controllerB＂) 或 (是＂n3658c3_1_controllerG＂)) 或 (是＂n3658c3_1_controllerW＂)) 的狀態",
+              "玩家中符合(的AssetId包含＂h0010＂字串)的角色中的所有角色皆 擁有n3658c3_remind_1(換個角度解讀或許有幫助，蒂卡該怎麼做呢...)狀態"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 99,
+    "標籤": "Hidden | TriggerOncePerTurn | Forever"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+    "question",
+    "n3658c3_remind_1"
+  ],
+  "_actionTable": [
+    {
+      "Key": 1,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacterGroup",
+                  "group": {
+                    "$type": "BattleModel.CharGroupWhere",
+                    "condition": {
+                      "$type": "BattleModel.AssetIdHasSubString",
+                      "subString": "h0010"
+                    },
+                    "group": {
+                      "$type": "BattleModel.PVEPlayerTeam",
+                      "includeDead": false,
+                      "includeEmpty": false
+                    }
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "question",
+                      "Forever": false,
+                      "LevelStack": 1,
+                      "OverwriteDuration": 1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacterGroup",
+                  "group": {
+                    "$type": "BattleModel.CharGroupWhere",
+                    "condition": {
+                      "$type": "BattleModel.AssetIdHasSubString",
+                      "subString": "h0010"
+                    },
+                    "group": {
+                      "$type": "BattleModel.PVEPlayerTeam",
+                      "includeDead": false,
+                      "includeEmpty": false
+                    }
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "n3658c3_remind_1",
+                      "Forever": true,
+                      "LevelStack": 0,
+                      "OverwriteDuration": 1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterCondition",
+                "character": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                },
+                "condition": {
+                  "$type": "BattleModel.HasAnyConditionalBuff",
+                  "buffCondition": {
+                    "$type": "BattleModel.AndConditionsB",
+                    "cond1": {
+                      "$type": "BattleModel.IntCompareB",
+                      "left": {
+                        "$type": "BattleModel.IntFieldB",
+                        "targetField": 8
+                      },
+                      "op": 2,
+                      "right": {
+                        "$type": "BattleModel.IntFieldB",
+                        "targetField": 64
+                      }
+                    },
+                    "cond2": {
+                      "$type": "BattleModel.OrConditionsB",
+                      "cond1": {
+                        "$type": "BattleModel.OrConditionsB",
+                        "cond1": {
+                          "$type": "BattleModel.CheckBuffMatchBuffId",
+                          "subString": "n3658c3_1_controllerB"
+                        },
+                        "cond2": {
+                          "$type": "BattleModel.CheckBuffMatchBuffId",
+                          "subString": "n3658c3_1_controllerG"
+                        }
+                      },
+                      "cond2": {
+                        "$type": "BattleModel.CheckBuffMatchBuffId",
+                        "subString": "n3658c3_1_controllerW"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "$type": "BattleModel.CharGroupCondition",
+                "condition": {
+                  "$type": "BattleModel.InverseC",
+                  "condition": {
+                    "$type": "BattleModel.HasBuff",
+                    "buffId": "n3658c3_remind_1"
+                  }
+                },
+                "everybody": true,
+                "group": {
+                  "$type": "BattleModel.CharGroupWhere",
+                  "condition": {
+                    "$type": "BattleModel.AssetIdHasSubString",
+                    "subString": "h0010"
+                  },
+                  "group": {
+                    "$type": "BattleModel.PVEPlayerTeam",
+                    "includeDead": false,
+                    "includeEmpty": false
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacterGroup",
+                  "group": {
+                    "$type": "BattleModel.CharGroupWhere",
+                    "condition": {
+                      "$type": "BattleModel.AssetIdHasSubString",
+                      "subString": "h0010"
+                    },
+                    "group": {
+                      "$type": "BattleModel.PVEPlayerTeam",
+                      "includeDead": false,
+                      "includeEmpty": false
+                    }
+                  },
+                  "operation": {
+                    "$type": "BattleModel.RemoveBuff",
+                    "buffId": "n3658c3_remind_1"
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterCondition",
+                "character": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                },
+                "condition": {
+                  "$type": "BattleModel.InverseC",
+                  "condition": {
+                    "$type": "BattleModel.HasAnyConditionalBuff",
+                    "buffCondition": {
+                      "$type": "BattleModel.AndConditionsB",
+                      "cond1": {
+                        "$type": "BattleModel.IntCompareB",
+                        "left": {
+                          "$type": "BattleModel.IntFieldB",
+                          "targetField": 8
+                        },
+                        "op": 2,
+                        "right": {
+                          "$type": "BattleModel.IntFieldB",
+                          "targetField": 64
+                        }
+                      },
+                      "cond2": {
+                        "$type": "BattleModel.OrConditionsB",
+                        "cond1": {
+                          "$type": "BattleModel.OrConditionsB",
+                          "cond1": {
+                            "$type": "BattleModel.CheckBuffMatchBuffId",
+                            "subString": "n3658c3_1_controllerB"
+                          },
+                          "cond2": {
+                            "$type": "BattleModel.CheckBuffMatchBuffId",
+                            "subString": "n3658c3_1_controllerG"
+                          }
+                        },
+                        "cond2": {
+                          "$type": "BattleModel.CheckBuffMatchBuffId",
+                          "subString": "n3658c3_1_controllerW"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "$type": "BattleModel.CharGroupCondition",
+                "condition": {
+                  "$type": "BattleModel.HasBuff",
+                  "buffId": "n3658c3_remind_1"
+                },
+                "everybody": true,
+                "group": {
+                  "$type": "BattleModel.CharGroupWhere",
+                  "condition": {
+                    "$type": "BattleModel.AssetIdHasSubString",
+                    "subString": "h0010"
+                  },
+                  "group": {
+                    "$type": "BattleModel.PVEPlayerTeam",
+                    "includeDead": false,
+                    "includeEmpty": false
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 99,
+  "_orderTable": {
+  },
+  "_tag": 73
+}
