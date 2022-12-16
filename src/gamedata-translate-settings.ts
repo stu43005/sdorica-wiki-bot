@@ -853,6 +853,11 @@ export const gamedataTeanslateSettings: GamedataRef[] = [
 		column: "giveLinkId:giveType",
 		func: localizationItemNameWithType(),
 	},
+	{
+		table: "Triggers",
+		column: "titleKey,descriptionKey",
+		func: localizationString("Triggers"),
+	},
 ];
 
 export function doGamedataTranslation() {

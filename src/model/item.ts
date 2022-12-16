@@ -12,7 +12,9 @@ import { ItemGiveList } from "./item-give-list";
 import { ItemGiveRef } from "./item-give-ref";
 import { itemRename } from "./config/item";
 import { HeroSkillSet } from "./hero-skillset";
+import { ItemPayRef } from "./item-pay-ref";
 
+const ExtraProductsTable = ImperiumData.fromGamedata().getTable("ExtraProducts");
 const ItemsTable = ImperiumData.fromGamedata().getTable("Items");
 const VoucherGiftsTable = ImperiumData.fromGamedata().getTable("VoucherGifts");
 
@@ -72,6 +74,19 @@ export class Item extends ItemBase {
 	#sellItem: ItemGiveRef | null = null;
 	get sellItem(): ItemGiveRef {
 		return this.#sellItem ??= new ItemGiveRef(this.row.get('sellType'), this.row.get('sellLinkId'), this.row.get('sellAmount'));
+	}
+
+	#buyItem: ItemPayRef | undefined | null = null;
+	get buyItem(): ItemPayRef | undefined {
+		if (this.#buyItem === null) {
+			const row = ExtraProductsTable.find((r) => ['heroSkill', 'Space'].includes(r.get('category')) && r.get('param1') === this.id);
+			if (row) {
+				this.#buyItem = new ItemPayRef(row.get('payType'), row.get('linkId'), row.get('amount'));
+			} else {
+				this.#buyItem = undefined;
+			}
+		}
+		return this.#buyItem;
 	}
 
 	get stackable(): ItemStackable { return this.row.get('stackable'); }
