@@ -1,7 +1,7 @@
-import { getHeaderId } from "./wikiheader";
+import { normalizationHeaderId } from "./wikiheader";
 
 export function wikiSectionLink(section: string, text?: string) {
-	return `<a href="#${getHeaderId(section)}">${text ?? section}</a>`;
+	return `<a href="#${normalizationHeaderId(section)}">${text ?? section}</a>`;
 	// return `[${text ?? section}](#${section})`;
 }
 
@@ -13,7 +13,7 @@ export function wikiPageLink(page: string, text?: string, section?: string) {
 			text = page;
 		}
 	}
-	const link = `${page}.html${section ? `#${getHeaderId(section)}` : ""}`;
+	const link = `${page}.html${section ? `#${normalizationHeaderId(section)}` : ""}`;
 	return `<a href="${link}">${text}</a>`;
 	// return `[${text}](${link})`;
 }

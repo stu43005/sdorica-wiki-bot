@@ -40,9 +40,13 @@ export function wikiHr(): string {
 	return `<hr />`;
 }
 
+export function normalizationHeaderId(text: string) {
+	return encodeURIComponent(text.replace(/<(.*?)>/g, "")).replace(/%/g, ".");
+}
+
 const headerIds = new Set<string>();
 export function getHeaderId(text: string) {
-	let id = encodeURIComponent(text.replace(/<(.*?)>/g, "")).replace(/%/g, ".");
+	let id = normalizationHeaderId(text);
 	if (headerIds.has(id)) {
 		for (let i = 2;; i++) {
 			const newId = `${id}_${i}`;
