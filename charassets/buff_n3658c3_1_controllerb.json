@@ -106,40 +106,6 @@
               "施術者是本角色",
               "((施展的技能組是S1B) 或 (施展的技能組是S2B)) 或 (施展的技能組是S3B)"
             ]
-          },
-          {
-            "效果": [
-              "對本狀態的變數三改為1",
-              "對本狀態的變數四改為0",
-              "對本角色觸發S3B",
-              "對玩家中符合(的AssetId包含＂h0010＂字串)的角色所有角色賦予1回合1層joy"
-            ],
-            "條件": [
-              "本狀態的變數四 == 1",
-              "本狀態的變數二 == 本狀態的變數五"
-            ]
-          },
-          {
-            "效果": [
-              "對本狀態的變數四改為0",
-              "對本角色觸發S2B"
-            ],
-            "條件": [
-              "本狀態的變數四 == 1",
-              "本狀態的變數二 != 本狀態的變數五",
-              "[如果(本狀態的變數二 > 本狀態的變數五)條件為真((本狀態的變數二 + (本狀態的變數五 * -1)))，否則((本狀態的變數五 + (本狀態的變數二 * -1)))] < 6"
-            ]
-          },
-          {
-            "效果": [
-              "對本狀態的變數四改為0",
-              "對本角色觸發S1B"
-            ],
-            "條件": [
-              "本狀態的變數四 == 1",
-              "本狀態的變數二 != 本狀態的變數五",
-              "[如果(本狀態的變數二 > 本狀態的變數五)條件為真((本狀態的變數二 + (本狀態的變數五 * -1)))，否則((本狀態的變數五 + (本狀態的變數二 * -1)))] >= 6"
-            ]
           }
         ],
         "條件": [
@@ -196,6 +162,47 @@
           }
         ],
         "條件": [
+        ]
+      },
+      "OnTurnEnd": {
+        "效果": [
+          {
+            "效果": [
+              "對本狀態的變數三改為1",
+              "對本狀態的變數四改為0",
+              "對本角色觸發S3B",
+              "對玩家中符合(的AssetId包含＂h0010＂字串)的角色所有角色賦予1回合1層joy"
+            ],
+            "條件": [
+              "本狀態的變數四 == 1",
+              "本狀態的變數二 == 本狀態的變數五"
+            ]
+          },
+          {
+            "效果": [
+              "對本狀態的變數四改為0",
+              "對本角色觸發S2B"
+            ],
+            "條件": [
+              "本狀態的變數四 == 1",
+              "本狀態的變數二 != 本狀態的變數五",
+              "[如果(本狀態的變數二 > 本狀態的變數五)條件為真((本狀態的變數二 + (本狀態的變數五 * -1)))，否則((本狀態的變數五 + (本狀態的變數二 * -1)))] < 6"
+            ]
+          },
+          {
+            "效果": [
+              "對本狀態的變數四改為0",
+              "對本角色觸發S1B"
+            ],
+            "條件": [
+              "本狀態的變數四 == 1",
+              "本狀態的變數二 != 本狀態的變數五",
+              "[如果(本狀態的變數二 > 本狀態的變數五)條件為真((本狀態的變數二 + (本狀態的變數五 * -1)))，否則((本狀態的變數五 + (本狀態的變數二 * -1)))] >= 6"
+            ]
+          }
+        ],
+        "條件": [
+          "目前回合輪到玩家後排"
         ]
       }
     },
@@ -1128,108 +1135,9 @@
       }
     },
     {
-      "Key": 8,
+      "Key": 2,
       "Value": {
         "Actions": [
-          {
-            "Actions": [
-              {
-                "TargetField": {
-                  "$type": "BattleModel.OperateGroupBuff",
-                  "group": {
-                    "$type": "BattleModel.BuffGroupWhere",
-                    "condition": {
-                      "$type": "BattleModel.OrConditionsB",
-                      "cond1": {
-                        "$type": "BattleModel.OrConditionsB",
-                        "cond1": {
-                          "$type": "BattleModel.CheckBuffBelongLabel",
-                          "BuffLabel": {
-                            "BuffIdList": [
-                              "n3658c3_1_blackhint_01",
-                              "n3658c3_1_blackhint_02",
-                              "n3658c3_1_blackhint_03"
-                            ],
-                            "BuffLabel": "n3658c3_1_blackhint_0"
-                          }
-                        },
-                        "cond2": {
-                          "$type": "BattleModel.CheckBuffBelongLabel",
-                          "BuffLabel": {
-                            "BuffIdList": [
-                              "n3658c3_1_blackhint_11",
-                              "n3658c3_1_blackhint_12",
-                              "n3658c3_1_blackhint_13"
-                            ],
-                            "BuffLabel": "n3658c3_1_blackhint_1"
-                          }
-                        }
-                      },
-                      "cond2": {
-                        "$type": "BattleModel.CheckBuffBelongLabel",
-                        "BuffLabel": {
-                          "BuffIdList": [
-                            "n3658c3_1_blackhint_21",
-                            "n3658c3_1_blackhint_22",
-                            "n3658c3_1_blackhint_23"
-                          ],
-                          "BuffLabel": "n3658c3_1_blackhint_2"
-                        }
-                      }
-                    },
-                    "group": {
-                      "$type": "BattleModel.AllBuffsOnChar",
-                      "character": {
-                        "$type": "BattleModel.ThisBuffOwner"
-                      }
-                    }
-                  },
-                  "operation": {
-                    "$type": "BattleModel.SetBuffField",
-                    "lastIndepedentStack": false,
-                    "setOperator": 0,
-                    "targetField": 1,
-                    "value": {
-                      "$type": "BattleModel.IntBuffField",
-                      "buff": {
-                        "$type": "BattleModel.ThisBuff"
-                      },
-                      "targetField": 8
-                    }
-                  }
-                }
-              }
-            ],
-            "Conditions": [
-              {
-                "$type": "BattleModel.CharacterEqual",
-                "left": {
-                  "$type": "BattleModel.ThisSkillCaster"
-                },
-                "right": {
-                  "$type": "BattleModel.ThisBuffOwner"
-                }
-              },
-              {
-                "$type": "BattleModel.OrConditions",
-                "cond1": {
-                  "$type": "BattleModel.OrConditions",
-                  "cond1": {
-                    "$type": "BattleModel.ThisSkillSetIdEqual",
-                    "id": "S1B"
-                  },
-                  "cond2": {
-                    "$type": "BattleModel.ThisSkillSetIdEqual",
-                    "id": "S2B"
-                  }
-                },
-                "cond2": {
-                  "$type": "BattleModel.ThisSkillSetIdEqual",
-                  "id": "S3B"
-                }
-              }
-            ]
-          },
           {
             "Actions": [
               {
@@ -1684,6 +1592,17 @@
           }
         ],
         "Conditions": [
+          {
+            "$type": "BattleModel.CurrentTurnBelongsTo",
+            "character": {
+              "$type": "BattleModel.BackOfChars",
+              "group": {
+                "$type": "BattleModel.PVEPlayerTeam",
+                "includeDead": true,
+                "includeEmpty": false
+              }
+            }
+          }
         ]
       }
     },
@@ -1839,6 +1758,114 @@
                       "BuffLabel": "n3658c3_1_blackhint_2"
                     }
                   }
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 8,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateGroupBuff",
+                  "group": {
+                    "$type": "BattleModel.BuffGroupWhere",
+                    "condition": {
+                      "$type": "BattleModel.OrConditionsB",
+                      "cond1": {
+                        "$type": "BattleModel.OrConditionsB",
+                        "cond1": {
+                          "$type": "BattleModel.CheckBuffBelongLabel",
+                          "BuffLabel": {
+                            "BuffIdList": [
+                              "n3658c3_1_blackhint_01",
+                              "n3658c3_1_blackhint_02",
+                              "n3658c3_1_blackhint_03"
+                            ],
+                            "BuffLabel": "n3658c3_1_blackhint_0"
+                          }
+                        },
+                        "cond2": {
+                          "$type": "BattleModel.CheckBuffBelongLabel",
+                          "BuffLabel": {
+                            "BuffIdList": [
+                              "n3658c3_1_blackhint_11",
+                              "n3658c3_1_blackhint_12",
+                              "n3658c3_1_blackhint_13"
+                            ],
+                            "BuffLabel": "n3658c3_1_blackhint_1"
+                          }
+                        }
+                      },
+                      "cond2": {
+                        "$type": "BattleModel.CheckBuffBelongLabel",
+                        "BuffLabel": {
+                          "BuffIdList": [
+                            "n3658c3_1_blackhint_21",
+                            "n3658c3_1_blackhint_22",
+                            "n3658c3_1_blackhint_23"
+                          ],
+                          "BuffLabel": "n3658c3_1_blackhint_2"
+                        }
+                      }
+                    },
+                    "group": {
+                      "$type": "BattleModel.AllBuffsOnChar",
+                      "character": {
+                        "$type": "BattleModel.ThisBuffOwner"
+                      }
+                    }
+                  },
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 1,
+                    "value": {
+                      "$type": "BattleModel.IntBuffField",
+                      "buff": {
+                        "$type": "BattleModel.ThisBuff"
+                      },
+                      "targetField": 8
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                },
+                "right": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                }
+              },
+              {
+                "$type": "BattleModel.OrConditions",
+                "cond1": {
+                  "$type": "BattleModel.OrConditions",
+                  "cond1": {
+                    "$type": "BattleModel.ThisSkillSetIdEqual",
+                    "id": "S1B"
+                  },
+                  "cond2": {
+                    "$type": "BattleModel.ThisSkillSetIdEqual",
+                    "id": "S2B"
+                  }
+                },
+                "cond2": {
+                  "$type": "BattleModel.ThisSkillSetIdEqual",
+                  "id": "S3B"
                 }
               }
             ]
