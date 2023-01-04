@@ -1,0 +1,311 @@
+{
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "OnEachSkillSetEnd": {
+        "效果": [
+          {
+            "效果": [
+              "對本角色賦予1回合1層shock",
+              "對玩家中符合(((的AssetId包含＂h0137＂字串) 或 (的AssetId包含＂h0172＂字串)) 或 ((的AssetId包含＂h0201＂字串) 或 (的AssetId包含＂h0247＂字串)))的角色所有角色賦予1回合1層evil"
+            ],
+            "條件": [
+              "本角色是施術者",
+              "施展的技能組是S2"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnTurnBegin": {
+        "效果": [
+          {
+            "效果": [
+              "對本角色賦予1回合3層nerf_damage_small(弱化)",
+              "對本角色觸發S2"
+            ],
+            "條件": [
+              "(目前戰鬥回合數 == 0) 且 (目前回合輪到敵人首位)",
+              "玩家中的任意角色 ((的AssetId包含＂h0137＂字串) 或 (的AssetId包含＂h0172＂字串)) 或 ((的AssetId包含＂h0201＂字串) 或 (的AssetId包含＂h0247＂字串))"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 99,
+    "標籤": "Hidden | Forever"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+    "nerf_damage_small",
+    "shock",
+    "evil"
+  ],
+  "_actionTable": [
+    {
+      "Key": 1,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "nerf_damage_small",
+                      "Forever": false,
+                      "LevelStack": 3,
+                      "OverwriteDuration": 1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.CastSkillSet",
+                    "AssignParameter": {
+                      "AssignCharacter": {
+                        "$type": "BattleModel.BackOfChars",
+                        "group": {
+                          "$type": "BattleModel.CharGroupWhere",
+                          "condition": {
+                            "$type": "BattleModel.OrConditionsC",
+                            "cond1": {
+                              "$type": "BattleModel.OrConditionsC",
+                              "cond1": {
+                                "$type": "BattleModel.AssetIdHasSubString",
+                                "subString": "h0137"
+                              },
+                              "cond2": {
+                                "$type": "BattleModel.AssetIdHasSubString",
+                                "subString": "h0172"
+                              }
+                            },
+                            "cond2": {
+                              "$type": "BattleModel.OrConditionsC",
+                              "cond1": {
+                                "$type": "BattleModel.AssetIdHasSubString",
+                                "subString": "h0201"
+                              },
+                              "cond2": {
+                                "$type": "BattleModel.AssetIdHasSubString",
+                                "subString": "h0247"
+                              }
+                            }
+                          },
+                          "group": {
+                            "$type": "BattleModel.PVEPlayerTeam",
+                            "includeDead": false,
+                            "includeEmpty": false
+                          }
+                        }
+                      },
+                      "AssignCharacterGroup": {
+                        "$type": "BattleModel.NoneCharacters"
+                      },
+                      "AssignInteger": {
+                        "$type": "BattleModel.ConstanctInt",
+                        "constant": 0
+                      },
+                      "AssignIntegerGroup": {
+                        "$type": "BattleModel.ConstanctIntegerGroup",
+                        "Group": [
+                        ]
+                      }
+                    },
+                    "UseAssignParameter": true,
+                    "resetCasterCD": false,
+                    "skillsetId": "S2"
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.AndConditions",
+                "cond1": {
+                  "$type": "BattleModel.IntCompare",
+                  "left": {
+                    "$type": "BattleModel.BattleActionRecordValue",
+                    "RecordValue": {
+                      "$type": "BattleModel.ThisBattleTurnCount"
+                    }
+                  },
+                  "op": 0,
+                  "right": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 0
+                  }
+                },
+                "cond2": {
+                  "$type": "BattleModel.CurrentTurnBelongsTo",
+                  "character": {
+                    "$type": "BattleModel.FrontOfChars",
+                    "group": {
+                      "$type": "BattleModel.PVEEnemyTeam",
+                      "includeDead": true,
+                      "includeEmpty": true
+                    }
+                  }
+                }
+              },
+              {
+                "$type": "BattleModel.CharGroupCondition",
+                "condition": {
+                  "$type": "BattleModel.OrConditionsC",
+                  "cond1": {
+                    "$type": "BattleModel.OrConditionsC",
+                    "cond1": {
+                      "$type": "BattleModel.AssetIdHasSubString",
+                      "subString": "h0137"
+                    },
+                    "cond2": {
+                      "$type": "BattleModel.AssetIdHasSubString",
+                      "subString": "h0172"
+                    }
+                  },
+                  "cond2": {
+                    "$type": "BattleModel.OrConditionsC",
+                    "cond1": {
+                      "$type": "BattleModel.AssetIdHasSubString",
+                      "subString": "h0201"
+                    },
+                    "cond2": {
+                      "$type": "BattleModel.AssetIdHasSubString",
+                      "subString": "h0247"
+                    }
+                  }
+                },
+                "everybody": false,
+                "group": {
+                  "$type": "BattleModel.PVEPlayerTeam",
+                  "includeDead": false,
+                  "includeEmpty": false
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 8,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "shock",
+                      "Forever": false,
+                      "LevelStack": 1,
+                      "OverwriteDuration": 1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacterGroup",
+                  "group": {
+                    "$type": "BattleModel.CharGroupWhere",
+                    "condition": {
+                      "$type": "BattleModel.OrConditionsC",
+                      "cond1": {
+                        "$type": "BattleModel.OrConditionsC",
+                        "cond1": {
+                          "$type": "BattleModel.AssetIdHasSubString",
+                          "subString": "h0137"
+                        },
+                        "cond2": {
+                          "$type": "BattleModel.AssetIdHasSubString",
+                          "subString": "h0172"
+                        }
+                      },
+                      "cond2": {
+                        "$type": "BattleModel.OrConditionsC",
+                        "cond1": {
+                          "$type": "BattleModel.AssetIdHasSubString",
+                          "subString": "h0201"
+                        },
+                        "cond2": {
+                          "$type": "BattleModel.AssetIdHasSubString",
+                          "subString": "h0247"
+                        }
+                      }
+                    },
+                    "group": {
+                      "$type": "BattleModel.PVEPlayerTeam",
+                      "includeDead": false,
+                      "includeEmpty": false
+                    }
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "evil",
+                      "Forever": false,
+                      "LevelStack": 1,
+                      "OverwriteDuration": 1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                },
+                "right": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              },
+              {
+                "$type": "BattleModel.ThisSkillSetIdEqual",
+                "id": "S2"
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 99,
+  "_orderTable": {
+  },
+  "_tag": 65
+}

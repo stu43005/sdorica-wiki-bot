@@ -2,14 +2,15 @@
   "$interpreted": {
     "Localization": "",
     "動作": {
-      "": {
+      "OnTurnBegin": {
         "效果": [
           {
             "效果": [
-              "對本角色觸發S2"
+              "對玩家的隨機角色觸發S1"
             ],
             "條件": [
-              "((消耗Type4魂芯) 或 (消耗Type4_L魂芯)) 或 (消耗Type4_I魂芯)"
+              "目前回合輪到玩家後排",
+              "目前戰鬥回合數 != 0"
             ]
           }
         ],
@@ -26,7 +27,7 @@
   ],
   "_actionTable": [
     {
-      "Key": 33554432,
+      "Key": 1,
       "Value": {
         "Actions": [
           {
@@ -35,7 +36,12 @@
                 "TargetField": {
                   "$type": "BattleModel.OperateCharacter",
                   "character": {
-                    "$type": "BattleModel.ThisBuffOwner"
+                    "$type": "BattleModel.RandomOfChars",
+                    "group": {
+                      "$type": "BattleModel.PVEPlayerTeam",
+                      "includeDead": false,
+                      "includeEmpty": false
+                    }
                   },
                   "operation": {
                     "$type": "BattleModel.CastSkillSet",
@@ -58,28 +64,35 @@
                     },
                     "UseAssignParameter": false,
                     "resetCasterCD": false,
-                    "skillsetId": "S2"
+                    "skillsetId": "S1"
                   }
                 }
               }
             ],
             "Conditions": [
               {
-                "$type": "BattleModel.OrConditions",
-                "cond1": {
-                  "$type": "BattleModel.OrConditions",
-                  "cond1": {
-                    "$type": "BattleModel.ConsumedStoneEraseTypeEqual",
-                    "EraseType": 2
-                  },
-                  "cond2": {
-                    "$type": "BattleModel.ConsumedStoneEraseTypeEqual",
-                    "EraseType": 5
+                "$type": "BattleModel.CurrentTurnBelongsTo",
+                "character": {
+                  "$type": "BattleModel.BackOfChars",
+                  "group": {
+                    "$type": "BattleModel.PVEPlayerTeam",
+                    "includeDead": false,
+                    "includeEmpty": false
+                  }
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.BattleActionRecordValue",
+                  "RecordValue": {
+                    "$type": "BattleModel.ThisBattleTurnCount"
                   }
                 },
-                "cond2": {
-                  "$type": "BattleModel.ConsumedStoneEraseTypeEqual",
-                  "EraseType": 6
+                "op": 5,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 0
                 }
               }
             ]

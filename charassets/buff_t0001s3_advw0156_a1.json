@@ -1,0 +1,134 @@
+{
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "OnEachSkillTargetEffect": {
+        "效果": [
+          {
+            "效果": [
+              "{\"property\":1,\"value\":{\"constant\":200,\"$type\":\"BattleModel.ConstanctInt\"},\"isPercent\":true,\"$type\":\"BattleModel.ExtraBonusEffectForSkillProperty\"}"
+            ],
+            "條件": [
+              "({\"group\":{\"includeDead\":false,\"includeEmpty\":false,\"$type\":\"BattleModel.PVEPlayerTeam\"},\"$type\":\"BattleModel.AllBuffsOnCharGroup\"}中有在generalBuff[強化, 減傷, 靈巧, 轉盾, 盾轉, 再生, 怒氣, 戰意, 領袖]列表內的Buff中的層數)的總和 == 0",
+              "施術者 是白位"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 99,
+    "標籤": "Hidden | NotRemoveAfterBattle | NotRemoveWhenDie | Forever"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+    "bonusAttackPower",
+    "defense_up_small",
+    "dexterity",
+    "damage_absorption",
+    "ArmorToBlood",
+    "regeneration",
+    "rage",
+    "warfare",
+    "leader",
+    "dexterity_trigger",
+    "dexterity_fightback_0",
+    "dexterity_fightback_1",
+    "dexterity_fightback_2",
+    "dexterity_fightback_3",
+    "dexterity_fightback_4",
+    "b0028sx_dodge",
+    "damage_absorption_trigger",
+    "ArmorToBlood_trigger",
+    "regeneration_trigger",
+    "follower"
+  ],
+  "_actionTable": [
+    {
+      "Key": 1024,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.ExtraBonusEffectForSkillProperty",
+                  "isPercent": true,
+                  "property": 1,
+                  "value": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 200
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.SumOfInts",
+                  "group": {
+                    "$type": "BattleModel.IntsOnBuffGroup",
+                    "group": {
+                      "$type": "BattleModel.BuffGroupWhere",
+                      "condition": {
+                        "$type": "BattleModel.CheckBuffBelongLabel",
+                        "BuffLabel": {
+                          "BuffIdList": [
+                            "bonusAttackPower",
+                            "defense_up_small",
+                            "dexterity",
+                            "damage_absorption",
+                            "ArmorToBlood",
+                            "regeneration",
+                            "rage",
+                            "warfare",
+                            "leader"
+                          ],
+                          "BuffLabel": "generalBuff"
+                        }
+                      },
+                      "group": {
+                        "$type": "BattleModel.AllBuffsOnCharGroup",
+                        "group": {
+                          "$type": "BattleModel.PVEPlayerTeam",
+                          "includeDead": false,
+                          "includeEmpty": false
+                        }
+                      }
+                    },
+                    "targetField": 1
+                  }
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 0
+                }
+              },
+              {
+                "$type": "BattleModel.CharacterCondition",
+                "character": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                },
+                "condition": {
+                  "$type": "BattleModel.StoneTypeIs",
+                  "type": 4
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 99,
+  "_orderTable": {
+  },
+  "_tag": 71
+}
