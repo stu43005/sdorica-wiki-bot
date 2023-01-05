@@ -6,15 +6,21 @@ import { wikitable, WikiTableStruct } from "../templates/wikitable";
 import { arraySortBy } from "../utils";
 import { wikiNextLine } from "../wiki-utils";
 
-const EvaluateAchievementsTable = ImperiumData.fromGamedata().getTable("EvaluateAchievements");
-const AchievementConditionsTable = ImperiumData.fromGamedata().getTable("AchievementConditions");
+const EvaluateAchievementsTable = ImperiumData.fromGamedata().getTable(
+	"EvaluateAchievements"
+);
+const AchievementConditionsTable = ImperiumData.fromGamedata().getTable(
+	"AchievementConditions"
+);
 
 const typeOrder = ["Normal", "Gold", "Silver"];
 
 export default function wikiEvaluateAchievements() {
 	let out = wikiH1("評價成就");
 
-	const groups = _.groupBy(EvaluateAchievementsTable.rows, (r) => r.get("groupId"));
+	const groups = _.groupBy(EvaluateAchievementsTable.rows, (r) =>
+		r.get("groupId")
+	);
 	for (const [groupId, group] of Object.entries(groups)) {
 		out += `\n\n${wikiH2(groupId)}`;
 
@@ -22,14 +28,7 @@ export default function wikiEvaluateAchievements() {
 		for (const [questModeId, mode] of Object.entries(modes)) {
 			const table: WikiTableStruct = {
 				attributes: `class="wikitable mw-collapsible"`,
-				rows: [
-					[
-						`! 成就類型`,
-						`! 點數`,
-						`! 說明`,
-						`! 詳細說明`,
-					],
-				],
+				rows: [[`! 成就類型`, `! 點數`, `! 說明`, `! 詳細說明`]],
 			};
 
 			const types = _.groupBy(mode, (r) => r.get("type"));
@@ -38,24 +37,33 @@ export default function wikiEvaluateAchievements() {
 				const achievements = types[type];
 				for (let index = 0; index < achievements.length; index++) {
 					const entry = achievements[index];
-					const conditions = getAchievementConditions(entry.get("conditionGroupId"));
+					const conditions = getAchievementConditions(
+						entry.get("conditionGroupId")
+					);
 					table.rows.push([
-						...(index === 0 ? [
-							{
-								header: true,
-								attributes: `rowspan="${achievements.length}"`,
-								text: type,
-							},
-						] : []),
+						...(index === 0
+							? [
+									{
+										header: true,
+										attributes: `rowspan="${achievements.length}"`,
+										text: type,
+									},
+							  ]
+							: []),
 						entry.get("evaluatePoint"),
-						localizationString("QuestAchievement")(entry.get("descriptionKey")),
+						localizationString("QuestAchievement")(
+							entry.get("descriptionKey")
+						),
 						wikiNextLine(conditions.join("\n")),
 					]);
 				}
 			}
 
 			const questMode = localizationQuestModeName()(questModeId);
-			out += `\n\n${wikiH3(questMode, `${groupId}_${questModeId}`)}\n${wikitable(table)}`;
+			out += `\n\n${wikiH3(
+				questMode,
+				`${groupId}_${questModeId}`
+			)}\n${wikitable(table)}`;
 		}
 	}
 
@@ -64,7 +72,9 @@ export default function wikiEvaluateAchievements() {
 
 export function getAchievementConditions(conditionGroupId: string): string[] {
 	const descs: string[] = [];
-	const conditions = AchievementConditionsTable.filter(row => row.get("conditionGroupId") === conditionGroupId);
+	const conditions = AchievementConditionsTable.filter(
+		(row) => row.get("conditionGroupId") === conditionGroupId
+	);
 	for (const condition of conditions) {
 		const type = condition.get("type");
 		const param1 = condition.get("param1");
@@ -90,13 +100,19 @@ export function getAchievementConditions(conditionGroupId: string): string[] {
 				descs.push(`使用魂芯施展 ${param1}技能 ${param2} ${param3}次`);
 				break;
 			case "GoldEraseCount":
-				descs.push(`使用金色魂芯施展 ${param1}技能 ${param2} ${param3}次`);
+				descs.push(
+					`使用金色魂芯施展 ${param1}技能 ${param2} ${param3}次`
+				);
 				break;
 			case "BlackEraseCount":
-				descs.push(`使用黑色魂芯施展 ${param1}技能 ${param2} ${param3}次`);
+				descs.push(
+					`使用黑色魂芯施展 ${param1}技能 ${param2} ${param3}次`
+				);
 				break;
 			case "WhiteEraseCount":
-				descs.push(`使用白色魂芯施展 ${param1}技能 ${param2} ${param3}次`);
+				descs.push(
+					`使用白色魂芯施展 ${param1}技能 ${param2} ${param3}次`
+				);
 				break;
 			case "TurnCount":
 				descs.push(`回合數 ${param2} ${param3}`);
@@ -104,7 +120,42 @@ export function getAchievementConditions(conditionGroupId: string): string[] {
 			case "StoneCount":
 				descs.push(`使用${param1}魂芯 ${param2} ${param3}個`);
 				break;
-			// TODO: GoldSkillTagCount,BlackSkillTagCount,WhiteSkillTagCount,SkillTagCount,FriendBuffCount,EnemyBuffCount,BuffCount,GoldTriggerCount,BlackTriggerCount,WhiteTriggerCount,TriggerCount,KillCount,TotalDamage, Race
+			case "GoldSkillTagCount":
+				descs.push(`金位角色施展${param1}技能 ${param2} ${param3}次`);
+				break;
+			case "BlackSkillTagCount":
+				descs.push(`黑位角色施展${param1}技能 ${param2} ${param3}次`);
+				break;
+			case "WhiteSkillTagCount":
+				descs.push(`白位角色施展${param1}技能 ${param2} ${param3}次`);
+				break;
+			case "SkillTagCount":
+				descs.push(`施展${param1}技能 ${param2} ${param3}次`);
+				break;
+			case "GoldTriggerCount":
+				descs.push(
+					`金位角色不使用魂芯施展${param1}技能 ${param2} ${param3}次`
+				);
+				break;
+			case "BlackTriggerCount":
+				descs.push(
+					`黑位角色不使用魂芯施展${param1}技能 ${param2} ${param3}次`
+				);
+				break;
+			case "WhiteTriggerCount":
+				descs.push(
+					`白位角色不使用魂芯施展${param1}技能 ${param2} ${param3}次`
+				);
+				break;
+			case "TriggerCount":
+				descs.push(
+					`角色不使用魂芯施展${param1}技能 ${param2} ${param3}次`
+				);
+				break;
+			// TODO: FriendBuffCount,EnemyBuffCount,BuffCount,KillCount,TotalDamage, Race
+			default:
+				descs.push(`${type}(${param1}, ${param2}, ${param3})`);
+				break;
 		}
 	}
 	return descs;
