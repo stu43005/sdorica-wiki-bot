@@ -4,6 +4,7 @@ import path from "node:path";
 import { WIKI_PATH } from "./config";
 import { getConstants } from "./localization";
 import { Logger } from "./logger";
+import { Hero } from "./model/hero";
 import { outJson, outText } from "./out";
 import { objectEach } from "./utils";
 import { getMWBot } from "./wiki-bot";
@@ -21,6 +22,7 @@ import wikiBattlefields from "./wiki/Battlefields";
 import wikiBuffs from "./wiki/Buffs";
 import wikiChapter from "./wiki/Chapter";
 import wikiCharVoice from "./wiki/CharVoice";
+import wikiConstantsJson from "./wiki/Constants";
 import wikiDiligents from "./wiki/Diligents";
 import wikiEvaluateAchievements from "./wiki/EvaluateAchievements";
 import wikiEvaluates from "./wiki/Evaluates";
@@ -32,7 +34,7 @@ import wikiHeroes, { wikiHeroesJson } from "./wiki/Heroes";
 import wikiHomelandBuilding from "./wiki/HomelandBuilding";
 import wikiHomelandMonster from "./wiki/HomelandMonster";
 import wikiIndex from "./wiki/index";
-import wikiLevelUps from "./wiki/LevelUps";
+import wikiLevelUps, { wikiLevelUpsJson } from "./wiki/LevelUps";
 import wikiMissions from "./wiki/Missions";
 import { wikiMonsterTrapJson } from "./wiki/MonsterTrap";
 import wikiQuestAchievements from "./wiki/QuestAchievements";
@@ -176,6 +178,7 @@ export async function wikiMain(updateWiki?: boolean) {
 	await outWiki(bot, "HomelandBuilding", wikiHomelandBuilding());
 	await outWiki(bot, "HomelandMonster", wikiHomelandMonster());
 	await outWiki(bot, "LevelUps", wikiLevelUps());
+	await outWikiJson(bot, "LevelUps", wikiLevelUpsJson());
 	await outWiki(bot, "Missions", wikiMissions());
 	await outWikiJson(bot, "MonsterTrap", wikiMonsterTrapJson());
 	await outWiki(bot, "QuestAchievements", wikiQuestAchievements());
@@ -197,6 +200,17 @@ export async function wikiMain(updateWiki?: boolean) {
 		"MaxResonanceLevel",
 		getConstants()("subrankMax")
 	);
+	await outWikiJson(bot, "Constants", wikiConstantsJson());
+
+	for (const hero of Hero.getAll().filter((hero) => hero.enable)) {
+		for (const skillset of hero.skillSetWithLevels) {
+			await outWikiJson(
+				bot,
+				`Heroes/${skillset.model}`,
+				skillset.toJSON()
+			);
+		}
+	}
 
 	await outText(path.join(WIKI_PATH, "raw/quests.txt"), wikiQuestsData());
 	await outText(path.join(WIKI_PATH, "raw/heroes.txt"), wikiHeroesData());

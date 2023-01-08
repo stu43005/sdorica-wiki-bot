@@ -26,9 +26,12 @@ export class HeroSkillSet implements IHeroSkillSet {
 	public static get(row: RowWrapper): HeroSkillSet;
 	public static get(id: string): HeroSkillSet | undefined;
 	public static get(rowOrId: RowWrapper | string): HeroSkillSet {
-		const id = typeof rowOrId === 'string' ? rowOrId : rowOrId.get('id');
+		const id = typeof rowOrId === "string" ? rowOrId : rowOrId.get("id");
 		if (!instances[id]) {
-			const row = typeof rowOrId === 'string' ? HeroSkillsTable.find(r => r.get('id') == id) : rowOrId;
+			const row =
+				typeof rowOrId === "string"
+					? HeroSkillsTable.find((r) => r.get("id") == id)
+					: rowOrId;
 			if (row) {
 				instances[id] = new HeroSkillSet(row);
 			}
@@ -37,23 +40,28 @@ export class HeroSkillSet implements IHeroSkillSet {
 	}
 
 	public static getByHeroId(heroId: string): HeroSkillSet[] {
-		const rows = HeroSkillsTable.filter(s => s.get("heroId") == heroId);
-		const skillSets = rows.map(row => HeroSkillSet.get(row));
+		const rows = HeroSkillsTable.filter((s) => s.get("heroId") == heroId);
+		const skillSets = rows.map((row) => HeroSkillSet.get(row));
 		return skillSets;
 	}
 
 	public static getByModel(skillSet: string): IHeroSkillSet | undefined {
-		return HeroSkillSet.find(s => s.model == skillSet) ?? HeroSkillLevel.getByModel(skillSet);
+		return (
+			HeroSkillSet.find((s) => s.model == skillSet) ??
+			HeroSkillLevel.getByModel(skillSet)
+		);
 	}
 
 	public static getList(list: string | string[]): (HeroSkillSet | string)[] {
-		if (typeof list === 'string') {
-			list = list.split(';');
+		if (typeof list === "string") {
+			list = list.split(";");
 		}
-		return list.map(str => this.get(str) ?? str);
+		return list.map((str) => this.get(str) ?? str);
 	}
 
-	private static find(predicate: (value: HeroSkillSet) => boolean): HeroSkillSet | undefined {
+	private static find(
+		predicate: (value: HeroSkillSet) => boolean
+	): HeroSkillSet | undefined {
 		for (const item of this.getAllGenerator()) {
 			if (predicate(item)) {
 				return item;
@@ -62,7 +70,7 @@ export class HeroSkillSet implements IHeroSkillSet {
 	}
 
 	public static getAll() {
-		return allInstances ??= Array.from(this.getAllGenerator());
+		return (allInstances ??= Array.from(this.getAllGenerator()));
 	}
 
 	public static *getAllGenerator() {
@@ -72,23 +80,49 @@ export class HeroSkillSet implements IHeroSkillSet {
 		}
 	}
 
-	get id(): string { return this.row.get('id'); }
-	get heroId(): string { return this.row.get('heroId'); }
-	get hero() { return Hero.get(this.heroId); }
+	get id(): string {
+		return this.row.get("id");
+	}
+	get heroId(): string {
+		return this.row.get("heroId");
+	}
+	get hero() {
+		return Hero.get(this.heroId);
+	}
 
-	get model(): string { return this.row.get('skillSet'); }
+	get model(): string {
+		return this.row.get("skillSet");
+	}
 	name: string;
 
-	get type(): HeroSkillType { return this.row.get('heroSkillType'); }
-	get rankId(): number { return +this.row.get('rank'); }
-	get rank(): HeroRank { return this.getRank(); }
-	get rankPlus(): string { return this.rank; }
-	get isBook(): boolean { return this.isAlt || this.isSkin; }
-	get isAlt(): boolean { return this.rank === HeroRank.Alt; }
-	get isSkin(): boolean { return this.rank === HeroRank.Skin; }
+	get type(): HeroSkillType {
+		return this.row.get("heroSkillType");
+	}
+	get rankId(): number {
+		return +this.row.get("rank");
+	}
+	get rank(): HeroRank {
+		return this.getRank();
+	}
+	get rankPlus(): string {
+		return this.rank;
+	}
+	get isBook(): boolean {
+		return this.isAlt || this.isSkin;
+	}
+	get isAlt(): boolean {
+		return this.rank === HeroRank.Alt;
+	}
+	get isSkin(): boolean {
+		return this.rank === HeroRank.Skin;
+	}
 
-	get revive(): number { return +this.row.get('revive'); }
-	get skillLv(): number { return 0; }
+	get revive(): number {
+		return +this.row.get("revive");
+	}
+	get skillLv(): number {
+		return 0;
+	}
 
 	P1: HeroSkill;
 	A1: HeroSkill;
@@ -96,30 +130,50 @@ export class HeroSkillSet implements IHeroSkillSet {
 	S2: HeroSkill;
 	S3: HeroSkill;
 
-	get stoneEraseTypeS1(): StoneEraseType { return this.row.get('S1'); }
-	get stoneEraseTypeS2(): StoneEraseType { return this.row.get('S2'); }
-	get stoneEraseTypeS3(): StoneEraseType { return this.row.get('S3'); }
+	get stoneEraseTypeS1(): StoneEraseType {
+		return this.row.get("S1");
+	}
+	get stoneEraseTypeS2(): StoneEraseType {
+		return this.row.get("S2");
+	}
+	get stoneEraseTypeS3(): StoneEraseType {
+		return this.row.get("S3");
+	}
 
-	get tipsP1(): boolean { return !!this.row.get('tipsP1'); }
-	get tipsA1(): boolean { return false; }
-	get tipsS1(): boolean { return !!this.row.get('tipsS1'); }
-	get tipsS2(): boolean { return !!this.row.get('tipsS2'); }
-	get tipsS3(): boolean { return !!this.row.get('tipsS3'); }
+	get tipsP1(): boolean {
+		return !!this.row.get("tipsP1");
+	}
+	get tipsA1(): boolean {
+		return false;
+	}
+	get tipsS1(): boolean {
+		return !!this.row.get("tipsS1");
+	}
+	get tipsS2(): boolean {
+		return !!this.row.get("tipsS2");
+	}
+	get tipsS3(): boolean {
+		return !!this.row.get("tipsS3");
+	}
 
 	#info: HeroInfo | null = null;
 	get info(): HeroInfo {
-		return this.#info ??= new HeroInfo(this.model);
+		return (this.#info ??= new HeroInfo(this.model));
 	}
 
 	#skillLevels: HeroSkillLevel[] | null = null;
 	get skillLevels() {
-		return this.#skillLevels ??= HeroSkillLevel.getBySkillSetId(this.id);
+		return (this.#skillLevels ??= HeroSkillLevel.getBySkillSetId(this.id));
 	}
 
 	#bookItem: Item | undefined | null = null;
 	get bookItem(): Item | undefined {
 		if (this.#bookItem === null) {
-			this.#bookItem = Item.find(item => item.category == ItemCategory.HeroSkill && item.effectValue.toString() == this.id);
+			this.#bookItem = Item.find(
+				(item) =>
+					item.category == ItemCategory.HeroSkill &&
+					item.effectValue.toString() == this.id
+			);
 		}
 		return this.#bookItem;
 	}
@@ -127,19 +181,50 @@ export class HeroSkillSet implements IHeroSkillSet {
 	constructor(private row: RowWrapper) {
 		this.name = localizationString("HeroSkills", "skill_set_")(this.id);
 
-		this.P1 = new HeroSkill(this, SkillId.P1, SkillType.P1, StoneEraseShape.None, this.tipsP1);
-		this.A1 = new HeroSkill(this, SkillId.A1, SkillType.A1, StoneEraseShape.None, this.tipsA1);
-		this.S1 = HeroSkill.createByEraseType(this, SkillId.S1, this.stoneEraseTypeS1, this.tipsS1);
-		this.S2 = HeroSkill.createByEraseType(this, SkillId.S2, this.stoneEraseTypeS2, this.tipsS2);
-		this.S3 = HeroSkill.createByEraseType(this, SkillId.S3, this.stoneEraseTypeS3, this.tipsS3);
+		this.P1 = new HeroSkill(
+			this,
+			SkillId.P1,
+			SkillType.P1,
+			StoneEraseShape.None,
+			this.tipsP1
+		);
+		this.A1 = new HeroSkill(
+			this,
+			SkillId.A1,
+			SkillType.A1,
+			StoneEraseShape.None,
+			this.tipsA1
+		);
+		this.S1 = HeroSkill.createByEraseType(
+			this,
+			SkillId.S1,
+			this.stoneEraseTypeS1,
+			this.tipsS1
+		);
+		this.S2 = HeroSkill.createByEraseType(
+			this,
+			SkillId.S2,
+			this.stoneEraseTypeS2,
+			this.tipsS2
+		);
+		this.S3 = HeroSkill.createByEraseType(
+			this,
+			SkillId.S3,
+			this.stoneEraseTypeS3,
+			this.tipsS3
+		);
 	}
 
 	private getRank() {
 		switch (this.rankId) {
-			case 2: return HeroRank.N;
-			case 3: return HeroRank.R;
-			case 4: return HeroRank.SR;
-			case 5: return HeroRank.SSR;
+			case 2:
+				return HeroRank.N;
+			case 3:
+				return HeroRank.R;
+			case 4:
+				return HeroRank.SR;
+			case 5:
+				return HeroRank.SSR;
 		}
 		switch (this.type) {
 			case HeroSkillType.SkillBook:
@@ -158,7 +243,7 @@ export class HeroSkillSet implements IHeroSkillSet {
 	}
 
 	static toWikiPage(self: IHeroSkillSet) {
-		if (self.isSkin && self.name != '冬青少女') {
+		if (self.isSkin && self.name != "冬青少女") {
 			const skinParams = {
 				角色位置: self.hero?.slot,
 				角色名稱: self.hero?.firstname,
@@ -188,7 +273,9 @@ export class HeroSkillSet implements IHeroSkillSet {
 		Object.assign(params, self.P1.getWikiTemplateParams());
 		Object.assign(params, self.A1.getWikiTemplateParams());
 		Object.assign(params, <HeroRankParams>{
-			共鳴材料: !self.isBook ? (self.hero?.resonanceItem?.item?.name ?? '{{?}}') : '',
+			共鳴材料: !self.isBook
+				? self.hero?.resonanceItem?.item?.name ?? "{{?}}"
+				: "",
 			介紹: self.info?.info1,
 			年齡: self.info?.age,
 			身高: self.info?.height,
@@ -201,11 +288,29 @@ export class HeroSkillSet implements IHeroSkillSet {
 		return `${this.hero?.toWiki(options)} (${this.rank})`;
 	}
 
-	toJSON() {
+	toJSON(minify?: boolean) {
+		if (minify) {
+			return {
+				id: this.id,
+				type: this.type,
+				model: this.model,
+				name: this.name,
+				rank: this.rankPlus,
+			};
+		}
 		return {
 			id: this.id,
+			type: this.type,
+			model: this.model,
 			name: this.name,
-			rank: this.rank,
+			rank: this.rankPlus,
+			revive: this.revive,
+			S1: this.S1,
+			S2: this.S2,
+			S3: this.S3,
+			P1: this.P1,
+			A1: this.A1,
+			hero: this.hero?.toJSON(true),
 		};
 	}
 }

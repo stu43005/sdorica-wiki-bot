@@ -1,4 +1,5 @@
 import { HeroRank } from "./enums/hero-rank.enum";
+import { HeroSkillType } from "./enums/hero-skill-type.enum";
 import { Hero } from "./hero";
 import { HeroInfo } from "./hero-info";
 import { HeroSkill } from "./hero-skill";
@@ -8,6 +9,7 @@ export interface IHeroSkillSet {
 	model: string;
 	name?: string;
 
+	type?: HeroSkillType;
 	rank?: HeroRank;
 	rankPlus: string;
 	isBook?: boolean;

@@ -6,7 +6,7 @@ import { wikitable, WikiTableStruct } from "../templates/wikitable";
 const LevelUpsTable = ImperiumData.fromGamedata().getTable("LevelUps");
 
 export default function wikiLevelUps() {
-	let out = wikiH1('等級');
+	let out = wikiH1("等級");
 
 	const expKeys = ["exp", "heroexp", "homeexp", "monsterexp"];
 	for (const key of expKeys) {
@@ -40,7 +40,7 @@ export default function wikiLevelUps() {
 				level.get("level"),
 				{
 					attributes: `colspan=2`,
-					text: `-封頂-`
+					text: `-封頂-`,
 				},
 			]);
 			break;
@@ -48,7 +48,7 @@ export default function wikiLevelUps() {
 		out += `\n\n${wikiH2(key)}\n${wikitable(table)}`;
 	}
 
-	const levelKeys = ['level', 'rank', 'subrank'];
+	const levelKeys = ["level", "rank", "subrank"];
 	for (const key of levelKeys) {
 		const table: WikiTableStruct = {
 			attributes: `class="wikitable" style="text-align:center; font-family: Consolas, Monaco, monospace;"`,
@@ -72,8 +72,16 @@ export default function wikiLevelUps() {
 			}
 			table.rows.push([
 				level,
-				`${hp}${privHp == 0 ? "" : ` (x ${numeral(hp / privHp).format("0.[000]")})`}`,
-				`${atk}${privAtk == 0 ? "" : ` (x ${numeral(atk / privAtk).format("0.[000]")})`}`,
+				`${hp}${
+					privHp == 0
+						? ""
+						: ` (x ${numeral(hp / privHp).format("0.[000]")})`
+				}`,
+				`${atk}${
+					privAtk == 0
+						? ""
+						: ` (x ${numeral(atk / privAtk).format("0.[000]")})`
+				}`,
 			]);
 			privHp = hp;
 			privAtk = atk;
@@ -81,5 +89,19 @@ export default function wikiLevelUps() {
 		out += `\n\n${wikiH2(key)}\n${wikitable(table)}`;
 	}
 
+	return out;
+}
+
+export function wikiLevelUpsJson() {
+	const out: Record<string, number[]> = {};
+	for (const column of LevelUpsTable.colname) {
+		out[column] = [];
+		for (const row of LevelUpsTable) {
+			const value = row.get(column);
+			if (value >= 0) {
+				out[column].push(value);
+			}
+		}
+	}
 	return out;
 }
