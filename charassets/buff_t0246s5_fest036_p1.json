@@ -1,0 +1,335 @@
+{
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "OnEachSkillTargetEffect": {
+        "效果": [
+          {
+            "效果": [
+              "對本狀態的變數二改為1",
+              "立即施展技能效果：{\"Ratio\":{\"left\":{\"Integer\":{\"left\":{\"constant\":1,\"$type\":\"BattleModel.ConstanctInt\"},\"right\":{\"left\":{\"buff\":{\"character\":{\"$type\":\"BattleModel.ThisBuffOwner\"},\"buffId\":\"fest036_chili\",\"$type\":\"BattleModel.BuffOnCharater\"},\"targetField\":1,\"$type\":\"BattleModel.IntBuffField\"},\"right\":{\"left\":{\"constant\":-1,\"$type\":\"BattleModel.ConstanctInt\"},\"right\":{\"buff\":{\"$type\":\"BattleModel.ThisBuff\"},\"targetField\":4,\"$type\":\"BattleModel.IntBuffField\"},\"$type\":\"BattleModel.MultiplyInt\"},\"$type\":\"BattleModel.PlusInt\"},\"$type\":\"BattleModel.PlusInt\"},\"$type\":\"BattleModel.IntegerToFloat\"},\"right\":{\"constant\":0.1,\"$type\":\"BattleModel.ConstanctFloat\"},\"$type\":\"BattleModel.FloatMultiplyFloat\"},\"Tag\":32777,\"_keyString\":\"1\",\"$type\":\"BattleModel.FixedHpDamageRatioMaxSkillEffect\"}"
+            ],
+            "條件": [
+              "施術者是本角色",
+              "((施展的技能組是S1) 或 (施展的技能組是S2)) 或 (施展的技能組是S3)",
+              "本狀態的變數二 == 0"
+            ]
+          }
+        ],
+        "條件": [
+          "永遠為假"
+        ]
+      },
+      "OnTurnBegin": {
+        "效果": [
+          {
+            "效果": [
+              "立即施展技能：對本角色將14個白色魂芯由左至右的順序加入賦予1回合1層fest036_chili(深淵辣果)"
+            ],
+            "條件": [
+              "目前回合輪到本角色"
+            ]
+          },
+          {
+            "效果": [
+              "立即施展技能：對本角色將1個白色魂芯由隨機的順序加入賦予1回合1層fest036_ice"
+            ],
+            "條件": [
+              "目前回合輪到本角色",
+              "目前戰鬥回合數 == 0"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 99,
+    "標籤": "Forever"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+    "fest036_chili",
+    "fest036_ice"
+  ],
+  "_actionTable": [
+    {
+      "Key": 1,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": {
+                      "$type": "BattleModel.PVEField"
+                    },
+                    "single": {
+                      "$type": "BattleModel.ThisBuffOwner"
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.StoneBuffSkillEffect",
+                        "Tag": 132,
+                        "_keyString": "",
+                        "_stoneBuffAction": {
+                          "BuffFilter": "WithoutBuff",
+                          "BuffId": "",
+                          "BuffLabel": null,
+                          "EffectFilter": "Normal",
+                          "StonePositionList": [
+                          ],
+                          "UsePositionSettings": false,
+                          "action": "Add",
+                          "buff": {
+                            "BuffId": "fest036_chili",
+                            "Forever": false,
+                            "LevelStack": 1,
+                            "OverwriteDuration": 1,
+                            "UserDefineVariable": {
+                            }
+                          },
+                          "filter": "IsWhite",
+                          "isInitStoneFilter": "None",
+                          "order": "LeftToRight",
+                          "targetStoneCount": 14
+                        }
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": false
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CurrentTurnBelongsTo",
+                "character": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": {
+                      "$type": "BattleModel.PVEField"
+                    },
+                    "single": {
+                      "$type": "BattleModel.ThisBuffOwner"
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.StoneBuffSkillEffect",
+                        "Tag": 132,
+                        "_keyString": "",
+                        "_stoneBuffAction": {
+                          "BuffFilter": "Normal",
+                          "BuffId": "",
+                          "BuffLabel": null,
+                          "EffectFilter": "Normal",
+                          "StonePositionList": [
+                          ],
+                          "UsePositionSettings": false,
+                          "action": "Add",
+                          "buff": {
+                            "BuffId": "fest036_ice",
+                            "Forever": false,
+                            "LevelStack": 1,
+                            "OverwriteDuration": 1,
+                            "UserDefineVariable": {
+                            }
+                          },
+                          "filter": "IsWhite",
+                          "isInitStoneFilter": "None",
+                          "order": "Random",
+                          "targetStoneCount": 1
+                        }
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": false
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CurrentTurnBelongsTo",
+                "character": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.BattleActionRecordValue",
+                  "RecordValue": {
+                    "$type": "BattleModel.ThisBattleTurnCount"
+                  }
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 0
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 1024,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 8,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 1
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.ImmediatelySkillEffect",
+                  "SkillEffect": [
+                    {
+                      "$type": "BattleModel.FixedHpDamageRatioMaxSkillEffect",
+                      "Ratio": {
+                        "$type": "BattleModel.FloatMultiplyFloat",
+                        "left": {
+                          "$type": "BattleModel.IntegerToFloat",
+                          "Integer": {
+                            "$type": "BattleModel.PlusInt",
+                            "left": {
+                              "$type": "BattleModel.ConstanctInt",
+                              "constant": 1
+                            },
+                            "right": {
+                              "$type": "BattleModel.PlusInt",
+                              "left": {
+                                "$type": "BattleModel.IntBuffField",
+                                "buff": {
+                                  "$type": "BattleModel.BuffOnCharater",
+                                  "buffId": "fest036_chili",
+                                  "character": {
+                                    "$type": "BattleModel.ThisBuffOwner"
+                                  }
+                                },
+                                "targetField": 1
+                              },
+                              "right": {
+                                "$type": "BattleModel.MultiplyInt",
+                                "left": {
+                                  "$type": "BattleModel.ConstanctInt",
+                                  "constant": -1
+                                },
+                                "right": {
+                                  "$type": "BattleModel.IntBuffField",
+                                  "buff": {
+                                    "$type": "BattleModel.ThisBuff"
+                                  },
+                                  "targetField": 4
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "right": {
+                          "$type": "BattleModel.ConstanctFloat",
+                          "constant": 0.1
+                        }
+                      },
+                      "Tag": 32777,
+                      "_keyString": "1"
+                    }
+                  ]
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                },
+                "right": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                }
+              },
+              {
+                "$type": "BattleModel.OrConditions",
+                "cond1": {
+                  "$type": "BattleModel.OrConditions",
+                  "cond1": {
+                    "$type": "BattleModel.ThisSkillSetIdEqual",
+                    "id": "S1"
+                  },
+                  "cond2": {
+                    "$type": "BattleModel.ThisSkillSetIdEqual",
+                    "id": "S2"
+                  }
+                },
+                "cond2": {
+                  "$type": "BattleModel.ThisSkillSetIdEqual",
+                  "id": "S3"
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.ThisBuff"
+                  },
+                  "targetField": 8
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 0
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+          {
+            "$type": "BattleModel.Inverse",
+            "condition": {
+              "$type": "BattleModel.AlwaysTrue"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 99,
+  "_orderTable": {
+  },
+  "_tag": 64
+}
