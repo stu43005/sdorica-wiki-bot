@@ -99,7 +99,7 @@
         "效果": [
           {
             "效果": [
-              "立即施展技能：對本角色{\"_isMultiple\":true,\"GroupSkill\":{\"$type\":\"BattleModel.SelfAndGuildAssistantSkill\"},\"SingleSkill\":null,\"_operator\":1,\"_value\":{\"constant\":-1,\"$type\":\"BattleModel.ConstanctInt\"},\"Tag\":131076,\"_keyString\":\"1\",\"$type\":\"BattleModel.AssistantModifyCDSkillEffect\"}",
+              "對本角色觸發AssistCD",
               "對本狀態的變數三改為1"
             ],
             "條件": [
@@ -675,33 +675,33 @@
             "Actions": [
               {
                 "TargetField": {
-                  "$type": "BattleModel.DirectSkillEffect",
-                  "skillUnit": {
-                    "CanBeEmpty": false,
-                    "IsMultiple": false,
-                    "multi": null,
-                    "single": {
-                      "$type": "BattleModel.ThisBuffOwner"
-                    },
-                    "skillEffects": [
-                      {
-                        "$type": "BattleModel.AssistantModifyCDSkillEffect",
-                        "GroupSkill": {
-                          "$type": "BattleModel.SelfAndGuildAssistantSkill"
-                        },
-                        "SingleSkill": null,
-                        "Tag": 131076,
-                        "_isMultiple": true,
-                        "_keyString": "1",
-                        "_operator": 1,
-                        "_value": {
-                          "$type": "BattleModel.ConstanctInt",
-                          "constant": -1
-                        }
-                      }
-                    ]
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
                   },
-                  "willTriggerBuff": true
+                  "operation": {
+                    "$type": "BattleModel.CastSkillSet",
+                    "AssignParameter": {
+                      "AssignCharacter": {
+                        "$type": "BattleModel.NoneCharacter"
+                      },
+                      "AssignCharacterGroup": {
+                        "$type": "BattleModel.NoneCharacters"
+                      },
+                      "AssignInteger": {
+                        "$type": "BattleModel.ConstanctInt",
+                        "constant": 0
+                      },
+                      "AssignIntegerGroup": {
+                        "$type": "BattleModel.ConstanctIntegerGroup",
+                        "Group": [
+                        ]
+                      }
+                    },
+                    "UseAssignParameter": false,
+                    "resetCasterCD": false,
+                    "skillsetId": "AssistCD"
+                  }
                 }
               },
               {
