@@ -76,10 +76,10 @@ export function getAchievementConditions(conditionGroupId: string): string[] {
 		(row) => row.get("conditionGroupId") === conditionGroupId
 	);
 	for (const condition of conditions) {
-		const type = condition.get("type");
-		const param1 = condition.get("param1");
-		const param2 = condition.get("param2");
-		const param3 = condition.get("param3");
+		const type: string = condition.get("type");
+		const param1: string = condition.get("param1");
+		const param2: string = condition.get("param2");
+		const param3: string = condition.get("param3");
 		switch (type) {
 			case "BattleScore":
 				descs.push(`戰鬥積分 ${param2} ${param3}`);
@@ -152,11 +152,35 @@ export function getAchievementConditions(conditionGroupId: string): string[] {
 					`角色不使用魂芯施展${param1}技能 ${param2} ${param3}次`
 				);
 				break;
-			// TODO: FriendBuffCount,EnemyBuffCount,BuffCount,KillCount,TotalDamage, Race
+			case "Race":
+				descs.push(
+					`隊伍攜帶${raceToString(param1)}角色 ${param2} ${param3}名`
+				);
+				break;
+			case "FriendBuffCount":
+				descs.push(
+					`我方角色獲得${localizationString("BaseBuff")(
+						param1
+					)}總計 ${param2} ${param3}次`
+				);
+				break;
+			case "EnemyBuffCount":
+				descs.push(
+					`敵方角色獲得${localizationString("BaseBuff")(
+						param1
+					)}總計 ${param2} ${param3}次`
+				);
+				break;
+			// TODO: BuffCount,KillCount,TotalDamage
 			default:
 				descs.push(`${type}(${param1}, ${param2}, ${param3})`);
 				break;
 		}
 	}
 	return descs;
+}
+
+function raceToString(race: string): string {
+	const list = [, "人類", "亞人", "獸人", "羽族", "機械", "野獸", "未知種族"];
+	return list[+race] ?? race;
 }
