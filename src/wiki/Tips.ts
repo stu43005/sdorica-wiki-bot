@@ -1,18 +1,31 @@
-import { localizationString } from "../localization";
+import { getConstants, localizationString } from "../localization";
 import { wikiH1 } from "../templates/wikiheader";
 import { wikitable, WikiTableStruct } from "../templates/wikitable";
 
 const IntroTip = localizationString("IntroTip");
 
+function getAllTips() {
+	const indexStart = +getConstants()("loadingSceneTipIndexStart");
+	const indexEnd = +getConstants()("loadingSceneTipIndexEnd");
+	// const Tip_num = +IntroTip("Tip_num");
+	const out: string[] = [];
+	for (let i = indexStart; i < indexEnd + 1; i++) {
+		const key = `Tip_${i}`;
+		const tip = IntroTip(key).replace(/\n/g, "");
+		out.push(tip);
+	}
+	return out;
+}
+
 export default function wikiTipsTemplate() {
 	const Tip_num = +IntroTip("Tip_num");
 	const out: string[] = [];
-	out.push(`{{#switch:{{#expr:({{#time:y}} * {{#time:n}} * {{#time:j}} + {{{offset|0}}}) mod ${Tip_num - 1}}}`);
-	for (let i = 1; i < Tip_num; i++) {
-		const key = `Tip_${i}`;
-		const tip = IntroTip(key).replace(/\n/g, "");
-		out.push(`|${i - 1} = ${tip}`);
-	}
+	out.push(
+		`{{#switch:{{#expr:({{#time:y}} * {{#time:n}} * {{#time:j}} + {{{offset|0}}}) mod ${
+			Tip_num - 1
+		}}}`
+	);
+	out.push(...getAllTips().map((tip, index) => `|${index} = ${tip}`));
 	out.push(`}}<noinclude>{{Documentation}}</noinclude>`);
 	return out.join("\n");
 }
@@ -21,21 +34,9 @@ export function wikiTips() {
 	let out = wikiH1(`小提示`);
 
 	const table: WikiTableStruct = [
-		[
-			`! #`,
-			`! 小提示`,
-		],
+		[`! #`, `! 小提示`],
+		...getAllTips().map((tip, index) => [index, tip]),
 	];
-
-	const Tip_num = +IntroTip("Tip_num");
-	for (let i = 1; i < Tip_num; i++) {
-		const key = `Tip_${i}`;
-		const tip = IntroTip(key).replace(/\n/g, "");
-		table.push([
-			i - 1,
-			tip,
-		]);
-	}
 
 	out += `\n${wikitable(table)}`;
 	return out;
