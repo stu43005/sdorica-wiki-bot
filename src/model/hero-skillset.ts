@@ -120,6 +120,9 @@ export class HeroSkillSet implements IHeroSkillSet {
 	get revive(): number {
 		return +this.row.get("revive");
 	}
+	get initCD(): number {
+		return +this.row.get("initCD");
+	}
 	get skillLv(): number {
 		return 0;
 	}

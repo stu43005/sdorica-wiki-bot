@@ -17,6 +17,7 @@ export interface IHeroSkillSet {
 	isSkin?: boolean;
 
 	revive?: number;
+	initCD: number;
 	skillLv: number;
 
 	P1: HeroSkill;

@@ -112,6 +112,9 @@ export class HeroSkillLevel implements IHeroSkillSet {
 	get revive() {
 		return this.rootSkillSet?.revive;
 	}
+	get initCD(): number {
+		return +this.row.get("initCD");
+	}
 
 	P1: HeroSkill;
 	A1: HeroSkill;

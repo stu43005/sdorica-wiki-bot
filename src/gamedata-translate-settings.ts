@@ -1,13 +1,42 @@
-import { HeroSkillSet } from './model/hero-skillset';
+import { HeroSkillSet } from "./model/hero-skillset";
 import { ImperiumData } from "./imperium-data";
-import { black, call2, colonFirst, Func1, gamedataString, gold, ifor, localizationBuffName, localizationChapterName, localizationCharacterName, localizationCharacterNameByHeroId, localizationCharacterNameWithDefault, localizationExploreBuildingName, localizationHomelandBuildingName, localizationItemName, localizationItemNameWithType, localizationMonsterName, localizationMonsterSkillName, localizationMonsterSpecialityName, localizationQuestName, localizationString, localizationStringAuto, localizationTavernMissionName, localizationUnlockCondition, rank, semicolon, weekday, white } from "./localization";
+import {
+	black,
+	call2,
+	colonFirst,
+	Func1,
+	gamedataString,
+	gold,
+	ifor,
+	localizationBuffName,
+	localizationChapterName,
+	localizationCharacterName,
+	localizationCharacterNameByHeroId,
+	localizationCharacterNameWithDefault,
+	localizationExploreBuildingName,
+	localizationHomelandBuildingName,
+	localizationItemName,
+	localizationItemNameWithType,
+	localizationMonsterName,
+	localizationMonsterSkillName,
+	localizationMonsterSpecialityName,
+	localizationQuestName,
+	localizationString,
+	localizationStringAuto,
+	localizationTavernMissionName,
+	localizationUnlockCondition,
+	rank,
+	semicolon,
+	weekday,
+	white,
+} from "./localization";
 import { Logger } from "./logger";
-import { ItemCategory } from './model/enums/item-category.enum';
-import { Item } from './model/item';
+import { ItemCategory } from "./model/enums/item-category.enum";
+import { Item } from "./model/item";
 import { exploreLabelName } from "./wiki-item";
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from "lodash";
 
-const logger = new Logger('gamedata-translate');
+const logger = new Logger("gamedata-translate");
 
 export interface GamedataRef {
 	table: string;
@@ -221,21 +250,39 @@ export const gamedataTeanslateSettings: GamedataRef[] = [
 		column: "groupId",
 		func: (str) => {
 			const ItemsTable = ImperiumData.fromGamedata().getTable("Items");
-			const item = ItemsTable.find(r => r.get("category") == "Treasure" && r.get("effectValue") == str);
+			const item = ItemsTable.find(
+				(r) =>
+					r.get("category") == "Treasure" &&
+					r.get("effectValue") == str
+			);
 			if (item) {
 				return "Item: " + localizationItemName()(item.get("id"));
 			}
 
-			const ExploreItemsTable = ImperiumData.fromGamedata().getTable("ExploreItems");
-			const expitem = ExploreItemsTable.find(r => r.get("category") == "Treasure" && r.get("effectValue") == str);
+			const ExploreItemsTable =
+				ImperiumData.fromGamedata().getTable("ExploreItems");
+			const expitem = ExploreItemsTable.find(
+				(r) =>
+					r.get("category") == "Treasure" &&
+					r.get("effectValue") == str
+			);
 			if (expitem) {
-				return "ExploreItem: " + localizationItemName(true)(expitem.get("id"));
+				return (
+					"ExploreItem: " +
+					localizationItemName(true)(expitem.get("id"))
+				);
 			}
 
-			const TavernMissionTable = ImperiumData.fromGamedata().getTable("TavernMission");
-			const mission = TavernMissionTable.find(r => r.get("dropItem") == str || r.get("extraDropItem") == str);
+			const TavernMissionTable =
+				ImperiumData.fromGamedata().getTable("TavernMission");
+			const mission = TavernMissionTable.find(
+				(r) => r.get("dropItem") == str || r.get("extraDropItem") == str
+			);
 			if (mission) {
-				return "TavernMission: " + localizationTavernMissionName()(mission.get("id"));
+				return (
+					"TavernMission: " +
+					localizationTavernMissionName()(mission.get("id"))
+				);
 			}
 			return "";
 		},
@@ -248,7 +295,10 @@ export const gamedataTeanslateSettings: GamedataRef[] = [
 	{
 		table: "Gashapons",
 		column: "packId",
-		func: call2(gamedataString("GashaponPacks", "id", "name"), localizationStringAuto()),
+		func: call2(
+			gamedataString("GashaponPacks", "id", "name"),
+			localizationStringAuto()
+		),
 	},
 	{
 		table: "GashaponPacks",
@@ -445,7 +495,7 @@ export const gamedataTeanslateSettings: GamedataRef[] = [
 		table: "ExploreItems",
 		column: "label",
 		func: semicolon((str) => {
-			return exploreLabelName[str] && exploreLabelName[str][0] || str;
+			return (exploreLabelName[str] && exploreLabelName[str][0]) || str;
 		}),
 	},
 	{
@@ -584,7 +634,16 @@ export const gamedataTeanslateSettings: GamedataRef[] = [
 	{
 		table: "AbilityDrop",
 		column: "groupId",
-		func: call2(ifor(gamedataString("HomelandMonster", "skill1", "keyName"), gamedataString("HomelandMonster", "skill2", "keyName"), gamedataString("HomelandMonster", "speciality1", "keyName"), gamedataString("HomelandMonster", "speciality2", "keyName"), gamedataString("HomelandMonster", "speciality3", "keyName")), localizationCharacterNameWithDefault()),
+		func: call2(
+			ifor(
+				gamedataString("HomelandMonster", "skill1", "keyName"),
+				gamedataString("HomelandMonster", "skill2", "keyName"),
+				gamedataString("HomelandMonster", "speciality1", "keyName"),
+				gamedataString("HomelandMonster", "speciality2", "keyName"),
+				gamedataString("HomelandMonster", "speciality3", "keyName")
+			),
+			localizationCharacterNameWithDefault()
+		),
 	},
 	{
 		table: "AbilityDrop",
@@ -690,8 +749,12 @@ export const gamedataTeanslateSettings: GamedataRef[] = [
 		table: "VoucherGifts",
 		column: "groupId",
 		func: (str) => {
-			const item = Item.find(item => item.category == ItemCategory.Voucher && item.effectValue == +str);
-			return item?.name ?? '';
+			const item = Item.find(
+				(item) =>
+					item.category == ItemCategory.Voucher &&
+					item.effectValue == +str
+			);
+			return item?.name ?? "";
 		},
 	},
 	{
@@ -795,7 +858,7 @@ export const gamedataTeanslateSettings: GamedataRef[] = [
 		func: (str) => {
 			const skillset = HeroSkillSet.getByModel(str);
 			if (skillset) {
-				return `${skillset.hero?.firstname} ${skillset.rankPlus} ${skillset.name}`
+				return `${skillset.hero?.firstname} ${skillset.rankPlus} ${skillset.name}`;
 			}
 			return "";
 		},
@@ -841,7 +904,14 @@ export const gamedataTeanslateSettings: GamedataRef[] = [
 	{
 		table: "AchievementConditions",
 		column: "conditionGroupId",
-		func: call2(gamedataString("EvaluateAchievements", "conditionGroupId", "descriptionKey"), localizationString("QuestAchievement")),
+		func: call2(
+			gamedataString(
+				"EvaluateAchievements",
+				"conditionGroupId",
+				"descriptionKey"
+			),
+			localizationString("QuestAchievement")
+		),
 	},
 	{
 		table: "LoreChapterSettings",
@@ -858,11 +928,18 @@ export const gamedataTeanslateSettings: GamedataRef[] = [
 		column: "titleKey,descriptionKey",
 		func: localizationString("Triggers"),
 	},
+	{
+		table: "BlessEffects",
+		column: "i2Key",
+		func: localizationString("BlessEffects"),
+	},
 ];
 
 export function doGamedataTranslation() {
 	const clonedGamedata = new ImperiumData("gamedata");
-	clonedGamedata.setRawData(cloneDeep(ImperiumData.fromGamedata().getRawData()));
+	clonedGamedata.setRawData(
+		cloneDeep(ImperiumData.fromGamedata().getRawData())
+	);
 
 	gamedataTeanslateSettings.forEach((ref) => {
 		const table = ImperiumData.fromGamedata().getTable(ref.table);
@@ -876,12 +953,15 @@ export function doGamedataTranslation() {
 			const row = table.get(i);
 			const clonedRow = clonedTable.get(i);
 			const columns = ref.column.split(",");
-			columns.forEach(col => {
+			columns.forEach((col) => {
 				const subcols = col.split(":");
-				const data = subcols.map(c => row.get(c)).join(":");
+				const data = subcols.map((c) => row.get(c)).join(":");
 				const result = ref.func.call(row, data);
 				if (result) {
-					clonedRow.set(subcols[0], `${row.get(subcols[0])} (${result})`);
+					clonedRow.set(
+						subcols[0],
+						`${row.get(subcols[0])} (${result})`
+					);
 				}
 			});
 		}

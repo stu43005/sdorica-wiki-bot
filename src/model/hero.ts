@@ -12,6 +12,7 @@ import {
 import { tooltipTemplate } from "../templates/tooltip";
 import { heroName, pointRegexp } from "../wiki-hero";
 import { Chapter } from "./chapter";
+import { CharacterSeriesType } from "./enums/character-series-type.enum";
 import { GenderType } from "./enums/gender-type.enum";
 import { HeroRank } from "./enums/hero-rank.enum";
 import { HeroSlot } from "./enums/hero-slot.enum";
@@ -19,6 +20,7 @@ import { HeroViewableType } from "./enums/hero-viewable-type.enum";
 import { HeroSkillLevel } from "./hero-skilllevel";
 import { HeroSkillSet } from "./hero-skillset";
 import { ItemPayRef } from "./item-pay-ref";
+import { Avatar } from "./avatar";
 
 const HeroesTable = ImperiumData.fromGamedata().getTable("Heroes");
 const RankUpItemRefsTable =
@@ -137,6 +139,12 @@ export class Hero {
 	get avatarId(): string {
 		return this.row.get("avatarId");
 	}
+	#avatar: Avatar | undefined | null = null;
+	get avatar(): Avatar | undefined {
+		if (!this.avatarId) return undefined;
+		return (this.#avatar ??= Avatar.get(this.avatarId));
+	}
+
 	get viewable(): HeroViewableType {
 		return this.row.get("viewable");
 	}
@@ -145,6 +153,9 @@ export class Hero {
 	}
 	get races(): string {
 		return this.row.get("races");
+	}
+	get series(): CharacterSeriesType {
+		return this.row.get("series");
 	}
 
 	#resonanceItem: ItemPayRef | undefined | null = null;
@@ -375,6 +386,8 @@ export class Hero {
 			atk: this.atk,
 			hp: this.hp,
 			revive: this.revive,
+			gender: this.gender,
+			series: this.series,
 			enable: this.enable,
 			skillSets: this.skillSetWithLevels.map((skillset) =>
 				skillset.toJSON(true)
