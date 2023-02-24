@@ -933,6 +933,16 @@ export const gamedataTeanslateSettings: GamedataRef[] = [
 		column: "i2Key",
 		func: localizationString("BlessEffects"),
 	},
+	{
+		table: "AvgTriggerQuest",
+		column: "chapterId",
+		func: localizationChapterName(),
+	},
+	{
+		table: "AvgTriggerQuest",
+		column: "questId",
+		func: localizationQuestName(),
+	},
 ];
 
 export function doGamedataTranslation() {
