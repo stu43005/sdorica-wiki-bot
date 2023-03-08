@@ -2,29 +2,13 @@
   "$interpreted": {
     "Localization": "",
     "動作": {
-      "OnEachSkillSetStart": {
-        "效果": [
-          {
-            "效果": [
-              "技能係數增加((-10 * 本狀態的層數))%",
-              "對本狀態的變數一改為1"
-            ],
-            "條件": [
-            ]
-          }
-        ],
-        "條件": [
-          "本角色是指定目標",
-          "本狀態的變數一 == 0",
-          "敵人中的所有角色皆 狀態Forging(鍛鋼) 符合條件 變數一 == 0"
-        ]
-      },
-      "OnEachSkillTargetEffect": {
+      "OnEachSkillSetEnd": {
         "效果": [
           {
             "效果": [
               "對本狀態的層數增加1",
-              "對本狀態的變數二改為1"
+              "對本狀態的變數二改為1",
+              "對本狀態的變數一改為0"
             ],
             "條件": [
             ]
@@ -33,17 +17,40 @@
         "條件": [
           "本角色是指定目標",
           "施展的技能效果中包含(Attack)屬性",
-          "本狀態的變數二 == 0"
+          "本狀態的變數二 == 0",
+          "本狀態的變數一 == 1"
+        ]
+      },
+      "OnEachSkillTargetEffect": {
+        "效果": [
+          {
+            "效果": [
+              "{\"property\":1,\"value\":{\"left\":{\"buff\":{\"$type\":\"BattleModel.ThisBuff\"},\"targetField\":1,\"$type\":\"BattleModel.IntBuffField\"},\"right\":{\"constant\":-10,\"$type\":\"BattleModel.ConstanctInt\"},\"$type\":\"BattleModel.MultiplyInt\"},\"isPercent\":true,\"$type\":\"BattleModel.ExtraBonusEffectForSkillProperty\"}"
+            ],
+            "條件": [
+            ]
+          },
+          {
+            "效果": [
+              "對本狀態的變數一改為1"
+            ],
+            "條件": [
+            ]
+          }
+        ],
+        "條件": [
+          "本角色是指定目標",
+          "施展的技能效果中包含(Attack)屬性"
         ]
       },
       "OnTurnBegin": {
         "效果": [
           {
             "效果": [
-              "對本狀態的變數一改為0",
               "對本狀態的變數二改為0"
             ],
             "條件": [
+              "目前回合輪到玩家首位"
             ]
           }
         ],
@@ -60,31 +67,38 @@
   ],
   "_actionTable": [
     {
-      "Key": 4,
+      "Key": 1024,
       "Value": {
         "Actions": [
           {
             "Actions": [
               {
                 "TargetField": {
-                  "$type": "BattleModel.ExtraPowerForSkillEffect",
+                  "$type": "BattleModel.ExtraBonusEffectForSkillProperty",
                   "isPercent": true,
+                  "property": 1,
                   "value": {
                     "$type": "BattleModel.MultiplyInt",
                     "left": {
-                      "$type": "BattleModel.ConstanctInt",
-                      "constant": -10
-                    },
-                    "right": {
                       "$type": "BattleModel.IntBuffField",
                       "buff": {
                         "$type": "BattleModel.ThisBuff"
                       },
                       "targetField": 1
+                    },
+                    "right": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": -10
                     }
                   }
                 }
-              },
+              }
+            ],
+            "Conditions": [
+            ]
+          },
+          {
+            "Actions": [
               {
                 "TargetField": {
                   "$type": "BattleModel.OperateThisBuff",
@@ -116,50 +130,14 @@
             }
           },
           {
-            "$type": "BattleModel.IntCompare",
-            "left": {
-              "$type": "BattleModel.IntBuffField",
-              "buff": {
-                "$type": "BattleModel.ThisBuff"
-              },
-              "targetField": 4
-            },
-            "op": 0,
-            "right": {
-              "$type": "BattleModel.ConstanctInt",
-              "constant": 0
-            }
-          },
-          {
-            "$type": "BattleModel.CharGroupCondition",
-            "condition": {
-              "$type": "BattleModel.HasConditionalBuff",
-              "buffCondition": {
-                "$type": "BattleModel.IntCompareB",
-                "left": {
-                  "$type": "BattleModel.IntFieldB",
-                  "targetField": 4
-                },
-                "op": 0,
-                "right": {
-                  "$type": "BattleModel.ConstantIntB",
-                  "constant": 0
-                }
-              },
-              "buffId": "Forging"
-            },
-            "everybody": true,
-            "group": {
-              "$type": "BattleModel.PVEEnemyTeam",
-              "includeDead": true,
-              "includeEmpty": false
-            }
+            "$type": "BattleModel.ThisSkillEffectTagContains",
+            "containsAll": 1
           }
         ]
       }
     },
     {
-      "Key": 1024,
+      "Key": 8,
       "Value": {
         "Actions": [
           {
@@ -190,6 +168,21 @@
                     "value": {
                       "$type": "BattleModel.ConstanctInt",
                       "constant": 1
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 0
                     }
                   }
                 }
@@ -227,6 +220,21 @@
               "$type": "BattleModel.ConstanctInt",
               "constant": 0
             }
+          },
+          {
+            "$type": "BattleModel.IntCompare",
+            "left": {
+              "$type": "BattleModel.IntBuffField",
+              "buff": {
+                "$type": "BattleModel.ThisBuff"
+              },
+              "targetField": 4
+            },
+            "op": 0,
+            "right": {
+              "$type": "BattleModel.ConstanctInt",
+              "constant": 1
+            }
           }
         ]
       }
@@ -244,21 +252,6 @@
                     "$type": "BattleModel.SetBuffField",
                     "lastIndepedentStack": false,
                     "setOperator": 0,
-                    "targetField": 4,
-                    "value": {
-                      "$type": "BattleModel.ConstanctInt",
-                      "constant": 0
-                    }
-                  }
-                }
-              },
-              {
-                "TargetField": {
-                  "$type": "BattleModel.OperateThisBuff",
-                  "operation": {
-                    "$type": "BattleModel.SetBuffField",
-                    "lastIndepedentStack": false,
-                    "setOperator": 0,
                     "targetField": 8,
                     "value": {
                       "$type": "BattleModel.ConstanctInt",
@@ -269,6 +262,17 @@
               }
             ],
             "Conditions": [
+              {
+                "$type": "BattleModel.CurrentTurnBelongsTo",
+                "character": {
+                  "$type": "BattleModel.FrontOfChars",
+                  "group": {
+                    "$type": "BattleModel.PVEPlayerTeam",
+                    "includeDead": false,
+                    "includeEmpty": false
+                  }
+                }
+              }
             ]
           }
         ],
