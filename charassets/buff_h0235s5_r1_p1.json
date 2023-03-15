@@ -22,8 +22,8 @@
               "對本角色觸發S2",
               "對本角色賦予永久1層combo",
               "對本角色賦予1回合1層leader(領袖)",
-              "對本角色觸發AssistCD",
-              "對本狀態的變數一增加1"
+              "對本狀態的變數一增加1",
+              "立即施展技能：對本角色{\"_isMultiple\":true,\"GroupSkill\":{\"$type\":\"BattleModel.SelfAndGuildAssistantSkill\"},\"SingleSkill\":null,\"_operator\":1,\"_value\":{\"constant\":-1,\"$type\":\"BattleModel.ConstanctInt\"},\"Tag\":131076,\"_keyString\":\"\",\"$type\":\"BattleModel.AssistantModifyCDSkillEffect\"}"
             ],
             "條件": [
               "{\"$type\":\"BattleModel.BreakDownOrFullTarget\"}是本角色的隊伍的一員",
@@ -123,37 +123,6 @@
               },
               {
                 "TargetField": {
-                  "$type": "BattleModel.OperateCharacter",
-                  "character": {
-                    "$type": "BattleModel.ThisBuffOwner"
-                  },
-                  "operation": {
-                    "$type": "BattleModel.CastSkillSet",
-                    "AssignParameter": {
-                      "AssignCharacter": {
-                        "$type": "BattleModel.NoneCharacter"
-                      },
-                      "AssignCharacterGroup": {
-                        "$type": "BattleModel.NoneCharacters"
-                      },
-                      "AssignInteger": {
-                        "$type": "BattleModel.ConstanctInt",
-                        "constant": 0
-                      },
-                      "AssignIntegerGroup": {
-                        "$type": "BattleModel.ConstanctIntegerGroup",
-                        "Group": [
-                        ]
-                      }
-                    },
-                    "UseAssignParameter": false,
-                    "resetCasterCD": false,
-                    "skillsetId": "AssistCD"
-                  }
-                }
-              },
-              {
-                "TargetField": {
                   "$type": "BattleModel.OperateThisBuff",
                   "operation": {
                     "$type": "BattleModel.SetBuffField",
@@ -165,6 +134,37 @@
                       "constant": 1
                     }
                   }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": null,
+                    "single": {
+                      "$type": "BattleModel.ThisBuffOwner"
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.AssistantModifyCDSkillEffect",
+                        "GroupSkill": {
+                          "$type": "BattleModel.SelfAndGuildAssistantSkill"
+                        },
+                        "SingleSkill": null,
+                        "Tag": 131076,
+                        "_isMultiple": true,
+                        "_keyString": "",
+                        "_operator": 1,
+                        "_value": {
+                          "$type": "BattleModel.ConstanctInt",
+                          "constant": -1
+                        }
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": true
                 }
               }
             ],

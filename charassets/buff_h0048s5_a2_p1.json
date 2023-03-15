@@ -17,14 +17,30 @@
         "條件": [
         ]
       },
+      "OnTurnBegin": {
+        "效果": [
+          {
+            "效果": [
+              "對本狀態的變數一改為0"
+            ],
+            "條件": [
+              "目前回合輪到本角色"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
       "OnTurnEnd | AfterAnyoneDie": {
         "效果": [
           {
             "效果": [
-              "對本角色觸發S3"
+              "對本角色觸發S3",
+              "對本狀態的變數一改為1"
             ],
             "條件": [
-              "本角色是{\"$type\":\"BattleModel.BreakDownOrFullTarget\"}"
+              "本角色是{\"$type\":\"BattleModel.BreakDownOrFullTarget\"}",
+              "本狀態的變數一 == 0"
             ]
           }
         ],
@@ -76,6 +92,21 @@
                     "skillsetId": "S3"
                   }
                 }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 1
+                    }
+                  }
+                }
               }
             ],
             "Conditions": [
@@ -86,6 +117,21 @@
                 },
                 "right": {
                   "$type": "BattleModel.BreakDownOrFullTarget"
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.ThisBuff"
+                  },
+                  "targetField": 4
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 0
                 }
               }
             ]
@@ -130,6 +176,42 @@
                 },
                 "left": {
                   "$type": "BattleModel.ThisSkillCaster"
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 1,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CurrentTurnBelongsTo",
+                "character": {
+                  "$type": "BattleModel.ThisBuffOwner"
                 }
               }
             ]
