@@ -1,0 +1,281 @@
+{
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "AfterAnyoneRevive": {
+        "效果": [
+          {
+            "效果": [
+              "立即施展技能：對玩家全體賦予永久b0037s3_A1_5y_mask、賦予永久taunt(嘲諷)"
+            ],
+            "條件": [
+              "死亡或復活的角色 {\"Group\":{\"includeDead\":true,\"includeEmpty\":false,\"$type\":\"BattleModel.PVEPlayerTeam\"},\"$type\":\"BattleModel.CharacterInsideC\"}"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnEachSkillTargetEffect": {
+        "效果": [
+          {
+            "效果": [
+              "技能效果增加(10)%"
+            ],
+            "條件": [
+              "施術者是本角色"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnTurnBegin": {
+        "效果": [
+          {
+            "效果": [
+              "立即施展技能：對玩家全體賦予永久b0037s3_A1_5y_mask、賦予永久taunt(嘲諷)"
+            ],
+            "條件": [
+              "(目前戰鬥回合數 == 0) 且 (目前回合輪到玩家首位)"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 99,
+    "標籤": "NotRemoveWhenDie | Forever"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+    "b0037s3_A1_5y_mask",
+    "taunt"
+  ],
+  "_actionTable": [
+    {
+      "Key": 1,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": true,
+                    "multi": {
+                      "$type": "BattleModel.PVEPlayerTeam",
+                      "includeDead": false,
+                      "includeEmpty": false
+                    },
+                    "single": {
+                      "$type": "BattleModel.FrontOfChars",
+                      "group": {
+                        "$type": "BattleModel.PVEPlayerTeam",
+                        "includeDead": true,
+                        "includeEmpty": false
+                      }
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.AddBuffSkillEffect",
+                        "Tag": 132,
+                        "_buffData": [
+                          {
+                            "BuffId": "b0037s3_A1_5y_mask",
+                            "Forever": true,
+                            "LevelStack": 0,
+                            "OverwriteDuration": -1,
+                            "UserDefineVariable": {
+                            }
+                          }
+                        ],
+                        "_keyString": ""
+                      },
+                      {
+                        "$type": "BattleModel.AddBuffSkillEffect",
+                        "Tag": 132,
+                        "_buffData": [
+                          {
+                            "BuffId": "taunt",
+                            "Forever": true,
+                            "LevelStack": 0,
+                            "OverwriteDuration": -1,
+                            "UserDefineVariable": {
+                            }
+                          }
+                        ],
+                        "_keyString": ""
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": true
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.AndConditions",
+                "cond1": {
+                  "$type": "BattleModel.IntCompare",
+                  "left": {
+                    "$type": "BattleModel.BattleActionRecordValue",
+                    "RecordValue": {
+                      "$type": "BattleModel.ThisBattleTurnCount"
+                    }
+                  },
+                  "op": 0,
+                  "right": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 0
+                  }
+                },
+                "cond2": {
+                  "$type": "BattleModel.CurrentTurnBelongsTo",
+                  "character": {
+                    "$type": "BattleModel.FrontOfChars",
+                    "group": {
+                      "$type": "BattleModel.PVEPlayerTeam",
+                      "includeDead": true,
+                      "includeEmpty": true
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 1024,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.BonusEffectForSkillProperty",
+                  "isPercent": true,
+                  "property": -1,
+                  "value": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 10
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                },
+                "right": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 262144,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": true,
+                    "multi": {
+                      "$type": "BattleModel.PVEPlayerTeam",
+                      "includeDead": false,
+                      "includeEmpty": false
+                    },
+                    "single": {
+                      "$type": "BattleModel.FrontOfChars",
+                      "group": {
+                        "$type": "BattleModel.PVEPlayerTeam",
+                        "includeDead": true,
+                        "includeEmpty": false
+                      }
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.AddBuffSkillEffect",
+                        "Tag": 132,
+                        "_buffData": [
+                          {
+                            "BuffId": "b0037s3_A1_5y_mask",
+                            "Forever": true,
+                            "LevelStack": 0,
+                            "OverwriteDuration": -1,
+                            "UserDefineVariable": {
+                            }
+                          }
+                        ],
+                        "_keyString": ""
+                      },
+                      {
+                        "$type": "BattleModel.AddBuffSkillEffect",
+                        "Tag": 132,
+                        "_buffData": [
+                          {
+                            "BuffId": "taunt",
+                            "Forever": true,
+                            "LevelStack": 0,
+                            "OverwriteDuration": -1,
+                            "UserDefineVariable": {
+                            }
+                          }
+                        ],
+                        "_keyString": ""
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": true
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterCondition",
+                "character": {
+                  "$type": "BattleModel.DeadOrReviveTarget"
+                },
+                "condition": {
+                  "$type": "BattleModel.CharacterInsideC",
+                  "Group": {
+                    "$type": "BattleModel.PVEPlayerTeam",
+                    "includeDead": true,
+                    "includeEmpty": false
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 99,
+  "_orderTable": {
+  },
+  "_tag": 68
+}

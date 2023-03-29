@@ -1,0 +1,381 @@
+{
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "AfterAnyoneDie": {
+        "效果": [
+          {
+            "效果": [
+              "對在本角色的defense_wall(堅盾)狀態的層數增加-5"
+            ],
+            "條件": [
+              "死亡或復活的角色是本角色",
+              "在本角色的defense_wall(堅盾)狀態的層數 > 5"
+            ]
+          },
+          {
+            "效果": [
+              "對本角色移除狀態defense_wall(堅盾)"
+            ],
+            "條件": [
+              "死亡或復活的角色是本角色",
+              "在本角色的defense_wall(堅盾)狀態的層數 <= 5"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "AfterAnyoneRevive": {
+        "效果": [
+          {
+            "效果": [
+              "對本角色{\"resetCasterCD\":false,\"UseAssignParameter\":false,\"AssignParameter\":{\"AssignInteger\":{\"constant\":0,\"$type\":\"BattleModel.ConstanctInt\"},\"AssignIntegerGroup\":{\"Group\":[],\"$type\":\"BattleModel.ConstanctIntegerGroup\"},\"AssignCharacter\":{\"$type\":\"BattleModel.NoneCharacter\"},\"AssignCharacterGroup\":{\"$type\":\"BattleModel.NoneCharacters\"}},\"$type\":\"BattleModel.CastEnemyCurrentSkillSet\"}"
+            ],
+            "條件": [
+              "死亡或復活的角色是本角色"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnBuffAdd": {
+        "效果": [
+          {
+            "效果": [
+              "對當前事件的狀態覆蓋標籤為(NotRemoveWhenDie | Forever)"
+            ],
+            "條件": [
+              "當前事件的狀態 是＂defense_wall(堅盾)＂",
+              "(目前戰鬥回合數 == 0) 且 (目前回合輪到敵人首位)"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnTurnBegin": {
+        "效果": [
+          {
+            "效果": [
+              "對本角色賦予永久50層defense_wall(堅盾)"
+            ],
+            "條件": [
+              "(目前戰鬥回合數 == 0) 且 (目前回合輪到敵人首位)"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 99,
+    "標籤": "NotRemoveAfterBattle | NotRemoveWhenDie | Forever | DoNotAddBackOnRevive"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+    "defense_wall",
+    "FSM_DefenseUp_Normal"
+  ],
+  "_actionTable": [
+    {
+      "Key": 1,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "defense_wall",
+                      "Forever": true,
+                      "LevelStack": 50,
+                      "OverwriteDuration": -1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.AndConditions",
+                "cond1": {
+                  "$type": "BattleModel.IntCompare",
+                  "left": {
+                    "$type": "BattleModel.BattleActionRecordValue",
+                    "RecordValue": {
+                      "$type": "BattleModel.ThisBattleTurnCount"
+                    }
+                  },
+                  "op": 0,
+                  "right": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 0
+                  }
+                },
+                "cond2": {
+                  "$type": "BattleModel.CurrentTurnBelongsTo",
+                  "character": {
+                    "$type": "BattleModel.FrontOfChars",
+                    "group": {
+                      "$type": "BattleModel.PVEEnemyTeam",
+                      "includeDead": true,
+                      "includeEmpty": true
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 16384,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateSingleBuff",
+                  "buff": {
+                    "$type": "BattleModel.SpecifiedBuff"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.ReplaceBuffTag",
+                    "newTag": 68
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.BuffCondition",
+                "buff": {
+                  "$type": "BattleModel.SpecifiedBuff"
+                },
+                "condition": {
+                  "$type": "BattleModel.CheckBuffMatchBuffId",
+                  "subString": "defense_wall"
+                }
+              },
+              {
+                "$type": "BattleModel.AndConditions",
+                "cond1": {
+                  "$type": "BattleModel.IntCompare",
+                  "left": {
+                    "$type": "BattleModel.BattleActionRecordValue",
+                    "RecordValue": {
+                      "$type": "BattleModel.ThisBattleTurnCount"
+                    }
+                  },
+                  "op": 0,
+                  "right": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 0
+                  }
+                },
+                "cond2": {
+                  "$type": "BattleModel.CurrentTurnBelongsTo",
+                  "character": {
+                    "$type": "BattleModel.FrontOfChars",
+                    "group": {
+                      "$type": "BattleModel.PVEEnemyTeam",
+                      "includeDead": true,
+                      "includeEmpty": true
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 262144,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.CastEnemyCurrentSkillSet",
+                    "AssignParameter": {
+                      "AssignCharacter": {
+                        "$type": "BattleModel.NoneCharacter"
+                      },
+                      "AssignCharacterGroup": {
+                        "$type": "BattleModel.NoneCharacters"
+                      },
+                      "AssignInteger": {
+                        "$type": "BattleModel.ConstanctInt",
+                        "constant": 0
+                      },
+                      "AssignIntegerGroup": {
+                        "$type": "BattleModel.ConstanctIntegerGroup",
+                        "Group": [
+                        ]
+                      }
+                    },
+                    "UseAssignParameter": false,
+                    "resetCasterCD": false
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.DeadOrReviveTarget"
+                },
+                "right": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 1048576,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateSingleBuff",
+                  "buff": {
+                    "$type": "BattleModel.BuffOnCharater",
+                    "buffId": "defense_wall",
+                    "character": {
+                      "$type": "BattleModel.ThisBuffOwner"
+                    }
+                  },
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 1,
+                    "targetField": 1,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": -5
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.DeadOrReviveTarget"
+                },
+                "right": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.BuffOnCharater",
+                    "buffId": "defense_wall",
+                    "character": {
+                      "$type": "BattleModel.ThisBuffOwner"
+                    }
+                  },
+                  "targetField": 1
+                },
+                "op": 2,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 5
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.RemoveBuff",
+                    "buffId": "defense_wall"
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.DeadOrReviveTarget"
+                },
+                "right": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.BuffOnCharater",
+                    "buffId": "defense_wall",
+                    "character": {
+                      "$type": "BattleModel.ThisBuffOwner"
+                    }
+                  },
+                  "targetField": 1
+                },
+                "op": 3,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 5
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 99,
+  "_orderTable": {
+  },
+  "_tag": 582
+}

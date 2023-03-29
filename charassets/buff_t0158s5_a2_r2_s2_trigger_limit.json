@@ -1,0 +1,296 @@
+{
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "OnBuffAdd": {
+        "效果": [
+          {
+            "效果": [
+              "對本角色觸發S1"
+            ],
+            "條件": [
+              "當前事件的狀態 是＂t0158s5_a2_r2_S2_trigger_Limit＂"
+            ]
+          },
+          {
+            "效果": [
+              "對玩家中符合(是黑位)的角色首位觸發S1"
+            ],
+            "條件": [
+              "當前事件的狀態 是＂t0158s5_a2_r2_S2_trigger_Limit＂",
+              "賦予者 擁有taunt(嘲諷)狀態",
+              "賦予者 狀態rage(怒氣) 符合條件 層數 == 3",
+              "玩家中符合(是黑位)的角色首位 擁有taunt(嘲諷)狀態",
+              "玩家中符合(是黑位)的角色首位 狀態rage(怒氣) 符合條件 層數 == 3"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnTurnBegin": {
+        "效果": [
+          {
+            "效果": [
+              "對本角色移除狀態t0158s5_a2_r2_S2_trigger_Limit"
+            ],
+            "條件": [
+              "目前回合輪到本角色"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 99,
+    "標籤": "Hidden | Forever"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+  ],
+  "_actionTable": [
+    {
+      "Key": 1,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.RemoveBuff",
+                    "buffId": "t0158s5_a2_r2_S2_trigger_Limit"
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CurrentTurnBelongsTo",
+                "character": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 16384,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.CastSkillSet",
+                    "AssignParameter": {
+                      "AssignCharacter": {
+                        "$type": "BattleModel.NoneCharacter"
+                      },
+                      "AssignCharacterGroup": {
+                        "$type": "BattleModel.NoneCharacters"
+                      },
+                      "AssignInteger": {
+                        "$type": "BattleModel.ConstanctInt",
+                        "constant": 0
+                      },
+                      "AssignIntegerGroup": {
+                        "$type": "BattleModel.ConstanctIntegerGroup",
+                        "Group": [
+                        ]
+                      }
+                    },
+                    "UseAssignParameter": false,
+                    "resetCasterCD": false,
+                    "skillsetId": "S1"
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.BuffCondition",
+                "buff": {
+                  "$type": "BattleModel.SpecifiedBuff"
+                },
+                "condition": {
+                  "$type": "BattleModel.CheckBuffMatchBuffId",
+                  "subString": "t0158s5_a2_r2_S2_trigger_Limit"
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.FrontOfChars",
+                    "group": {
+                      "$type": "BattleModel.CharGroupWhere",
+                      "condition": {
+                        "$type": "BattleModel.StoneTypeIs",
+                        "type": 2
+                      },
+                      "group": {
+                        "$type": "BattleModel.PVEPlayerTeam",
+                        "includeDead": false,
+                        "includeEmpty": false
+                      }
+                    }
+                  },
+                  "operation": {
+                    "$type": "BattleModel.CastSkillSet",
+                    "AssignParameter": {
+                      "AssignCharacter": {
+                        "$type": "BattleModel.NoneCharacter"
+                      },
+                      "AssignCharacterGroup": {
+                        "$type": "BattleModel.NoneCharacters"
+                      },
+                      "AssignInteger": {
+                        "$type": "BattleModel.ConstanctInt",
+                        "constant": 0
+                      },
+                      "AssignIntegerGroup": {
+                        "$type": "BattleModel.ConstanctIntegerGroup",
+                        "Group": [
+                        ]
+                      }
+                    },
+                    "UseAssignParameter": false,
+                    "resetCasterCD": false,
+                    "skillsetId": "S1"
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.BuffCondition",
+                "buff": {
+                  "$type": "BattleModel.SpecifiedBuff"
+                },
+                "condition": {
+                  "$type": "BattleModel.CheckBuffMatchBuffId",
+                  "subString": "t0158s5_a2_r2_S2_trigger_Limit"
+                }
+              },
+              {
+                "$type": "BattleModel.CharacterCondition",
+                "character": {
+                  "$type": "BattleModel.ThisBuffCaster"
+                },
+                "condition": {
+                  "$type": "BattleModel.HasBuff",
+                  "buffId": "taunt"
+                }
+              },
+              {
+                "$type": "BattleModel.CharacterCondition",
+                "character": {
+                  "$type": "BattleModel.ThisBuffCaster"
+                },
+                "condition": {
+                  "$type": "BattleModel.HasConditionalBuff",
+                  "buffCondition": {
+                    "$type": "BattleModel.IntCompareB",
+                    "left": {
+                      "$type": "BattleModel.IntFieldB",
+                      "targetField": 1
+                    },
+                    "op": 0,
+                    "right": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 3
+                    }
+                  },
+                  "buffId": "rage"
+                }
+              },
+              {
+                "$type": "BattleModel.CharacterCondition",
+                "character": {
+                  "$type": "BattleModel.FrontOfChars",
+                  "group": {
+                    "$type": "BattleModel.CharGroupWhere",
+                    "condition": {
+                      "$type": "BattleModel.StoneTypeIs",
+                      "type": 2
+                    },
+                    "group": {
+                      "$type": "BattleModel.PVEPlayerTeam",
+                      "includeDead": false,
+                      "includeEmpty": false
+                    }
+                  }
+                },
+                "condition": {
+                  "$type": "BattleModel.HasBuff",
+                  "buffId": "taunt"
+                }
+              },
+              {
+                "$type": "BattleModel.CharacterCondition",
+                "character": {
+                  "$type": "BattleModel.FrontOfChars",
+                  "group": {
+                    "$type": "BattleModel.CharGroupWhere",
+                    "condition": {
+                      "$type": "BattleModel.StoneTypeIs",
+                      "type": 2
+                    },
+                    "group": {
+                      "$type": "BattleModel.PVEPlayerTeam",
+                      "includeDead": false,
+                      "includeEmpty": false
+                    }
+                  }
+                },
+                "condition": {
+                  "$type": "BattleModel.HasConditionalBuff",
+                  "buffCondition": {
+                    "$type": "BattleModel.IntCompareB",
+                    "left": {
+                      "$type": "BattleModel.IntFieldB",
+                      "targetField": 1
+                    },
+                    "op": 0,
+                    "right": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 3
+                    }
+                  },
+                  "buffId": "rage"
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 99,
+  "_orderTable": {
+  },
+  "_tag": 65
+}

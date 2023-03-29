@@ -1,0 +1,159 @@
+{
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "OnTurnEnd": {
+        "效果": [
+          {
+            "效果": [
+              "對在本角色的defense_wall(堅盾)狀態的層數增加-1"
+            ],
+            "條件": [
+              "目前回合輪到玩家首位",
+              "在本角色的defense_wall(堅盾)狀態的層數 > 1"
+            ]
+          },
+          {
+            "效果": [
+              "對本角色移除狀態defense_wall(堅盾)"
+            ],
+            "條件": [
+              "目前回合輪到玩家首位",
+              "在本角色的defense_wall(堅盾)狀態的層數 <= 1"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 99,
+    "標籤": "NotRemoveAfterBattle | NotRemoveWhenDie | Forever | DoNotAddBackOnRevive"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+  ],
+  "_actionTable": [
+    {
+      "Key": 2,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateSingleBuff",
+                  "buff": {
+                    "$type": "BattleModel.BuffOnCharater",
+                    "buffId": "defense_wall",
+                    "character": {
+                      "$type": "BattleModel.ThisBuffOwner"
+                    }
+                  },
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 1,
+                    "targetField": 1,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": -1
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CurrentTurnBelongsTo",
+                "character": {
+                  "$type": "BattleModel.FrontOfChars",
+                  "group": {
+                    "$type": "BattleModel.PVEPlayerTeam",
+                    "includeDead": false,
+                    "includeEmpty": false
+                  }
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.BuffOnCharater",
+                    "buffId": "defense_wall",
+                    "character": {
+                      "$type": "BattleModel.ThisBuffOwner"
+                    }
+                  },
+                  "targetField": 1
+                },
+                "op": 2,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 1
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.RemoveBuff",
+                    "buffId": "defense_wall"
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CurrentTurnBelongsTo",
+                "character": {
+                  "$type": "BattleModel.FrontOfChars",
+                  "group": {
+                    "$type": "BattleModel.PVEPlayerTeam",
+                    "includeDead": false,
+                    "includeEmpty": false
+                  }
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.BuffOnCharater",
+                    "buffId": "defense_wall",
+                    "character": {
+                      "$type": "BattleModel.ThisBuffOwner"
+                    }
+                  },
+                  "targetField": 1
+                },
+                "op": 3,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 1
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 99,
+  "_orderTable": {
+  },
+  "_tag": 582
+}

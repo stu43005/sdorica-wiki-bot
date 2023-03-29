@@ -1,0 +1,148 @@
+{
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "OnTurnBegin": {
+        "效果": [
+          {
+            "效果": [
+              "對玩家所有角色賦予永久ex_Fiveyears_easteregg_P2(噗噗噗......)"
+            ],
+            "條件": [
+            ]
+          },
+          {
+            "效果": [
+              "立即施展技能：對敵人全體賦予3回合1層weak(易傷)"
+            ],
+            "條件": [
+              "(目前戰鬥回合數 == 0) 且 (目前回合輪到玩家首位)"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 99,
+    "標籤": "Hidden | Forever | InfinityTrigger"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+    "ex_Fiveyears_easteregg_P2",
+    "weak",
+    "b0037s3_A1_5y_mask",
+    "taunt"
+  ],
+  "_actionTable": [
+    {
+      "Key": 1,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacterGroup",
+                  "group": {
+                    "$type": "BattleModel.PVEPlayerTeam",
+                    "includeDead": true,
+                    "includeEmpty": false
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "ex_Fiveyears_easteregg_P2",
+                      "Forever": true,
+                      "LevelStack": 0,
+                      "OverwriteDuration": -1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": true,
+                    "IsMultiple": true,
+                    "multi": {
+                      "$type": "BattleModel.PVEEnemyTeam",
+                      "includeDead": false,
+                      "includeEmpty": false
+                    },
+                    "single": null,
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.AddBuffSkillEffect",
+                        "Tag": 132,
+                        "_buffData": [
+                          {
+                            "BuffId": "weak",
+                            "Forever": false,
+                            "LevelStack": 1,
+                            "OverwriteDuration": 3,
+                            "UserDefineVariable": {
+                            }
+                          }
+                        ],
+                        "_keyString": ""
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": true
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.AndConditions",
+                "cond1": {
+                  "$type": "BattleModel.IntCompare",
+                  "left": {
+                    "$type": "BattleModel.BattleActionRecordValue",
+                    "RecordValue": {
+                      "$type": "BattleModel.ThisBattleTurnCount"
+                    }
+                  },
+                  "op": 0,
+                  "right": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 0
+                  }
+                },
+                "cond2": {
+                  "$type": "BattleModel.CurrentTurnBelongsTo",
+                  "character": {
+                    "$type": "BattleModel.FrontOfChars",
+                    "group": {
+                      "$type": "BattleModel.PVEPlayerTeam",
+                      "includeDead": true,
+                      "includeEmpty": true
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 99,
+  "_orderTable": {
+  },
+  "_tag": 32833
+}
