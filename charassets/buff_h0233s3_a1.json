@@ -2,14 +2,15 @@
   "$interpreted": {
     "Localization": "",
     "動作": {
-      "OnEachSkillTargetEffect": {
+      "OnTurnBegin": {
         "效果": [
           {
             "效果": [
-              "技能效果增加((在施術者的damage_absorption(轉盾)狀態的層數 * 15))%"
+              "對玩家後排觸發S2"
             ],
             "條件": [
-              "施術者是本角色的隊伍的一員"
+              "目前回合輪到本角色",
+              "({\"group\":{\"includeDead\":false,\"includeEmpty\":false,\"$type\":\"BattleModel.PVEPlayerTeam\"},\"$type\":\"BattleModel.AllBuffsOnCharGroup\"}中是＂damage_absorption(轉盾)＂的Buff中的層數)的總和 >= 5"
             ]
           }
         ],
@@ -26,51 +27,83 @@
   ],
   "_actionTable": [
     {
-      "Key": 1024,
+      "Key": 1,
       "Value": {
         "Actions": [
           {
             "Actions": [
               {
                 "TargetField": {
-                  "$type": "BattleModel.BonusEffectForSkillProperty",
-                  "isPercent": true,
-                  "property": -1,
-                  "value": {
-                    "$type": "BattleModel.MultiplyInt",
-                    "left": {
-                      "$type": "BattleModel.IntBuffField",
-                      "buff": {
-                        "$type": "BattleModel.BuffOnCharater",
-                        "buffId": "damage_absorption",
-                        "character": {
-                          "$type": "BattleModel.ThisSkillCaster"
-                        }
-                      },
-                      "targetField": 1
-                    },
-                    "right": {
-                      "$type": "BattleModel.ConstanctInt",
-                      "constant": 15
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.BackOfChars",
+                    "group": {
+                      "$type": "BattleModel.PVEPlayerTeam",
+                      "includeDead": false,
+                      "includeEmpty": false
                     }
+                  },
+                  "operation": {
+                    "$type": "BattleModel.CastSkillSet",
+                    "AssignParameter": {
+                      "AssignCharacter": {
+                        "$type": "BattleModel.NoneCharacter"
+                      },
+                      "AssignCharacterGroup": {
+                        "$type": "BattleModel.NoneCharacters"
+                      },
+                      "AssignInteger": {
+                        "$type": "BattleModel.ConstanctInt",
+                        "constant": 0
+                      },
+                      "AssignIntegerGroup": {
+                        "$type": "BattleModel.ConstanctIntegerGroup",
+                        "Group": [
+                        ]
+                      }
+                    },
+                    "UseAssignParameter": false,
+                    "resetCasterCD": false,
+                    "skillsetId": "S2"
                   }
                 }
               }
             ],
             "Conditions": [
               {
-                "$type": "BattleModel.CharacterInside",
-                "group": {
-                  "$type": "BattleModel.SelfTeamChars",
-                  "excludeSelf": false,
-                  "includeDead": false,
-                  "includeEmpty": false,
-                  "reference": {
-                    "$type": "BattleModel.ThisBuffOwner"
+                "$type": "BattleModel.CurrentTurnBelongsTo",
+                "character": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.SumOfInts",
+                  "group": {
+                    "$type": "BattleModel.IntsOnBuffGroup",
+                    "group": {
+                      "$type": "BattleModel.BuffGroupWhere",
+                      "condition": {
+                        "$type": "BattleModel.CheckBuffMatchBuffId",
+                        "subString": "damage_absorption"
+                      },
+                      "group": {
+                        "$type": "BattleModel.AllBuffsOnCharGroup",
+                        "group": {
+                          "$type": "BattleModel.PVEPlayerTeam",
+                          "includeDead": false,
+                          "includeEmpty": false
+                        }
+                      }
+                    },
+                    "targetField": 1
                   }
                 },
-                "left": {
-                  "$type": "BattleModel.ThisSkillCaster"
+                "op": 4,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 5
                 }
               }
             ]

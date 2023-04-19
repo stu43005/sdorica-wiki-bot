@@ -1,0 +1,328 @@
+{
+  "$interpreted": {
+    "Localization": "h3564c3_star_1",
+    "復活魂芯數": 0,
+    "技能": {
+      "Arrive1": [
+        "對施術者冷卻時間加1"
+      ],
+      "BeginAction": [
+        "對施術者的目標移除在generalBuff[強化, 減傷, 靈巧, 轉盾, 盾轉, 再生, 怒氣, 戰意, 領袖]列表的Buff、{\"Ratio\":{\"constant\":1,\"$type\":\"BattleModel.ConstanctFloat\"},\"Tag\":34820,\"_keyString\":\"1\",\"$type\":\"BattleModel.FixedAmrReduceRatioSkillEffect\"}、{\"Ratio\":{\"constant\":0.99,\"$type\":\"BattleModel.ConstanctFloat\"},\"Tag\":32777,\"_keyString\":\"1\",\"$type\":\"BattleModel.FixedHpDamageRatioCurrentSkillEffect\"}"
+      ],
+      "Retreat1": [
+        "對施術者{\"Tag\":65540,\"_keyString\":\"1\",\"$type\":\"BattleModel.DirectKillSkillEffect\"}"
+      ],
+      "S1": [
+        "對施術者的目標{\"Ratio\":{\"constant\":1,\"$type\":\"BattleModel.ConstanctFloat\"},\"Tag\":34820,\"_keyString\":\"1\",\"$type\":\"BattleModel.FixedAmrReduceRatioSkillEffect\"}、{\"Ratio\":{\"constant\":0.8,\"$type\":\"BattleModel.ConstanctFloat\"},\"Tag\":32777,\"_keyString\":\"\",\"$type\":\"BattleModel.FixedHpDamageRatioMaxSkillEffect\"}"
+      ]
+    },
+    "技能組": {
+      "BeginAction": [
+        {
+          "CoolDown": 9,
+          "技能列表": [
+            "施展BeginAction"
+          ],
+          "條件": [
+          ],
+          "目標": ""
+        }
+      ],
+      "S1": [
+        {
+          "CoolDown": 5,
+          "技能列表": [
+            "施展S1"
+          ],
+          "條件": [
+          ],
+          "目標": ""
+        }
+      ]
+    },
+    "攻擊力": 300,
+    "攻擊力等級調整後": 283,
+    "敵人AI": "S1",
+    "消魂設置": {
+      "Type1": "S1",
+      "Type2": "S2",
+      "Type4": "S3"
+    },
+    "疊盾": 2500,
+    "疊盾等級調整後": 2358,
+    "站位": "無",
+    "血量": 2500,
+    "血量等級調整後": 2358,
+    "被動Buff": [
+      "賦予永久BattleBeginAction(戰鬥開始時，本角色立即施展技能。)"
+    ],
+    "起始CD": 0,
+    "預設CD": 0
+  },
+  "$type": "BattleModel.EnemyCharacter",
+  "ReferenceBuffKeys": [
+  ],
+  "ReferenceCharacterKeys": [
+  ],
+  "ReferenceEffectKeys": [
+    "Common_SmokeRun01_B",
+    "h0132c4_S1_Hit",
+    "h0132c4_S1_smoke",
+    "h0132c4_S1_rock",
+    "h0132c4_s01_Trail01"
+  ],
+  "ReferenceEmoIconKeys": [
+  ],
+  "ReferenceMusicKeys": [
+  ],
+  "ReferenceSFXKeys": [
+    "step_soles_004",
+    "punch_501",
+    "metal_503"
+  ],
+  "ReferenceVoiceSFXKeys": [
+  ],
+  "_armorCapacity": 2500,
+  "_assistantSkill": null,
+  "_bloodCapacity": 2500,
+  "_characterAI": {
+    "$type": "BattleModel.SequenceEnemyAI",
+    "OrderList": [
+      "S1"
+    ]
+  },
+  "_defaultCoolDown": 0,
+  "_initialCoolDown": 0,
+  "_levelStartBuff": [
+  ],
+  "_mass": 1,
+  "_masterRank": 0,
+  "_passiveBuff": [
+    {
+      "BuffId": "BattleBeginAction",
+      "Forever": true,
+      "LevelStack": 0,
+      "OverwriteDuration": -1,
+      "UserDefineVariable": {
+      }
+    }
+  ],
+  "_pose": "Stand",
+  "_power": 300,
+  "_reviveCount": 0,
+  "_skills": {
+    "Arrive1": {
+      "$type": "BattleModel.BattleSkill",
+      "_isFallBackIfEmptyTarget": false,
+      "_isResolveTargetEachUnit": false,
+      "_skillIdentifiers": [
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": false,
+          "multi": null,
+          "single": {
+            "$type": "BattleModel.ThisSkillCaster"
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.ChangeCDSkillEffect",
+              "Tag": 1028,
+              "_keyString": "",
+              "_value": 1
+            }
+          ]
+        }
+      ]
+    },
+    "BeginAction": {
+      "$type": "BattleModel.BattleSkill",
+      "_isFallBackIfEmptyTarget": false,
+      "_isResolveTargetEachUnit": false,
+      "_skillIdentifiers": [
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": false,
+          "multi": null,
+          "single": {
+            "$type": "BattleModel.EnemyAssignee",
+            "reference": {
+              "$type": "BattleModel.ThisSkillCaster"
+            }
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.RemoveBuffFromGroupedBuffIdSkillEffect",
+              "BuffGroupIds": {
+                "$type": "BattleModel.BuffIdFromLabelList",
+                "BuffLabel": {
+                  "BuffIdList": [
+                    "bonusAttackPower",
+                    "defense_up_small",
+                    "dexterity",
+                    "damage_absorption",
+                    "ArmorToBlood",
+                    "regeneration",
+                    "rage",
+                    "warfare",
+                    "leader"
+                  ],
+                  "BuffLabel": "generalBuff"
+                }
+              },
+              "RandomRemoveCount": 0,
+              "RemoveAllBuff": true,
+              "Tag": 4100,
+              "_keyString": "1"
+            },
+            {
+              "$type": "BattleModel.FixedAmrReduceRatioSkillEffect",
+              "Ratio": {
+                "$type": "BattleModel.ConstanctFloat",
+                "constant": 1
+              },
+              "Tag": 34820,
+              "_keyString": "1"
+            },
+            {
+              "$type": "BattleModel.FixedHpDamageRatioCurrentSkillEffect",
+              "Ratio": {
+                "$type": "BattleModel.ConstanctFloat",
+                "constant": 0.99
+              },
+              "Tag": 32777,
+              "_keyString": "1"
+            }
+          ]
+        }
+      ]
+    },
+    "Retreat1": {
+      "$type": "BattleModel.BattleSkill",
+      "_isFallBackIfEmptyTarget": false,
+      "_isResolveTargetEachUnit": false,
+      "_skillIdentifiers": [
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": false,
+          "multi": null,
+          "single": {
+            "$type": "BattleModel.ThisSkillCaster"
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.DirectKillSkillEffect",
+              "Tag": 65540,
+              "_keyString": "1"
+            }
+          ]
+        }
+      ]
+    },
+    "S1": {
+      "$type": "BattleModel.BattleSkill",
+      "_isFallBackIfEmptyTarget": false,
+      "_isResolveTargetEachUnit": false,
+      "_skillIdentifiers": [
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": false,
+          "multi": null,
+          "single": {
+            "$type": "BattleModel.EnemyAssignee",
+            "reference": {
+              "$type": "BattleModel.ThisSkillCaster"
+            }
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.FixedAmrReduceRatioSkillEffect",
+              "Ratio": {
+                "$type": "BattleModel.ConstanctFloat",
+                "constant": 1
+              },
+              "Tag": 34820,
+              "_keyString": "1"
+            },
+            {
+              "$type": "BattleModel.FixedHpDamageRatioMaxSkillEffect",
+              "Ratio": {
+                "$type": "BattleModel.ConstanctFloat",
+                "constant": 0.8
+              },
+              "Tag": 32777,
+              "_keyString": ""
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "_skillsetTable": {
+    "BeginAction": {
+      "ComboList": [
+        {
+          "ConditionList": [
+          ],
+          "SkillList": [
+            {
+              "ConditionList": [
+              ],
+              "SkillID": "BeginAction",
+              "_conditionalSequences": [
+                {
+                  "ConditionList": [
+                  ],
+                  "_sequenceId": "S1"
+                }
+              ],
+              "seq": "",
+              "t": null
+            }
+          ],
+          "_characterCoolDown": 9,
+          "assignTarget": null,
+          "icon": 0
+        }
+      ],
+      "_isViewSkillSet": false
+    },
+    "S1": {
+      "ComboList": [
+        {
+          "ConditionList": [
+          ],
+          "SkillList": [
+            {
+              "ConditionList": [
+              ],
+              "SkillID": "S1",
+              "_conditionalSequences": [
+              ],
+              "seq": "",
+              "t": null
+            }
+          ],
+          "_characterCoolDown": 5,
+          "assignTarget": null,
+          "icon": 0
+        }
+      ],
+      "_isViewSkillSet": false
+    }
+  },
+  "_stoneEraseSetting": [
+    {
+      "Key": 0,
+      "Value": "S1"
+    },
+    {
+      "Key": 1,
+      "Value": "S2"
+    },
+    {
+      "Key": 2,
+      "Value": "S3"
+    }
+  ],
+  "_stoneType": 0
+}
