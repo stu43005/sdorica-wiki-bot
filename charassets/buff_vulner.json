@@ -20,7 +20,7 @@
         "效果": [
           {
             "效果": [
-              "技能的(Attack | NormalDamage | BreakArmor | TrueDamage)屬性效果增加((本角色的最大HP + (本角色的最大疊盾 * 2)))",
+              "立即施展技能效果：{\"Ratio\":{\"constant\":1,\"$type\":\"BattleModel.ConstanctFloat\"},\"Tag\":32777,\"_keyString\":\"1\",\"$type\":\"BattleModel.FixedArmorDamageRatioCurrentSkillEffect\"}、{\"Ratio\":{\"constant\":1,\"$type\":\"BattleModel.ConstanctFloat\"},\"Tag\":40961,\"_keyString\":\"1\",\"$type\":\"BattleModel.FixedTrueDamageRatioCurrentSkillEffect\"}",
               "對本狀態的變數一改為1"
             ],
             "條件": [
@@ -48,7 +48,7 @@
       }
     },
     "持續時間": 0,
-    "最高層數": 99,
+    "最高層數": 0,
     "標籤": "Forever | InfinityTrigger"
   },
   "$type": "BattleModel.Buff",
@@ -139,33 +139,27 @@
             "Actions": [
               {
                 "TargetField": {
-                  "$type": "BattleModel.BonusEffectForSkillProperty",
-                  "isPercent": false,
-                  "property": 8217,
-                  "value": {
-                    "$type": "BattleModel.PlusInt",
-                    "left": {
-                      "$type": "BattleModel.IntCharaterField",
-                      "character": {
-                        "$type": "BattleModel.ThisBuffOwner"
+                  "$type": "BattleModel.ImmediatelySkillEffect",
+                  "SkillEffect": [
+                    {
+                      "$type": "BattleModel.FixedArmorDamageRatioCurrentSkillEffect",
+                      "Ratio": {
+                        "$type": "BattleModel.ConstanctFloat",
+                        "constant": 1
                       },
-                      "targetField": 1
+                      "Tag": 32777,
+                      "_keyString": "1"
                     },
-                    "right": {
-                      "$type": "BattleModel.MultiplyInt",
-                      "left": {
-                        "$type": "BattleModel.IntCharaterField",
-                        "character": {
-                          "$type": "BattleModel.ThisBuffOwner"
-                        },
-                        "targetField": 5
+                    {
+                      "$type": "BattleModel.FixedTrueDamageRatioCurrentSkillEffect",
+                      "Ratio": {
+                        "$type": "BattleModel.ConstanctFloat",
+                        "constant": 1
                       },
-                      "right": {
-                        "$type": "BattleModel.ConstanctInt",
-                        "constant": 2
-                      }
+                      "Tag": 40961,
+                      "_keyString": "1"
                     }
-                  }
+                  ]
                 }
               },
               {
@@ -222,7 +216,7 @@
     }
   ],
   "_duration": 0,
-  "_maxLevel": 99,
+  "_maxLevel": 0,
   "_orderTable": {
   },
   "_tag": 32832

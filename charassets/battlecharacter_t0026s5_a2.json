@@ -17,35 +17,20 @@
       "Retreat1": [
         "對施術者{\"Tag\":65540,\"_keyString\":\"1\",\"$type\":\"BattleModel.DirectKillSkillEffect\"}"
       ],
-      "S": [
-        "對施術者治療(攻擊力 x0.9)、賦予99回合1層bonusAttackPower(強化)"
-      ],
       "S1": [
         "對施術者的對方首位穿透(攻擊力 x0.75)",
         "對施術者攻擊(攻擊力 x0.2)"
-      ],
-      "S1b": [
-        "對施術者的目標穿透(攻擊力 x1)",
-        "對施術者穿透(攻擊力 x1)"
       ],
       "S2": [
         "對施術者的對方後排穿透(攻擊力 x1.75)",
         "對施術者攻擊(攻擊力 x0.3)"
       ],
-      "S2b": [
-        "對施術者的目標穿透(攻擊力 x2)",
-        "對施術者穿透(攻擊力 x2)"
-      ],
       "S3": [
         "對施術者的對方中HP%最低的角色穿透(攻擊力 x2.5)",
         "對施術者攻擊(攻擊力 x0.4)"
       ],
-      "S3b": [
-        "對施術者的目標穿透(攻擊力 x3.6)",
-        "對施術者穿透(攻擊力 x3.6)"
-      ],
       "S4": [
-        "對敵人中符合(擁有t0026s5_a2_P1_2狀態)的角色全體移除狀態t0026s5_a2_P1_2",
+        "對{\"$type\":\"BattleModel.BuffAssignedCharacter\"}",
         "對施術者{\"Ratio\":{\"constant\":1,\"$type\":\"BattleModel.ConstanctFloat\"},\"Tag\":32802,\"_keyString\":\"\",\"$type\":\"BattleModel.FixedHealRatioMaxSkillEffect\"}、賦予永久1層rage(怒氣)"
       ]
     },
@@ -109,7 +94,7 @@
     "血量": 240,
     "血量等級調整後": 226,
     "被動Buff": [
-      "賦予永久t0026s5_a2_P1_New(此角色將目標擊殺時，治癒自身至滿血並獲得永久怒氣。)"
+      "賦予永久t0026s5_a2_P1(本角色擊殺目標後，治癒自身並獲得本波戰鬥永久強化。)"
     ],
     "起始CD": 0,
     "預設CD": 0
@@ -196,7 +181,7 @@
       {
         "BuffData": {
           "BuffId": "t0026s5_a2_A1",
-          "Forever": false,
+          "Forever": true,
           "LevelStack": 0,
           "OverwriteDuration": -1,
           "UserDefineVariable": {
@@ -248,8 +233,8 @@
   "_masterRank": 0,
   "_passiveBuff": [
     {
-      "BuffId": "t0026s5_a2_P1_New",
-      "Forever": false,
+      "BuffId": "t0026s5_a2_P1",
+      "Forever": true,
       "LevelStack": 0,
       "OverwriteDuration": -1,
       "UserDefineVariable": {
@@ -300,51 +285,6 @@
               "$type": "BattleModel.DirectKillSkillEffect",
               "Tag": 65540,
               "_keyString": "1"
-            }
-          ]
-        }
-      ]
-    },
-    "S": {
-      "$type": "BattleModel.BattleSkill",
-      "_isFallBackIfEmptyTarget": false,
-      "_isResolveTargetEachUnit": false,
-      "_skillIdentifiers": [
-        {
-          "CanBeEmpty": false,
-          "IsMultiple": false,
-          "multi": null,
-          "single": {
-            "$type": "BattleModel.ThisSkillCaster"
-          },
-          "skillEffects": [
-            {
-              "$type": "BattleModel.HpHealSkillEffect",
-              "Tag": 34,
-              "_keyString": "1",
-              "_skillModifier": {
-                "_constant": 0,
-                "_parameter": {
-                  "$type": "BattleModel.SkillCasterPower",
-                  "basePower": false
-                },
-                "_ratio": 1
-              }
-            },
-            {
-              "$type": "BattleModel.AddBuffSkillEffect",
-              "Tag": 132,
-              "_buffData": [
-                {
-                  "BuffId": "bonusAttackPower",
-                  "Forever": false,
-                  "LevelStack": 1,
-                  "OverwriteDuration": 99,
-                  "UserDefineVariable": {
-                  }
-                }
-              ],
-              "_keyString": ""
             }
           ]
         }
@@ -411,62 +351,6 @@
         }
       ]
     },
-    "S1b": {
-      "$type": "BattleModel.BattleSkill",
-      "_isFallBackIfEmptyTarget": false,
-      "_isResolveTargetEachUnit": false,
-      "_skillIdentifiers": [
-        {
-          "CanBeEmpty": false,
-          "IsMultiple": false,
-          "multi": null,
-          "single": {
-            "$type": "BattleModel.EnemyAssignee",
-            "reference": {
-              "$type": "BattleModel.ThisSkillCaster"
-            }
-          },
-          "skillEffects": [
-            {
-              "$type": "BattleModel.TrueDamageSkillEffect",
-              "Tag": 8193,
-              "_keyString": "1",
-              "_skillModifier": {
-                "_constant": 0,
-                "_parameter": {
-                  "$type": "BattleModel.SkillCasterPower",
-                  "basePower": false
-                },
-                "_ratio": 1
-              }
-            }
-          ]
-        },
-        {
-          "CanBeEmpty": false,
-          "IsMultiple": false,
-          "multi": null,
-          "single": {
-            "$type": "BattleModel.ThisSkillCaster"
-          },
-          "skillEffects": [
-            {
-              "$type": "BattleModel.TrueDamageSkillEffect",
-              "Tag": 8193,
-              "_keyString": "2",
-              "_skillModifier": {
-                "_constant": 0,
-                "_parameter": {
-                  "$type": "BattleModel.SkillCasterPower",
-                  "basePower": false
-                },
-                "_ratio": 1
-              }
-            }
-          ]
-        }
-      ]
-    },
     "S2": {
       "$type": "BattleModel.BattleSkill",
       "_isFallBackIfEmptyTarget": false,
@@ -522,62 +406,6 @@
                   "basePower": false
                 },
                 "_ratio": 0.3
-              }
-            }
-          ]
-        }
-      ]
-    },
-    "S2b": {
-      "$type": "BattleModel.BattleSkill",
-      "_isFallBackIfEmptyTarget": false,
-      "_isResolveTargetEachUnit": false,
-      "_skillIdentifiers": [
-        {
-          "CanBeEmpty": false,
-          "IsMultiple": false,
-          "multi": null,
-          "single": {
-            "$type": "BattleModel.EnemyAssignee",
-            "reference": {
-              "$type": "BattleModel.ThisSkillCaster"
-            }
-          },
-          "skillEffects": [
-            {
-              "$type": "BattleModel.TrueDamageSkillEffect",
-              "Tag": 8193,
-              "_keyString": "",
-              "_skillModifier": {
-                "_constant": 0,
-                "_parameter": {
-                  "$type": "BattleModel.SkillCasterPower",
-                  "basePower": false
-                },
-                "_ratio": 2
-              }
-            }
-          ]
-        },
-        {
-          "CanBeEmpty": false,
-          "IsMultiple": false,
-          "multi": null,
-          "single": {
-            "$type": "BattleModel.ThisSkillCaster"
-          },
-          "skillEffects": [
-            {
-              "$type": "BattleModel.TrueDamageSkillEffect",
-              "Tag": 8193,
-              "_keyString": "",
-              "_skillModifier": {
-                "_constant": 0,
-                "_parameter": {
-                  "$type": "BattleModel.SkillCasterPower",
-                  "basePower": false
-                },
-                "_ratio": 2
               }
             }
           ]
@@ -649,62 +477,6 @@
         }
       ]
     },
-    "S3b": {
-      "$type": "BattleModel.BattleSkill",
-      "_isFallBackIfEmptyTarget": false,
-      "_isResolveTargetEachUnit": false,
-      "_skillIdentifiers": [
-        {
-          "CanBeEmpty": false,
-          "IsMultiple": false,
-          "multi": null,
-          "single": {
-            "$type": "BattleModel.EnemyAssignee",
-            "reference": {
-              "$type": "BattleModel.ThisSkillCaster"
-            }
-          },
-          "skillEffects": [
-            {
-              "$type": "BattleModel.TrueDamageSkillEffect",
-              "Tag": 8193,
-              "_keyString": "",
-              "_skillModifier": {
-                "_constant": 0,
-                "_parameter": {
-                  "$type": "BattleModel.SkillCasterPower",
-                  "basePower": false
-                },
-                "_ratio": 3.6
-              }
-            }
-          ]
-        },
-        {
-          "CanBeEmpty": false,
-          "IsMultiple": false,
-          "multi": null,
-          "single": {
-            "$type": "BattleModel.ThisSkillCaster"
-          },
-          "skillEffects": [
-            {
-              "$type": "BattleModel.TrueDamageSkillEffect",
-              "Tag": 8193,
-              "_keyString": "",
-              "_skillModifier": {
-                "_constant": 0,
-                "_parameter": {
-                  "$type": "BattleModel.SkillCasterPower",
-                  "basePower": false
-                },
-                "_ratio": 3.6
-              }
-            }
-          ]
-        }
-      ]
-    },
     "S4": {
       "$type": "BattleModel.BattleSkill",
       "_isFallBackIfEmptyTarget": false,
@@ -712,29 +484,12 @@
       "_skillIdentifiers": [
         {
           "CanBeEmpty": false,
-          "IsMultiple": true,
-          "multi": {
-            "$type": "BattleModel.CharGroupWhere",
-            "condition": {
-              "$type": "BattleModel.HasBuff",
-              "buffId": "t0026s5_a2_P1_2"
-            },
-            "group": {
-              "$type": "BattleModel.PVEEnemyTeam",
-              "includeDead": true,
-              "includeEmpty": false
-            }
-          },
+          "IsMultiple": false,
+          "multi": null,
           "single": {
-            "$type": "BattleModel.DeadOrReviveTarget"
+            "$type": "BattleModel.BuffAssignedCharacter"
           },
           "skillEffects": [
-            {
-              "$type": "BattleModel.RemoveBuffSkillEffect",
-              "Tag": 4100,
-              "_buffID": "t0026s5_a2_P1_2",
-              "_keyString": ""
-            }
           ]
         },
         {
