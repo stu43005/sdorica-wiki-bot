@@ -6,12 +6,12 @@
         "效果": [
           {
             "效果": [
-              "立即施展技能：對本角色{\"_isMultiple\":false,\"GroupSkill\":null,\"SingleSkill\":{\"$type\":\"BattleModel.SelfAssistantSkill\"},\"_operator\":1,\"_value\":{\"constant\":-3,\"$type\":\"BattleModel.ConstanctInt\"},\"Tag\":131076,\"_keyString\":\"1\",\"$type\":\"BattleModel.AssistantModifyCDSkillEffect\"}",
+              "立即施展技能：對玩家首位{\"_isMultiple\":false,\"GroupSkill\":null,\"SingleSkill\":{\"$type\":\"BattleModel.SelfAssistantSkill\"},\"_operator\":1,\"_value\":{\"constant\":-3,\"$type\":\"BattleModel.ConstanctInt\"},\"Tag\":131076,\"_keyString\":\"1\",\"$type\":\"BattleModel.AssistantModifyCDSkillEffect\"}",
               "對本狀態的變數一改為1"
             ],
             "條件": [
               "施術者是玩家的一員",
-              "施展的技能效果中包含(BreakArmor)屬性",
+              "施展的技能效果中包含(NormalDamage)屬性",
               "本狀態的變數一 == 0"
             ]
           }
@@ -26,7 +26,7 @@
               "對本狀態的變數一改為0"
             ],
             "條件": [
-              "目前回合輪到本角色"
+              "目前回合輪到玩家首位"
             ]
           }
         ],
@@ -71,7 +71,12 @@
                     "IsMultiple": false,
                     "multi": null,
                     "single": {
-                      "$type": "BattleModel.ThisBuffOwner"
+                      "$type": "BattleModel.FrontOfChars",
+                      "group": {
+                        "$type": "BattleModel.PVEPlayerTeam",
+                        "includeDead": false,
+                        "includeEmpty": false
+                      }
                     },
                     "skillEffects": [
                       {
@@ -124,7 +129,7 @@
               },
               {
                 "$type": "BattleModel.ThisSkillEffectTagContains",
-                "containsAll": 16
+                "containsAll": 8
               },
               {
                 "$type": "BattleModel.IntCompare",
@@ -174,7 +179,12 @@
               {
                 "$type": "BattleModel.CurrentTurnBelongsTo",
                 "character": {
-                  "$type": "BattleModel.ThisBuffOwner"
+                  "$type": "BattleModel.FrontOfChars",
+                  "group": {
+                    "$type": "BattleModel.PVEPlayerTeam",
+                    "includeDead": false,
+                    "includeEmpty": false
+                  }
                 }
               }
             ]
