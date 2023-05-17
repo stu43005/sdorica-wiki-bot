@@ -940,6 +940,7 @@ const TABLE_KEYS_BLACKLIST: Record<string, string[]> = {
 	Items: ["price", "sellCurrency"],
 	Missions: ["reward", "itemId", "rewardCount"],
 	RaidRanks: ["id"],
+	RankUpItems: ["id"],
 	RankUpItemRefs: ["id"],
 	RewardGroups: ["rewardType", "rewardItemId", "rewardCount"],
 	SignInReward: ["id"],
