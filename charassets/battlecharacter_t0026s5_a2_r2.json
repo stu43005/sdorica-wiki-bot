@@ -1,6 +1,6 @@
 {
   "$interpreted": {
-    "Localization": "法蒂瑪",
+    "Localization": "t0026s5_a2_r2",
     "參謀技能": {
       "_maxCastStack": 1,
       "_startCastStack": 0,
@@ -18,20 +18,26 @@
         "對施術者{\"Tag\":65540,\"_keyString\":\"1\",\"$type\":\"BattleModel.DirectKillSkillEffect\"}"
       ],
       "S1": [
-        "對施術者的對方首位穿透(攻擊力 x0.75)",
+        "對施術者的對方首位穿透(攻擊力 x1.5)",
         "對施術者攻擊(攻擊力 x0.2)"
       ],
       "S2": [
-        "對施術者的對方後排穿透(攻擊力 x1.75)",
+        "對施術者的對方後排穿透(攻擊力 x2.4)",
         "對施術者攻擊(攻擊力 x0.3)"
       ],
       "S3": [
-        "對施術者的對方中HP%最低的角色穿透(攻擊力 x2.5)",
-        "對施術者攻擊(攻擊力 x0.4)"
+        "對施術者的對方中HP%最低的角色穿透(攻擊力 x4.5)",
+        "對施術者攻擊(攻擊力 x0.4)",
+        "對施術者的對方全體賦予6回合1層taunt(嘲諷)"
       ],
       "S4": [
         "對{\"$type\":\"BattleModel.BuffAssignedCharacter\"}",
-        "對施術者{\"Ratio\":{\"constant\":1,\"$type\":\"BattleModel.ConstanctFloat\"},\"Tag\":32802,\"_keyString\":\"\",\"$type\":\"BattleModel.FixedHealRatioMaxSkillEffect\"}、賦予永久1層rage(怒氣)"
+        "對施術者{\"Ratio\":{\"constant\":1,\"$type\":\"BattleModel.ConstanctFloat\"},\"Tag\":32802,\"_keyString\":\"\",\"$type\":\"BattleModel.FixedHealRatioMaxSkillEffect\"}、賦予永久1層rage(怒氣)",
+        "對施術者的隊伍全體賦予3回合1層rage(怒氣)"
+      ],
+      "S5": [
+        "對{\"$type\":\"BattleModel.BuffAssignedCharacter\"}",
+        "對施術者{\"Ratio\":{\"constant\":1,\"$type\":\"BattleModel.ConstanctFloat\"},\"Tag\":32802,\"_keyString\":\"1\",\"$type\":\"BattleModel.FixedHealRatioMaxSkillEffect\"}"
       ]
     },
     "技能組": {
@@ -78,23 +84,34 @@
           ],
           "目標": ""
         }
+      ],
+      "S5": [
+        {
+          "CoolDown": 0,
+          "技能列表": [
+            "施展S5"
+          ],
+          "條件": [
+          ],
+          "目標": ""
+        }
       ]
     },
-    "攻擊力": 70,
-    "攻擊力等級調整後": 66,
+    "攻擊力": 700,
+    "攻擊力等級調整後": 660,
     "敵人AI": "",
     "消魂設置": {
       "Type1": "S1",
       "Type2": "S2",
       "Type4": "S3"
     },
-    "疊盾": 225,
-    "疊盾等級調整後": 212,
+    "疊盾": 2400,
+    "疊盾等級調整後": 2264,
     "站位": "黑位",
-    "血量": 225,
-    "血量等級調整後": 212,
+    "血量": 2400,
+    "血量等級調整後": 2264,
     "被動Buff": [
-      "賦予永久t0026s5_a2_P1(此角色將目標擊殺時，治癒自身至滿血並獲得永久怒氣。)"
+      "賦予永久t0026s5_a2_r2_P1(此角色將目標擊殺時，治癒自己至滿血，自身獲得永久怒氣並賦予同伴3回合怒氣。\n我方回合結束時，若本角色擁有3層怒氣，觸發自身2魂技能，若我方場上怒氣層數達9層，再額外觸發自身2魂技能並施展技能治癒自己至血量全滿。)"
     ],
     "起始CD": 0,
     "預設CD": 0
@@ -166,7 +183,7 @@
     "t0026_battle_hit_01_2_short_med",
     "t0026_battle_hit_01_3_short_strong"
   ],
-  "_armorCapacity": 225,
+  "_armorCapacity": 2400,
   "_assistantSkill": {
     "$type": "BattleModel.AssistantPassiveBuffSkill",
     "BuffData": {
@@ -180,7 +197,7 @@
     "PassiveBuffDatas": [
       {
         "BuffData": {
-          "BuffId": "t0026s5_a2_A1",
+          "BuffId": "t0026s5_a2_r2_A1",
           "Forever": true,
           "LevelStack": 0,
           "OverwriteDuration": -1,
@@ -188,14 +205,11 @@
           }
         },
         "TargetSelector": {
-          "IsMultiple": true,
-          "multi": {
-            "$type": "BattleModel.SelfTeamChars",
-            "excludeSelf": false,
-            "includeDead": true,
-            "includeEmpty": false,
-            "reference": {
-              "$type": "BattleModel.ThisBuffCaster"
+          "IsMultiple": false,
+          "single": {
+            "$type": "BattleModel.FrontOfChars",
+            "group": {
+              "$type": "BattleModel.PVEField"
             }
           }
         }
@@ -219,7 +233,7 @@
     "_startCD": 0,
     "_startCastStack": 0
   },
-  "_bloodCapacity": 225,
+  "_bloodCapacity": 2400,
   "_characterAI": {
     "$type": "BattleModel.SequenceEnemyAI",
     "OrderList": [
@@ -233,7 +247,7 @@
   "_masterRank": 0,
   "_passiveBuff": [
     {
-      "BuffId": "t0026s5_a2_P1",
+      "BuffId": "t0026s5_a2_r2_P1",
       "Forever": true,
       "LevelStack": 0,
       "OverwriteDuration": -1,
@@ -242,7 +256,7 @@
     }
   ],
   "_pose": "Stand",
-  "_power": 70,
+  "_power": 700,
   "_reviveCount": 8,
   "_skills": {
     "Arrive1": {
@@ -321,7 +335,7 @@
                   "$type": "BattleModel.SkillCasterPower",
                   "basePower": false
                 },
-                "_ratio": 0.75
+                "_ratio": 1.5
               }
             }
           ]
@@ -382,7 +396,7 @@
                   "$type": "BattleModel.SkillCasterPower",
                   "basePower": false
                 },
-                "_ratio": 1.75
+                "_ratio": 2.4
               }
             }
           ]
@@ -447,7 +461,7 @@
                   "$type": "BattleModel.SkillCasterPower",
                   "basePower": false
                 },
-                "_ratio": 2.5
+                "_ratio": 4.5
               }
             }
           ]
@@ -472,6 +486,36 @@
                 },
                 "_ratio": 0.4
               }
+            }
+          ]
+        },
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": true,
+          "multi": {
+            "$type": "BattleModel.OppositeTeamChars",
+            "includeDead": false,
+            "includeEmpty": false,
+            "reference": {
+              "$type": "BattleModel.ThisSkillCaster"
+            }
+          },
+          "single": null,
+          "skillEffects": [
+            {
+              "$type": "BattleModel.AddBuffSkillEffect",
+              "Tag": 132,
+              "_buffData": [
+                {
+                  "BuffId": "taunt",
+                  "Forever": false,
+                  "LevelStack": 1,
+                  "OverwriteDuration": 6,
+                  "UserDefineVariable": {
+                  }
+                }
+              ],
+              "_keyString": "1"
             }
           ]
         }
@@ -522,6 +566,73 @@
                   }
                 }
               ],
+              "_keyString": "1"
+            }
+          ]
+        },
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": true,
+          "multi": {
+            "$type": "BattleModel.SelfTeamChars",
+            "excludeSelf": true,
+            "includeDead": false,
+            "includeEmpty": false,
+            "reference": {
+              "$type": "BattleModel.ThisSkillCaster"
+            }
+          },
+          "single": null,
+          "skillEffects": [
+            {
+              "$type": "BattleModel.AddBuffSkillEffect",
+              "Tag": 132,
+              "_buffData": [
+                {
+                  "BuffId": "rage",
+                  "Forever": false,
+                  "LevelStack": 1,
+                  "OverwriteDuration": 3,
+                  "UserDefineVariable": {
+                  }
+                }
+              ],
+              "_keyString": "1"
+            }
+          ]
+        }
+      ]
+    },
+    "S5": {
+      "$type": "BattleModel.BattleSkill",
+      "_isFallBackIfEmptyTarget": false,
+      "_isResolveTargetEachUnit": false,
+      "_skillIdentifiers": [
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": false,
+          "multi": null,
+          "single": {
+            "$type": "BattleModel.BuffAssignedCharacter"
+          },
+          "skillEffects": [
+          ]
+        },
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": false,
+          "multi": null,
+          "single": {
+            "$type": "BattleModel.ThisSkillCaster"
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.FixedHealRatioMaxSkillEffect",
+              "Ratio": {
+                "$type": "BattleModel.ConstanctFloat",
+                "constant": 1
+              },
+              "Tag": 32802,
               "_keyString": "1"
             }
           ]
@@ -610,6 +721,34 @@
               ],
               "SkillID": "S4",
               "_conditionalSequences": [
+              ],
+              "seq": "",
+              "t": null
+            }
+          ],
+          "_characterCoolDown": 0,
+          "assignTarget": null,
+          "icon": 0
+        }
+      ],
+      "_isViewSkillSet": false
+    },
+    "S5": {
+      "ComboList": [
+        {
+          "ConditionList": [
+          ],
+          "SkillList": [
+            {
+              "ConditionList": [
+              ],
+              "SkillID": "S5",
+              "_conditionalSequences": [
+                {
+                  "ConditionList": [
+                  ],
+                  "_sequenceId": "S4"
+                }
               ],
               "seq": "",
               "t": null
