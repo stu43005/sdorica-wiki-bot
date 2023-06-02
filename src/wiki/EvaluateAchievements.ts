@@ -97,59 +97,93 @@ export function getAchievementConditions(conditionGroupId: string): string[] {
 				descs.push(`我方角色死亡 ${param2} ${param3}次`);
 				break;
 			case "EraseCount":
-				descs.push(`使用魂芯施展 ${param1}技能 ${param2} ${param3}次`);
+				descs.push(
+					`使用魂芯施展${eraseToString(
+						param1
+					)}技能 ${param2} ${param3}次`
+				);
 				break;
 			case "GoldEraseCount":
 				descs.push(
-					`使用金色魂芯施展 ${param1}技能 ${param2} ${param3}次`
+					`使用金色魂芯施展${eraseToString(
+						param1
+					)}技能 ${param2} ${param3}次`
 				);
 				break;
 			case "BlackEraseCount":
 				descs.push(
-					`使用黑色魂芯施展 ${param1}技能 ${param2} ${param3}次`
+					`使用黑色魂芯施展${eraseToString(
+						param1
+					)}技能 ${param2} ${param3}次`
 				);
 				break;
 			case "WhiteEraseCount":
 				descs.push(
-					`使用白色魂芯施展 ${param1}技能 ${param2} ${param3}次`
+					`使用白色魂芯施展${eraseToString(
+						param1
+					)}技能 ${param2} ${param3}次`
 				);
 				break;
 			case "TurnCount":
 				descs.push(`回合數 ${param2} ${param3}`);
 				break;
 			case "StoneCount":
-				descs.push(`使用${param1}魂芯 ${param2} ${param3}個`);
+				descs.push(
+					`使用${stoneToString(param1)}魂芯 ${param2} ${param3}個`
+				);
 				break;
 			case "GoldSkillTagCount":
-				descs.push(`金位角色施展${param1}技能 ${param2} ${param3}次`);
+				descs.push(
+					`金位角色施展${skillToString(
+						param1
+					)}技能 ${param2} ${param3}次`
+				);
 				break;
 			case "BlackSkillTagCount":
-				descs.push(`黑位角色施展${param1}技能 ${param2} ${param3}次`);
+				descs.push(
+					`黑位角色施展${skillToString(
+						param1
+					)}技能 ${param2} ${param3}次`
+				);
 				break;
 			case "WhiteSkillTagCount":
-				descs.push(`白位角色施展${param1}技能 ${param2} ${param3}次`);
+				descs.push(
+					`白位角色施展${skillToString(
+						param1
+					)}技能 ${param2} ${param3}次`
+				);
 				break;
 			case "SkillTagCount":
-				descs.push(`施展${param1}技能 ${param2} ${param3}次`);
+				descs.push(
+					`施展${skillToString(param1)}技能 ${param2} ${param3}次`
+				);
 				break;
 			case "GoldTriggerCount":
 				descs.push(
-					`金位角色不使用魂芯施展${param1}技能 ${param2} ${param3}次`
+					`金位角色不使用魂芯施展${eraseToString(
+						param1
+					)}技能 ${param2} ${param3}次`
 				);
 				break;
 			case "BlackTriggerCount":
 				descs.push(
-					`黑位角色不使用魂芯施展${param1}技能 ${param2} ${param3}次`
+					`黑位角色不使用魂芯施展${eraseToString(
+						param1
+					)}技能 ${param2} ${param3}次`
 				);
 				break;
 			case "WhiteTriggerCount":
 				descs.push(
-					`白位角色不使用魂芯施展${param1}技能 ${param2} ${param3}次`
+					`白位角色不使用魂芯施展${eraseToString(
+						param1
+					)}技能 ${param2} ${param3}次`
 				);
 				break;
 			case "TriggerCount":
 				descs.push(
-					`角色不使用魂芯施展${param1}技能 ${param2} ${param3}次`
+					`角色不使用魂芯施展${eraseToString(
+						param1
+					)}技能 ${param2} ${param3}次`
 				);
 				break;
 			case "Race":
@@ -171,7 +205,10 @@ export function getAchievementConditions(conditionGroupId: string): string[] {
 					)}總計 ${param2} ${param3}次`
 				);
 				break;
-			// TODO: BuffCount,KillCount,TotalDamage
+			case "KillCount":
+				descs.push(`擊殺敵人 ${param2} ${param3}個`);
+				break;
+			// TODO: BuffCount,TotalDamage
 			default:
 				descs.push(`${type}(${param1}, ${param2}, ${param3})`);
 				break;
@@ -183,4 +220,66 @@ export function getAchievementConditions(conditionGroupId: string): string[] {
 function raceToString(race: string): string {
 	const list = [, "人類", "亞人", "獸人", "羽族", "機械", "野獸", "未知種族"];
 	return list[+race] ?? race;
+}
+
+function stoneToString(stone: string): string {
+	switch (stone) {
+		case "Gold":
+			return "金色";
+		case "Black":
+			return "黑色";
+		case "White":
+			return "白色";
+	}
+	return stone;
+}
+
+function skillToString(skill: string): string {
+	switch (skill) {
+		case "Attack":
+			return "攻擊";
+		case "NormalDamage":
+			return "基礎攻擊";
+		case "BreakArmor":
+			return "破甲攻擊";
+		case "TrueDamage":
+			return "穿透攻擊";
+		case "Defend":
+			return "治癒或疊盾";
+		case "Heal":
+			return "治癒";
+		case "GainArmor":
+			return "疊盾";
+		case "StoneAction":
+			return "改變魂芯的";
+		case "ChangeCD":
+			return "操作敵人CD的";
+	}
+	return skill;
+}
+
+function eraseToString(erase: string): string {
+	switch (erase) {
+		case "All":
+			return "任何";
+		case "Type1":
+			return "一魂";
+		case "Type2":
+			return "二魂";
+		case "Type3":
+			return "三魂";
+		case "Type3_L":
+			return "三魂L型";
+		case "Type3_I":
+			return "三魂I型";
+		case "Type4":
+			return "四魂";
+		case "Type4_L":
+			return "四魂L型";
+		case "Type4_I":
+			return "四魂I型";
+		case "Type6":
+			return "六魂";
+	}
+	return erase;
 }

@@ -72,7 +72,7 @@ export const gamedataTeanslateSettings: GamedataRef[] = [
 	},
 	{
 		table: "AdventureTier",
-		column: "giveLinkId1:giveType1,giveLinkId2:giveType2,giveLinkId3:giveType3,giveLinkId4:giveType4",
+		column: "giveLinkId1:giveType1,giveLinkId2:giveType2,giveLinkId3:giveType3,giveLinkId4:giveType4,giveLinkId5:giveType5",
 		func: localizationItemNameWithType(),
 	},
 	{
@@ -824,7 +824,7 @@ export const gamedataTeanslateSettings: GamedataRef[] = [
 	},
 	{
 		table: "AdventureWeekPoint",
-		column: "giveLinkId1:giveType1,giveLinkId2:giveType2,giveLinkId3:giveType3,giveLinkId4:giveType4",
+		column: "giveLinkId1:giveType1,giveLinkId2:giveType2,giveLinkId3:giveType3,giveLinkId4:giveType4,giveLinkId5:giveType5",
 		func: localizationItemNameWithType(),
 	},
 	{
