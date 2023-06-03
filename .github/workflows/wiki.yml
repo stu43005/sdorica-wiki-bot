@@ -9,44 +9,53 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-      with:
-        ref: master
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          ref: master
 
-    - name: Checkout data
-      uses: actions/checkout@v2
-      with:
-        ref: data
-        path: data
+      - name: Checkout data
+        uses: actions/checkout@v3
+        with:
+          ref: data
+          path: data
 
-    - name: Cache node modules
-      uses: actions/cache@v2
-      with:
-        path: ~/.npm
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-node-
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16"
 
-    - name: Install Node.js
-      uses: actions/setup-node@v1
-      with:
-        node-version: '16'
+      - name: Get npm cache directory
+        id: npm-cache-dir
+        shell: bash
+        run: echo "dir=$(npm config get cache)" >> ${GITHUB_OUTPUT}
 
-    - name: Install Dependencies
-      run: npm ci
+      - name: Cache node modules
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.npm-cache-dir.outputs.dir }}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
 
-    - name: Create local changes
-      timeout-minutes: 15
-      run: npm run wiki
-      env:
-        MW_USER: ${{ secrets.MW_USER }}
-        MW_PASS: ${{ secrets.MW_PASS }}
-        DC_WEBHOOK: ${{ secrets.DC_WEBHOOK }}
-        NODE_ENV: production
+      - name: Install Dependencies
+        run: npm ci
 
-    - name: Commit files
-      uses: stefanzweifel/git-auto-commit-action@v4
-      with:
-        commit_message: 更新Wiki資料 ${{ github.event.head_commit.sha }}
-        repository: data
+      - name: Create local changes
+        timeout-minutes: 15
+        run: npm run wiki
+        env:
+          MW_USER: ${{ secrets.MW_USER }}
+          MW_PASS: ${{ secrets.MW_PASS }}
+          DC_WEBHOOK: ${{ secrets.DC_WEBHOOK }}
+          NODE_ENV: production
+
+      - run: |
+          cd data
+          git pull --rebase --autostash
+
+      - name: Commit files
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: 更新Wiki資料 ${{ github.event.head_commit.sha }}
+          repository: data

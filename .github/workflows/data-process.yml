@@ -3,10 +3,10 @@ name: "Data Process"
 on:
   push:
     branches:
-    - master
+      - master
   schedule:
     - cron: "0 * * * *"
-    - cron: '5 4 * * 3'
+    - cron: "5 4 * * 3"
   workflow_dispatch:
 
 jobs:
@@ -15,47 +15,62 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-    - name: Checkout data
-      uses: actions/checkout@v2
-      with:
-        ref: data
-        path: data
+      - name: Checkout data
+        uses: actions/checkout@v3
+        with:
+          ref: data
+          path: data
 
-    - name: Cache node modules
-      uses: actions/cache@v2
-      with:
-        path: ~/.npm
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-node-
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16"
 
-    - name: Install Node.js
-      uses: actions/setup-node@v1
-      with:
-        node-version: '16'
+      - name: Get npm cache directory
+        id: npm-cache-dir
+        shell: bash
+        run: echo "dir=$(npm config get cache)" >> ${GITHUB_OUTPUT}
 
-    - name: Install Dependencies
-      run: npm ci
+      - name: Cache node modules
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.npm-cache-dir.outputs.dir }}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
 
-    - name: Create local changes
-      timeout-minutes: 15
-      run: npm run script
-      env:
-        NODE_ENV: production
+      - name: Install Dependencies
+        run: npm ci
 
-    - name: Commit files
-      id: auto-commit-action
-      uses: stefanzweifel/git-auto-commit-action@v4
-      with:
-        commit_message: 更新資料 ${{ github.event.head_commit.sha }}
-        repository: data
+      - name: Create local changes
+        timeout-minutes: 15
+        run: npm run script
+        env:
+          NODE_ENV: production
 
-    - name: CharAssets Workflow Dispatch
-      if: steps.auto-commit-action.outputs.changes_detected == 'true'
-      uses: benc-uk/workflow-dispatch@v1
-      with:
-        workflow: CharAssets
-        token: ${{ secrets.PAT }}
+      - run: |
+          cd data
+          git pull --rebase --autostash
+
+      - name: Commit files
+        id: auto-commit-action
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: 更新資料 ${{ github.event.head_commit.sha }}
+          repository: data
+
+      - name: CharAssets Workflow Dispatch
+        if: steps.auto-commit-action.outputs.changes_detected == 'true'
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: CharAssets
+          token: ${{ secrets.PAT }}
+
+      - name: Check Banner Workflow Dispatch
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: Check Banner
+          token: ${{ secrets.PAT }}

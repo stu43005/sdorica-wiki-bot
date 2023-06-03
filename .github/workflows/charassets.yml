@@ -9,47 +9,56 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-      with:
-        ref: master
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          ref: master
 
-    - name: Checkout data
-      uses: actions/checkout@v2
-      with:
-        ref: data
-        path: data
+      - name: Checkout data
+        uses: actions/checkout@v3
+        with:
+          ref: data
+          path: data
 
-    - name: Cache node modules
-      uses: actions/cache@v2
-      with:
-        path: ~/.npm
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-node-
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16"
 
-    - name: Install Node.js
-      uses: actions/setup-node@v1
-      with:
-        node-version: '16'
+      - name: Get npm cache directory
+        id: npm-cache-dir
+        shell: bash
+        run: echo "dir=$(npm config get cache)" >> ${GITHUB_OUTPUT}
 
-    - name: Install Dependencies
-      run: npm ci
+      - name: Cache node modules
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.npm-cache-dir.outputs.dir }}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
 
-    - name: Create local changes
-      timeout-minutes: 15
-      run: npm run charassets
-      env:
-        NODE_ENV: production
+      - name: Install Dependencies
+        run: npm ci
 
-    - name: Commit files
-      uses: stefanzweifel/git-auto-commit-action@v4
-      with:
-        commit_message: 更新CharAssets資料 ${{ github.event.head_commit.sha }}
-        repository: data
+      - name: Create local changes
+        timeout-minutes: 15
+        run: npm run charassets
+        env:
+          NODE_ENV: production
 
-    - name: Wiki Workflow Dispatch
-      uses: benc-uk/workflow-dispatch@v1
-      with:
-        workflow: DialogAssets
-        token: ${{ secrets.PAT }}
+      - run: |
+          cd data
+          git pull --rebase --autostash
+
+      - name: Commit files
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: 更新CharAssets資料 ${{ github.event.head_commit.sha }}
+          repository: data
+
+      - name: Wiki Workflow Dispatch
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: DialogAssets
+          token: ${{ secrets.PAT }}

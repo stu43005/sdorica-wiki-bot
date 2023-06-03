@@ -1,4 +1,4 @@
-name: "DialogAssets"
+name: "Check Banner"
 
 on:
   workflow_dispatch:
@@ -11,8 +11,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-        with:
-          ref: master
 
       - name: Checkout data
         uses: actions/checkout@v3
@@ -43,7 +41,7 @@ jobs:
 
       - name: Create local changes
         timeout-minutes: 15
-        run: npm run dialog
+        run: npm run check-banner
         env:
           NODE_ENV: production
 
@@ -52,13 +50,8 @@ jobs:
           git pull --rebase --autostash
 
       - name: Commit files
+        id: auto-commit-action
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: 更新DialogAssets資料 ${{ github.event.head_commit.sha }}
+          commit_message: 更新Banner資料 ${{ github.event.head_commit.sha }}
           repository: data
-
-      - name: Wiki Workflow Dispatch
-        uses: benc-uk/workflow-dispatch@v1
-        with:
-          workflow: Wiki
-          token: ${{ secrets.PAT }}
