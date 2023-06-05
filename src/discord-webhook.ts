@@ -1,21 +1,27 @@
 import config from "config";
-import fetch from 'node-fetch';
-import { Logger } from './logger';
+import fetch from "node-fetch";
+import { Logger } from "./logger";
 
-const logger = new Logger('discord-webhook');
+const logger = new Logger("discord-webhook");
 
 export async function discordWebhook(data: any) {
-	const url = config.get<string>('dcWebhook');
+	const url = config.get<string>("dcWebhook");
 	if (!url) {
 		logger.log("DC_WEBHOOK not set.");
 		return;
 	}
+	logger.debug(data);
 	const response = await fetch(url, {
-		method: 'POST',
+		method: "POST",
 		headers: {
-			'Content-Type': 'application/json',
+			"Content-Type": "application/json",
 		},
-		body: data,
+		body: JSON.stringify(data),
 	});
-	return response.text();
+	if (response.status >= 400) {
+		logger.error(
+			`Failed to call webhook with following error:`,
+			await response.json()
+		);
+	}
 }
