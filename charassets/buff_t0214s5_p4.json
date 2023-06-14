@@ -113,11 +113,18 @@
               "對本狀態的變數一改為0"
             ],
             "條件": [
+              "施術者是本角色"
+            ]
+          },
+          {
+            "效果": [
+              "對本狀態的變數二改為0"
+            ],
+            "條件": [
             ]
           }
         ],
         "條件": [
-          "施術者是本角色"
         ]
       },
       "OnEachSkillTargetEffect": {
@@ -1277,19 +1284,40 @@
               }
             ],
             "Conditions": [
+              {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                },
+                "right": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 8,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
             ]
           }
         ],
         "Conditions": [
-          {
-            "$type": "BattleModel.CharacterEqual",
-            "left": {
-              "$type": "BattleModel.ThisSkillCaster"
-            },
-            "right": {
-              "$type": "BattleModel.ThisBuffOwner"
-            }
-          }
         ]
       }
     }

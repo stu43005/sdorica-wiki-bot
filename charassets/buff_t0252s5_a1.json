@@ -26,7 +26,7 @@
               "對本狀態的變數二改為0"
             ],
             "條件": [
-              "目前回合輪到賦予者"
+              "目前回合輪到玩家首位"
             ]
           }
         ],
@@ -38,6 +38,7 @@
           {
             "效果": [
               "對本狀態的變數一改為1",
+              "對玩家中符合(是金位)的角色首位賦予永久1層combo",
               "對玩家中符合(是金位)的角色首位觸發S1"
             ],
             "條件": [
@@ -57,6 +58,7 @@
   },
   "$type": "BattleModel.Buff",
   "ReferenceBuffKeys": [
+    "combo",
     "combo_third_skill"
   ],
   "_actionTable": [
@@ -101,7 +103,12 @@
               {
                 "$type": "BattleModel.CurrentTurnBelongsTo",
                 "character": {
-                  "$type": "BattleModel.ThisBuffCaster"
+                  "$type": "BattleModel.FrontOfChars",
+                  "group": {
+                    "$type": "BattleModel.PVEPlayerTeam",
+                    "includeDead": false,
+                    "includeEmpty": false
+                  }
                 }
               }
             ]
@@ -128,6 +135,37 @@
                     "value": {
                       "$type": "BattleModel.ConstanctInt",
                       "constant": 1
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.FrontOfChars",
+                    "group": {
+                      "$type": "BattleModel.CharGroupWhere",
+                      "condition": {
+                        "$type": "BattleModel.StoneTypeIs",
+                        "type": 1
+                      },
+                      "group": {
+                        "$type": "BattleModel.PVEPlayerTeam",
+                        "includeDead": false,
+                        "includeEmpty": false
+                      }
+                    }
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "combo",
+                      "Forever": false,
+                      "LevelStack": 1,
+                      "OverwriteDuration": -1,
+                      "UserDefineVariable": {
+                      }
                     }
                   }
                 }
