@@ -1,0 +1,311 @@
+{
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "OnBuffFinish": {
+        "效果": [
+          {
+            "效果": [
+              "立即施展技能：對本角色{\"Ratio\":{\"constant\":0.5,\"$type\":\"BattleModel.ConstanctFloat\"},\"Tag\":32834,\"_keyString\":\"\",\"$type\":\"BattleModel.FixedArmorRatioMaxSkillEffect\"}"
+            ],
+            "條件": [
+              "((當前事件的狀態 是＂h0183s5_P2(蝶擁)＂) 或 (當前事件的狀態 是＂h0183s5_a3_P2(蝶擁)＂)) 或 (當前事件的狀態 是＂h0183s4_P2(蝶擁)＂)"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnBuffRemove": {
+        "效果": [
+          {
+            "效果": [
+              "立即施展技能：對本角色{\"Ratio\":{\"constant\":0.5,\"$type\":\"BattleModel.ConstanctFloat\"},\"Tag\":32834,\"_keyString\":\"\",\"$type\":\"BattleModel.FixedArmorRatioMaxSkillEffect\"}"
+            ],
+            "條件": [
+              "((當前事件的狀態 是＂h0183s5_P2(蝶擁)＂) 或 (當前事件的狀態 是＂h0183s5_a3_P2(蝶擁)＂)) 或 (當前事件的狀態 是＂h0183s4_P2(蝶擁)＂)"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnEachSkillTargetEffect": {
+        "效果": [
+          {
+            "效果": [
+              "技能效果增加(10)%"
+            ],
+            "條件": [
+              "本角色是施術者"
+            ]
+          },
+          {
+            "效果": [
+              "技能效果增加(300)%"
+            ],
+            "條件": [
+              "本角色是施術者",
+              "((本角色擁有h0183s5_P2(蝶擁)狀態) 或 (本角色擁有h0183s5_a3_P2(蝶擁)狀態)) 或 (本角色擁有h0183s4_P2(蝶擁)狀態)"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      }
+    },
+    "持續時間": 1,
+    "最高層數": 99,
+    "標籤": "NotRemoveWhenDie | Forever | InfinityTrigger"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+  ],
+  "_actionTable": [
+    {
+      "Key": 1024,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.BonusEffectForSkillProperty",
+                  "isPercent": true,
+                  "property": -1,
+                  "value": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 10
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                },
+                "right": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.BonusEffectForSkillProperty",
+                  "isPercent": true,
+                  "property": -1,
+                  "value": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 300
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                },
+                "right": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              },
+              {
+                "$type": "BattleModel.OrConditions",
+                "cond1": {
+                  "$type": "BattleModel.OrConditions",
+                  "cond1": {
+                    "$type": "BattleModel.CharacterHasBuff",
+                    "buffId": "h0183s5_P2",
+                    "character": {
+                      "$type": "BattleModel.ThisBuffOwner"
+                    }
+                  },
+                  "cond2": {
+                    "$type": "BattleModel.CharacterHasBuff",
+                    "buffId": "h0183s5_a3_P2",
+                    "character": {
+                      "$type": "BattleModel.ThisBuffOwner"
+                    }
+                  }
+                },
+                "cond2": {
+                  "$type": "BattleModel.CharacterHasBuff",
+                  "buffId": "h0183s4_P2",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 65536,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": null,
+                    "single": {
+                      "$type": "BattleModel.ThisBuffOwner"
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.FixedArmorRatioMaxSkillEffect",
+                        "Ratio": {
+                          "$type": "BattleModel.ConstanctFloat",
+                          "constant": 0.5
+                        },
+                        "Tag": 32834,
+                        "_keyString": ""
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": true
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.OrConditions",
+                "cond1": {
+                  "$type": "BattleModel.OrConditions",
+                  "cond1": {
+                    "$type": "BattleModel.BuffCondition",
+                    "buff": {
+                      "$type": "BattleModel.SpecifiedBuff"
+                    },
+                    "condition": {
+                      "$type": "BattleModel.CheckBuffMatchBuffId",
+                      "subString": "h0183s5_P2"
+                    }
+                  },
+                  "cond2": {
+                    "$type": "BattleModel.BuffCondition",
+                    "buff": {
+                      "$type": "BattleModel.SpecifiedBuff"
+                    },
+                    "condition": {
+                      "$type": "BattleModel.CheckBuffMatchBuffId",
+                      "subString": "h0183s5_a3_P2"
+                    }
+                  }
+                },
+                "cond2": {
+                  "$type": "BattleModel.BuffCondition",
+                  "buff": {
+                    "$type": "BattleModel.SpecifiedBuff"
+                  },
+                  "condition": {
+                    "$type": "BattleModel.CheckBuffMatchBuffId",
+                    "subString": "h0183s4_P2"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 32768,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": null,
+                    "single": {
+                      "$type": "BattleModel.ThisBuffOwner"
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.FixedArmorRatioMaxSkillEffect",
+                        "Ratio": {
+                          "$type": "BattleModel.ConstanctFloat",
+                          "constant": 0.5
+                        },
+                        "Tag": 32834,
+                        "_keyString": ""
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": true
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.OrConditions",
+                "cond1": {
+                  "$type": "BattleModel.OrConditions",
+                  "cond1": {
+                    "$type": "BattleModel.BuffCondition",
+                    "buff": {
+                      "$type": "BattleModel.SpecifiedBuff"
+                    },
+                    "condition": {
+                      "$type": "BattleModel.CheckBuffMatchBuffId",
+                      "subString": "h0183s5_P2"
+                    }
+                  },
+                  "cond2": {
+                    "$type": "BattleModel.BuffCondition",
+                    "buff": {
+                      "$type": "BattleModel.SpecifiedBuff"
+                    },
+                    "condition": {
+                      "$type": "BattleModel.CheckBuffMatchBuffId",
+                      "subString": "h0183s5_a3_P2"
+                    }
+                  }
+                },
+                "cond2": {
+                  "$type": "BattleModel.BuffCondition",
+                  "buff": {
+                    "$type": "BattleModel.SpecifiedBuff"
+                  },
+                  "condition": {
+                    "$type": "BattleModel.CheckBuffMatchBuffId",
+                    "subString": "h0183s4_P2"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 1,
+  "_maxLevel": 99,
+  "_orderTable": {
+  },
+  "_tag": 32836
+}

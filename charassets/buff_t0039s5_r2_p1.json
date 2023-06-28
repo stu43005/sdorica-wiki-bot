@@ -2,26 +2,42 @@
   "$interpreted": {
     "Localization": "",
     "動作": {
-      "OnEachSkillSetEnd": {
+      "": {
         "效果": [
           {
             "效果": [
-              "對本角色的目標賦予2回合taunt(嘲諷)",
-              "對本角色的友方指定對象賦予2回合taunt(嘲諷)"
+              "對本角色觸發S1"
             ],
             "條件": [
-              "本角色是施術者"
+              "{\"StoneCondition\":{\"BuffId\":\"regeneration\",\"$type\":\"BattleModel.StoneBuffMatchBuffId\"},\"$type\":\"BattleModel.CountOfConditionalStone\"} >= 4"
             ]
           }
         ],
         "條件": [
         ]
       },
+      "OnEachSkillSetEnd": {
+        "效果": [
+          {
+            "效果": [
+              "對本角色的對方所有角色賦予5回合taunt(嘲諷)",
+              "對本角色的隊伍所有角色賦予5回合taunt(嘲諷)",
+              "對施術者的對方中符合(狀態taunt(嘲諷) 有(Forever)標籤)的角色所有角色賦予3回合1層weak(易傷)",
+              "對施術者的隊伍中符合(狀態taunt(嘲諷) 有(Forever)標籤)的角色所有角色賦予3回合1層bonusAttackPower(強化)"
+            ],
+            "條件": [
+            ]
+          }
+        ],
+        "條件": [
+          "施術者是本角色"
+        ]
+      },
       "OnEachSkillTargetEffect": {
         "效果": [
           {
             "效果": [
-              "技能效果增加(15)%"
+              "技能效果增加(30)%"
             ],
             "條件": [
               "施術者是本角色的隊伍的一員",
@@ -30,7 +46,7 @@
           },
           {
             "效果": [
-              "技能效果增加(15)%"
+              "技能效果增加(30)%"
             ],
             "條件": [
               "施術者是本角色的隊伍的一員",
@@ -48,7 +64,9 @@
   },
   "$type": "BattleModel.Buff",
   "ReferenceBuffKeys": [
-    "taunt"
+    "taunt",
+    "weak",
+    "bonusAttackPower"
   ],
   "_actionTable": [
     {
@@ -59,9 +77,11 @@
             "Actions": [
               {
                 "TargetField": {
-                  "$type": "BattleModel.OperateCharacter",
-                  "character": {
-                    "$type": "BattleModel.EnemyAssignee",
+                  "$type": "BattleModel.OperateCharacterGroup",
+                  "group": {
+                    "$type": "BattleModel.OppositeTeamChars",
+                    "includeDead": false,
+                    "includeEmpty": false,
                     "reference": {
                       "$type": "BattleModel.ThisBuffOwner"
                     }
@@ -72,7 +92,7 @@
                       "BuffId": "taunt",
                       "Forever": false,
                       "LevelStack": 0,
-                      "OverwriteDuration": 2,
+                      "OverwriteDuration": 5,
                       "UserDefineVariable": {
                       }
                     }
@@ -81,9 +101,12 @@
               },
               {
                 "TargetField": {
-                  "$type": "BattleModel.OperateCharacter",
-                  "character": {
-                    "$type": "BattleModel.FriendAssignee",
+                  "$type": "BattleModel.OperateCharacterGroup",
+                  "group": {
+                    "$type": "BattleModel.SelfTeamChars",
+                    "excludeSelf": false,
+                    "includeDead": false,
+                    "includeEmpty": false,
                     "reference": {
                       "$type": "BattleModel.ThisBuffOwner"
                     }
@@ -94,7 +117,78 @@
                       "BuffId": "taunt",
                       "Forever": false,
                       "LevelStack": 0,
-                      "OverwriteDuration": 2,
+                      "OverwriteDuration": 5,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacterGroup",
+                  "group": {
+                    "$type": "BattleModel.CharGroupWhere",
+                    "condition": {
+                      "$type": "BattleModel.HasConditionalBuff",
+                      "buffCondition": {
+                        "$type": "BattleModel.CheckBuffHasTag",
+                        "tag": 64
+                      },
+                      "buffId": "taunt"
+                    },
+                    "group": {
+                      "$type": "BattleModel.OppositeTeamChars",
+                      "includeDead": false,
+                      "includeEmpty": false,
+                      "reference": {
+                        "$type": "BattleModel.ThisSkillCaster"
+                      }
+                    }
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "weak",
+                      "Forever": false,
+                      "LevelStack": 1,
+                      "OverwriteDuration": 3,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacterGroup",
+                  "group": {
+                    "$type": "BattleModel.CharGroupWhere",
+                    "condition": {
+                      "$type": "BattleModel.HasConditionalBuff",
+                      "buffCondition": {
+                        "$type": "BattleModel.CheckBuffHasTag",
+                        "tag": 64
+                      },
+                      "buffId": "taunt"
+                    },
+                    "group": {
+                      "$type": "BattleModel.SelfTeamChars",
+                      "excludeSelf": false,
+                      "includeDead": false,
+                      "includeEmpty": false,
+                      "reference": {
+                        "$type": "BattleModel.ThisSkillCaster"
+                      }
+                    }
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "bonusAttackPower",
+                      "Forever": false,
+                      "LevelStack": 1,
+                      "OverwriteDuration": 3,
                       "UserDefineVariable": {
                       }
                     }
@@ -103,19 +197,19 @@
               }
             ],
             "Conditions": [
-              {
-                "$type": "BattleModel.CharacterEqual",
-                "left": {
-                  "$type": "BattleModel.ThisBuffOwner"
-                },
-                "right": {
-                  "$type": "BattleModel.ThisSkillCaster"
-                }
-              }
             ]
           }
         ],
         "Conditions": [
+          {
+            "$type": "BattleModel.CharacterEqual",
+            "left": {
+              "$type": "BattleModel.ThisSkillCaster"
+            },
+            "right": {
+              "$type": "BattleModel.ThisBuffOwner"
+            }
+          }
         ]
       }
     },
@@ -132,7 +226,7 @@
                   "property": -1,
                   "value": {
                     "$type": "BattleModel.ConstanctInt",
-                    "constant": 15
+                    "constant": 30
                   }
                 }
               }
@@ -171,7 +265,7 @@
                   "property": -1,
                   "value": {
                     "$type": "BattleModel.ConstanctInt",
-                    "constant": 15
+                    "constant": 30
                   }
                 }
               }
@@ -197,6 +291,67 @@
                 "buffId": "taunt",
                 "character": {
                   "$type": "BattleModel.ThisSkillCaster"
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 67108864,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.CastSkillSet",
+                    "AssignParameter": {
+                      "AssignCharacter": {
+                        "$type": "BattleModel.NoneCharacter"
+                      },
+                      "AssignCharacterGroup": {
+                        "$type": "BattleModel.NoneCharacters"
+                      },
+                      "AssignInteger": {
+                        "$type": "BattleModel.ConstanctInt",
+                        "constant": 0
+                      },
+                      "AssignIntegerGroup": {
+                        "$type": "BattleModel.ConstanctIntegerGroup",
+                        "Group": [
+                        ]
+                      }
+                    },
+                    "UseAssignParameter": false,
+                    "resetCasterCD": false,
+                    "skillsetId": "S1"
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.CountOfConditionalStone",
+                  "StoneCondition": {
+                    "$type": "BattleModel.StoneBuffMatchBuffId",
+                    "BuffId": "regeneration"
+                  }
+                },
+                "op": 4,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 4
                 }
               }
             ]

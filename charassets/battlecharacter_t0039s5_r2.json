@@ -22,20 +22,15 @@
         "對施術者的隊伍中符合(擁有taunt(嘲諷)狀態)的角色的隨機角色治療(攻擊力 x0.63)",
         "對施術者的隊伍中符合(擁有taunt(嘲諷)狀態)的角色的隨機角色治療(攻擊力 x0.63)"
       ],
-      "S1X": [
-        "對施術者的隊伍中符合(擁有taunt(嘲諷)狀態)的角色的隨機角色治療(攻擊力 x0.63)",
-        "對施術者的隊伍中符合(擁有taunt(嘲諷)狀態)的角色的隨機角色治療(攻擊力 x0.63)",
-        "對施術者的隊伍的隨機角色治療(攻擊力 x0.63)"
-      ],
-      "S1Y": [
-        "對施術者的隊伍中符合(擁有taunt(嘲諷)狀態)的角色的隨機角色治療(攻擊力 x0.63)",
-        "對施術者的隊伍的隨機角色治療(攻擊力 x0.63)",
-        "對施術者的隊伍的隨機角色治療(攻擊力 x0.63)"
-      ],
       "S1Z": [
         "對施術者的隊伍的隨機角色治療(攻擊力 x0.63)",
         "對施術者的隊伍的隨機角色治療(攻擊力 x0.63)",
         "對施術者的隊伍的隨機角色治療(攻擊力 x0.63)"
+      ],
+      "S1_2": [
+        "對施術者的友方指定對象治療(攻擊力 x0.63)、治療(攻擊力 x0.63)、治療(攻擊力 x0.63)、賦予3回合1層regeneration(再生)、{\"_stoneBuffActionBoardAction\":{\"changeTo\":\"ToTargetStoneType\",\"addBuffData\":{\"BuffId\":\"regeneration\",\"OverwriteDuration\":1,\"Forever\":false,\"LevelStack\":1,\"UserDefineVariable\":{}},\"UsePositionSettings\":false,\"targetStoneCount\":2,\"filter\":\"IsNotTargetColor\",\"isInitStoneFilter\":\"None\",\"BuffFilter\":\"Normal\",\"BuffId\":\"\",\"BuffLabel\":null,\"EffectFilter\":\"Normal\",\"order\":\"LeftToRight\",\"StonePositionList\":[]},\"Tag\":262660,\"_keyString\":\"1\",\"$type\":\"BattleModel.StoneBuffActionSkillEffect\"}",
+        "對施術者的友方指定對象",
+        "對施術者的友方指定對象"
       ],
       "S2": [
         "對敵人中符合(擁有taunt(嘲諷)狀態)的角色的隨機角色破甲(攻擊力 x0.75)",
@@ -46,16 +41,6 @@
         "對敵人的隨機角色破甲(攻擊力 x0.75)",
         "對敵人的隨機角色破甲(攻擊力 x0.75)",
         "對敵人的隨機角色破甲(攻擊力 x0.75)"
-      ],
-      "S2Y": [
-        "對敵人中符合(擁有taunt(嘲諷)狀態)的角色的隨機角色攻擊(攻擊力 x0.9)",
-        "對玩家及敵人的隨機角色攻擊(攻擊力 x0.9)",
-        "對玩家及敵人的隨機角色攻擊(攻擊力 x0.9)"
-      ],
-      "S2Z": [
-        "對玩家及敵人的隨機角色攻擊(攻擊力 x0.9)",
-        "對玩家及敵人的隨機角色攻擊(攻擊力 x0.9)",
-        "對玩家及敵人的隨機角色攻擊(攻擊力 x0.9)"
       ],
       "S3": [
         "對敵人中符合(擁有taunt(嘲諷)狀態)的角色的隨機角色破甲(攻擊力 x2.25)",
@@ -89,6 +74,16 @@
         }
       ],
       "S1": [
+        {
+          "CoolDown": 0,
+          "技能列表": [
+            "施展S1_2"
+          ],
+          "條件": [
+            "施術者的隊伍中的所有角色皆 擁有taunt(嘲諷)狀態"
+          ],
+          "目標": ""
+        },
         {
           "CoolDown": 0,
           "技能列表": [
@@ -145,7 +140,7 @@
     "血量": 255,
     "血量等級調整後": 240,
     "被動Buff": [
-      "賦予永久t0039s5_r2_P1(本角色施展技能後，賦予雙方指定角色2回合嘲諷。我方角色的技能對於有嘲諷的目標，技能效果增加15%；有嘲諷的我方角色技能效果增加15%。)"
+      "賦予永久t0039s5_r2_P1(本角色施放技能後，賦予雙方全體角色5回合嘲諷，若敵方角色已有永久嘲諷，額外獲得3回合易傷；若我方角色已有永久嘲諷，額外獲得3回合強化。\n我方角色的技能對於有嘲諷的目標，技能效果增加30%；有嘲諷的我方角色技能效果增加30%。\n使用魂芯時，若操作區有大於或等於4個再生魂芯，自身施展1魂技能。)"
     ],
     "起始CD": 0,
     "預設CD": 0
@@ -482,233 +477,6 @@
         }
       ]
     },
-    "S1X": {
-      "$type": "BattleModel.BattleSkill",
-      "_isFallBackIfEmptyTarget": false,
-      "_isResolveTargetEachUnit": false,
-      "_skillIdentifiers": [
-        {
-          "CanBeEmpty": false,
-          "IsMultiple": false,
-          "multi": null,
-          "single": {
-            "$type": "BattleModel.RandomOfChars",
-            "group": {
-              "$type": "BattleModel.CharGroupWhere",
-              "condition": {
-                "$type": "BattleModel.HasBuff",
-                "buffId": "taunt"
-              },
-              "group": {
-                "$type": "BattleModel.SelfTeamChars",
-                "excludeSelf": false,
-                "includeDead": false,
-                "includeEmpty": false,
-                "reference": {
-                  "$type": "BattleModel.ThisSkillCaster"
-                }
-              }
-            }
-          },
-          "skillEffects": [
-            {
-              "$type": "BattleModel.HpHealSkillEffect",
-              "Tag": 34,
-              "_keyString": "1",
-              "_skillModifier": {
-                "_constant": 0,
-                "_parameter": {
-                  "$type": "BattleModel.SkillCasterPower",
-                  "basePower": false
-                },
-                "_ratio": 0.7
-              }
-            }
-          ]
-        },
-        {
-          "CanBeEmpty": false,
-          "IsMultiple": false,
-          "multi": null,
-          "single": {
-            "$type": "BattleModel.RandomOfChars",
-            "group": {
-              "$type": "BattleModel.CharGroupWhere",
-              "condition": {
-                "$type": "BattleModel.HasBuff",
-                "buffId": "taunt"
-              },
-              "group": {
-                "$type": "BattleModel.SelfTeamChars",
-                "excludeSelf": false,
-                "includeDead": false,
-                "includeEmpty": false,
-                "reference": {
-                  "$type": "BattleModel.ThisSkillCaster"
-                }
-              }
-            }
-          },
-          "skillEffects": [
-            {
-              "$type": "BattleModel.HpHealSkillEffect",
-              "Tag": 34,
-              "_keyString": "2",
-              "_skillModifier": {
-                "_constant": 0,
-                "_parameter": {
-                  "$type": "BattleModel.SkillCasterPower",
-                  "basePower": false
-                },
-                "_ratio": 0.7
-              }
-            }
-          ]
-        },
-        {
-          "CanBeEmpty": false,
-          "IsMultiple": false,
-          "multi": null,
-          "single": {
-            "$type": "BattleModel.RandomOfChars",
-            "group": {
-              "$type": "BattleModel.SelfTeamChars",
-              "excludeSelf": false,
-              "includeDead": false,
-              "includeEmpty": false,
-              "reference": {
-                "$type": "BattleModel.ThisSkillCaster"
-              }
-            }
-          },
-          "skillEffects": [
-            {
-              "$type": "BattleModel.HpHealSkillEffect",
-              "Tag": 34,
-              "_keyString": "3",
-              "_skillModifier": {
-                "_constant": 0,
-                "_parameter": {
-                  "$type": "BattleModel.SkillCasterPower",
-                  "basePower": false
-                },
-                "_ratio": 0.7
-              }
-            }
-          ]
-        }
-      ]
-    },
-    "S1Y": {
-      "$type": "BattleModel.BattleSkill",
-      "_isFallBackIfEmptyTarget": false,
-      "_isResolveTargetEachUnit": false,
-      "_skillIdentifiers": [
-        {
-          "CanBeEmpty": false,
-          "IsMultiple": false,
-          "multi": null,
-          "single": {
-            "$type": "BattleModel.RandomOfChars",
-            "group": {
-              "$type": "BattleModel.CharGroupWhere",
-              "condition": {
-                "$type": "BattleModel.HasBuff",
-                "buffId": "taunt"
-              },
-              "group": {
-                "$type": "BattleModel.SelfTeamChars",
-                "excludeSelf": false,
-                "includeDead": false,
-                "includeEmpty": false,
-                "reference": {
-                  "$type": "BattleModel.ThisSkillCaster"
-                }
-              }
-            }
-          },
-          "skillEffects": [
-            {
-              "$type": "BattleModel.HpHealSkillEffect",
-              "Tag": 34,
-              "_keyString": "1",
-              "_skillModifier": {
-                "_constant": 0,
-                "_parameter": {
-                  "$type": "BattleModel.SkillCasterPower",
-                  "basePower": false
-                },
-                "_ratio": 0.7
-              }
-            }
-          ]
-        },
-        {
-          "CanBeEmpty": false,
-          "IsMultiple": false,
-          "multi": null,
-          "single": {
-            "$type": "BattleModel.RandomOfChars",
-            "group": {
-              "$type": "BattleModel.SelfTeamChars",
-              "excludeSelf": false,
-              "includeDead": false,
-              "includeEmpty": false,
-              "reference": {
-                "$type": "BattleModel.ThisSkillCaster"
-              }
-            }
-          },
-          "skillEffects": [
-            {
-              "$type": "BattleModel.HpHealSkillEffect",
-              "Tag": 34,
-              "_keyString": "2",
-              "_skillModifier": {
-                "_constant": 0,
-                "_parameter": {
-                  "$type": "BattleModel.SkillCasterPower",
-                  "basePower": false
-                },
-                "_ratio": 0.7
-              }
-            }
-          ]
-        },
-        {
-          "CanBeEmpty": false,
-          "IsMultiple": false,
-          "multi": null,
-          "single": {
-            "$type": "BattleModel.RandomOfChars",
-            "group": {
-              "$type": "BattleModel.SelfTeamChars",
-              "excludeSelf": false,
-              "includeDead": false,
-              "includeEmpty": false,
-              "reference": {
-                "$type": "BattleModel.ThisSkillCaster"
-              }
-            }
-          },
-          "skillEffects": [
-            {
-              "$type": "BattleModel.HpHealSkillEffect",
-              "Tag": 34,
-              "_keyString": "3",
-              "_skillModifier": {
-                "_constant": 0,
-                "_parameter": {
-                  "$type": "BattleModel.SkillCasterPower",
-                  "basePower": false
-                },
-                "_ratio": 0.7
-              }
-            }
-          ]
-        }
-      ]
-    },
     "S1Z": {
       "$type": "BattleModel.BattleSkill",
       "_isFallBackIfEmptyTarget": false,
@@ -808,6 +576,133 @@
                 "_ratio": 0.7
               }
             }
+          ]
+        }
+      ]
+    },
+    "S1_2": {
+      "$type": "BattleModel.BattleSkill",
+      "_isFallBackIfEmptyTarget": false,
+      "_isResolveTargetEachUnit": false,
+      "_skillIdentifiers": [
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": false,
+          "multi": null,
+          "single": {
+            "$type": "BattleModel.FriendAssignee",
+            "reference": {
+              "$type": "BattleModel.ThisSkillCaster"
+            }
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.HpHealSkillEffect",
+              "Tag": 34,
+              "_keyString": "1",
+              "_skillModifier": {
+                "_constant": 0,
+                "_parameter": {
+                  "$type": "BattleModel.SkillCasterPower",
+                  "basePower": false
+                },
+                "_ratio": 0.7
+              }
+            },
+            {
+              "$type": "BattleModel.HpHealSkillEffect",
+              "Tag": 34,
+              "_keyString": "1",
+              "_skillModifier": {
+                "_constant": 0,
+                "_parameter": {
+                  "$type": "BattleModel.SkillCasterPower",
+                  "basePower": false
+                },
+                "_ratio": 0.7
+              }
+            },
+            {
+              "$type": "BattleModel.HpHealSkillEffect",
+              "Tag": 34,
+              "_keyString": "1",
+              "_skillModifier": {
+                "_constant": 0,
+                "_parameter": {
+                  "$type": "BattleModel.SkillCasterPower",
+                  "basePower": false
+                },
+                "_ratio": 0.7
+              }
+            },
+            {
+              "$type": "BattleModel.AddBuffSkillEffect",
+              "Tag": 132,
+              "_buffData": [
+                {
+                  "BuffId": "regeneration",
+                  "Forever": false,
+                  "LevelStack": 1,
+                  "OverwriteDuration": 3,
+                  "UserDefineVariable": {
+                  }
+                }
+              ],
+              "_keyString": "1"
+            },
+            {
+              "$type": "BattleModel.StoneBuffActionSkillEffect",
+              "Tag": 262660,
+              "_keyString": "1",
+              "_stoneBuffActionBoardAction": {
+                "BuffFilter": "Normal",
+                "BuffId": "",
+                "BuffLabel": null,
+                "EffectFilter": "Normal",
+                "StonePositionList": [
+                ],
+                "UsePositionSettings": false,
+                "addBuffData": {
+                  "BuffId": "regeneration",
+                  "Forever": false,
+                  "LevelStack": 1,
+                  "OverwriteDuration": 1,
+                  "UserDefineVariable": {
+                  }
+                },
+                "changeTo": "ToTargetStoneType",
+                "filter": "IsNotTargetColor",
+                "isInitStoneFilter": "None",
+                "order": "LeftToRight",
+                "targetStoneCount": 2
+              }
+            }
+          ]
+        },
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": false,
+          "multi": null,
+          "single": {
+            "$type": "BattleModel.FriendAssignee",
+            "reference": {
+              "$type": "BattleModel.ThisSkillCaster"
+            }
+          },
+          "skillEffects": [
+          ]
+        },
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": false,
+          "multi": null,
+          "single": {
+            "$type": "BattleModel.FriendAssignee",
+            "reference": {
+              "$type": "BattleModel.ThisSkillCaster"
+            }
+          },
+          "skillEffects": [
           ]
         }
       ]
@@ -1009,235 +904,6 @@
                   "basePower": false
                 },
                 "_ratio": 1
-              }
-            }
-          ]
-        }
-      ]
-    },
-    "S2Y": {
-      "$type": "BattleModel.BattleSkill",
-      "_isFallBackIfEmptyTarget": false,
-      "_isResolveTargetEachUnit": false,
-      "_skillIdentifiers": [
-        {
-          "CanBeEmpty": false,
-          "IsMultiple": false,
-          "multi": null,
-          "single": {
-            "$type": "BattleModel.RandomOfChars",
-            "group": {
-              "$type": "BattleModel.CharGroupWhere",
-              "condition": {
-                "$type": "BattleModel.HasBuff",
-                "buffId": "taunt"
-              },
-              "group": {
-                "$type": "BattleModel.PVEEnemyTeam",
-                "includeDead": false,
-                "includeEmpty": false
-              }
-            }
-          },
-          "skillEffects": [
-            {
-              "$type": "BattleModel.HpDamageSkillEffect",
-              "Tag": 9,
-              "_keyString": "1",
-              "_skillModifier": {
-                "_constant": 0,
-                "_parameter": {
-                  "$type": "BattleModel.SkillCasterPower",
-                  "basePower": false
-                },
-                "_ratio": 0.9
-              }
-            }
-          ]
-        },
-        {
-          "CanBeEmpty": false,
-          "IsMultiple": false,
-          "multi": null,
-          "single": {
-            "$type": "BattleModel.RandomOfChars",
-            "group": {
-              "$type": "BattleModel.UnionCharGroup",
-              "group1": {
-                "$type": "BattleModel.PVEPlayerTeam",
-                "includeDead": false,
-                "includeEmpty": false
-              },
-              "group2": {
-                "$type": "BattleModel.PVEEnemyTeam",
-                "includeDead": false,
-                "includeEmpty": false
-              }
-            }
-          },
-          "skillEffects": [
-            {
-              "$type": "BattleModel.HpDamageSkillEffect",
-              "Tag": 9,
-              "_keyString": "2",
-              "_skillModifier": {
-                "_constant": 0,
-                "_parameter": {
-                  "$type": "BattleModel.SkillCasterPower",
-                  "basePower": false
-                },
-                "_ratio": 0.9
-              }
-            }
-          ]
-        },
-        {
-          "CanBeEmpty": false,
-          "IsMultiple": false,
-          "multi": null,
-          "single": {
-            "$type": "BattleModel.RandomOfChars",
-            "group": {
-              "$type": "BattleModel.UnionCharGroup",
-              "group1": {
-                "$type": "BattleModel.PVEPlayerTeam",
-                "includeDead": false,
-                "includeEmpty": false
-              },
-              "group2": {
-                "$type": "BattleModel.PVEEnemyTeam",
-                "includeDead": false,
-                "includeEmpty": false
-              }
-            }
-          },
-          "skillEffects": [
-            {
-              "$type": "BattleModel.HpDamageSkillEffect",
-              "Tag": 9,
-              "_keyString": "3",
-              "_skillModifier": {
-                "_constant": 0,
-                "_parameter": {
-                  "$type": "BattleModel.SkillCasterPower",
-                  "basePower": false
-                },
-                "_ratio": 0.9
-              }
-            }
-          ]
-        }
-      ]
-    },
-    "S2Z": {
-      "$type": "BattleModel.BattleSkill",
-      "_isFallBackIfEmptyTarget": false,
-      "_isResolveTargetEachUnit": false,
-      "_skillIdentifiers": [
-        {
-          "CanBeEmpty": false,
-          "IsMultiple": false,
-          "multi": null,
-          "single": {
-            "$type": "BattleModel.RandomOfChars",
-            "group": {
-              "$type": "BattleModel.UnionCharGroup",
-              "group1": {
-                "$type": "BattleModel.PVEPlayerTeam",
-                "includeDead": false,
-                "includeEmpty": false
-              },
-              "group2": {
-                "$type": "BattleModel.PVEEnemyTeam",
-                "includeDead": false,
-                "includeEmpty": false
-              }
-            }
-          },
-          "skillEffects": [
-            {
-              "$type": "BattleModel.HpDamageSkillEffect",
-              "Tag": 9,
-              "_keyString": "1",
-              "_skillModifier": {
-                "_constant": 0,
-                "_parameter": {
-                  "$type": "BattleModel.SkillCasterPower",
-                  "basePower": false
-                },
-                "_ratio": 0.9
-              }
-            }
-          ]
-        },
-        {
-          "CanBeEmpty": false,
-          "IsMultiple": false,
-          "multi": null,
-          "single": {
-            "$type": "BattleModel.RandomOfChars",
-            "group": {
-              "$type": "BattleModel.UnionCharGroup",
-              "group1": {
-                "$type": "BattleModel.PVEPlayerTeam",
-                "includeDead": false,
-                "includeEmpty": false
-              },
-              "group2": {
-                "$type": "BattleModel.PVEEnemyTeam",
-                "includeDead": false,
-                "includeEmpty": false
-              }
-            }
-          },
-          "skillEffects": [
-            {
-              "$type": "BattleModel.HpDamageSkillEffect",
-              "Tag": 9,
-              "_keyString": "2",
-              "_skillModifier": {
-                "_constant": 0,
-                "_parameter": {
-                  "$type": "BattleModel.SkillCasterPower",
-                  "basePower": false
-                },
-                "_ratio": 0.9
-              }
-            }
-          ]
-        },
-        {
-          "CanBeEmpty": false,
-          "IsMultiple": false,
-          "multi": null,
-          "single": {
-            "$type": "BattleModel.RandomOfChars",
-            "group": {
-              "$type": "BattleModel.UnionCharGroup",
-              "group1": {
-                "$type": "BattleModel.PVEPlayerTeam",
-                "includeDead": false,
-                "includeEmpty": false
-              },
-              "group2": {
-                "$type": "BattleModel.PVEEnemyTeam",
-                "includeDead": false,
-                "includeEmpty": false
-              }
-            }
-          },
-          "skillEffects": [
-            {
-              "$type": "BattleModel.HpDamageSkillEffect",
-              "Tag": 9,
-              "_keyString": "3",
-              "_skillModifier": {
-                "_constant": 0,
-                "_parameter": {
-                  "$type": "BattleModel.SkillCasterPower",
-                  "basePower": false
-                },
-                "_ratio": 0.9
               }
             }
           ]
@@ -1447,6 +1113,46 @@
     },
     "S1": {
       "ComboList": [
+        {
+          "ConditionList": [
+            {
+              "$type": "BattleModel.CharGroupCondition",
+              "condition": {
+                "$type": "BattleModel.HasBuff",
+                "buffId": "taunt"
+              },
+              "everybody": true,
+              "group": {
+                "$type": "BattleModel.SelfTeamChars",
+                "excludeSelf": false,
+                "includeDead": false,
+                "includeEmpty": false,
+                "reference": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              }
+            }
+          ],
+          "SkillList": [
+            {
+              "ConditionList": [
+              ],
+              "SkillID": "S1_2",
+              "_conditionalSequences": [
+                {
+                  "ConditionList": [
+                  ],
+                  "_sequenceId": "S1"
+                }
+              ],
+              "seq": "",
+              "t": null
+            }
+          ],
+          "_characterCoolDown": 0,
+          "assignTarget": null,
+          "icon": 296
+        },
         {
           "ConditionList": [
             {

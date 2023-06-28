@@ -7,18 +7,28 @@
           {
             "效果": [
               "對本狀態的層數增加1",
-              "對本角色賦予2回合1層bonusAttackPower(強化)"
+              "對本角色賦予3回合1層bonusAttackPower(強化)",
+              "立即施展技能：對本角色將1個非金色魂芯由上右至下右的順序加入賦予1回合1層damage_absorption(轉盾)、將1個非金色魂芯轉為金色魂芯、將1個非金色魂芯由上右至下右的順序加入賦予1回合1層ArmorToBlood(盾轉)、將1個非金色魂芯轉為金色魂芯"
             ],
             "條件": [
               "施展的技能組是E3",
               "施術者是玩家的一員"
+            ]
+          },
+          {
+            "效果": [
+              "對本角色賦予永久changeIdle"
+            ],
+            "條件": [
+              "本狀態 符合條件 持續時間 == 4",
+              "本角色 沒有changeIdle狀態"
             ]
           }
         ],
         "條件": [
         ]
       },
-      "OnEverySecond": {
+      "OnTurnBegin": {
         "效果": [
           {
             "效果": [
@@ -32,6 +42,22 @@
         ],
         "條件": [
         ]
+      },
+      "OnTurnEnd": {
+        "效果": [
+          {
+            "效果": [
+              "對本角色觸發S1"
+            ],
+            "條件": [
+              "本角色擁有damage_absorption(轉盾)狀態",
+              "本角色擁有ArmorToBlood(盾轉)狀態"
+            ]
+          }
+        ],
+        "條件": [
+          "目前回合輪到本角色"
+        ]
       }
     },
     "持續時間": 1,
@@ -41,7 +67,11 @@
   "$type": "BattleModel.Buff",
   "ReferenceBuffKeys": [
     "bonusAttackPower",
-    "changeIdle"
+    "damage_absorption",
+    "ArmorToBlood",
+    "changeIdle",
+    "damage_absorption_trigger",
+    "ArmorToBlood_trigger"
   ],
   "_actionTable": [
     {
@@ -77,11 +107,119 @@
                       "BuffId": "bonusAttackPower",
                       "Forever": false,
                       "LevelStack": 1,
-                      "OverwriteDuration": 2,
+                      "OverwriteDuration": 3,
                       "UserDefineVariable": {
                       }
                     }
                   }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": null,
+                    "single": {
+                      "$type": "BattleModel.ThisBuffOwner"
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.StoneBuffSkillEffect",
+                        "Tag": 262148,
+                        "_keyString": "1",
+                        "_stoneBuffAction": {
+                          "BuffFilter": "Normal",
+                          "BuffId": "",
+                          "BuffLabel": null,
+                          "EffectFilter": "Normal",
+                          "StonePositionList": [
+                          ],
+                          "UsePositionSettings": false,
+                          "action": "Add",
+                          "buff": {
+                            "BuffId": "damage_absorption",
+                            "Forever": false,
+                            "LevelStack": 1,
+                            "OverwriteDuration": 1,
+                            "UserDefineVariable": {
+                            }
+                          },
+                          "filter": "IsNotGold",
+                          "isInitStoneFilter": "None",
+                          "order": "UpperRightToLowerRight",
+                          "targetStoneCount": 1
+                        }
+                      },
+                      {
+                        "$type": "BattleModel.StoneActionSkillEffect",
+                        "Tag": 516,
+                        "_keyString": "1",
+                        "_stoneAction": {
+                          "BuffFilter": "Normal",
+                          "BuffId": "",
+                          "BuffLabel": null,
+                          "EffectFilter": "Normal",
+                          "StonePositionList": [
+                          ],
+                          "UsePositionSettings": false,
+                          "changeTo": "ToGold",
+                          "filter": "IsNotGold",
+                          "isInitStoneFilter": "None",
+                          "order": "UpperRightToLowerRight",
+                          "targetStoneCount": 1
+                        }
+                      },
+                      {
+                        "$type": "BattleModel.StoneBuffSkillEffect",
+                        "Tag": 262148,
+                        "_keyString": "1",
+                        "_stoneBuffAction": {
+                          "BuffFilter": "Normal",
+                          "BuffId": "",
+                          "BuffLabel": null,
+                          "EffectFilter": "Normal",
+                          "StonePositionList": [
+                          ],
+                          "UsePositionSettings": false,
+                          "action": "Add",
+                          "buff": {
+                            "BuffId": "ArmorToBlood",
+                            "Forever": false,
+                            "LevelStack": 1,
+                            "OverwriteDuration": 1,
+                            "UserDefineVariable": {
+                            }
+                          },
+                          "filter": "IsNotGold",
+                          "isInitStoneFilter": "None",
+                          "order": "UpperRightToLowerRight",
+                          "targetStoneCount": 1
+                        }
+                      },
+                      {
+                        "$type": "BattleModel.StoneActionSkillEffect",
+                        "Tag": 516,
+                        "_keyString": "1",
+                        "_stoneAction": {
+                          "BuffFilter": "Normal",
+                          "BuffId": "",
+                          "BuffLabel": null,
+                          "EffectFilter": "Normal",
+                          "StonePositionList": [
+                          ],
+                          "UsePositionSettings": false,
+                          "changeTo": "ToGold",
+                          "filter": "IsNotGold",
+                          "isInitStoneFilter": "None",
+                          "order": "UpperRightToLowerRight",
+                          "targetStoneCount": 1
+                        }
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": false
                 }
               }
             ],
@@ -102,6 +240,62 @@
                 }
               }
             ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "changeIdle",
+                      "Forever": true,
+                      "LevelStack": 0,
+                      "OverwriteDuration": -1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.BuffCondition",
+                "buff": {
+                  "$type": "BattleModel.ThisBuff"
+                },
+                "condition": {
+                  "$type": "BattleModel.IntCompareB",
+                  "left": {
+                    "$type": "BattleModel.IntFieldB",
+                    "targetField": 0
+                  },
+                  "op": 0,
+                  "right": {
+                    "$type": "BattleModel.ConstantIntB",
+                    "constant": 4
+                  }
+                }
+              },
+              {
+                "$type": "BattleModel.CharacterCondition",
+                "character": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                },
+                "condition": {
+                  "$type": "BattleModel.InverseC",
+                  "condition": {
+                    "$type": "BattleModel.HasBuff",
+                    "buffId": "changeIdle"
+                  }
+                }
+              }
+            ]
           }
         ],
         "Conditions": [
@@ -109,7 +303,7 @@
       }
     },
     {
-      "Key": 2048,
+      "Key": 1,
       "Value": {
         "Actions": [
           {
@@ -164,6 +358,72 @@
           }
         ],
         "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 2,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.CastSkillSet",
+                    "AssignParameter": {
+                      "AssignCharacter": {
+                        "$type": "BattleModel.NoneCharacter"
+                      },
+                      "AssignCharacterGroup": {
+                        "$type": "BattleModel.NoneCharacters"
+                      },
+                      "AssignInteger": {
+                        "$type": "BattleModel.ConstanctInt",
+                        "constant": 0
+                      },
+                      "AssignIntegerGroup": {
+                        "$type": "BattleModel.ConstanctIntegerGroup",
+                        "Group": [
+                        ]
+                      }
+                    },
+                    "UseAssignParameter": false,
+                    "resetCasterCD": false,
+                    "skillsetId": "S1"
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterHasBuff",
+                "buffId": "damage_absorption",
+                "character": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                }
+              },
+              {
+                "$type": "BattleModel.CharacterHasBuff",
+                "buffId": "ArmorToBlood",
+                "character": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+          {
+            "$type": "BattleModel.CurrentTurnBelongsTo",
+            "character": {
+              "$type": "BattleModel.ThisBuffOwner"
+            }
+          }
         ]
       }
     }

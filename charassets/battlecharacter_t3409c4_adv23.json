@@ -16,21 +16,10 @@
         "對施術者的目標破甲(攻擊力 x0.75)"
       ],
       "S3": [
-        "對施術者的對方全體穿透(攻擊力 x0.5)"
+        "對施術者的對方全體穿透(攻擊力 x0.3)"
       ]
     },
     "技能組": {
-      "CounterAllyDead": [
-        {
-          "CoolDown": 3,
-          "技能列表": [
-            "施展S3"
-          ],
-          "條件": [
-          ],
-          "目標": ""
-        }
-      ],
       "S1": [
         {
           "CoolDown": 3,
@@ -52,11 +41,22 @@
           ],
           "目標": "施術者的對方首位"
         }
+      ],
+      "S3": [
+        {
+          "CoolDown": 3,
+          "技能列表": [
+            "施展S3"
+          ],
+          "條件": [
+          ],
+          "目標": ""
+        }
       ]
     },
-    "攻擊力": 15,
-    "攻擊力等級調整後": 14,
-    "敵人AI": "S2",
+    "攻擊力": 10,
+    "攻擊力等級調整後": 9,
+    "敵人AI": "S2 -> S3",
     "消魂設置": {
       "Type1": "S1",
       "Type2": "S2",
@@ -70,9 +70,9 @@
     "被動Buff": [
       "賦予永久taunt(嘲諷)",
       "賦予永久Adv23_FinishTurnCount",
-      "賦予永久CounterAttackAllyDead(本角色的同伴死亡時，本角色立即行動一次。)",
       "賦予永久adapt(適性)",
-      "賦予永久momentum"
+      "賦予永久momentum",
+      "賦予永久1層defense_up_small(減傷)"
     ],
     "起始CD": 0,
     "預設CD": 0
@@ -99,7 +99,8 @@
   "_characterAI": {
     "$type": "BattleModel.SequenceEnemyAI",
     "OrderList": [
-      "S2"
+      "S2",
+      "S3"
     ]
   },
   "_defaultCoolDown": 0,
@@ -126,14 +127,6 @@
       }
     },
     {
-      "BuffId": "CounterAttackAllyDead",
-      "Forever": true,
-      "LevelStack": 0,
-      "OverwriteDuration": -1,
-      "UserDefineVariable": {
-      }
-    },
-    {
       "BuffId": "adapt",
       "Forever": true,
       "LevelStack": 0,
@@ -148,10 +141,18 @@
       "OverwriteDuration": -1,
       "UserDefineVariable": {
       }
+    },
+    {
+      "BuffId": "defense_up_small",
+      "Forever": true,
+      "LevelStack": 1,
+      "OverwriteDuration": -1,
+      "UserDefineVariable": {
+      }
     }
   ],
   "_pose": "Stand",
-  "_power": 15,
+  "_power": 10,
   "_reviveCount": 0,
   "_skills": {
     "Arrive1": {
@@ -303,7 +304,7 @@
                   "$type": "BattleModel.SkillCasterPower",
                   "basePower": false
                 },
-                "_ratio": 0.5
+                "_ratio": 0.3
               }
             }
           ]
@@ -312,29 +313,6 @@
     }
   },
   "_skillsetTable": {
-    "CounterAllyDead": {
-      "ComboList": [
-        {
-          "ConditionList": [
-          ],
-          "SkillList": [
-            {
-              "ConditionList": [
-              ],
-              "SkillID": "S3",
-              "_conditionalSequences": [
-              ],
-              "seq": "",
-              "t": null
-            }
-          ],
-          "_characterCoolDown": 3,
-          "assignTarget": null,
-          "icon": 0
-        }
-      ],
-      "_isViewSkillSet": false
-    },
     "S1": {
       "ComboList": [
         {
@@ -386,6 +364,29 @@
               }
             }
           },
+          "icon": 0
+        }
+      ],
+      "_isViewSkillSet": false
+    },
+    "S3": {
+      "ComboList": [
+        {
+          "ConditionList": [
+          ],
+          "SkillList": [
+            {
+              "ConditionList": [
+              ],
+              "SkillID": "S3",
+              "_conditionalSequences": [
+              ],
+              "seq": "",
+              "t": null
+            }
+          ],
+          "_characterCoolDown": 3,
+          "assignTarget": null,
           "icon": 0
         }
       ],

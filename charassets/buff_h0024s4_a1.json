@@ -6,16 +6,29 @@
         "效果": [
           {
             "效果": [
-              "對本角色觸發S3",
-              "對玩家中符合(的AssetId包含＂28s＂字串)的角色所有角色賦予1回合h0024s5_A1_no_trigger"
+              "對本狀態的變數二增加1"
             ],
             "條件": [
-              "本狀態的變數一 == 1",
-              "(本角色的HP > 0) 或 (本角色 擁有任何一個 有(Undead)標籤 的狀態)",
-              "本角色不是施術者",
-              "本角色沒有h0024s5_A1_no_trigger狀態"
+              "本狀態的變數一 == 1"
             ]
           },
+          {
+            "效果": [
+              "對本角色觸發S3"
+            ],
+            "條件": [
+              "(本狀態的變數二 == 2) 或 (本狀態的變數二 == 5)",
+              "本角色 {\"$type\":\"BattleModel.IsCharacterAlive\"}",
+              "本角色不是施術者",
+              "本狀態的變數一 == 1"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnEachSkillSetStart": {
+        "效果": [
           {
             "效果": [
               "對本狀態的變數一改為0"
@@ -41,37 +54,72 @@
           "本角色不是施術者",
           "施展的技能效果中包含(Attack)屬性",
           "本角色是指定目標",
-          "本角色擁有taunt(嘲諷)狀態",
-          "25%機率"
+          "本角色擁有taunt(嘲諷)狀態"
         ]
       },
       "OnTurnBegin": {
         "效果": [
           {
             "效果": [
-              "對本角色移除狀態h0024s5_A1_no_trigger"
+              "對本狀態的變數二改為0"
             ],
             "條件": [
             ]
           }
         ],
         "條件": [
+          "目前回合輪到本角色"
         ]
       }
     },
     "持續時間": 1,
-    "最高層數": 99,
+    "最高層數": 0,
     "標籤": "Hidden | NotRemoveWhenDie | Forever"
   },
   "$type": "BattleModel.Buff",
   "ReferenceBuffKeys": [
-    "h0024s5_A1_no_trigger"
   ],
   "_actionTable": [
     {
       "Key": 8,
       "Value": {
         "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 1,
+                    "targetField": 8,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 1
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.ThisBuff"
+                  },
+                  "targetField": 4
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 1
+                }
+              }
+            ]
+          },
           {
             "Actions": [
               {
@@ -104,81 +152,49 @@
                     "skillsetId": "S3"
                   }
                 }
-              },
-              {
-                "TargetField": {
-                  "$type": "BattleModel.OperateCharacterGroup",
-                  "group": {
-                    "$type": "BattleModel.CharGroupWhere",
-                    "condition": {
-                      "$type": "BattleModel.AssetIdHasSubString",
-                      "subString": "28s"
-                    },
-                    "group": {
-                      "$type": "BattleModel.PVEPlayerTeam",
-                      "includeDead": false,
-                      "includeEmpty": false
-                    }
-                  },
-                  "operation": {
-                    "$type": "BattleModel.AddBuff",
-                    "buffToAdd": {
-                      "BuffId": "h0024s5_A1_no_trigger",
-                      "Forever": false,
-                      "LevelStack": 0,
-                      "OverwriteDuration": 1,
-                      "UserDefineVariable": {
-                      }
-                    }
-                  }
-                }
               }
             ],
             "Conditions": [
-              {
-                "$type": "BattleModel.IntCompare",
-                "left": {
-                  "$type": "BattleModel.IntBuffField",
-                  "buff": {
-                    "$type": "BattleModel.ThisBuff"
-                  },
-                  "targetField": 4
-                },
-                "op": 0,
-                "right": {
-                  "$type": "BattleModel.ConstanctInt",
-                  "constant": 1
-                }
-              },
               {
                 "$type": "BattleModel.OrConditions",
                 "cond1": {
                   "$type": "BattleModel.IntCompare",
                   "left": {
-                    "$type": "BattleModel.IntCharaterField",
-                    "character": {
-                      "$type": "BattleModel.ThisBuffOwner"
+                    "$type": "BattleModel.IntBuffField",
+                    "buff": {
+                      "$type": "BattleModel.ThisBuff"
                     },
-                    "targetField": 0
+                    "targetField": 8
                   },
-                  "op": 2,
+                  "op": 0,
                   "right": {
                     "$type": "BattleModel.ConstanctInt",
-                    "constant": 0
+                    "constant": 2
                   }
                 },
                 "cond2": {
-                  "$type": "BattleModel.CharacterCondition",
-                  "character": {
-                    "$type": "BattleModel.ThisBuffOwner"
+                  "$type": "BattleModel.IntCompare",
+                  "left": {
+                    "$type": "BattleModel.IntBuffField",
+                    "buff": {
+                      "$type": "BattleModel.ThisBuff"
+                    },
+                    "targetField": 8
                   },
-                  "condition": {
-                    "$type": "BattleModel.HasAnyConditionalBuff",
-                    "buffCondition": {
-                      "$type": "BattleModel.CheckBuffHasTag",
-                      "tag": 128
-                    }
+                  "op": 0,
+                  "right": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 5
                   }
+                }
+              },
+              {
+                "$type": "BattleModel.CharacterCondition",
+                "character": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                },
+                "condition": {
+                  "$type": "BattleModel.IsCharacterAlive"
                 }
               },
               {
@@ -194,17 +210,31 @@
                 }
               },
               {
-                "$type": "BattleModel.Inverse",
-                "condition": {
-                  "$type": "BattleModel.CharacterHasBuff",
-                  "buffId": "h0024s5_A1_no_trigger",
-                  "character": {
-                    "$type": "BattleModel.ThisBuffOwner"
-                  }
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.ThisBuff"
+                  },
+                  "targetField": 4
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 1
                 }
               }
             ]
-          },
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 4,
+      "Value": {
+        "Actions": [
           {
             "Actions": [
               {
@@ -228,6 +258,42 @@
           }
         ],
         "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 1,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 8,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+            ]
+          }
+        ],
+        "Conditions": [
+          {
+            "$type": "BattleModel.CurrentTurnBelongsTo",
+            "character": {
+              "$type": "BattleModel.ThisBuffOwner"
+            }
+          }
         ]
       }
     },
@@ -289,45 +355,13 @@
             "character": {
               "$type": "BattleModel.ThisBuffOwner"
             }
-          },
-          {
-            "$type": "BattleModel.RandomCondition",
-            "lessThan": 1,
-            "randBase": 4
           }
-        ]
-      }
-    },
-    {
-      "Key": 1,
-      "Value": {
-        "Actions": [
-          {
-            "Actions": [
-              {
-                "TargetField": {
-                  "$type": "BattleModel.OperateCharacter",
-                  "character": {
-                    "$type": "BattleModel.ThisBuffOwner"
-                  },
-                  "operation": {
-                    "$type": "BattleModel.RemoveBuff",
-                    "buffId": "h0024s5_A1_no_trigger"
-                  }
-                }
-              }
-            ],
-            "Conditions": [
-            ]
-          }
-        ],
-        "Conditions": [
         ]
       }
     }
   ],
   "_duration": 1,
-  "_maxLevel": 99,
+  "_maxLevel": 0,
   "_orderTable": [
     {
       "Key": 8,

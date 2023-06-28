@@ -10,7 +10,8 @@
             ],
             "條件": [
               "({\"$type\":\"BattleModel.ThisLevelTurnCount\"} mod 3) == 0",
-              "目前回合輪到敵人首位"
+              "目前回合輪到敵人首位",
+              "({\"group\":{\"reference\":{\"$type\":\"BattleModel.ThisBuffOwner\"},\"excludeSelf\":false,\"includeDead\":false,\"includeEmpty\":false,\"$type\":\"BattleModel.SelfTeamChars\"},\"buffId\":\"rage\",\"$type\":\"BattleModel.BuffsOnCharGroup\"}中的層數)的總和 < 9"
             ]
           },
           {
@@ -104,6 +105,37 @@
                     "$type": "BattleModel.PVEEnemyTeam",
                     "includeDead": false,
                     "includeEmpty": false
+                  }
+                }
+              },
+              {
+                "$type": "BattleModel.Inverse",
+                "condition": {
+                  "$type": "BattleModel.IntCompare",
+                  "left": {
+                    "$type": "BattleModel.SumOfInts",
+                    "group": {
+                      "$type": "BattleModel.IntsOnBuffGroup",
+                      "group": {
+                        "$type": "BattleModel.BuffsOnCharGroup",
+                        "buffId": "rage",
+                        "group": {
+                          "$type": "BattleModel.SelfTeamChars",
+                          "excludeSelf": false,
+                          "includeDead": false,
+                          "includeEmpty": false,
+                          "reference": {
+                            "$type": "BattleModel.ThisBuffOwner"
+                          }
+                        }
+                      },
+                      "targetField": 1
+                    }
+                  },
+                  "op": 4,
+                  "right": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 9
                   }
                 }
               }

@@ -1,0 +1,122 @@
+{
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "OnEachSkillTargetEffect": {
+        "效果": [
+          {
+            "效果": [
+              "技能效果增加((本狀態的層數 * 90))%",
+              "對本角色{\"operation\":{\"buffToAdd\":{\"BuffId\":\"FSM_t0182sx_waterspout_trigger\",\"OverwriteDuration\":1,\"Forever\":false,\"LevelStack\":1,\"UserDefineVariable\":{}},\"$type\":\"BattleModel.AddBuff\"},\"viewActionTime\":{\"TriggerTime\":{\"TagName\":\"BreakArmor\",\"TagType\":\"SkillProperty\"},\"Index\":\"Every\",\"FrameOffset\":0},\"$type\":\"BattleModel.OperateCharacterViewActionTime\"}"
+            ],
+            "條件": [
+              "本角色是指定目標",
+              "施展的技能效果中包含(BreakArmor)屬性"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 4,
+    "標籤": "StackIndependent | InfinityTrigger"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+    "FSM_t0182sx_waterspout_trigger"
+  ],
+  "_actionTable": [
+    {
+      "Key": 1024,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.BonusEffectForSkillProperty",
+                  "isPercent": true,
+                  "property": -1,
+                  "value": {
+                    "$type": "BattleModel.MultiplyInt",
+                    "left": {
+                      "$type": "BattleModel.IntBuffField",
+                      "buff": {
+                        "$type": "BattleModel.ThisBuff"
+                      },
+                      "targetField": 1
+                    },
+                    "right": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 90
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.OperateCharacterViewActionTime",
+                    "operation": {
+                      "$type": "BattleModel.AddBuff",
+                      "buffToAdd": {
+                        "BuffId": "FSM_t0182sx_waterspout_trigger",
+                        "Forever": false,
+                        "LevelStack": 1,
+                        "OverwriteDuration": 1,
+                        "UserDefineVariable": {
+                        }
+                      }
+                    },
+                    "viewActionTime": {
+                      "FrameOffset": 0,
+                      "Index": "Every",
+                      "TriggerTime": {
+                        "TagName": "BreakArmor",
+                        "TagType": "SkillProperty"
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                },
+                "right": {
+                  "$type": "BattleModel.ThisSpecifiedTarget"
+                }
+              },
+              {
+                "$type": "BattleModel.ThisSkillEffectTagContains",
+                "containsAll": 16
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 4,
+  "_orderTable": [
+    {
+      "Key": 1024,
+      "Value": {
+        "Order": 0
+      }
+    }
+  ],
+  "_tag": 33792
+}
