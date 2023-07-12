@@ -1,6 +1,6 @@
 import _ from "lodash";
 import { ImperiumData } from "../imperium-data";
-import { localizationString } from "../localization";
+import { achReplacer, localizationString } from "../localization";
 import { wikiH1, wikiH2 } from "../templates/wikiheader";
 import { wikitable, WikiTableStruct } from "../templates/wikitable";
 import { item2wikiWithType } from "../wiki-item";
@@ -14,21 +14,18 @@ export default function wikiQuestAchievements() {
 
 	const groups = _.groupBy(QuestAchievementsTable.rows, (r) => r.get("groupId"));
 	for (const [groupId, group] of Object.entries(groups)) {
-
 		const table: WikiTableStruct = {
 			attributes: `class="wikitable mw-collapsible"`,
-			rows: [
-				[
-					`! 獎勵`,
-					`! 說明`,
-					`! 詳細說明`,
-				],
-			],
+			rows: [[`! 獎勵`, `! 說明`, `! 詳細說明`]],
 		};
 		for (const entry of group) {
 			const conditions = getAchievementConditions(entry.get("conditionGroupId"));
 			table.rows.push([
-				item2wikiWithType(entry.get("giveType"), entry.get("giveLinkId"), entry.get("giveAmount")),
+				item2wikiWithType(
+					entry.get("giveType"),
+					entry.get("giveLinkId"),
+					entry.get("giveAmount")
+				),
 				achReplacer(localizationString("QuestAchievement")(entry.get("descriptionKey"))),
 				wikiNextLine(conditions.join("\n")),
 			]);
@@ -38,8 +35,4 @@ export default function wikiQuestAchievements() {
 	}
 
 	return out;
-}
-
-function achReplacer(string: string): string {
-	return string.replace(/\$ACH\(.*?\)/g, "");
 }

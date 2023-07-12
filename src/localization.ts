@@ -73,9 +73,7 @@ export function gamedataString(
 			const row = table.find(
 				(r) =>
 					r.get(key) ==
-					(typeof keyPrefix == "function"
-						? keyPrefix(str)
-						: keyPrefix + str)
+					(typeof keyPrefix == "function" ? keyPrefix(str) : keyPrefix + str)
 			);
 			if (row) {
 				if (typeof value == "string") {
@@ -107,9 +105,7 @@ export function localizationString(
 			const row = table.find(
 				(r) =>
 					r.get(key) ==
-					(typeof keyPrefix == "function"
-						? keyPrefix(str)
-						: keyPrefix + str)
+					(typeof keyPrefix == "function" ? keyPrefix(str) : keyPrefix + str)
 			);
 			if (row) return row.get(value);
 		}
@@ -117,10 +113,7 @@ export function localizationString(
 	};
 }
 
-export function applyStringRefer(
-	str: string,
-	replacer = stringReferReplacer
-): string {
+export function applyStringRefer(str: string, replacer = stringReferReplacer): string {
 	return str.replace(
 		/\$(INFO|BUFF|TRIG)\:\((\w+)(?:,\(([\w\.,]*)\))?\)/g,
 		(substring: string, type: string, key: string, arg: string) => {
@@ -130,12 +123,7 @@ export function applyStringRefer(
 	);
 }
 
-export function stringReferReplacer(
-	substring: string,
-	type: string,
-	key: string,
-	arg: string
-) {
+export function stringReferReplacer(substring: string, type: string, key: string, arg: string) {
 	if (type === "INFO") {
 		const args = arg.split(",");
 		return localizationString("BaseSkillInfo")(key).replace(
@@ -152,14 +140,16 @@ export function stringReferReplacer(
 		return localizationString("BaseBuff")(key);
 	}
 	if (type === "TRIG") {
-		return new TemplateString(
-			localizationString("BaseBuff")("format")
-		).apply([
+		return new TemplateString(localizationString("BaseBuff")("format")).apply([
 			localizationString("BaseBuff")("TRIGGER"),
 			localizationString("BaseBuff")(key),
 		]);
 	}
 	return substring;
+}
+
+export function achReplacer(string: string): string {
+	return string.replace(/\$ACH\(.*?\)/g, "");
 }
 
 export function localizationStringAuto(): Func1 {
@@ -181,10 +171,7 @@ export function localizationItemNameWithType(withCurrencyType = false): Func1 {
 		switch (strings[1]) {
 			default:
 				if (withCurrencyType) {
-					return call2(
-						currency2Id(),
-						localizationItemName()
-					)(strings[1]);
+					return call2(currency2Id(), localizationItemName())(strings[1]);
 				}
 				break;
 			case "Item":
@@ -193,18 +180,14 @@ export function localizationItemNameWithType(withCurrencyType = false): Func1 {
 				return localizationItemName(true)(strings[0]);
 			case "Monster":
 				// return localizationMonsterName()(strings[0]);
-				return `${localizationMonsterNameById()(
-					strings[0]
-				)}:${gamedataString(
+				return `${localizationMonsterNameById()(strings[0])}:${gamedataString(
 					"HomelandMonster",
 					"id",
 					"rank"
 				)(strings[0])}`;
 			case "Hero": {
 				const [heroId, rankId] = strings[0].split("_");
-				return `${localizationCharacterNameByHeroId()(heroId)}_${rank()(
-					rankId
-				)}`;
+				return `${localizationCharacterNameByHeroId()(heroId)}_${rank()(rankId)}`;
 			}
 			case "Diligent":
 				return localizationChapterName()(strings[0]);
@@ -230,10 +213,7 @@ export function localizationItemName(isExplore = false): Func1 {
 	return call2(
 		ifor(
 			localizationString("Item", "item_name_"),
-			call2(
-				gamedataString("Items", "id", "localizationKeyName"),
-				localizationString("Item")
-			),
+			call2(gamedataString("Items", "id", "localizationKeyName"), localizationString("Item")),
 			gamedataString("Items", "id", "name"),
 			gamedataString("Items", "id", "iconKey")
 		),
@@ -287,10 +267,7 @@ export function localizationCurrencyName(): Func1 {
 }
 
 export function localizationCharacterNameByHeroId(): Func1 {
-	return call2(
-		gamedataString("Heroes", "id", "model"),
-		localizationCharacterName(false)
-	);
+	return call2(gamedataString("Heroes", "id", "model"), localizationCharacterName(false));
 }
 
 /**
@@ -298,10 +275,7 @@ export function localizationCharacterNameByHeroId(): Func1 {
  *
  * `t0033s5_a2` => `碎牙`
  */
-export function localizationCharacterName(
-	includeSkillset = true,
-	includeNoteName = true
-): Func1 {
+export function localizationCharacterName(includeSkillset = true, includeNoteName = true): Func1 {
 	return call2(
 		ifor(
 			includeSkillset
@@ -313,9 +287,7 @@ export function localizationCharacterName(
 				: nothing(),
 			localizationString("CharacterName"),
 			localizationString("Default"),
-			includeNoteName
-				? gamedataString("Heroes", "model", "name")
-				: nothing()
+			includeNoteName ? gamedataString("Heroes", "model", "name") : nothing()
 		),
 		(str) => characterNameNormalization(str)
 	);
@@ -323,10 +295,7 @@ export function localizationCharacterName(
 
 export function characterNameNormalization(name: string) {
 	return wikiTitleEscape(
-		name
-			.replace(/\sSP$/, "SP")
-			.replace(/\sMZ$/, "MZ")
-			.replace(/\sOS$/, "OS")
+		name.replace(/\sSP$/, "SP").replace(/\sMZ$/, "MZ").replace(/\sOS$/, "OS")
 	);
 }
 
@@ -335,10 +304,7 @@ export function localizationCharacterNameWithDefault(): Func1 {
 }
 
 export function localizationExploreBuildingName(): Func1 {
-	return localizationString(
-		"ExploreBuilding",
-		(str) => `${str.toLowerCase()}_title`
-	);
+	return localizationString("ExploreBuilding", (str) => `${str.toLowerCase()}_title`);
 }
 
 export function localizationHomelandBuildingName(): Func1 {
@@ -372,11 +338,7 @@ export function localizationTavernMissionName(withRank = false): Func1 {
 	);
 	return (str) => {
 		if (withRank) {
-			return `【${gamedataString(
-				"TavernMission",
-				"id",
-				"questRank"
-			)(str)} ★】${namer(str)}`;
+			return `【${gamedataString("TavernMission", "id", "questRank")(str)} ★】${namer(str)}`;
 		} else {
 			return namer(str);
 		}
@@ -385,10 +347,7 @@ export function localizationTavernMissionName(withRank = false): Func1 {
 
 export function localizationMonsterNameById(): Func1 {
 	return ifor(
-		call2(
-			gamedataString("HomelandMonster", "id", "keyName"),
-			localizationCharacterName()
-		),
+		call2(gamedataString("HomelandMonster", "id", "keyName"), localizationCharacterName()),
 		gamedataString("HomelandMonster", "id", "keyName"),
 		something()
 	);
@@ -440,10 +399,7 @@ export function weekday(): Func1 {
 	};
 }
 
-export function rank(
-	defaultReturn: string = EMPTY,
-	custom: Record<string, string> = {}
-): Func1 {
+export function rank(defaultReturn: string = EMPTY, custom: Record<string, string> = {}): Func1 {
 	return (n) => {
 		if (n in custom) {
 			return custom[n];
@@ -503,36 +459,25 @@ export function white(): Func1 {
 
 export function localizationVolumeNameById(): Func1 {
 	return ifor(
-		call2(
-			gamedataString("Volume", "order", "name"),
-			localizationString("Metagame")
-		),
+		call2(gamedataString("Volume", "order", "name"), localizationString("Metagame")),
 		gamedataString("Volume", "order", "title")
 	);
 }
 
 export function localizationChapterName(): Func1 {
-	return call2(
-		gamedataString("Chapters", "id", "title"),
-		localizationString("RegionName")
-	);
+	return call2(gamedataString("Chapters", "id", "title"), localizationString("RegionName"));
 }
 
 /**
  * `main_001_201` => `1-1 王國治安官`
  */
 export function localizationQuestName(): Func1 {
-	return call2(
-		gamedataString("Quests", "id", "levelId"),
-		localizationString("QuestName")
-	);
+	return call2(gamedataString("Quests", "id", "levelId"), localizationString("QuestName"));
 }
 
 export function localizationQuestModeName(): Func1 {
-	return call2(
-		gamedataString("QuestMode", "id", "modeI2"),
-		localizationStringAuto(),
-		(str) => str.trim()
+	return call2(gamedataString("QuestMode", "id", "modeI2"), localizationStringAuto(), (str) =>
+		str.trim()
 	);
 }
 
