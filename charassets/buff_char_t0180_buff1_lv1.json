@@ -1,0 +1,208 @@
+{
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "OnEachSkillTargetEffect": {
+        "效果": [
+          {
+            "效果": [
+              "技能效果增加(({\"StoneCondition\":{\"BuffLabel\":{\"BuffLabel\":\"generalBuff\",\"BuffIdList\":[\"bonusAttackPower\",\"defense_up_small\",\"dexterity\",\"damage_absorption\",\"ArmorToBlood\",\"regeneration\",\"rage\",\"warfare\",\"leader\"]},\"$type\":\"BattleModel.StoneBuffBelongLabel\"},\"$type\":\"BattleModel.CountOfConditionalStone\"} * 10))%"
+            ],
+            "條件": [
+              "施術者是玩家的一員",
+              "{\"StoneCondition\":{\"BuffLabel\":{\"BuffLabel\":\"generalBuff\",\"BuffIdList\":[\"bonusAttackPower\",\"defense_up_small\",\"dexterity\",\"damage_absorption\",\"ArmorToBlood\",\"regeneration\",\"rage\",\"warfare\",\"leader\"]},\"$type\":\"BattleModel.StoneBuffBelongLabel\"},\"$type\":\"BattleModel.CountOfConditionalStone\"} <= 4"
+            ]
+          },
+          {
+            "效果": [
+              "技能效果增加(40)%"
+            ],
+            "條件": [
+              "施術者是玩家的一員",
+              "{\"StoneCondition\":{\"BuffLabel\":{\"BuffLabel\":\"generalBuff\",\"BuffIdList\":[\"bonusAttackPower\",\"defense_up_small\",\"dexterity\",\"damage_absorption\",\"ArmorToBlood\",\"regeneration\",\"rage\",\"warfare\",\"leader\"]},\"$type\":\"BattleModel.StoneBuffBelongLabel\"},\"$type\":\"BattleModel.CountOfConditionalStone\"} > 4"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 99,
+    "標籤": "NotRemoveAfterBattle | NotRemoveWhenDie | Forever | InfinityTrigger"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+    "bonusAttackPower",
+    "defense_up_small",
+    "dexterity",
+    "damage_absorption",
+    "ArmorToBlood",
+    "regeneration",
+    "rage",
+    "warfare",
+    "leader",
+    "dexterity_trigger",
+    "dexterity_fightback_0",
+    "dexterity_fightback_1",
+    "dexterity_fightback_2",
+    "dexterity_fightback_3",
+    "dexterity_fightback_4",
+    "b0028sx_dodge",
+    "damage_absorption_trigger",
+    "ArmorToBlood_trigger",
+    "regeneration_trigger",
+    "follower"
+  ],
+  "_actionTable": [
+    {
+      "Key": 1024,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.BonusEffectForSkillProperty",
+                  "isPercent": true,
+                  "property": -1,
+                  "value": {
+                    "$type": "BattleModel.MultiplyInt",
+                    "left": {
+                      "$type": "BattleModel.CountOfConditionalStone",
+                      "StoneCondition": {
+                        "$type": "BattleModel.StoneBuffBelongLabel",
+                        "BuffLabel": {
+                          "BuffIdList": [
+                            "bonusAttackPower",
+                            "defense_up_small",
+                            "dexterity",
+                            "damage_absorption",
+                            "ArmorToBlood",
+                            "regeneration",
+                            "rage",
+                            "warfare",
+                            "leader"
+                          ],
+                          "BuffLabel": "generalBuff"
+                        }
+                      }
+                    },
+                    "right": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 10
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterInside",
+                "group": {
+                  "$type": "BattleModel.PVEPlayerTeam",
+                  "includeDead": false,
+                  "includeEmpty": false
+                },
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.CountOfConditionalStone",
+                  "StoneCondition": {
+                    "$type": "BattleModel.StoneBuffBelongLabel",
+                    "BuffLabel": {
+                      "BuffIdList": [
+                        "bonusAttackPower",
+                        "defense_up_small",
+                        "dexterity",
+                        "damage_absorption",
+                        "ArmorToBlood",
+                        "regeneration",
+                        "rage",
+                        "warfare",
+                        "leader"
+                      ],
+                      "BuffLabel": "generalBuff"
+                    }
+                  }
+                },
+                "op": 3,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 4
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.BonusEffectForSkillProperty",
+                  "isPercent": true,
+                  "property": -1,
+                  "value": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 40
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterInside",
+                "group": {
+                  "$type": "BattleModel.PVEPlayerTeam",
+                  "includeDead": false,
+                  "includeEmpty": false
+                },
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.CountOfConditionalStone",
+                  "StoneCondition": {
+                    "$type": "BattleModel.StoneBuffBelongLabel",
+                    "BuffLabel": {
+                      "BuffIdList": [
+                        "bonusAttackPower",
+                        "defense_up_small",
+                        "dexterity",
+                        "damage_absorption",
+                        "ArmorToBlood",
+                        "regeneration",
+                        "rage",
+                        "warfare",
+                        "leader"
+                      ],
+                      "BuffLabel": "generalBuff"
+                    }
+                  }
+                },
+                "op": 2,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 4
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 99,
+  "_orderTable": {
+  },
+  "_tag": 32838
+}

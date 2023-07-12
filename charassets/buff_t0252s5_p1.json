@@ -6,12 +6,23 @@
         "效果": [
           {
             "效果": [
-              "對本角色移除狀態t0252s5_P2(檔位)",
+              "對本角色{\"operation\":{\"buffId\":\"t0252s5_P2\",\"$type\":\"BattleModel.RemoveBuff\"},\"viewActionTime\":{\"TriggerTime\":{\"TagName\":\"SkillStart\",\"TagType\":\"TriggerTimeEnum\"},\"Index\":\"Last\",\"FrameOffset\":0},\"$type\":\"BattleModel.OperateCharacterViewActionTime\"}",
               "對本角色賦予永久1層t0252s5_P2(檔位)"
             ],
             "條件": [
               "施術者是本角色",
               "施展的技能組是S3"
+            ]
+          },
+          {
+            "效果": [
+              "立即施展技能：對本角色{\"_isMultiple\":true,\"GroupSkill\":{\"$type\":\"BattleModel.SelfAndGuildAssistantSkill\"},\"SingleSkill\":null,\"_operator\":1,\"_value\":{\"constant\":-1,\"$type\":\"BattleModel.ConstanctInt\"},\"Tag\":131076,\"_keyString\":\"1\",\"$type\":\"BattleModel.AssistantModifyCDSkillEffect\"}",
+              "對本狀態的變數一增加1"
+            ],
+            "條件": [
+              "施術者是本角色",
+              "施展的技能組是S1",
+              "本狀態的變數一 == 0"
             ]
           }
         ],
@@ -22,10 +33,11 @@
         "效果": [
           {
             "效果": [
-              "對本角色賦予永久1層t0252s5_P2(檔位)"
+              "對本狀態的變數一改為0",
+              "對本狀態的變數二改為0"
             ],
             "條件": [
-              "本角色 沒有t0252s5_P2(檔位)狀態"
+              "目前回合輪到本角色"
             ]
           }
         ],
@@ -69,8 +81,19 @@
                     "$type": "BattleModel.ThisBuffOwner"
                   },
                   "operation": {
-                    "$type": "BattleModel.RemoveBuff",
-                    "buffId": "t0252s5_P2"
+                    "$type": "BattleModel.OperateCharacterViewActionTime",
+                    "operation": {
+                      "$type": "BattleModel.RemoveBuff",
+                      "buffId": "t0252s5_P2"
+                    },
+                    "viewActionTime": {
+                      "FrameOffset": 0,
+                      "Index": "Last",
+                      "TriggerTime": {
+                        "TagName": "SkillStart",
+                        "TagType": "TriggerTimeEnum"
+                      }
+                    }
                   }
                 }
               },
@@ -107,6 +130,86 @@
               {
                 "$type": "BattleModel.ThisSkillSetIdEqual",
                 "id": "S3"
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": null,
+                    "single": {
+                      "$type": "BattleModel.ThisBuffOwner"
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.AssistantModifyCDSkillEffect",
+                        "GroupSkill": {
+                          "$type": "BattleModel.SelfAndGuildAssistantSkill"
+                        },
+                        "SingleSkill": null,
+                        "Tag": 131076,
+                        "_isMultiple": true,
+                        "_keyString": "1",
+                        "_operator": 1,
+                        "_value": {
+                          "$type": "BattleModel.ConstanctInt",
+                          "constant": -1
+                        }
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": false
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 1,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 1
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                },
+                "right": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                }
+              },
+              {
+                "$type": "BattleModel.ThisSkillSetIdEqual",
+                "id": "S1"
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.ThisBuff"
+                  },
+                  "targetField": 4
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 0
+                }
               }
             ]
           }
@@ -183,19 +286,30 @@
             "Actions": [
               {
                 "TargetField": {
-                  "$type": "BattleModel.OperateCharacter",
-                  "character": {
-                    "$type": "BattleModel.ThisBuffOwner"
-                  },
+                  "$type": "BattleModel.OperateThisBuff",
                   "operation": {
-                    "$type": "BattleModel.AddBuff",
-                    "buffToAdd": {
-                      "BuffId": "t0252s5_P2",
-                      "Forever": true,
-                      "LevelStack": 1,
-                      "OverwriteDuration": -1,
-                      "UserDefineVariable": {
-                      }
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 0
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 8,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 0
                     }
                   }
                 }
@@ -203,16 +317,9 @@
             ],
             "Conditions": [
               {
-                "$type": "BattleModel.CharacterCondition",
+                "$type": "BattleModel.CurrentTurnBelongsTo",
                 "character": {
                   "$type": "BattleModel.ThisBuffOwner"
-                },
-                "condition": {
-                  "$type": "BattleModel.InverseC",
-                  "condition": {
-                    "$type": "BattleModel.HasBuff",
-                    "buffId": "t0252s5_P2"
-                  }
                 }
               }
             ]
