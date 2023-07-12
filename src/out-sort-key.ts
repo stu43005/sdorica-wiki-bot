@@ -1,22 +1,8 @@
-const KEYS = [
-	"id",
-	"Key",
-	"Chinese",
-	"ChineseSimplified",
-	"English",
-	"Japanese",
-	"Korean",
-];
+const KEYS = ["id", "Key", "Chinese", "ChineseSimplified", "English", "Japanese", "Korean"];
 
 const TABLE_KEYS: Record<string, string[]> = {
 	AbilityDrop: ["groupId", "abilityId", "type", "weight"],
-	AchievementConditions: [
-		"conditionGroupId",
-		"type",
-		"param1",
-		"param2",
-		"param3",
-	],
+	AchievementConditions: ["conditionGroupId", "type", "param1", "param2", "param3"],
 	AdventureDailyRank: [
 		"id",
 		"groupId",
@@ -126,24 +112,17 @@ const TABLE_KEYS: Record<string, string[]> = {
 		"giveAmount3",
 	],
 	BuildInAssetBundle: ["type", "effectValue"],
-	BuffInfo: [
-		"id",
-		"localizationNameKey",
-		"localizationInfoKey",
-		"iconKey",
-		"order",
-		"viewable",
-	],
+	BuffInfo: ["id", "localizationNameKey", "localizationInfoKey", "iconKey", "order", "viewable"],
 	BlessEffects: [
 		"id",
 		"groupId",
+		"positionGroup",
+		"order",
 		"iconKey",
 		"i2Key",
-		"positionGroup",
 		"effectType",
 		"effectValue",
 		"effectLevel",
-		"order",
 	],
 	ChapterCount: [
 		"id",
@@ -191,13 +170,7 @@ const TABLE_KEYS: Record<string, string[]> = {
 		"timeDisplay",
 		"weekday",
 	],
-	DiligentGroups: [
-		"id",
-		"chapterId",
-		"diligentId",
-		"diligentAmount",
-		"levelGroup",
-	],
+	DiligentGroups: ["id", "chapterId", "diligentId", "diligentAmount", "levelGroup"],
 	Diligents: [
 		"id",
 		"levelGroup",
@@ -587,15 +560,7 @@ const TABLE_KEYS: Record<string, string[]> = {
 		"giveLinkId3",
 		"giveAmount3",
 	],
-	RankUpItemRefs: [
-		"id",
-		"category",
-		"param1",
-		"refId",
-		"payType",
-		"payLinkId",
-		"payAmount",
-	],
+	RankUpItemRefs: ["id", "category", "param1", "refId", "payType", "payLinkId", "payAmount"],
 	RankUpItems: [
 		"id",
 		"category",

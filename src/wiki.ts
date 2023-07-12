@@ -14,11 +14,11 @@ import { getQuestJsonData } from "./wiki-quest";
 import wikiAdvAchievements from "./wiki/AdvAchievements";
 import wikiAdventure from "./wiki/Adventure";
 import wikiAdventureRank from "./wiki/AdventureRank";
-import { wikiHeroBot } from "./wiki/auto/hero";
 import wikiAvatars from "./wiki/Avatars";
 import wikiBattlefieldDropItems from "./wiki/BattlefieldDropItems";
 import wikiBattlefieldRanks from "./wiki/BattlefieldRanks";
 import wikiBattlefields from "./wiki/Battlefields";
+import wikiBlessEffects from "./wiki/BlessEffects";
 import wikiBuffs from "./wiki/Buffs";
 import wikiChapter from "./wiki/Chapter";
 import wikiCharVoice from "./wiki/CharVoice";
@@ -33,7 +33,6 @@ import wikiFreeHeroes from "./wiki/FreeHeroes";
 import wikiHeroes, { wikiHeroesJson } from "./wiki/Heroes";
 import wikiHomelandBuilding from "./wiki/HomelandBuilding";
 import wikiHomelandMonster from "./wiki/HomelandMonster";
-import wikiIndex from "./wiki/index";
 import wikiLevelUps, { wikiLevelUpsJson } from "./wiki/LevelUps";
 import wikiMissions from "./wiki/Missions";
 import { wikiMonsterTrapJson } from "./wiki/MonsterTrap";
@@ -46,6 +45,8 @@ import wikiTavernMissionCompact from "./wiki/TavernMissionCompact";
 import wikiTavernMissionDrop from "./wiki/TavernMissionDrop";
 import { wikiTips } from "./wiki/Tips";
 import wikiTreasureItems from "./wiki/TreasureItems";
+import { wikiHeroBot } from "./wiki/auto/hero";
+import wikiIndex from "./wiki/index";
 
 const logger = new Logger("wiki");
 
@@ -89,34 +90,23 @@ function wrapHiddenDiv(content: string) {
 }
 
 async function applyHtmlTemplate(title: string, body: string) {
-	const template = await fs.readFile(
-		path.join(__dirname, "./wiki/template.html"),
-		{ encoding: "utf8" }
-	);
+	const template = await fs.readFile(path.join(__dirname, "./wiki/template.html"), {
+		encoding: "utf8",
+	});
 	return template.replace(/<%title%>/g, title).replace(/<%body%>/g, body);
 }
 
 async function outWiki(bot: MWBot | undefined, title: string, out: string) {
-	const ext = out.startsWith("#")
-		? "md"
-		: out.startsWith("<")
-		? "html"
-		: "txt";
+	const ext = out.startsWith("#") ? "md" : out.startsWith("<") ? "html" : "txt";
 	if (ext === "html") {
 		out = await applyHtmlTemplate(title, out);
 	}
-	await outText(
-		path.join(WIKI_PATH, `${title.replace(/:/, "_")}.${ext}`),
-		out
-	);
+	await outText(path.join(WIKI_PATH, `${title.replace(/:/, "_")}.${ext}`), out);
 	if (bot && ext === "txt") {
 		if (title.startsWith("模板:")) {
 			await bot.editOnDifference(title, out);
 		} else {
-			await bot.editOnDifference(
-				`使用者:小飄飄/wiki/${title}`,
-				wrapHiddenDiv(out)
-			);
+			await bot.editOnDifference(`使用者:小飄飄/wiki/${title}`, wrapHiddenDiv(out));
 		}
 	}
 }
@@ -131,11 +121,7 @@ async function outWikiJson(bot: MWBot | undefined, title: string, data: any) {
 	}
 }
 
-async function outWikiConstant(
-	bot: MWBot | undefined,
-	title: string,
-	value: string
-) {
+async function outWikiConstant(bot: MWBot | undefined, title: string, value: string) {
 	if (value && bot) {
 		await bot.editOnDifference(
 			`模板:Constant/${title}`,
@@ -161,6 +147,7 @@ export async function wikiMain(updateWiki?: boolean) {
 	await outWiki(bot, "Battlefields", wikiBattlefields());
 	await outWiki(bot, "BattlefieldDropItems", wikiBattlefieldDropItems());
 	await outWiki(bot, "BattlefieldRanks", wikiBattlefieldRanks());
+	await outWiki(bot, "BlessEffects", wikiBlessEffects());
 	await outWiki(bot, "Buffs", wikiBuffs());
 	await outWiki(bot, "Chapter", wikiChapter());
 	await outWiki(bot, "CharVoice", wikiCharVoice());
@@ -195,20 +182,12 @@ export async function wikiMain(updateWiki?: boolean) {
 	// await outWiki(bot, '模板:Tips', wikiTipsTemplate());
 
 	await outWikiConstant(bot, "MaxLevel", getConstants()("playerMaxLv"));
-	await outWikiConstant(
-		bot,
-		"MaxResonanceLevel",
-		getConstants()("subrankMax")
-	);
+	await outWikiConstant(bot, "MaxResonanceLevel", getConstants()("subrankMax"));
 	await outWikiJson(bot, "Constants", wikiConstantsJson());
 
 	for (const hero of Hero.getAll().filter((hero) => hero.enable)) {
 		for (const skillset of hero.skillSetWithLevels) {
-			await outWikiJson(
-				bot,
-				`Heroes/${skillset.model}`,
-				skillset.toJSON()
-			);
+			await outWikiJson(bot, `Heroes/${skillset.model}`, skillset.toJSON());
 		}
 	}
 

@@ -251,38 +251,26 @@ export const gamedataTeanslateSettings: GamedataRef[] = [
 		func: (str) => {
 			const ItemsTable = ImperiumData.fromGamedata().getTable("Items");
 			const item = ItemsTable.find(
-				(r) =>
-					r.get("category") == "Treasure" &&
-					r.get("effectValue") == str
+				(r) => r.get("category") == "Treasure" && r.get("effectValue") == str
 			);
 			if (item) {
 				return "Item: " + localizationItemName()(item.get("id"));
 			}
 
-			const ExploreItemsTable =
-				ImperiumData.fromGamedata().getTable("ExploreItems");
+			const ExploreItemsTable = ImperiumData.fromGamedata().getTable("ExploreItems");
 			const expitem = ExploreItemsTable.find(
-				(r) =>
-					r.get("category") == "Treasure" &&
-					r.get("effectValue") == str
+				(r) => r.get("category") == "Treasure" && r.get("effectValue") == str
 			);
 			if (expitem) {
-				return (
-					"ExploreItem: " +
-					localizationItemName(true)(expitem.get("id"))
-				);
+				return "ExploreItem: " + localizationItemName(true)(expitem.get("id"));
 			}
 
-			const TavernMissionTable =
-				ImperiumData.fromGamedata().getTable("TavernMission");
+			const TavernMissionTable = ImperiumData.fromGamedata().getTable("TavernMission");
 			const mission = TavernMissionTable.find(
 				(r) => r.get("dropItem") == str || r.get("extraDropItem") == str
 			);
 			if (mission) {
-				return (
-					"TavernMission: " +
-					localizationTavernMissionName()(mission.get("id"))
-				);
+				return "TavernMission: " + localizationTavernMissionName()(mission.get("id"));
 			}
 			return "";
 		},
@@ -295,10 +283,7 @@ export const gamedataTeanslateSettings: GamedataRef[] = [
 	{
 		table: "Gashapons",
 		column: "packId",
-		func: call2(
-			gamedataString("GashaponPacks", "id", "name"),
-			localizationStringAuto()
-		),
+		func: call2(gamedataString("GashaponPacks", "id", "name"), localizationStringAuto()),
 	},
 	{
 		table: "GashaponPacks",
@@ -750,9 +735,7 @@ export const gamedataTeanslateSettings: GamedataRef[] = [
 		column: "groupId",
 		func: (str) => {
 			const item = Item.find(
-				(item) =>
-					item.category == ItemCategory.Voucher &&
-					item.effectValue == +str
+				(item) => item.category == ItemCategory.Voucher && item.effectValue == +str
 			);
 			return item?.name ?? "";
 		},
@@ -905,11 +888,7 @@ export const gamedataTeanslateSettings: GamedataRef[] = [
 		table: "AchievementConditions",
 		column: "conditionGroupId",
 		func: call2(
-			gamedataString(
-				"EvaluateAchievements",
-				"conditionGroupId",
-				"descriptionKey"
-			),
+			gamedataString("EvaluateAchievements", "conditionGroupId", "descriptionKey"),
 			localizationString("QuestAchievement")
 		),
 	},
@@ -934,6 +913,11 @@ export const gamedataTeanslateSettings: GamedataRef[] = [
 		func: localizationString("BlessEffects"),
 	},
 	{
+		table: "QuestExtraSettings",
+		column: "blessTitleDown,blessTitleUp", // blessInfo
+		func: localizationString("BlessEffects"),
+	},
+	{
 		table: "AvgTriggerQuest",
 		column: "chapterId",
 		func: localizationChapterName(),
@@ -947,9 +931,7 @@ export const gamedataTeanslateSettings: GamedataRef[] = [
 
 export function doGamedataTranslation() {
 	const clonedGamedata = new ImperiumData("gamedata");
-	clonedGamedata.setRawData(
-		cloneDeep(ImperiumData.fromGamedata().getRawData())
-	);
+	clonedGamedata.setRawData(cloneDeep(ImperiumData.fromGamedata().getRawData()));
 
 	gamedataTeanslateSettings.forEach((ref) => {
 		const table = ImperiumData.fromGamedata().getTable(ref.table);
@@ -968,10 +950,7 @@ export function doGamedataTranslation() {
 				const data = subcols.map((c) => row.get(c)).join(":");
 				const result = ref.func.call(row, data);
 				if (result) {
-					clonedRow.set(
-						subcols[0],
-						`${row.get(subcols[0])} (${result})`
-					);
+					clonedRow.set(subcols[0], `${row.get(subcols[0])} (${result})`);
 				}
 			});
 		}

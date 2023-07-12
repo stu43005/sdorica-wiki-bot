@@ -8,8 +8,7 @@ import { ItemGiveList } from "./item-give-list";
 import { Quest } from "./quest";
 import { TemplateString } from "./template-string";
 
-const QuestExtraSettingsTable =
-	ImperiumData.fromGamedata().getTable("QuestExtraSettings");
+const QuestExtraSettingsTable = ImperiumData.fromGamedata().getTable("QuestExtraSettings");
 
 const instances: Record<string, QuestExtraSetting> = {};
 let allInstances: QuestExtraSetting[] | null = null;
@@ -140,9 +139,7 @@ export class QuestExtraSetting {
 	#sweepDropGroupId: DropItemsGroup | undefined | null = null;
 	get sweepDropGroupId(): DropItemsGroup | undefined {
 		if (this.#sweepDropGroupId === null) {
-			this.#sweepDropGroupId = DropItemsGroup.get(
-				+this.row.get("sweepDropGroupId")
-			);
+			this.#sweepDropGroupId = DropItemsGroup.get(+this.row.get("sweepDropGroupId"));
 		}
 		return this.#sweepDropGroupId;
 	}
@@ -160,18 +157,17 @@ export class QuestExtraSetting {
 		return +this.row.get("sweepUnlockValue");
 	}
 
+	/**
+	 * 幻境祝福
+	 *
+	 * 對應 `BlessEffects` Table
+	 */
 	get blessGroupId(): string {
 		return this.row.get("blessGroupId");
 	}
-	get blessInfo(): string {
-		return this.row.get("blessInfo");
-	}
-	get blessTitleDown(): string {
-		return this.row.get("blessTitleDown");
-	}
-	get blessTitleUp(): string {
-		return this.row.get("blessTitleUp");
-	}
+	blessInfo = "";
+	blessTitleUp = "";
+	blessTitleDown = "";
 
 	constructor(private row: RowWrapper) {
 		const lockMessage = new TemplateString(
@@ -226,6 +222,14 @@ export class QuestExtraSetting {
 			).apply({
 				requireCount: this.sweepUnlockValue,
 			});
+		}
+
+		if (this.blessGroupId) {
+			this.blessInfo = localizationString("BlessEffects")(this.row.get("blessInfo"));
+			this.blessTitleUp = localizationString("BlessEffects")(this.row.get("blessTitleUp"));
+			this.blessTitleDown = localizationString("BlessEffects")(
+				this.row.get("blessTitleDown")
+			);
 		}
 	}
 }
