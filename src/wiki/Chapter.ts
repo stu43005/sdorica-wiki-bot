@@ -81,6 +81,13 @@ export default function wikiChapter() {
 								...(quest.extraSetting.sweepUnlockText
 									? [`掃蕩解鎖條件：${quest.extraSetting.sweepUnlockText}`]
 									: []),
+								...(quest.extraSetting.questMode
+									? [
+											`關卡模式：${quest.extraSetting.questMode
+												.map((mode) => mode.toString())
+												.join("、")}`,
+									  ]
+									: []),
 								...(quest.extraSetting.blessGroupId
 									? [
 											`幻境祝福：${wikiPageLink(

@@ -6,6 +6,7 @@ import { Hero } from "./hero";
 import { Item } from "./item";
 import { ItemGiveList } from "./item-give-list";
 import { Quest } from "./quest";
+import { QuestMode } from "./quest-mode";
 import { TemplateString } from "./template-string";
 
 const QuestExtraSettingsTable = ImperiumData.fromGamedata().getTable("QuestExtraSettings");
@@ -89,11 +90,16 @@ export class QuestExtraSetting {
 		return !!this.row.get("isExploreQuest");
 	}
 
-	/**
-	 * 對應 `QuestMode` Table
-	 */
-	get questMode(): string {
-		return this.row.get("questMode");
+	#questMode: QuestMode[] | null = null;
+	get questMode(): QuestMode[] {
+		if (this.#questMode === null) {
+			const questMode: string = this.row.get("questMode");
+			this.#questMode = questMode
+				.split(";")
+				.map((id) => QuestMode.get(id))
+				.filter((mode): mode is QuestMode => !!mode);
+		}
+		return this.#questMode;
 	}
 
 	/**
