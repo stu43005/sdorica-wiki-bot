@@ -26,7 +26,7 @@
       ],
       "S3_I2": [
         "對施術者的對方全體穿透(攻擊力 x2)",
-        "對施術者的隊伍後排{\"Ratio\":{\"constant\":1,\"$type\":\"BattleModel.ConstanctFloat\"},\"Tag\":40961,\"_keyString\":\"2\",\"$type\":\"BattleModel.FixedTrueDamageRatioMaxSkillEffect\"}"
+        "對施術者的隊伍後排穿透(攻擊力 x2)、賦予永久vulner(本角色不堪一擊。)"
       ]
     },
     "技能組": {
@@ -34,7 +34,6 @@
         {
           "CoolDown": 1,
           "技能列表": [
-            "施展S1_I2",
             "施展S2_I2"
           ],
           "條件": [
@@ -499,13 +498,32 @@
           },
           "skillEffects": [
             {
-              "$type": "BattleModel.FixedTrueDamageRatioMaxSkillEffect",
-              "Ratio": {
-                "$type": "BattleModel.ConstanctFloat",
-                "constant": 1
-              },
-              "Tag": 40961,
-              "_keyString": "2"
+              "$type": "BattleModel.TrueDamageSkillEffect",
+              "Tag": 8193,
+              "_keyString": "1",
+              "_skillModifier": {
+                "_constant": 0,
+                "_parameter": {
+                  "$type": "BattleModel.SkillCasterPower",
+                  "basePower": false
+                },
+                "_ratio": 2
+              }
+            },
+            {
+              "$type": "BattleModel.AddBuffSkillEffect",
+              "Tag": 132,
+              "_buffData": [
+                {
+                  "BuffId": "vulner",
+                  "Forever": true,
+                  "LevelStack": 0,
+                  "OverwriteDuration": -1,
+                  "UserDefineVariable": {
+                  }
+                }
+              ],
+              "_keyString": "1"
             }
           ]
         }
@@ -519,15 +537,6 @@
           "ConditionList": [
           ],
           "SkillList": [
-            {
-              "ConditionList": [
-              ],
-              "SkillID": "S1_I2",
-              "_conditionalSequences": [
-              ],
-              "seq": "",
-              "t": null
-            },
             {
               "ConditionList": [
               ],
