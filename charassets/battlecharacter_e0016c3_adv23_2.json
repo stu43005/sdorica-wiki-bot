@@ -25,7 +25,7 @@
           ],
           "條件": [
           ],
-          "目標": "玩家首位"
+          "目標": "施術者的對方中HP最低的角色"
         }
       ],
       "S2": [
@@ -78,7 +78,8 @@
     "被動Buff": [
       "賦予永久e0016c3_adv23_P1(本角色死亡後會立即復活。每次復活後血量會依復活次數變化。)",
       "賦予永久adapt(適性)",
-      "賦予永久Adv23_FinishTurnCount_Vulner"
+      "賦予永久Adv23_FinishTurnCount_Vulner",
+      "賦予永久Hint_MinHpTarget(本角色攻擊血量最少的我方角色。)"
     ],
     "起始CD": 1,
     "預設CD": 3
@@ -185,6 +186,14 @@
     },
     {
       "BuffId": "Adv23_FinishTurnCount_Vulner",
+      "Forever": true,
+      "LevelStack": 0,
+      "OverwriteDuration": -1,
+      "UserDefineVariable": {
+      }
+    },
+    {
+      "BuffId": "Hint_MinHpTarget",
       "Forever": true,
       "LevelStack": 0,
       "OverwriteDuration": -1,
@@ -414,11 +423,18 @@
           ],
           "_characterCoolDown": 6,
           "assignTarget": {
-            "$type": "BattleModel.FrontOfChars",
+            "$type": "BattleModel.FieldMinChar",
+            "field": {
+              "$type": "BattleModel.IntFieldC",
+              "targetField": 0
+            },
             "group": {
-              "$type": "BattleModel.PVEPlayerTeam",
+              "$type": "BattleModel.OppositeTeamChars",
               "includeDead": false,
-              "includeEmpty": false
+              "includeEmpty": false,
+              "reference": {
+                "$type": "BattleModel.ThisSkillCaster"
+              }
             }
           },
           "icon": 0
