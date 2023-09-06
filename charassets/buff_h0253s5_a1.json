@@ -1,0 +1,167 @@
+{
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "OnEachSkillTargetEffect": {
+        "效果": [
+          {
+            "效果": [
+              "{\"property\":-1,\"value\":{\"left\":{\"constant\":10,\"$type\":\"BattleModel.ConstanctInt\"},\"right\":{\"group\":{\"SingleIntegers\":[{\"buff\":{\"character\":{\"$type\":\"BattleModel.ThisBuffOwner\"},\"buffId\":\"leader\",\"$type\":\"BattleModel.BuffOnCharater\"},\"targetField\":1,\"$type\":\"BattleModel.IntBuffField\"},{\"buff\":{\"character\":{\"$type\":\"BattleModel.ThisBuffOwner\"},\"buffId\":\"warfare\",\"$type\":\"BattleModel.BuffOnCharater\"},\"targetField\":1,\"$type\":\"BattleModel.IntBuffField\"}],\"$type\":\"BattleModel.SingleIntegerGroup\"},\"$type\":\"BattleModel.MinOfInts\"},\"$type\":\"BattleModel.MultiplyInt\"},\"isPercent\":true,\"$type\":\"BattleModel.ExtraBonusEffectForSkillProperty\"}"
+            ],
+            "條件": [
+              "本角色擁有leader(領袖)狀態",
+              "本角色擁有warfare(戰意)狀態"
+            ]
+          },
+          {
+            "效果": [
+              "{\"property\":-1,\"value\":{\"constant\":10,\"$type\":\"BattleModel.ConstanctInt\"},\"isPercent\":true,\"$type\":\"BattleModel.ExtraBonusEffectForSkillProperty\"}"
+            ],
+            "條件": [
+              "本角色的隊伍中的所有角色皆 (擁有leader(領袖)狀態) 且 (擁有warfare(戰意)狀態)"
+            ]
+          }
+        ],
+        "條件": [
+          "本角色是施術者"
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 0,
+    "標籤": "Hidden | NotRemoveWhenDie | Forever | InfinityTrigger"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+  ],
+  "_actionTable": [
+    {
+      "Key": 1024,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.ExtraBonusEffectForSkillProperty",
+                  "isPercent": true,
+                  "property": -1,
+                  "value": {
+                    "$type": "BattleModel.MultiplyInt",
+                    "left": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 10
+                    },
+                    "right": {
+                      "$type": "BattleModel.MinOfInts",
+                      "group": {
+                        "$type": "BattleModel.SingleIntegerGroup",
+                        "SingleIntegers": [
+                          {
+                            "$type": "BattleModel.IntBuffField",
+                            "buff": {
+                              "$type": "BattleModel.BuffOnCharater",
+                              "buffId": "leader",
+                              "character": {
+                                "$type": "BattleModel.ThisBuffOwner"
+                              }
+                            },
+                            "targetField": 1
+                          },
+                          {
+                            "$type": "BattleModel.IntBuffField",
+                            "buff": {
+                              "$type": "BattleModel.BuffOnCharater",
+                              "buffId": "warfare",
+                              "character": {
+                                "$type": "BattleModel.ThisBuffOwner"
+                              }
+                            },
+                            "targetField": 1
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterHasBuff",
+                "buffId": "leader",
+                "character": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                }
+              },
+              {
+                "$type": "BattleModel.CharacterHasBuff",
+                "buffId": "warfare",
+                "character": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.ExtraBonusEffectForSkillProperty",
+                  "isPercent": true,
+                  "property": -1,
+                  "value": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 10
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharGroupCondition",
+                "condition": {
+                  "$type": "BattleModel.AndConditionsC",
+                  "cond1": {
+                    "$type": "BattleModel.HasBuff",
+                    "buffId": "leader"
+                  },
+                  "cond2": {
+                    "$type": "BattleModel.HasBuff",
+                    "buffId": "warfare"
+                  }
+                },
+                "everybody": true,
+                "group": {
+                  "$type": "BattleModel.SelfTeamChars",
+                  "excludeSelf": false,
+                  "includeDead": false,
+                  "includeEmpty": false,
+                  "reference": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+          {
+            "$type": "BattleModel.CharacterEqual",
+            "left": {
+              "$type": "BattleModel.ThisBuffOwner"
+            },
+            "right": {
+              "$type": "BattleModel.ThisSkillCaster"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 0,
+  "_orderTable": {
+  },
+  "_tag": 32837
+}
