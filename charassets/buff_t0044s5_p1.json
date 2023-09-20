@@ -13,10 +13,12 @@
           },
           {
             "效果": [
-              "對本角色觸發S1"
+              "對本角色觸發S1",
+              "對本狀態的變數三增加1"
             ],
             "條件": [
-              "施展的技能組是S1"
+              "施展的技能組是S1",
+              "本狀態 符合條件 變數三 < 99"
             ]
           },
           {
@@ -66,6 +68,7 @@
             "效果": [
               "對本狀態的變數一改為0",
               "對本狀態的變數二改為0",
+              "對本狀態的變數三改為0",
               "對本狀態的層數改為0"
             ],
             "條件": [
@@ -114,6 +117,21 @@
                     "lastIndepedentStack": false,
                     "setOperator": 0,
                     "targetField": 8,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 0
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 16,
                     "value": {
                       "$type": "BattleModel.ConstanctInt",
                       "constant": 0
@@ -224,12 +242,45 @@
                     "skillsetId": "S1"
                   }
                 }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 1,
+                    "targetField": 16,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 1
+                    }
+                  }
+                }
               }
             ],
             "Conditions": [
               {
                 "$type": "BattleModel.ThisSkillSetIdEqual",
                 "id": "S1"
+              },
+              {
+                "$type": "BattleModel.BuffCondition",
+                "buff": {
+                  "$type": "BattleModel.ThisBuff"
+                },
+                "condition": {
+                  "$type": "BattleModel.IntCompareB",
+                  "left": {
+                    "$type": "BattleModel.IntFieldB",
+                    "targetField": 16
+                  },
+                  "op": 1,
+                  "right": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 99
+                  }
+                }
               }
             ]
           },
