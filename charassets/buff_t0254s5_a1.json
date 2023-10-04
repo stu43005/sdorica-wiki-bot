@@ -1,0 +1,327 @@
+{
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "OnEachSkillSetEnd": {
+        "效果": [
+          {
+            "效果": [
+              "對賦予者的對方所有角色賦予1回合1層taunt(嘲諷)",
+              "對本角色觸發A1"
+            ],
+            "條件": [
+              "施術者是賦予者的隊伍中符合(是白位)的角色首位",
+              "({\"group\":{\"reference\":{\"$type\":\"BattleModel.ThisBuffCaster\"},\"excludeSelf\":false,\"includeDead\":false,\"includeEmpty\":false,\"$type\":\"BattleModel.SelfTeamChars\"},\"$type\":\"BattleModel.AllBuffsOnCharGroup\"}中是＂rage(怒氣)＂的Buff中的層數)的總和 >= 9",
+              "施展的技能效果中包含(Attack)屬性"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnEachSkillTargetEffect": {
+        "效果": [
+          {
+            "效果": [
+              "{\"property\":-1,\"value\":{\"left\":{\"constant\":3,\"$type\":\"BattleModel.ConstanctInt\"},\"right\":{\"group\":{\"group\":{\"group\":{\"group\":{\"reference\":{\"$type\":\"BattleModel.ThisBuffCaster\"},\"excludeSelf\":false,\"includeDead\":false,\"includeEmpty\":false,\"$type\":\"BattleModel.SelfTeamChars\"},\"$type\":\"BattleModel.AllBuffsOnCharGroup\"},\"condition\":{\"subString\":\"rage\",\"$type\":\"BattleModel.CheckBuffMatchBuffId\"},\"$type\":\"BattleModel.BuffGroupWhere\"},\"targetField\":1,\"$type\":\"BattleModel.IntsOnBuffGroup\"},\"$type\":\"BattleModel.SumOfInts\"},\"$type\":\"BattleModel.MultiplyInt\"},\"isPercent\":true,\"$type\":\"BattleModel.ExtraBonusEffectForSkillProperty\"}"
+            ],
+            "條件": [
+              "施術者是賦予者的隊伍的一員",
+              "施術者擁有rage(怒氣)狀態"
+            ]
+          },
+          {
+            "效果": [
+              "{\"property\":-1,\"value\":{\"constant\":5,\"$type\":\"BattleModel.ConstanctInt\"},\"isPercent\":true,\"$type\":\"BattleModel.ExtraBonusEffectForSkillProperty\"}"
+            ],
+            "條件": [
+              "施術者是賦予者的隊伍的一員",
+              "施術者擁有rage(怒氣)狀態",
+              "{\"StoneCondition\":{\"Filter\":\"IsWhite\",\"$type\":\"BattleModel.StoneColorFilter\"},\"$type\":\"BattleModel.CountOfConditionalStone\"} >= 10"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 0,
+    "標籤": "Hidden | Forever | InfinityTrigger"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+    "taunt"
+  ],
+  "_actionTable": [
+    {
+      "Key": 8,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacterGroup",
+                  "group": {
+                    "$type": "BattleModel.OppositeTeamChars",
+                    "includeDead": false,
+                    "includeEmpty": false,
+                    "reference": {
+                      "$type": "BattleModel.ThisBuffCaster"
+                    }
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "taunt",
+                      "Forever": false,
+                      "LevelStack": 1,
+                      "OverwriteDuration": 1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.CastSkillSet",
+                    "AssignParameter": {
+                      "AssignCharacter": {
+                        "$type": "BattleModel.NoneCharacter"
+                      },
+                      "AssignCharacterGroup": {
+                        "$type": "BattleModel.NoneCharacters"
+                      },
+                      "AssignInteger": {
+                        "$type": "BattleModel.ConstanctInt",
+                        "constant": 0
+                      },
+                      "AssignIntegerGroup": {
+                        "$type": "BattleModel.ConstanctIntegerGroup",
+                        "Group": [
+                        ]
+                      }
+                    },
+                    "UseAssignParameter": false,
+                    "resetCasterCD": false,
+                    "skillsetId": "A1"
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                },
+                "right": {
+                  "$type": "BattleModel.FrontOfChars",
+                  "group": {
+                    "$type": "BattleModel.CharGroupWhere",
+                    "condition": {
+                      "$type": "BattleModel.StoneTypeIs",
+                      "type": 4
+                    },
+                    "group": {
+                      "$type": "BattleModel.SelfTeamChars",
+                      "excludeSelf": false,
+                      "includeDead": false,
+                      "includeEmpty": false,
+                      "reference": {
+                        "$type": "BattleModel.ThisBuffCaster"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.SumOfInts",
+                  "group": {
+                    "$type": "BattleModel.IntsOnBuffGroup",
+                    "group": {
+                      "$type": "BattleModel.BuffGroupWhere",
+                      "condition": {
+                        "$type": "BattleModel.CheckBuffMatchBuffId",
+                        "subString": "rage"
+                      },
+                      "group": {
+                        "$type": "BattleModel.AllBuffsOnCharGroup",
+                        "group": {
+                          "$type": "BattleModel.SelfTeamChars",
+                          "excludeSelf": false,
+                          "includeDead": false,
+                          "includeEmpty": false,
+                          "reference": {
+                            "$type": "BattleModel.ThisBuffCaster"
+                          }
+                        }
+                      }
+                    },
+                    "targetField": 1
+                  }
+                },
+                "op": 4,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 9
+                }
+              },
+              {
+                "$type": "BattleModel.ThisSkillEffectTagContains",
+                "containsAll": 1
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 1024,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.ExtraBonusEffectForSkillProperty",
+                  "isPercent": true,
+                  "property": -1,
+                  "value": {
+                    "$type": "BattleModel.MultiplyInt",
+                    "left": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 3
+                    },
+                    "right": {
+                      "$type": "BattleModel.SumOfInts",
+                      "group": {
+                        "$type": "BattleModel.IntsOnBuffGroup",
+                        "group": {
+                          "$type": "BattleModel.BuffGroupWhere",
+                          "condition": {
+                            "$type": "BattleModel.CheckBuffMatchBuffId",
+                            "subString": "rage"
+                          },
+                          "group": {
+                            "$type": "BattleModel.AllBuffsOnCharGroup",
+                            "group": {
+                              "$type": "BattleModel.SelfTeamChars",
+                              "excludeSelf": false,
+                              "includeDead": false,
+                              "includeEmpty": false,
+                              "reference": {
+                                "$type": "BattleModel.ThisBuffCaster"
+                              }
+                            }
+                          }
+                        },
+                        "targetField": 1
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterInside",
+                "group": {
+                  "$type": "BattleModel.SelfTeamChars",
+                  "excludeSelf": false,
+                  "includeDead": false,
+                  "includeEmpty": false,
+                  "reference": {
+                    "$type": "BattleModel.ThisBuffCaster"
+                  }
+                },
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              },
+              {
+                "$type": "BattleModel.CharacterHasBuff",
+                "buffId": "rage",
+                "character": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.ExtraBonusEffectForSkillProperty",
+                  "isPercent": true,
+                  "property": -1,
+                  "value": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 5
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterInside",
+                "group": {
+                  "$type": "BattleModel.SelfTeamChars",
+                  "excludeSelf": false,
+                  "includeDead": false,
+                  "includeEmpty": false,
+                  "reference": {
+                    "$type": "BattleModel.ThisBuffCaster"
+                  }
+                },
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              },
+              {
+                "$type": "BattleModel.CharacterHasBuff",
+                "buffId": "rage",
+                "character": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.CountOfConditionalStone",
+                  "StoneCondition": {
+                    "$type": "BattleModel.StoneColorFilter",
+                    "Filter": "IsWhite"
+                  }
+                },
+                "op": 4,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 10
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 0,
+  "_orderTable": {
+  },
+  "_tag": 32833
+}

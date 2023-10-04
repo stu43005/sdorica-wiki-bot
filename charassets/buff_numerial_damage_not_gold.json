@@ -1,0 +1,77 @@
+{
+  "$interpreted": {
+    "Localization": "本角色受到金位以外的角色攻擊時，受到的傷害大幅下降。",
+    "動作": {
+    },
+    "持續時間": 0,
+    "最高層數": 0,
+    "標籤": "InfinityTrigger"
+  },
+  "$type": "BattleModel.NumerialBuff",
+  "_duration": 0,
+  "_effect": {
+    "LimitResultValueConditions": [
+    ],
+    "LimitResultValues": [
+    ],
+    "LimitSkillValueConditions": [
+      {
+        "$type": "BattleModel.Inverse",
+        "condition": {
+          "$type": "BattleModel.CharacterCondition",
+          "character": {
+            "$type": "BattleModel.ThisSkillCaster"
+          },
+          "condition": {
+            "$type": "BattleModel.StoneTypeIs",
+            "type": 1
+          }
+        }
+      },
+      {
+        "$type": "BattleModel.CharacterInside",
+        "group": {
+          "$type": "BattleModel.OppositeTeamChars",
+          "includeDead": false,
+          "includeEmpty": false,
+          "reference": {
+            "$type": "BattleModel.ThisBuffOwner"
+          }
+        },
+        "left": {
+          "$type": "BattleModel.ThisSkillCaster"
+        }
+      },
+      {
+        "$type": "BattleModel.ThisSkillEffectTagContains",
+        "containsAll": 1
+      }
+    ],
+    "LimitSkillValues": [
+      {
+        "Conditions": [
+        ],
+        "LimitValue": {
+          "$type": "BattleModel.MultiplyFloat",
+          "left": {
+            "$type": "BattleModel.NumericSkillValue",
+            "Value": {
+              "$type": "BattleModel.NumericFinalValue"
+            }
+          },
+          "ratio": 0.1
+        }
+      }
+    ],
+    "NumericDamageEffecActions": [
+    ],
+    "NumericEffectConditions": [
+    ],
+    "NumericResultActions": [
+    ],
+    "NumericResultConditions": [
+    ]
+  },
+  "_maxLevel": 0,
+  "_tag": 32768
+}

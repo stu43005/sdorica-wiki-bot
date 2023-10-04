@@ -28,7 +28,7 @@
         "效果": [
           {
             "效果": [
-              "{\"property\":1,\"value\":{\"constant\":20,\"$type\":\"BattleModel.ConstanctInt\"},\"isPercent\":true,\"$type\":\"BattleModel.ExtraBonusEffectForSkillProperty\"}"
+              "{\"property\":1,\"value\":{\"constant\":25,\"$type\":\"BattleModel.ConstanctInt\"},\"isPercent\":true,\"$type\":\"BattleModel.ExtraBonusEffectForSkillProperty\"}"
             ],
             "條件": [
               "施術者是本角色",
@@ -54,26 +54,6 @@
               "施術者是本角色",
               "施展的技能效果中包含(Attack)屬性",
               "本角色 符合條件 HP% <= 30"
-            ]
-          },
-          {
-            "效果": [
-              "對本角色賦予永久h0237s5_P3"
-            ],
-            "條件": [
-              "指定目標是本角色",
-              "施展的技能效果中包含(Attack)屬性",
-              "本角色的HP% <= 30"
-            ]
-          },
-          {
-            "效果": [
-              "對本角色移除狀態h0237s5_P3"
-            ],
-            "條件": [
-              "指定目標是本角色",
-              "施展的技能效果中包含(Attack)屬性",
-              "本角色的HP% > 30"
             ]
           }
         ],
@@ -111,7 +91,7 @@
             ],
             "條件": [
               "{\"$type\":\"BattleModel.BreakDownOrFullTarget\"}是本角色的對方的一員",
-              "本狀態的變數一 == 0"
+              "本狀態 符合條件 變數一 < 2"
             ]
           }
         ],
@@ -220,96 +200,6 @@
       }
     },
     {
-      "Key": 1048577,
-      "Value": {
-        "Actions": [
-          {
-            "Actions": [
-              {
-                "TargetField": {
-                  "$type": "BattleModel.OperateCharacter",
-                  "character": {
-                    "$type": "BattleModel.ThisBuffOwner"
-                  },
-                  "operation": {
-                    "$type": "BattleModel.CastSkillSet",
-                    "AssignParameter": {
-                      "AssignCharacter": {
-                        "$type": "BattleModel.NoneCharacter"
-                      },
-                      "AssignCharacterGroup": {
-                        "$type": "BattleModel.NoneCharacters"
-                      },
-                      "AssignInteger": {
-                        "$type": "BattleModel.ConstanctInt",
-                        "constant": 0
-                      },
-                      "AssignIntegerGroup": {
-                        "$type": "BattleModel.ConstanctIntegerGroup",
-                        "Group": [
-                        ]
-                      }
-                    },
-                    "UseAssignParameter": false,
-                    "resetCasterCD": false,
-                    "skillsetId": "S2"
-                  }
-                }
-              },
-              {
-                "TargetField": {
-                  "$type": "BattleModel.OperateThisBuff",
-                  "operation": {
-                    "$type": "BattleModel.SetBuffField",
-                    "lastIndepedentStack": false,
-                    "setOperator": 1,
-                    "targetField": 4,
-                    "value": {
-                      "$type": "BattleModel.ConstanctInt",
-                      "constant": 1
-                    }
-                  }
-                }
-              }
-            ],
-            "Conditions": [
-              {
-                "$type": "BattleModel.CharacterInside",
-                "group": {
-                  "$type": "BattleModel.OppositeTeamChars",
-                  "includeDead": false,
-                  "includeEmpty": false,
-                  "reference": {
-                    "$type": "BattleModel.ThisBuffOwner"
-                  }
-                },
-                "left": {
-                  "$type": "BattleModel.BreakDownOrFullTarget"
-                }
-              },
-              {
-                "$type": "BattleModel.IntCompare",
-                "left": {
-                  "$type": "BattleModel.IntBuffField",
-                  "buff": {
-                    "$type": "BattleModel.ThisBuff"
-                  },
-                  "targetField": 4
-                },
-                "op": 0,
-                "right": {
-                  "$type": "BattleModel.ConstanctInt",
-                  "constant": 0
-                }
-              }
-            ]
-          }
-        ],
-        "Conditions": [
-        ]
-      }
-    },
-    {
       "Key": 1024,
       "Value": {
         "Actions": [
@@ -322,7 +212,7 @@
                   "property": 1,
                   "value": {
                     "$type": "BattleModel.ConstanctInt",
-                    "constant": 20
+                    "constant": 25
                   }
                 }
               }
@@ -456,7 +346,16 @@
                 }
               }
             ]
-          },
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 1048577,
+      "Value": {
+        "Actions": [
           {
             "Actions": [
               {
@@ -466,14 +365,41 @@
                     "$type": "BattleModel.ThisBuffOwner"
                   },
                   "operation": {
-                    "$type": "BattleModel.AddBuff",
-                    "buffToAdd": {
-                      "BuffId": "h0237s5_P3",
-                      "Forever": true,
-                      "LevelStack": 0,
-                      "OverwriteDuration": -1,
-                      "UserDefineVariable": {
+                    "$type": "BattleModel.CastSkillSet",
+                    "AssignParameter": {
+                      "AssignCharacter": {
+                        "$type": "BattleModel.NoneCharacter"
+                      },
+                      "AssignCharacterGroup": {
+                        "$type": "BattleModel.NoneCharacters"
+                      },
+                      "AssignInteger": {
+                        "$type": "BattleModel.ConstanctInt",
+                        "constant": 0
+                      },
+                      "AssignIntegerGroup": {
+                        "$type": "BattleModel.ConstanctIntegerGroup",
+                        "Group": [
+                        ]
                       }
+                    },
+                    "UseAssignParameter": false,
+                    "resetCasterCD": false,
+                    "skillsetId": "S2"
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 1,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 1
                     }
                   }
                 }
@@ -481,77 +407,35 @@
             ],
             "Conditions": [
               {
-                "$type": "BattleModel.CharacterEqual",
-                "left": {
-                  "$type": "BattleModel.ThisSpecifiedTarget"
-                },
-                "right": {
-                  "$type": "BattleModel.ThisBuffOwner"
-                }
-              },
-              {
-                "$type": "BattleModel.ThisSkillEffectTagContains",
-                "containsAll": 1
-              },
-              {
-                "$type": "BattleModel.IntCompare",
-                "left": {
-                  "$type": "BattleModel.IntCharaterField",
-                  "character": {
+                "$type": "BattleModel.CharacterInside",
+                "group": {
+                  "$type": "BattleModel.OppositeTeamChars",
+                  "includeDead": false,
+                  "includeEmpty": false,
+                  "reference": {
                     "$type": "BattleModel.ThisBuffOwner"
-                  },
-                  "targetField": 2
-                },
-                "op": 3,
-                "right": {
-                  "$type": "BattleModel.ConstanctInt",
-                  "constant": 30
-                }
-              }
-            ]
-          },
-          {
-            "Actions": [
-              {
-                "TargetField": {
-                  "$type": "BattleModel.OperateCharacter",
-                  "character": {
-                    "$type": "BattleModel.ThisBuffOwner"
-                  },
-                  "operation": {
-                    "$type": "BattleModel.RemoveBuff",
-                    "buffId": "h0237s5_P3"
                   }
-                }
-              }
-            ],
-            "Conditions": [
-              {
-                "$type": "BattleModel.CharacterEqual",
-                "left": {
-                  "$type": "BattleModel.ThisSpecifiedTarget"
                 },
-                "right": {
-                  "$type": "BattleModel.ThisBuffOwner"
+                "left": {
+                  "$type": "BattleModel.BreakDownOrFullTarget"
                 }
               },
               {
-                "$type": "BattleModel.ThisSkillEffectTagContains",
-                "containsAll": 1
-              },
-              {
-                "$type": "BattleModel.IntCompare",
-                "left": {
-                  "$type": "BattleModel.IntCharaterField",
-                  "character": {
-                    "$type": "BattleModel.ThisBuffOwner"
+                "$type": "BattleModel.BuffCondition",
+                "buff": {
+                  "$type": "BattleModel.ThisBuff"
+                },
+                "condition": {
+                  "$type": "BattleModel.IntCompareB",
+                  "left": {
+                    "$type": "BattleModel.IntFieldB",
+                    "targetField": 4
                   },
-                  "targetField": 2
-                },
-                "op": 2,
-                "right": {
-                  "$type": "BattleModel.ConstanctInt",
-                  "constant": 30
+                  "op": 1,
+                  "right": {
+                    "$type": "BattleModel.ConstantIntB",
+                    "constant": 2
+                  }
                 }
               }
             ]

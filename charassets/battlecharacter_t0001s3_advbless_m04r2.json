@@ -1,118 +1,43 @@
 {
-  "$interpreted": {
-    "Localization": "t3167c4_star_1",
-    "復活魂芯數": 0,
-    "技能": {
-      "Arrive1": [
-        "對施術者冷卻時間加1"
-      ],
-      "Retreat1": [
-        "對施術者{\"Tag\":65540,\"_keyString\":\"1\",\"$type\":\"BattleModel.DirectKillSkillEffect\"}"
-      ],
-      "S1": [
-        "對施術者的目標攻擊(攻擊力 x1)"
-      ]
-    },
-    "技能組": {
-      "S1": [
-        {
-          "CoolDown": 3,
-          "技能列表": [
-            "施展S1"
-          ],
-          "條件": [
-          ],
-          "目標": "玩家首位"
-        }
-      ]
-    },
-    "攻擊力": 150,
-    "攻擊力等級調整後": 141,
-    "敵人AI": "S1",
-    "消魂設置": {
-      "Type1": "S1",
-      "Type2": "S2",
-      "Type4": "S3"
-    },
-    "疊盾": 1800,
-    "疊盾等級調整後": 1698,
-    "站位": "無",
-    "血量": 1800,
-    "血量等級調整後": 1698,
-    "被動Buff": [
-      "賦予永久taunt(嘲諷)",
-      "賦予永久numerial_DamageNerf_DpNotFull(本角色受到攻擊時，施展攻擊技能的玩家角色若盾量沒有全滿，受到的傷害大幅下降。)"
-    ],
-    "起始CD": 0,
-    "預設CD": 3
-  },
-  "$type": "BattleModel.EnemyCharacter",
+  "$type": "BattleModel.FriendCharacter",
   "ReferenceBuffKeys": [
-    "sharp",
-    "leader",
-    "follower"
   ],
   "ReferenceCharacterKeys": [
   ],
   "ReferenceEffectKeys": [
-    "Common_SmokeRun01_B",
-    "t3157c4_s01_slash01",
-    "Common_Smoke06",
-    "Common_HitSlash01_C"
   ],
   "ReferenceEmoIconKeys": [
   ],
   "ReferenceMusicKeys": [
   ],
   "ReferenceSFXKeys": [
-    "Movement_arms_006",
-    "Movement_arms_007",
-    "step_shoes_039",
-    "swoosh_061",
-    "Whoosh_physical_016set_01_smoke",
-    "sword_003",
-    "sword_006",
-    "step_rock_002",
-    "sword_004",
-    "Hit_smash_022_rock_large_scrap"
   ],
   "ReferenceVoiceSFXKeys": [
   ],
-  "_armorCapacity": 1800,
-  "_assistantSkill": null,
-  "_bloodCapacity": 1800,
+  "_armorCapacity": 1,
+  "_assistantSkill": {
+    "$type": "BattleModel.AssistantActiveCastSkill",
+    "_maxCastStack": 1,
+    "_skillCD": 1,
+    "_startCD": 0,
+    "_startCastStack": 0
+  },
+  "_bloodCapacity": 1,
   "_characterAI": {
     "$type": "BattleModel.SequenceEnemyAI",
     "OrderList": [
-      "S1"
     ]
   },
-  "_defaultCoolDown": 3,
-  "_initialCoolDown": 0,
+  "_defaultCoolDown": 4,
+  "_initialCoolDown": 1,
   "_levelStartBuff": [
   ],
   "_mass": 1,
   "_masterRank": 0,
   "_passiveBuff": [
-    {
-      "BuffId": "taunt",
-      "Forever": true,
-      "LevelStack": 0,
-      "OverwriteDuration": -1,
-      "UserDefineVariable": {
-      }
-    },
-    {
-      "BuffId": "numerial_DamageNerf_DpNotFull",
-      "Forever": true,
-      "LevelStack": 0,
-      "OverwriteDuration": -1,
-      "UserDefineVariable": {
-      }
-    }
   ],
   "_pose": "Stand",
-  "_power": 150,
+  "_power": 1,
   "_reviveCount": 0,
   "_skills": {
     "Arrive1": {
@@ -129,10 +54,9 @@
           },
           "skillEffects": [
             {
-              "$type": "BattleModel.ChangeCDSkillEffect",
-              "Tag": 1028,
-              "_keyString": "",
-              "_value": 1
+              "$type": "BattleModel.EmptyBuffSkillEffect",
+              "Tag": 0,
+              "_keyString": ""
             }
           ]
         }
@@ -170,23 +94,68 @@
           "IsMultiple": false,
           "multi": null,
           "single": {
-            "$type": "BattleModel.EnemyAssignee",
-            "reference": {
-              "$type": "BattleModel.ThisSkillCaster"
+            "$type": "BattleModel.FrontOfChars",
+            "group": {
+              "$type": "BattleModel.CharGroupWhere",
+              "condition": {
+                "$type": "BattleModel.StoneTypeIs",
+                "type": 2
+              },
+              "group": {
+                "$type": "BattleModel.PVEPlayerTeam",
+                "includeDead": false,
+                "includeEmpty": false
+              }
             }
           },
           "skillEffects": [
             {
-              "$type": "BattleModel.HpDamageSkillEffect",
-              "Tag": 9,
+              "$type": "BattleModel.AddBuffSkillEffect",
+              "Tag": 132,
+              "_buffData": [
+                {
+                  "BuffId": "TrueDamageCritical",
+                  "Forever": false,
+                  "LevelStack": 1,
+                  "OverwriteDuration": 1,
+                  "UserDefineVariable": {
+                  }
+                }
+              ],
+              "_keyString": "1"
+            },
+            {
+              "$type": "BattleModel.AddBuffSkillEffect",
+              "Tag": 132,
+              "_buffData": [
+                {
+                  "BuffId": "TrueDamageBless",
+                  "Forever": false,
+                  "LevelStack": 1,
+                  "OverwriteDuration": 3,
+                  "UserDefineVariable": {
+                  }
+                }
+              ],
+              "_keyString": "1"
+            },
+            {
+              "$type": "BattleModel.StoneActionSkillEffect",
+              "Tag": 516,
               "_keyString": "1",
-              "_skillModifier": {
-                "_constant": 0,
-                "_parameter": {
-                  "$type": "BattleModel.SkillCasterPower",
-                  "basePower": false
-                },
-                "_ratio": 1
+              "_stoneAction": {
+                "BuffFilter": "Normal",
+                "BuffId": "",
+                "BuffLabel": null,
+                "EffectFilter": "Normal",
+                "StonePositionList": [
+                ],
+                "UsePositionSettings": false,
+                "changeTo": "ToBlack",
+                "filter": "IsNotBlack",
+                "isInitStoneFilter": "None",
+                "order": "UpperLeftToLowerLeft",
+                "targetStoneCount": 2
               }
             }
           ]
@@ -195,7 +164,7 @@
     }
   },
   "_skillsetTable": {
-    "S1": {
+    "A1": {
       "ComboList": [
         {
           "ConditionList": [
@@ -211,7 +180,7 @@
               "t": null
             }
           ],
-          "_characterCoolDown": 3,
+          "_characterCoolDown": 0,
           "assignTarget": {
             "$type": "BattleModel.FrontOfChars",
             "group": {
@@ -220,7 +189,7 @@
               "includeEmpty": false
             }
           },
-          "icon": 0
+          "icon": 288
         }
       ],
       "_isViewSkillSet": false

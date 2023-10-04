@@ -1,0 +1,170 @@
+{
+  "$interpreted": {
+    "Localization": "本角色行動時，每層此狀態會賦予隨機一個白色魂芯白色密鑰。",
+    "動作": {
+      "OnEachSkillSetEnd": {
+        "效果": [
+          {
+            "效果": [
+              "{\"RepeatCount\":{\"$type\":\"BattleModel.ThisBuffLevel\"},\"Operation\":{\"willTriggerBuff\":false,\"skillUnit\":{\"IsMultiple\":false,\"CanBeEmpty\":false,\"single\":{\"$type\":\"BattleModel.ThisBuffOwner\"},\"multi\":null,\"skillEffects\":[{\"_stoneBuffAction\":{\"buff\":{\"BuffId\":\"damage_key_white\",\"OverwriteDuration\":1,\"Forever\":false,\"LevelStack\":1,\"UserDefineVariable\":{}},\"action\":\"Add\",\"UsePositionSettings\":false,\"targetStoneCount\":1,\"filter\":\"IsWhite\",\"isInitStoneFilter\":\"None\",\"BuffFilter\":\"ExcludeSpecifiedBuffId\",\"BuffId\":\"damage_key_white\",\"BuffLabel\":null,\"EffectFilter\":\"Normal\",\"order\":\"Random\",\"StonePositionList\":[]},\"Tag\":262148,\"_keyString\":\"1\",\"$type\":\"BattleModel.StoneBuffSkillEffect\"}]},\"$type\":\"BattleModel.DirectSkillEffect\"},\"$type\":\"BattleModel.RepeatAction\"}"
+            ],
+            "條件": [
+              "本角色是施術者"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnTurnBegin": {
+        "效果": [
+          {
+            "效果": [
+              "對本角色賦予永久numerial_damage_lock_white(本角色受到攻擊時，若操作區的魂芯上有白色密鑰，受到的傷害大幅下降。)"
+            ],
+            "條件": [
+              "本角色 沒有numerial_damage_lock_white(本角色受到攻擊時，若操作區的魂芯上有白色密鑰，受到的傷害大幅下降。)狀態"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 99,
+    "標籤": "Forever"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+    "numerial_damage_lock_white",
+    "damage_key_white"
+  ],
+  "_actionTable": [
+    {
+      "Key": 1,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "numerial_damage_lock_white",
+                      "Forever": true,
+                      "LevelStack": 0,
+                      "OverwriteDuration": -1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterCondition",
+                "character": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                },
+                "condition": {
+                  "$type": "BattleModel.InverseC",
+                  "condition": {
+                    "$type": "BattleModel.HasBuff",
+                    "buffId": "numerial_damage_lock_white"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 8,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.RepeatAction",
+                  "Operation": {
+                    "$type": "BattleModel.DirectSkillEffect",
+                    "skillUnit": {
+                      "CanBeEmpty": false,
+                      "IsMultiple": false,
+                      "multi": null,
+                      "single": {
+                        "$type": "BattleModel.ThisBuffOwner"
+                      },
+                      "skillEffects": [
+                        {
+                          "$type": "BattleModel.StoneBuffSkillEffect",
+                          "Tag": 262148,
+                          "_keyString": "1",
+                          "_stoneBuffAction": {
+                            "BuffFilter": "ExcludeSpecifiedBuffId",
+                            "BuffId": "damage_key_white",
+                            "BuffLabel": null,
+                            "EffectFilter": "Normal",
+                            "StonePositionList": [
+                            ],
+                            "UsePositionSettings": false,
+                            "action": "Add",
+                            "buff": {
+                              "BuffId": "damage_key_white",
+                              "Forever": false,
+                              "LevelStack": 1,
+                              "OverwriteDuration": 1,
+                              "UserDefineVariable": {
+                              }
+                            },
+                            "filter": "IsWhite",
+                            "isInitStoneFilter": "None",
+                            "order": "Random",
+                            "targetStoneCount": 1
+                          }
+                        }
+                      ]
+                    },
+                    "willTriggerBuff": false
+                  },
+                  "RepeatCount": {
+                    "$type": "BattleModel.ThisBuffLevel"
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                },
+                "right": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 99,
+  "_orderTable": {
+  },
+  "_tag": 64
+}

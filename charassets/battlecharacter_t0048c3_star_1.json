@@ -1,6 +1,6 @@
 {
   "$interpreted": {
-    "Localization": "t3167c4_star_1",
+    "Localization": "t0048c3_star_1",
     "復活魂芯數": 0,
     "技能": {
       "Arrive1": [
@@ -10,10 +10,21 @@
         "對施術者{\"Tag\":65540,\"_keyString\":\"1\",\"$type\":\"BattleModel.DirectKillSkillEffect\"}"
       ],
       "S1": [
-        "對施術者的目標攻擊(攻擊力 x1)"
+        "對施術者的目標攻擊(攻擊力 x1)、賦予2回合1層CurseDontAction(詛咒．急躁)"
       ]
     },
     "技能組": {
+      "BeginAction": [
+        {
+          "CoolDown": 3,
+          "技能列表": [
+            "施展S1"
+          ],
+          "條件": [
+          ],
+          "目標": "玩家後排"
+        }
+      ],
       "S1": [
         {
           "CoolDown": 3,
@@ -22,72 +33,64 @@
           ],
           "條件": [
           ],
-          "目標": "玩家首位"
+          "目標": "玩家後排"
         }
       ]
     },
-    "攻擊力": 150,
-    "攻擊力等級調整後": 141,
+    "攻擊力": 100,
+    "攻擊力等級調整後": 94,
     "敵人AI": "S1",
     "消魂設置": {
       "Type1": "S1",
       "Type2": "S2",
       "Type4": "S3"
     },
-    "疊盾": 1800,
-    "疊盾等級調整後": 1698,
+    "疊盾": 800,
+    "疊盾等級調整後": 754,
     "站位": "無",
-    "血量": 1800,
-    "血量等級調整後": 1698,
+    "血量": 800,
+    "血量等級調整後": 754,
     "被動Buff": [
-      "賦予永久taunt(嘲諷)",
-      "賦予永久numerial_DamageNerf_DpNotFull(本角色受到攻擊時，施展攻擊技能的玩家角色若盾量沒有全滿，受到的傷害大幅下降。)"
+      "賦予永久BattleBeginAction(戰鬥開始時，本角色立即施展技能。)"
     ],
     "起始CD": 0,
-    "預設CD": 3
+    "預設CD": 2
   },
   "$type": "BattleModel.EnemyCharacter",
   "ReferenceBuffKeys": [
-    "sharp",
-    "leader",
-    "follower"
   ],
   "ReferenceCharacterKeys": [
   ],
   "ReferenceEffectKeys": [
-    "Common_SmokeRun01_B",
-    "t3157c4_s01_slash01",
-    "Common_Smoke06",
-    "Common_HitSlash01_C"
+    "t0026s4_s02_UP",
+    "Common_Slash01_A",
+    "Common_Smoke10",
+    "Common_Smoke10R",
+    "Common_SmokeDown01_A"
   ],
   "ReferenceEmoIconKeys": [
   ],
   "ReferenceMusicKeys": [
   ],
   "ReferenceSFXKeys": [
-    "Movement_arms_006",
-    "Movement_arms_007",
-    "step_shoes_039",
-    "swoosh_061",
-    "Whoosh_physical_016set_01_smoke",
-    "sword_003",
-    "sword_006",
-    "step_rock_002",
-    "sword_004",
-    "Hit_smash_022_rock_large_scrap"
+    "step_soles_001",
+    "swoosh_006",
+    "knife_005",
+    "swoosh_007",
+    "step_soles_002"
   ],
   "ReferenceVoiceSFXKeys": [
   ],
-  "_armorCapacity": 1800,
+  "_armorCapacity": 800,
   "_assistantSkill": null,
-  "_bloodCapacity": 1800,
+  "_bloodCapacity": 800,
   "_characterAI": {
     "$type": "BattleModel.SequenceEnemyAI",
     "OrderList": [
       "S1"
     ]
   },
-  "_defaultCoolDown": 3,
+  "_defaultCoolDown": 2,
   "_initialCoolDown": 0,
   "_levelStartBuff": [
   ],
@@ -95,15 +98,7 @@
   "_masterRank": 0,
   "_passiveBuff": [
     {
-      "BuffId": "taunt",
-      "Forever": true,
-      "LevelStack": 0,
-      "OverwriteDuration": -1,
-      "UserDefineVariable": {
-      }
-    },
-    {
-      "BuffId": "numerial_DamageNerf_DpNotFull",
+      "BuffId": "BattleBeginAction",
       "Forever": true,
       "LevelStack": 0,
       "OverwriteDuration": -1,
@@ -112,7 +107,7 @@
     }
   ],
   "_pose": "Stand",
-  "_power": 150,
+  "_power": 100,
   "_reviveCount": 0,
   "_skills": {
     "Arrive1": {
@@ -188,6 +183,21 @@
                 },
                 "_ratio": 1
               }
+            },
+            {
+              "$type": "BattleModel.AddBuffSkillEffect",
+              "Tag": 132,
+              "_buffData": [
+                {
+                  "BuffId": "CurseDontAction",
+                  "Forever": false,
+                  "LevelStack": 1,
+                  "OverwriteDuration": 2,
+                  "UserDefineVariable": {
+                  }
+                }
+              ],
+              "_keyString": "1"
             }
           ]
         }
@@ -195,6 +205,36 @@
     }
   },
   "_skillsetTable": {
+    "BeginAction": {
+      "ComboList": [
+        {
+          "ConditionList": [
+          ],
+          "SkillList": [
+            {
+              "ConditionList": [
+              ],
+              "SkillID": "S1",
+              "_conditionalSequences": [
+              ],
+              "seq": "",
+              "t": null
+            }
+          ],
+          "_characterCoolDown": 3,
+          "assignTarget": {
+            "$type": "BattleModel.BackOfChars",
+            "group": {
+              "$type": "BattleModel.PVEPlayerTeam",
+              "includeDead": false,
+              "includeEmpty": false
+            }
+          },
+          "icon": 0
+        }
+      ],
+      "_isViewSkillSet": false
+    },
     "S1": {
       "ComboList": [
         {
@@ -213,7 +253,7 @@
           ],
           "_characterCoolDown": 3,
           "assignTarget": {
-            "$type": "BattleModel.FrontOfChars",
+            "$type": "BattleModel.BackOfChars",
             "group": {
               "$type": "BattleModel.PVEPlayerTeam",
               "includeDead": false,
