@@ -2,30 +2,16 @@
   "$interpreted": {
     "Localization": "",
     "動作": {
-      "OnEachSkillTargetEffect": {
+      "OnTurnBegin | AfterAnyoneDie": {
         "效果": [
           {
             "效果": [
-              "立即施展技能效果：賦予1回合1層h0221s5_A1_APcheck"
+              "對{\"$type\":\"BattleModel.PVEAssistant\"}中符合(的AssetId包含＂h0221s＂字串)的角色所有角色觸發A1"
             ],
             "條件": [
               "施展的技能效果中包含(BreakArmor)屬性",
               "施術者是本角色的隊伍的一員",
-              "指定目標是本角色的對方的一員",
-              "指定目標的疊盾 > 0"
-            ]
-          }
-        ],
-        "條件": [
-        ]
-      },
-      "OnTurnBegin": {
-        "效果": [
-          {
-            "效果": [
-              "對本狀態的變數一改為0"
-            ],
-            "條件": [
+              "{\"$type\":\"BattleModel.BreakDownOrFullTarget\"}是本角色的對方的一員"
             ]
           }
         ],
@@ -39,35 +25,62 @@
   },
   "$type": "BattleModel.Buff",
   "ReferenceBuffKeys": [
-    "h0221s5_A1_APcheck"
   ],
   "_actionTable": [
     {
-      "Key": 1024,
+      "Key": 1048577,
       "Value": {
         "Actions": [
           {
             "Actions": [
               {
                 "TargetField": {
-                  "$type": "BattleModel.ImmediatelySkillEffect",
-                  "SkillEffect": [
-                    {
-                      "$type": "BattleModel.AddBuffSkillEffect",
-                      "Tag": 132,
-                      "_buffData": [
-                        {
-                          "BuffId": "h0221s5_A1_APcheck",
-                          "Forever": false,
-                          "LevelStack": 1,
-                          "OverwriteDuration": 1,
-                          "UserDefineVariable": {
+                  "$type": "BattleModel.OperateCharacterGroup",
+                  "group": {
+                    "$type": "BattleModel.CharGroupWhere",
+                    "condition": {
+                      "$type": "BattleModel.AssetIdHasSubString",
+                      "subString": "h0221s"
+                    },
+                    "group": {
+                      "$type": "BattleModel.PVEAssistant"
+                    }
+                  },
+                  "operation": {
+                    "$type": "BattleModel.CastSkillSet",
+                    "AssignParameter": {
+                      "AssignCharacter": {
+                        "$type": "BattleModel.NoneCharacter"
+                      },
+                      "AssignCharacterGroup": {
+                        "$type": "BattleModel.UnionCharGroup",
+                        "group1": {
+                          "$type": "BattleModel.FromSingleCharacter",
+                          "Character": {
+                            "$type": "BattleModel.BreakDownOrFullTarget"
+                          }
+                        },
+                        "group2": {
+                          "$type": "BattleModel.FromSingleCharacter",
+                          "Character": {
+                            "$type": "BattleModel.ThisSkillCaster"
                           }
                         }
-                      ],
-                      "_keyString": "1"
-                    }
-                  ]
+                      },
+                      "AssignInteger": {
+                        "$type": "BattleModel.ConstanctInt",
+                        "constant": 0
+                      },
+                      "AssignIntegerGroup": {
+                        "$type": "BattleModel.ConstanctIntegerGroup",
+                        "Group": [
+                        ]
+                      }
+                    },
+                    "UseAssignParameter": true,
+                    "resetCasterCD": false,
+                    "skillsetId": "A1"
+                  }
                 }
               }
             ],
@@ -102,54 +115,9 @@
                   }
                 },
                 "left": {
-                  "$type": "BattleModel.ThisSpecifiedTarget"
-                }
-              },
-              {
-                "$type": "BattleModel.IntCompare",
-                "left": {
-                  "$type": "BattleModel.IntCharaterField",
-                  "character": {
-                    "$type": "BattleModel.ThisSpecifiedTarget"
-                  },
-                  "targetField": 4
-                },
-                "op": 2,
-                "right": {
-                  "$type": "BattleModel.ConstanctInt",
-                  "constant": 0
+                  "$type": "BattleModel.BreakDownOrFullTarget"
                 }
               }
-            ]
-          }
-        ],
-        "Conditions": [
-        ]
-      }
-    },
-    {
-      "Key": 1,
-      "Value": {
-        "Actions": [
-          {
-            "Actions": [
-              {
-                "TargetField": {
-                  "$type": "BattleModel.OperateThisBuff",
-                  "operation": {
-                    "$type": "BattleModel.SetBuffField",
-                    "lastIndepedentStack": false,
-                    "setOperator": 0,
-                    "targetField": 4,
-                    "value": {
-                      "$type": "BattleModel.ConstanctInt",
-                      "constant": 0
-                    }
-                  }
-                }
-              }
-            ],
-            "Conditions": [
             ]
           }
         ],
