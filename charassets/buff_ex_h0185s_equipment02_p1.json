@@ -6,10 +6,9 @@
         "效果": [
           {
             "效果": [
-              "對玩家中符合(的AssetId包含＂0020＂字串)的角色所有角色賦予永久ex_h0020s_equipment01_P2(本角色身上有減傷、轉盾、盾轉與嘲諷時，\n本角色的攻擊技能效果增加1000%。)"
+              "對玩家中符合(的AssetId包含＂0185＂字串)的角色所有角色賦予永久ex_h0185s_equipment02_P2(我方回合開始時，自身施展二魂技能並獲得2回合減傷和2回合強化。\r\n本角色從護盾未滿疊盾至全滿後，賦予我方全體5回合4層堅盾，在下個自身回合開始前最多觸發1次。\r\n本角色施展技能時，每層堅盾使自身技能效果提升40%)"
             ],
             "條件": [
-              "隊伍攜帶探索道具ex_h0020s_equipment02(貴族配劍)的數量 == 0"
             ]
           }
         ],
@@ -23,7 +22,11 @@
   },
   "$type": "BattleModel.Buff",
   "ReferenceBuffKeys": [
-    "ex_h0020s_equipment01_P2"
+    "ex_h0185s_equipment02_P2",
+    "defense_up_small",
+    "bonusAttackPower",
+    "defense_wall",
+    "FSM_DefenseUp_Normal"
   ],
   "_actionTable": [
     {
@@ -39,7 +42,7 @@
                     "$type": "BattleModel.CharGroupWhere",
                     "condition": {
                       "$type": "BattleModel.AssetIdHasSubString",
-                      "subString": "0020"
+                      "subString": "0185"
                     },
                     "group": {
                       "$type": "BattleModel.PVEPlayerTeam",
@@ -50,7 +53,7 @@
                   "operation": {
                     "$type": "BattleModel.AddBuff",
                     "buffToAdd": {
-                      "BuffId": "ex_h0020s_equipment01_P2",
+                      "BuffId": "ex_h0185s_equipment02_P2",
                       "Forever": true,
                       "LevelStack": 0,
                       "OverwriteDuration": -1,
@@ -62,18 +65,6 @@
               }
             ],
             "Conditions": [
-              {
-                "$type": "BattleModel.IntCompare",
-                "left": {
-                  "$type": "BattleModel.ThisTeamExploreItemCount",
-                  "ExploreItemId": "ex_h0020s_equipment02"
-                },
-                "op": 0,
-                "right": {
-                  "$type": "BattleModel.ConstanctInt",
-                  "constant": 0
-                }
-              }
             ]
           }
         ],
@@ -84,13 +75,7 @@
   ],
   "_duration": 1,
   "_maxLevel": 99,
-  "_orderTable": [
-    {
-      "Key": 1,
-      "Value": {
-        "Order": 0
-      }
-    }
-  ],
+  "_orderTable": {
+  },
   "_tag": 32833
 }

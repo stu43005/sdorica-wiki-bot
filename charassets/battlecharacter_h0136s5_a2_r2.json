@@ -1,6 +1,6 @@
 {
   "$interpreted": {
-    "Localization": "卡蓮",
+    "Localization": "h0136s5_a2_r2",
     "參謀技能": {
       "_maxCastStack": 1,
       "_startCastStack": 0,
@@ -18,14 +18,17 @@
         "對施術者{\"Tag\":65540,\"_keyString\":\"1\",\"$type\":\"BattleModel.DirectKillSkillEffect\"}"
       ],
       "S1": [
-        "對施術者的目標穿透(攻擊力 x1)",
-        "對施術者將1個黑色魂芯消除"
+        "對施術者的目標穿透(攻擊力 x1.2)",
+        "對施術者將2個黑色魂芯消除",
+        "對施術者賦予3回合1層warfare(戰意)"
       ],
       "S2": [
-        "對施術者的對方全體穿透(攻擊力 x0.65)"
+        "對施術者的對方全體穿透(攻擊力 x0.85)"
       ],
       "S3": [
-        "對施術者的對方全體穿透(攻擊力 x1.8)、賦予2回合1層weak(易傷)"
+        "對施術者的對方全體穿透(攻擊力 x2.4)、賦予5回合1層weak(易傷)",
+        "對施術者賦予2回合1層leader(領袖)",
+        "對施術者的隊伍中符合(是白位)的角色首位賦予2回合1層leader(領袖)"
       ]
     },
     "技能組": {
@@ -69,6 +72,7 @@
     "消魂設置": {
       "Type1": "S1",
       "Type2": "S2",
+      "Type3_I": "E3",
       "Type3_L": "E3"
     },
     "疊盾": 270,
@@ -77,7 +81,7 @@
     "血量": 270,
     "血量等級調整後": 254,
     "被動Buff": [
-      "賦予永久h0136s5_a2_P1(我方回合開始時，移除1個黑色魂芯，同伴施展二/三/四技能時，本角色施展二魂技能。)"
+      "賦予永久h0136s5_a2_r2_P1(我方回合開始時，移除2個黑色魂芯，若我方角色皆有戰意與領袖，本角色施展二魂技能。同伴施展二/三/四技能時，本角色施展二魂技能。)"
     ],
     "起始CD": 0,
     "預設CD": 0
@@ -183,7 +187,7 @@
     "PassiveBuffDatas": [
       {
         "BuffData": {
-          "BuffId": "h0136s5_a2_A1",
+          "BuffId": "h0136s5_a2_r2_A1",
           "Forever": true,
           "LevelStack": 0,
           "OverwriteDuration": -1,
@@ -233,7 +237,7 @@
   "_masterRank": 0,
   "_passiveBuff": [
     {
-      "BuffId": "h0136s5_a2_P1",
+      "BuffId": "h0136s5_a2_r2_P1",
       "Forever": true,
       "LevelStack": 0,
       "OverwriteDuration": -1,
@@ -316,7 +320,7 @@
                   "$type": "BattleModel.SkillCasterPower",
                   "basePower": false
                 },
-                "_ratio": 1
+                "_ratio": 1.2
               }
             }
           ]
@@ -345,8 +349,33 @@
                 "filter": "IsBlack",
                 "isInitStoneFilter": "None",
                 "order": "LeftToRight",
-                "targetStoneCount": 1
+                "targetStoneCount": 2
               }
+            }
+          ]
+        },
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": false,
+          "multi": null,
+          "single": {
+            "$type": "BattleModel.ThisSkillCaster"
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.AddBuffSkillEffect",
+              "Tag": 132,
+              "_buffData": [
+                {
+                  "BuffId": "warfare",
+                  "Forever": false,
+                  "LevelStack": 1,
+                  "OverwriteDuration": 3,
+                  "UserDefineVariable": {
+                  }
+                }
+              ],
+              "_keyString": "1"
             }
           ]
         }
@@ -387,7 +416,7 @@
                   "$type": "BattleModel.SkillCasterPower",
                   "basePower": false
                 },
-                "_ratio": 0.65
+                "_ratio": 0.85
               }
             }
           ]
@@ -422,7 +451,7 @@
                   "$type": "BattleModel.SkillCasterPower",
                   "basePower": false
                 },
-                "_ratio": 1.8
+                "_ratio": 2.4
               }
             },
             {
@@ -433,12 +462,93 @@
                   "BuffId": "weak",
                   "Forever": false,
                   "LevelStack": 1,
-                  "OverwriteDuration": 2,
+                  "OverwriteDuration": 5,
                   "UserDefineVariable": {
                   }
                 }
               ],
               "_keyString": "2"
+            }
+          ]
+        },
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": false,
+          "multi": null,
+          "single": {
+            "$type": "BattleModel.ThisSkillCaster"
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.AddBuffSkillEffect",
+              "Tag": 132,
+              "_buffData": [
+                {
+                  "BuffId": "leader",
+                  "Forever": false,
+                  "LevelStack": 1,
+                  "OverwriteDuration": 2,
+                  "UserDefineVariable": {
+                  }
+                }
+              ],
+              "_keyString": "1"
+            }
+          ]
+        },
+        {
+          "CanBeEmpty": true,
+          "IsMultiple": false,
+          "multi": {
+            "$type": "BattleModel.CharGroupWhere",
+            "condition": {
+              "$type": "BattleModel.StoneTypeIs",
+              "type": 4
+            },
+            "group": {
+              "$type": "BattleModel.SelfTeamChars",
+              "excludeSelf": false,
+              "includeDead": false,
+              "includeEmpty": false,
+              "reference": {
+                "$type": "BattleModel.ThisSkillCaster"
+              }
+            }
+          },
+          "single": {
+            "$type": "BattleModel.FrontOfChars",
+            "group": {
+              "$type": "BattleModel.CharGroupWhere",
+              "condition": {
+                "$type": "BattleModel.StoneTypeIs",
+                "type": 4
+              },
+              "group": {
+                "$type": "BattleModel.SelfTeamChars",
+                "excludeSelf": false,
+                "includeDead": false,
+                "includeEmpty": false,
+                "reference": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              }
+            }
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.AddBuffSkillEffect",
+              "Tag": 132,
+              "_buffData": [
+                {
+                  "BuffId": "leader",
+                  "Forever": false,
+                  "LevelStack": 1,
+                  "OverwriteDuration": 2,
+                  "UserDefineVariable": {
+                  }
+                }
+              ],
+              "_keyString": "1"
             }
           ]
         }
@@ -464,7 +574,7 @@
           ],
           "_characterCoolDown": 0,
           "assignTarget": null,
-          "icon": 68
+          "icon": 100
         }
       ],
       "_isViewSkillSet": false
@@ -487,7 +597,7 @@
           ],
           "_characterCoolDown": 0,
           "assignTarget": null,
-          "icon": 132
+          "icon": 164
         }
       ],
       "_isViewSkillSet": false
@@ -527,6 +637,10 @@
     },
     {
       "Key": 3,
+      "Value": "E3"
+    },
+    {
+      "Key": 4,
       "Value": "E3"
     }
   ],
