@@ -2,6 +2,7 @@ import csvStringify from "csv-stringify";
 import fs from "fs-extra";
 import jsonStableStringify from "json-stable-stringify";
 import fetch from "node-fetch";
+import { once } from "node:events";
 import * as path from "path";
 import * as xlsx from "xlsx";
 import { ImperiumDataRaw, TableDataRaw } from "./data-raw-type";
@@ -115,10 +116,11 @@ export async function mkdir(dirname: string) {
 
 export async function rpFile(url: string, filePath: string) {
 	logger.debug(`downloading ${url} to ${filePath}`);
-	const res = await fetch(url);
-	const buffer = await res.buffer();
 	await mkdir(path.dirname(filePath));
-	await fs.writeFile(filePath, buffer);
+	const res = await fetch(url);
+	const ws = fs.createWriteStream(filePath);
+	res.body.pipe(ws);
+	await once(ws, "close");
 }
 
 export async function fsExists(filepath: string) {
