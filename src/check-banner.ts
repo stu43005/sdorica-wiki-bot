@@ -4,20 +4,12 @@ import path from "node:path";
 import { API_CONFIG_PATH, ApiConfig, BANNERS_PATH, LATEST_PATH } from "./config";
 import { LatestDataRaw } from "./data-raw-type";
 import { discordWebhook } from "./discord-webhook";
-import { inputJsonSync } from "./input";
+import { inputJsonDefault, inputJsonSync } from "./input";
 import { Logger } from "./logger";
 import { outJson, rpFile } from "./out";
 
 const logger = new Logger("check-banner");
 const bannerUrlsPath = path.join(BANNERS_PATH, "banner_urls.json");
-
-function getBannerUrls(): string[] {
-	try {
-		return inputJsonSync(bannerUrlsPath);
-	} catch (error) {
-		return [];
-	}
-}
 
 async function loginToGame() {
 	const apiConfig: ApiConfig = inputJsonSync(API_CONFIG_PATH);
@@ -83,7 +75,7 @@ async function downloadBanner(type: string, url: string) {
 }
 
 export async function checkBanner(debug = false, lang = "zh_TW") {
-	const bannerUrls = getBannerUrls();
+	const bannerUrls = await inputJsonDefault<string[]>(bannerUrlsPath, []);
 
 	try {
 		const gameInstance = await loginToGame();

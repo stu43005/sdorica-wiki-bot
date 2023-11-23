@@ -4,6 +4,7 @@ import * as path from "path";
 import * as readline from "readline";
 import streamToPromise from "stream-to-promise";
 import { DataRaw, ImperiumDataRaw, LatestDataRaw } from "./data-raw-type";
+import { fsExists } from "./out";
 
 export async function inputDir(
 	dirname: string,
@@ -30,6 +31,15 @@ export function inputJsonSync<T = any>(filepath: string): T {
 	const content = fs.readFileSync(filepath, { encoding: "utf8" });
 	const json = JSON.parse(content);
 	return json;
+}
+
+export async function inputJsonDefault<T = any>(filepath: string, def: T): Promise<T> {
+	try {
+		if (await fsExists(filepath)) {
+			return inputJsonSync<T>(filepath);
+		}
+	} catch (error) {}
+	return def;
 }
 
 /**
@@ -94,7 +104,7 @@ function processTableData(data: ImperiumDataRaw) {
  * @returns {Promise<{ [key: string]: any }>} unserialized State key-value pair
  */
 export function inputMonoBehaviour(filepath: string): Promise<Record<string, any[]>> {
-	return new Promise<Record<string, any[]>>((resolve, reject) => {
+	return new Promise<Record<string, any[]>>((resolve) => {
 		const rl = readline.createInterface({
 			input: fs.createReadStream(filepath, "utf8"),
 			crlfDelay: Infinity,

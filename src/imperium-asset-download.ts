@@ -1,8 +1,8 @@
 import { AssetDataRaw } from "./data-raw-type";
 import { ImperiumData } from "./imperium-data";
-import { inputJsonSync } from "./input";
+import { inputJsonDefault } from "./input";
 import { Logger } from "./logger";
-import { fsExists, outJson } from "./out";
+import { outJson } from "./out";
 
 const logger = new Logger("imperium-asset-download");
 
@@ -14,12 +14,7 @@ export async function assetDownload(
 	force = false,
 	downloadCallback: (name: string, asset: AssetDataRaw) => Promise<boolean>
 ) {
-	let meta: Metadata = {};
-	try {
-		if (await fsExists(metadataFilePath)) {
-			meta = inputJsonSync<Metadata>(metadataFilePath);
-		}
-	} catch (error) {}
+	const meta = await inputJsonDefault<Metadata>(metadataFilePath, {});
 
 	const assets = data.getTable("Assets");
 	for (const row of assets) {
