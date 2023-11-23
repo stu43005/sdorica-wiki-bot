@@ -1,66 +1,24 @@
-import * as fs from 'fs-extra';
-import * as path from 'path';
-import { DIALOG_PATH } from './config';
-import { AssetDataRaw } from './data-raw-type';
+import * as fs from "fs-extra";
+import * as path from "path";
+import { DIALOG_PATH } from "./config";
+import { AssetDataRaw } from "./data-raw-type";
+import { assetDownload } from "./imperium-asset-download";
 import { ImperiumData } from "./imperium-data";
-import { inputJsonSync } from "./input";
-import { fsSerializer } from './lib/FullSerializer/fsSerializer';
-import { Logger } from './logger';
-import { fsExists, outJson, rpFile } from './out';
-import { DialogAsset } from './sdorica/DialogAsset';
-import { interpreted as dialogInterpreted } from './viewerjs/entry/DialogAsset';
-import { siJsonParse } from './viewerjs/utils';
+import { fsSerializer } from "./lib/FullSerializer/fsSerializer";
+import { Logger } from "./logger";
+import { outJson, rpFile } from "./out";
+import { DialogAsset } from "./sdorica/DialogAsset";
+import { interpreted as dialogInterpreted } from "./viewerjs/entry/DialogAsset";
+import { siJsonParse } from "./viewerjs/utils";
 
-const logger = new Logger('dialog-downloader');
-const metadataFilePath = path.join(DIALOG_PATH, 'metadata.json');
+const logger = new Logger("dialog-downloader");
+const metadataFilePath = path.join(DIALOG_PATH, "metadata.json");
 
-type Metadata = Record<string, AssetDataRaw>;
-
-export async function dialogDownloader(force = false) {
-	let meta: Metadata = {};
-	try {
-		if (await fsExists(metadataFilePath)) {
-			meta = inputJsonSync<Metadata>(metadataFilePath);
-		}
-	} catch (error) {
-	}
-
+export function dialogDownloader(force = false) {
 	const dialog = ImperiumData.fromDialog();
-	const assets = dialog.getTable('Assets');
-	for (const row of assets) {
-		const name: string = row.get('BundleName');
-		const asset = dialog.getAsset(row.get('Ref'));
-
-		if (asset && checkNeedDownload(meta, name, asset, force)) {
-			if (await downloadDialog(name, asset)) {
-				meta[name] = asset;
-			}
-		}
-	}
-
-	try {
-		await outJson(metadataFilePath, meta);
-
-	} catch (error) {
-		logger.error(`output metadata error:`, error);
-		debugger;
-		return false;
-	}
-	return true;
-}
-
-function checkNeedDownload(meta: Metadata | null, name: string, asset: AssetDataRaw, force?: boolean) {
-	if (force) {
-		return true;
-	}
-	if (meta) {
-		const metaAsset = meta[name];
-		if (metaAsset?.H === asset.H) {
-			logger.log(`${name} not changed. skip`);
-			return false;
-		}
-	}
-	return true;
+	return assetDownload(metadataFilePath, dialog, force, (name, asset) =>
+		downloadDialog(name, asset)
+	);
 }
 
 export async function downloadDialog(name: string, asset: AssetDataRaw) {
@@ -85,10 +43,7 @@ export async function downloadDialog(name: string, asset: AssetDataRaw) {
 			const serializer = new fsSerializer();
 			data = serializer.TryDeserialize(json);
 			data.$interpreted = dialogInterpreted(data);
-
-		} catch (error) {
-		}
-
+		} catch (error) {}
 	} catch (error) {
 		logger.error(`opening ${name} error:`, error);
 		debugger;
@@ -97,7 +52,6 @@ export async function downloadDialog(name: string, asset: AssetDataRaw) {
 
 	try {
 		await outJson(jsonFilePath, data);
-
 	} catch (error) {
 		logger.error(`output ${name} error:`, error);
 		debugger;
