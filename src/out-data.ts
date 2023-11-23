@@ -5,11 +5,6 @@ import { flipMatrix } from "./utils";
 export function dataOut(data: ImperiumDataRaw) {
 	const out: any[] = [];
 
-	if (data.D) {
-		out.push(["D", data.D]);
-		out.push([]);
-	}
-
 	if (data.A) {
 		assetOut(out, data.A);
 		out.push([]);

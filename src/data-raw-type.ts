@@ -48,11 +48,6 @@ export interface ImperiumDataRaw {
 	 * Enums data
 	 */
 	E: Record<string, string[]>;
-
-	D: string;
-
-	filename: string;
-	priv: string;
 }
 
 export interface LatestDataRaw {

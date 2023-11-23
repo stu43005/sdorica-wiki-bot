@@ -15,7 +15,7 @@ export class ImperiumData {
 			this.instances[name] = new ImperiumData(name);
 			this.instances[name].loadData();
 		}
-		return this.instances[name]!;
+		return this.instances[name];
 	}
 	static fromGamedata() {
 		return this.from("gamedata");
@@ -28,6 +28,12 @@ export class ImperiumData {
 	}
 	static fromDialog() {
 		return this.from("dialog");
+	}
+	static fromAndroid() {
+		return this.from("android");
+	}
+	static fromAndroidExp() {
+		return this.from("androidExp");
 	}
 
 	data: ImperiumDataRaw | null = null;
@@ -67,11 +73,20 @@ export class ImperiumData {
 		this.data = data;
 	}
 
-	getRawData() {
+	getRawData(): ImperiumDataRaw {
 		if (!this.data) {
 			this.loadData();
 		}
-		return this.data!;
+		if (!this.data) {
+			logger.error(`raw data not yet loaded.`);
+			debugger;
+			return {
+				A: {},
+				C: {},
+				E: {},
+			};
+		}
+		return this.data;
 	}
 }
 
