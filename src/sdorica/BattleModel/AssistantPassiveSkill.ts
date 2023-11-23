@@ -1,3 +1,3 @@
 import { AssistantSkill } from "./AssistantSkill";
 
-export type AssistantPassiveSkill = AssistantSkill
+export type AssistantPassiveSkill = AssistantSkill;

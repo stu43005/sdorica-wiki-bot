@@ -9,16 +9,10 @@ export default function wikiAvatars() {
 	const categorys = _.groupBy(Avatar.getAll(), (a) => a.category);
 
 	for (const [groupId, group] of Object.entries(categorys)) {
-		const table: WikiTableStruct = [
-			[
-				`! 頭像`,
-				`! 獲得途徑`,
-				`! Icon`,
-			],
-		];
+		const table: WikiTableStruct = [[`! 頭像`, `! 獲得途徑`, `! Icon`]];
 		for (const avatar of group.sort((a, b) => a.order - b.order)) {
 			table.push([
-				avatar.item ? avatar.item.toWiki() : avatar.hero?.toWiki() ?? '',
+				avatar.item ? avatar.item.toWiki() : avatar.hero?.toWiki() ?? "",
 				avatar.description,
 				avatar.asset,
 			]);

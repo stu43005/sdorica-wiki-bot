@@ -16,44 +16,45 @@ export default function wikiExploreBuilding() {
 		const table: WikiTableStruct = [];
 		switch (type) {
 			case "Warehouse":
-				table.push([
-					`! 倉庫等級`,
-					`! 倉庫格數`,
-					`! 升級素材`,
-				]);
+				table.push([`! 倉庫等級`, `! 倉庫格數`, `! 升級素材`]);
 				break;
 			default:
-				table.push([
-					`! 等級`,
-					`! 升級素材`,
-				]);
+				table.push([`! 等級`, `! 升級素材`]);
 				break;
 		}
 		for (const level of building) {
 			const items = range(1, 4)
-				.map((i) => item2wiki(level.get(`item${i}Id`), level.get(`item${i}Count`), true, { size: "20px" }))
+				.map((i) =>
+					item2wiki(level.get(`item${i}Id`), level.get(`item${i}Count`), true, {
+						size: "20px",
+					})
+				)
 				.filter(Boolean);
 			table.push([
 				{
 					attributes: `style="text-align:center"`,
 					text: `Lv ${level.get("level")}`,
 				},
-				...(type === "Warehouse" ? [
-					{
-						attributes: `style="text-align:center"`,
-						text: level.get("effectValue"),
-					},
-				] : []),
-				...(items.length > 0 ? [
-					{
-						text: items.join(" "),
-					},
-				] : [
-					{
-						attributes: `style="text-align:center"`,
-						text: "-",
-					},
-				]),
+				...(type === "Warehouse"
+					? [
+							{
+								attributes: `style="text-align:center"`,
+								text: level.get("effectValue"),
+							},
+					  ]
+					: []),
+				...(items.length > 0
+					? [
+							{
+								text: items.join(" "),
+							},
+					  ]
+					: [
+							{
+								attributes: `style="text-align:center"`,
+								text: "-",
+							},
+					  ]),
 			]);
 		}
 

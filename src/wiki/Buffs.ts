@@ -8,26 +8,18 @@ const BuffInfoTable = ImperiumData.fromGamedata().getTable("BuffInfo");
 export default function wikiBuffs() {
 	let out = wikiH1("BUFF列表");
 
-	const table: WikiTableStruct = [
-		["! id", "! 名稱", "! 英文名稱", "! 說明", "! Icon"],
-	];
+	const table: WikiTableStruct = [["! id", "! 名稱", "! 英文名稱", "! 說明", "! Icon"]];
 
-	for (const row of BuffInfoTable.rows.sort(
-		(a, b) => a.get("order") - b.get("order")
-	)) {
+	for (const row of BuffInfoTable.rows.sort((a, b) => a.get("order") - b.get("order"))) {
 		const id = row.get("id");
-		const name = localizationString("BaseBuff")(
-			row.get("localizationNameKey")
-		);
+		const name = localizationString("BaseBuff")(row.get("localizationNameKey"));
 		const enname = localizationString(
 			"BaseBuff",
 			"",
 			"Key",
 			"English"
 		)(row.get("localizationNameKey"));
-		const info = localizationString("BaseBuff")(
-			row.get("localizationInfoKey")
-		);
+		const info = localizationString("BaseBuff")(row.get("localizationInfoKey"));
 		const iconKey = row.get("iconKey");
 		table.push({
 			attributes: row.get("viewable")

@@ -1,5 +1,5 @@
 export function isDevMode() {
-	return process.env.NODE_ENV === 'development';
+	return process.env.NODE_ENV === "development";
 }
 
 /**
@@ -7,60 +7,76 @@ export function isDevMode() {
  */
 export function is_utf8(bytes: number[] | Buffer) {
 	let i = 0;
-	if ((
+	if (
 		// ASCII
 		bytes[i] == 0x09 ||
-		bytes[i] == 0x0A ||
-		bytes[i] == 0x0D ||
-		(bytes[i] >= 0x20 && bytes[i] <= 0x7E))) {
+		bytes[i] == 0x0a ||
+		bytes[i] == 0x0d ||
+		(bytes[i] >= 0x20 && bytes[i] <= 0x7e)
+	) {
 		i += 1;
 		return i;
 	}
-	if ((
+	if (
 		// non-overlong 2-byte
-		(bytes[i] >= 0xC2 && bytes[i] <= 0xDF) &&
-		(bytes[i + 1] >= 0x80 && bytes[i + 1] <= 0xBF))) {
+		bytes[i] >= 0xc2 &&
+		bytes[i] <= 0xdf &&
+		bytes[i + 1] >= 0x80 &&
+		bytes[i + 1] <= 0xbf
+	) {
 		i += 2;
 		return i;
 	}
-	if ((
+	if (
 		// excluding overlongs
-		bytes[i] == 0xE0 &&
-		(bytes[i + 1] >= 0xA0 && bytes[i + 1] <= 0xBF) &&
-		(bytes[i + 2] >= 0x80 && bytes[i + 2] <= 0xBF)) ||
-		(
-			// straight 3-byte
-			((bytes[i] >= 0xE1 && bytes[i] <= 0xEC) ||
-				bytes[i] == 0xEE ||
-				bytes[i] == 0xEF) &&
-			(bytes[i + 1] >= 0x80 && bytes[i + 1] <= 0xBF) &&
-			(bytes[i + 2] >= 0x80 && bytes[i + 2] <= 0xBF)) ||
-		(
-			// excluding surrogates
-			bytes[i] == 0xED &&
-			(bytes[i + 1] >= 0x80 && bytes[i + 1] <= 0x9F) &&
-			(bytes[i + 2] >= 0x80 && bytes[i + 2] <= 0xBF))) {
+		(bytes[i] == 0xe0 &&
+			bytes[i + 1] >= 0xa0 &&
+			bytes[i + 1] <= 0xbf &&
+			bytes[i + 2] >= 0x80 &&
+			bytes[i + 2] <= 0xbf) ||
+		// straight 3-byte
+		(((bytes[i] >= 0xe1 && bytes[i] <= 0xec) || bytes[i] == 0xee || bytes[i] == 0xef) &&
+			bytes[i + 1] >= 0x80 &&
+			bytes[i + 1] <= 0xbf &&
+			bytes[i + 2] >= 0x80 &&
+			bytes[i + 2] <= 0xbf) ||
+		// excluding surrogates
+		(bytes[i] == 0xed &&
+			bytes[i + 1] >= 0x80 &&
+			bytes[i + 1] <= 0x9f &&
+			bytes[i + 2] >= 0x80 &&
+			bytes[i + 2] <= 0xbf)
+	) {
 		i += 3;
 		return i;
 	}
-	if ((
+	if (
 		// planes 1-3
-		bytes[i] == 0xF0 &&
-		(bytes[i + 1] >= 0x90 && bytes[i + 1] <= 0xBF) &&
-		(bytes[i + 2] >= 0x80 && bytes[i + 2] <= 0xBF) &&
-		(bytes[i + 3] >= 0x80 && bytes[i + 3] <= 0xBF)) ||
-		(
-			// planes 4-15
-			(bytes[i] >= 0xF1 && bytes[i] <= 0xF3) &&
-			(bytes[i + 1] >= 0x80 && bytes[i + 1] <= 0xBF) &&
-			(bytes[i + 2] >= 0x80 && bytes[i + 2] <= 0xBF) &&
-			(bytes[i + 3] >= 0x80 && bytes[i + 3] <= 0xBF)) ||
-		(
-			// plane 16
-			bytes[i] == 0xF4 &&
-			(bytes[i + 1] >= 0x80 && bytes[i + 1] <= 0x8F) &&
-			(bytes[i + 2] >= 0x80 && bytes[i + 2] <= 0xBF) &&
-			(bytes[i + 3] >= 0x80 && bytes[i + 3] <= 0xBF))) {
+		(bytes[i] == 0xf0 &&
+			bytes[i + 1] >= 0x90 &&
+			bytes[i + 1] <= 0xbf &&
+			bytes[i + 2] >= 0x80 &&
+			bytes[i + 2] <= 0xbf &&
+			bytes[i + 3] >= 0x80 &&
+			bytes[i + 3] <= 0xbf) ||
+		// planes 4-15
+		(bytes[i] >= 0xf1 &&
+			bytes[i] <= 0xf3 &&
+			bytes[i + 1] >= 0x80 &&
+			bytes[i + 1] <= 0xbf &&
+			bytes[i + 2] >= 0x80 &&
+			bytes[i + 2] <= 0xbf &&
+			bytes[i + 3] >= 0x80 &&
+			bytes[i + 3] <= 0xbf) ||
+		// plane 16
+		(bytes[i] == 0xf4 &&
+			bytes[i + 1] >= 0x80 &&
+			bytes[i + 1] <= 0x8f &&
+			bytes[i + 2] >= 0x80 &&
+			bytes[i + 2] <= 0xbf &&
+			bytes[i + 3] >= 0x80 &&
+			bytes[i + 3] <= 0xbf)
+	) {
 		i += 4;
 		return i;
 	}
@@ -82,20 +98,18 @@ export function numMultiply(arg1: number, arg2: number): number {
 		s2 = arg2.toString();
 	try {
 		m += s1.split(".")[1].length;
-	}
-	catch (e) { }
+	} catch (e) {}
 	try {
 		m += s2.split(".")[1].length;
-	}
-	catch (e) { }
-	return Number(s1.replace(".", "")) * Number(s2.replace(".", "")) / Math.pow(10, m);
+	} catch (e) {}
+	return (Number(s1.replace(".", "")) * Number(s2.replace(".", ""))) / Math.pow(10, m);
 }
 
 export function isNumber(num: any): num is number {
-	if (typeof num === 'number') {
+	if (typeof num === "number") {
 		return num - num === 0;
 	}
-	if (typeof num === 'string' && num.trim() !== '') {
+	if (typeof num === "string" && num.trim() !== "") {
 		return Number.isFinite ? Number.isFinite(+num) : isFinite(+num);
 	}
 	return false;
@@ -108,7 +122,10 @@ export function isEmptyObject(obj: any) {
 	return true;
 }
 
-export function objectEach<T>(obj: Record<string, T>, callback: (key: string, value: T) => boolean | void) {
+export function objectEach<T>(
+	obj: Record<string, T>,
+	callback: (key: string, value: T) => boolean | void
+) {
 	for (const i in obj) {
 		if (callback(i, obj[i]) === false) {
 			break;
@@ -117,7 +134,10 @@ export function objectEach<T>(obj: Record<string, T>, callback: (key: string, va
 	return obj;
 }
 
-export function objectMap<T, U>(obj: Record<string, T>, callback: (key: string, value: T) => U): Record<string, U> {
+export function objectMap<T, U>(
+	obj: Record<string, T>,
+	callback: (key: string, value: T) => U
+): Record<string, U> {
 	const out: Record<string, U> = {};
 	for (const i in obj) {
 		out[i] = callback(i, obj[i]);
@@ -151,8 +171,16 @@ export function arrayUnique<T>(arr: T[]) {
 }
 
 export function arrayGroupBy<T>(arr: T[], getter: (value: T) => number, isNumber: true): T[][];
-export function arrayGroupBy<T>(arr: T[], getter: (value: T) => string, isNumber?: false): Record<string, T[]>;
-export function arrayGroupBy<T>(arr: T[], getter: ((value: T) => number) | ((value: T) => string), isNumber = false): T[][] | Record<string, T[]> {
+export function arrayGroupBy<T>(
+	arr: T[],
+	getter: (value: T) => string,
+	isNumber?: false
+): Record<string, T[]>;
+export function arrayGroupBy<T>(
+	arr: T[],
+	getter: ((value: T) => number) | ((value: T) => string),
+	isNumber = false
+): T[][] | Record<string, T[]> {
 	if (isNumber) {
 		const getter2 = getter as (value: T) => number;
 		const out: T[][] = [];
@@ -199,14 +227,11 @@ export function arraySortBy(order: string[]) {
 			return -1;
 		}
 		return ai - bi;
-	}
+	};
 }
 
-export const flipMatrix = (matrix: any[][]) => (
-	matrix.length > 0 ? matrix[0].map((column, index) => (
-		matrix.map(row => row[index])
-	)) : matrix
-);
+export const flipMatrix = (matrix: any[][]) =>
+	matrix.length > 0 ? matrix[0].map((column, index) => matrix.map((row) => row[index])) : matrix;
 
 export const sortByCharacterModelNo = (a: string, b: string) => {
 	a = String(a);
@@ -239,5 +264,5 @@ export function sortCategory(a: string, b: string) {
 }
 
 export function jsonBlock(obj: any) {
-	return "```json\n" + JSON.stringify(obj, null, '  ') + "\n```";
+	return "```json\n" + JSON.stringify(obj, null, "  ") + "\n```";
 }

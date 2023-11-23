@@ -43,9 +43,7 @@ export default function wikiHeroes() {
 			],
 		};
 		for (const hero of group) {
-			const skillbooks = hero.books.map(
-				(book) => book.bookItem?.toWiki({ text: "" }) ?? ""
-			);
+			const skillbooks = hero.books.map((book) => book.bookItem?.toWiki({ text: "" }) ?? "");
 
 			table.rows.push({
 				attributes: hero.enable
@@ -63,11 +61,7 @@ export default function wikiHeroes() {
 					hero.hp,
 					hero.revive || "",
 					hero.storyChapter?.title
-						? wikiPageLink(
-								"Chapter",
-								hero.storyChapter.title,
-								hero.storyChapter.id
-						  )
+						? wikiPageLink("Chapter", hero.storyChapter.title, hero.storyChapter.id)
 						: "",
 					hero.resonanceItem?.toWiki({
 						text: "",
@@ -85,7 +79,5 @@ export default function wikiHeroes() {
 
 export function wikiHeroesJson() {
 	const sortedHeroes = getSortedHeroes();
-	return sortedHeroes
-		.filter((hero) => hero.enable)
-		.map((hero) => hero.toJSON());
+	return sortedHeroes.filter((hero) => hero.enable).map((hero) => hero.toJSON());
 }

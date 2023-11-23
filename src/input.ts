@@ -1,11 +1,15 @@
-import * as fs from 'fs-extra';
+import * as fs from "fs-extra";
 import msgpack5 from "msgpack5";
-import * as path from 'path';
+import * as path from "path";
 import * as readline from "readline";
 import streamToPromise from "stream-to-promise";
 import { DataRaw, ImperiumDataRaw, LatestDataRaw } from "./data-raw-type";
 
-export async function inputDir(dirname: string, callback: (name: string, file: fs.Stats) => Promise<void>, includeSubDir = false) {
+export async function inputDir(
+	dirname: string,
+	callback: (name: string, file: fs.Stats) => Promise<void>,
+	includeSubDir = false
+) {
 	const files: string[] = await fs.readdir(dirname);
 	while (files.length > 0) {
 		const file = files.shift();
@@ -15,8 +19,7 @@ export async function inputDir(dirname: string, callback: (name: string, file: f
 			const stat = await fs.stat(name);
 			if (includeSubDir && stat.isDirectory()) {
 				await inputDir(name, callback, includeSubDir);
-			}
-			else if (stat.isFile()) {
+			} else if (stat.isFile()) {
 				await callback.call(name, name, stat);
 			}
 		}
@@ -24,7 +27,7 @@ export async function inputDir(dirname: string, callback: (name: string, file: f
 }
 
 export function inputJsonSync<T = any>(filepath: string): T {
-	const content = fs.readFileSync(filepath, { encoding: 'utf8' });
+	const content = fs.readFileSync(filepath, { encoding: "utf8" });
 	const json = JSON.parse(content);
 	return json;
 }
@@ -34,14 +37,12 @@ export function inputJsonSync<T = any>(filepath: string): T {
  */
 export async function inputFilePack(filepath: string): Promise<DataRaw> {
 	const msgpack = msgpack5();
-	const stream = fs.createReadStream(filepath)
-		.pipe(msgpack.decoder());
-	const raw = await streamToPromise(stream) as any;
+	const stream = fs.createReadStream(filepath).pipe(msgpack.decoder());
+	const raw = (await streamToPromise(stream)) as any;
 	const data = raw[0] as DataRaw;
 	if (isImperiumData(data)) {
 		processTableData(data);
-	}
-	else if (isLatestData(data)) {
+	} else if (isLatestData(data)) {
 		processLatestData(data);
 	}
 	return data;
@@ -57,8 +58,8 @@ export function isImperiumData(data: DataRaw): data is ImperiumDataRaw {
 
 function processLatestData(data: LatestDataRaw) {
 	if (!isLatestData(data)) return;
-	data[`CT(ISO)`] = (new Date(data["CT"] * 1000)).toISOString();
-	data[`PT(ISO)`] = (new Date(data["PT"] * 1000)).toISOString();
+	data[`CT(ISO)`] = new Date(data["CT"] * 1000).toISOString();
+	data[`PT(ISO)`] = new Date(data["PT"] * 1000).toISOString();
 }
 
 function processTableData(data: ImperiumDataRaw) {
@@ -77,8 +78,7 @@ function processTableData(data: ImperiumDataRaw) {
 						}
 						if (enumm) {
 							row[j] = enumm[row[j]] || row[j];
-						}
-						else {
+						} else {
 							row[j] = row[j];
 						}
 					}
@@ -96,7 +96,7 @@ function processTableData(data: ImperiumDataRaw) {
 export function inputMonoBehaviour(filepath: string): Promise<Record<string, any[]>> {
 	return new Promise<Record<string, any[]>>((resolve, reject) => {
 		const rl = readline.createInterface({
-			input: fs.createReadStream(filepath, 'utf8'),
+			input: fs.createReadStream(filepath, "utf8"),
 			crlfDelay: Infinity,
 		});
 
@@ -105,33 +105,34 @@ export function inputMonoBehaviour(filepath: string): Promise<Record<string, any
 		let curKey = "";
 		let curIndex = -1;
 
-		rl.on('line', (line) => {
+		rl.on("line", (line) => {
 			const tokens = line.trim().split(" ");
 			if (tokens[0] == "vector") {
 				curKey = tokens[1];
 				raw[curKey] = [];
 				curIndex = -1;
-			}
-			else if (curKey && tokens.length == 4 && tokens[1] == "size") {
+			} else if (curKey && tokens.length == 4 && tokens[1] == "size") {
 				size[curKey] = Number(tokens[3]);
-			}
-			else if (curKey && size[curKey] && line.match(/^\s*\[\d+\]$/)) {
+			} else if (curKey && size[curKey] && line.match(/^\s*\[\d+\]$/)) {
 				const match = line.match(/^\s*\[(\d+)\]$/);
 				if (match) curIndex = Number(match[1]);
-			}
-			else if (curKey && size[curKey] && curIndex > -1 && line.indexOf("string data") != -1) {
-				let data = line.substring(line.indexOf("\"") + 1, line.length - 1);
+			} else if (
+				curKey &&
+				size[curKey] &&
+				curIndex > -1 &&
+				line.indexOf("string data") != -1
+			) {
+				let data = line.substring(line.indexOf('"') + 1, line.length - 1);
 				try {
 					data = JSON.parse(data.replace(/\:(-?)\.(\d)/g, ":$10.$2"));
-				}
-				catch (error) { }
+				} catch (error) {}
 				raw[curKey][curIndex] = data;
 
 				if (raw[curKey].length >= size[curKey]) {
 					curKey = "";
 				}
 			}
-		}).on('close', () => {
+		}).on("close", () => {
 			const out: Record<string, any[]> = {};
 			for (const key in raw) {
 				if (raw.hasOwnProperty(key)) {
@@ -144,14 +145,11 @@ export function inputMonoBehaviour(filepath: string): Promise<Record<string, any
 							const value2 = _serializedStateValues[i];
 							out[key2] = value2;
 						}
-					}
-					else if (key == "_serializedStateValues") {
+					} else if (key == "_serializedStateValues") {
 						// do nothing
-					}
-					else if (key == "_objectReferences") {
+					} else if (key == "_objectReferences") {
 						// do nothing
-					}
-					else {
+					} else {
 						out[key] = value;
 					}
 				}

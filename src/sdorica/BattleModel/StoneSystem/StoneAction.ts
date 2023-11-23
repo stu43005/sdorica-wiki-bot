@@ -1,2 +1,1 @@
-export interface StoneAction {
-}
+export interface StoneAction {}

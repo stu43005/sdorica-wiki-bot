@@ -27,7 +27,7 @@ export interface ItemInfoboxParams {
  * 取得`{{item infobox}}`模板
  */
 export function itemInfoboxTemplate(params: ItemInfoboxParams) {
-	params.description = params.description ? wikiNextLine(params.description) : ' ';
+	params.description = params.description ? wikiNextLine(params.description) : " ";
 
-	return wikitemplate('item infobox', params, TemplateFormatter.FORMAT.BLOCK);
+	return wikitemplate("item infobox", params, TemplateFormatter.FORMAT.BLOCK);
 }

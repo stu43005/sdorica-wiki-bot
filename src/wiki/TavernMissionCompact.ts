@@ -26,22 +26,40 @@ function getTavernMissionTypeName(type: string, buildingId: string) {
 export default function wikiTavernMissionCompact() {
 	let out = wikiH1(`篝火 (完整版)`);
 
-	const TavernMissionDropEnabled = TavernMissionDropTable.filter(r => TavernMission.get(r.get("missionId"))?.enable);
+	const TavernMissionDropEnabled = TavernMissionDropTable.filter(
+		(r) => TavernMission.get(r.get("missionId"))?.enable
+	);
 
 	out += `\n\n${wikiH2(`每日任務`)}`;
 
-	const dailyMissionIds = TavernMission.getAll().filter(r => r.tab == "daily" && r.category == "daily").map(r => r.id);
-	const dropDaily = TavernMissionDropEnabled.filter(r => dailyMissionIds.includes(r.get("missionId")) && r.get("type") == "Building" && r.get("param1") == 2/*篝火*/ && TavernMission.get(r.get("missionId"))?.questRank == r.get("param2"));
-	const dropDailyRanks = _.groupBy(dropDaily, (r) => `${r.get("type")},${r.get("param1")},${r.get("param2")}`);
+	const dailyMissionIds = TavernMission.getAll()
+		.filter((r) => r.tab == "daily" && r.category == "daily")
+		.map((r) => r.id);
+	const dropDaily = TavernMissionDropEnabled.filter(
+		(r) =>
+			dailyMissionIds.includes(r.get("missionId")) &&
+			r.get("type") == "Building" &&
+			r.get("param1") == 2 /*篝火*/ &&
+			TavernMission.get(r.get("missionId"))?.questRank == r.get("param2")
+	);
+	const dropDailyRanks = _.groupBy(
+		dropDaily,
+		(r) => `${r.get("type")},${r.get("param1")},${r.get("param2")}`
+	);
 
 	for (const [rankKey, group1] of Object.entries(dropDailyRanks)) {
 		const [, buildingId, questRank] = rankKey.split(",");
-		const maxReqSkillCount = Math.max(1, ...group1.map(r => {
-			const reqSkill = TavernMissionRequire.get(r.get("missionId"));
-			return reqSkill.length;
-		}));
+		const maxReqSkillCount = Math.max(
+			1,
+			...group1.map((r) => {
+				const reqSkill = TavernMissionRequire.get(r.get("missionId"));
+				return reqSkill.length;
+			})
+		);
 
-		out += `\n\n${wikiH3(`${localizationHomelandBuildingName()(buildingId)} ${questRank} 級【${questRank} ★】`)}`;
+		out += `\n\n${wikiH3(
+			`${localizationHomelandBuildingName()(buildingId)} ${questRank} 級【${questRank} ★】`
+		)}`;
 		const table: WikiTableStruct = {
 			attributes: `class="wikitable table-responsive-autowrap"`,
 			rows: [
@@ -64,32 +82,59 @@ export default function wikiTavernMissionCompact() {
 			const missions = group2
 				.map((r) => TavernMission.get(r.get("missionId")))
 				.filter(Boolean);
-			const sameDropItem = missions.every((m1, index) => missions.slice(index + 1).every(m2 => m1.displayDropItem.compare(m2.displayDropItem)));
-			const sameExtraDropItem = missions.every((m1, index) => missions.slice(index + 1).every(m2 => m1.displayExtraDropItem.compare(m2.displayExtraDropItem)));
+			const sameDropItem = missions.every((m1, index) =>
+				missions
+					.slice(index + 1)
+					.every((m2) => m1.displayDropItem.compare(m2.displayDropItem))
+			);
+			const sameExtraDropItem = missions.every((m1, index) =>
+				missions
+					.slice(index + 1)
+					.every((m2) => m1.displayExtraDropItem.compare(m2.displayExtraDropItem))
+			);
 
 			for (let k = 0; k < missions.length; k++) {
 				const mission = missions[k];
 				table.rows.push([
-					...(k === 0 ? [
-						{
-							attributes: `rowspan="${group2.length}" style="text-align: center;"`,
-							text: wikiNextLine(`${wikiimage(`冒險任務_${mission.getWikiCategoryName()}_Icon.png`, { width: 40 })}\n${mission.getWikiCategoryName()}`),
-						},
-					] : []),
-					`${mission.heroSlot.length ? `{{站位圖標|${mission.heroSlot[0]}|size=24px}} ` : ""}${mission.name}`,
-					...range(1, maxReqSkillCount).map(value => mission.reqSkills[value - 1]?.toWiki() ?? ""),
-					...(!sameDropItem || k == 0 ? [
-						{
-							attributes: sameDropItem ? `rowspan="${group2.length}"` : "",
-							text: mission.displayDropItem.toWiki({ text: "" }),
-						},
-					] : []),
-					...(!sameExtraDropItem || k == 0 ? [
-						{
-							attributes: sameExtraDropItem ? `rowspan="${group2.length}"` : "",
-							text: mission.displayExtraDropItem.toWiki({ text: "" }),
-						},
-					] : []),
+					...(k === 0
+						? [
+								{
+									attributes: `rowspan="${group2.length}" style="text-align: center;"`,
+									text: wikiNextLine(
+										`${wikiimage(
+											`冒險任務_${mission.getWikiCategoryName()}_Icon.png`,
+											{ width: 40 }
+										)}\n${mission.getWikiCategoryName()}`
+									),
+								},
+						  ]
+						: []),
+					`${
+						mission.heroSlot.length
+							? `{{站位圖標|${mission.heroSlot[0]}|size=24px}} `
+							: ""
+					}${mission.name}`,
+					...range(1, maxReqSkillCount).map(
+						(value) => mission.reqSkills[value - 1]?.toWiki() ?? ""
+					),
+					...(!sameDropItem || k == 0
+						? [
+								{
+									attributes: sameDropItem ? `rowspan="${group2.length}"` : "",
+									text: mission.displayDropItem.toWiki({ text: "" }),
+								},
+						  ]
+						: []),
+					...(!sameExtraDropItem || k == 0
+						? [
+								{
+									attributes: sameExtraDropItem
+										? `rowspan="${group2.length}"`
+										: "",
+									text: mission.displayExtraDropItem.toWiki({ text: "" }),
+								},
+						  ]
+						: []),
 				]);
 			}
 		}
@@ -99,16 +144,25 @@ export default function wikiTavernMissionCompact() {
 
 	out += `\n\n${wikiH2(`成長任務`)}`;
 
-	const achievementMissionIds = TavernMission.getAll().filter(r => r.tab == "achievement" && r.category == "achievement").map(r => r.id);
-	const dropAchievement = TavernMissionDropEnabled.filter(r => achievementMissionIds.includes(r.get("missionId")));
-	const dropAchievementTypes = _.groupBy(dropAchievement, (r) => r.get("type") == "Building" ? `${r.get("type")},${r.get("param1")}` : r.get("type"));
+	const achievementMissionIds = TavernMission.getAll()
+		.filter((r) => r.tab == "achievement" && r.category == "achievement")
+		.map((r) => r.id);
+	const dropAchievement = TavernMissionDropEnabled.filter((r) =>
+		achievementMissionIds.includes(r.get("missionId"))
+	);
+	const dropAchievementTypes = _.groupBy(dropAchievement, (r) =>
+		r.get("type") == "Building" ? `${r.get("type")},${r.get("param1")}` : r.get("type")
+	);
 
 	for (const [typeKey, group1] of Object.entries(dropAchievementTypes)) {
 		const [type, buildingId] = typeKey.split(",");
-		const maxReqSkillCount = Math.max(1, ...group1.map(r => {
-			const reqSkill = TavernMissionRequire.get(r.get("missionId"));
-			return reqSkill.length;
-		}));
+		const maxReqSkillCount = Math.max(
+			1,
+			...group1.map((r) => {
+				const reqSkill = TavernMissionRequire.get(r.get("missionId"));
+				return reqSkill.length;
+			})
+		);
 		const typeName = getTavernMissionTypeName(type, buildingId);
 
 		out += `\n\n${wikiH3(typeName)}`;
@@ -140,16 +194,27 @@ export default function wikiTavernMissionCompact() {
 			if (!mission) continue;
 
 			table.rows.push([
-				...(k === 0 ? [
-					{
-						attributes: `rowspan="${group1.length}" style="text-align: center;"`,
-						text: wikiNextLine(`${wikiimage(`冒險任務_${mission.getWikiCategoryName()}_Icon.png`, { width: 40 })}\n${mission.getWikiCategoryName()}`),
-					},
-				] : []),
+				...(k === 0
+					? [
+							{
+								attributes: `rowspan="${group1.length}" style="text-align: center;"`,
+								text: wikiNextLine(
+									`${wikiimage(
+										`冒險任務_${mission.getWikiCategoryName()}_Icon.png`,
+										{ width: 40 }
+									)}\n${mission.getWikiCategoryName()}`
+								),
+							},
+					  ]
+					: []),
 				`Lv ${row.get("param2") == -1 ? row.get("param1") : row.get("param2")}`,
 				mission.questRankStar,
-				`${mission.heroSlot.length ? `{{站位圖標|${mission.heroSlot[0]}|size=24px}} ` : ""}${mission.name}`,
-				...range(1, maxReqSkillCount).map(value => mission.reqSkills[value - 1]?.toWiki() ?? ""),
+				`${
+					mission.heroSlot.length ? `{{站位圖標|${mission.heroSlot[0]}|size=24px}} ` : ""
+				}${mission.name}`,
+				...range(1, maxReqSkillCount).map(
+					(value) => mission.reqSkills[value - 1]?.toWiki() ?? ""
+				),
 				mission.displayDropItem.toWiki({ text: "" }),
 				mission.displayExtraDropItem.toWiki({ text: "" }),
 			]);

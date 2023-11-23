@@ -12,11 +12,19 @@ export function transitionResultValueStringify(constant: ITransitionResultValue)
 	if (!constant) return "";
 	if (constant.$type == "BattleModel.TotalResultsValueOfCharacter") {
 		const obj = constant as TotalResultsValueOfCharacter;
-		return `在${transitionResultGroupStringify(obj.Results)}的${TransitionCharacterType.toString(obj.CharType)}中，${singleTargetStringify(obj.Character)}的${TransitionValueType.toString(obj.ValueType)}`;
+		return `在${transitionResultGroupStringify(
+			obj.Results
+		)}的${TransitionCharacterType.toString(obj.CharType)}中，${singleTargetStringify(
+			obj.Character
+		)}的${TransitionValueType.toString(obj.ValueType)}`;
 	}
 	if (constant.$type == "BattleModel.TotalResultsValueOfCharacterGroup") {
 		const obj = constant as TotalResultsValueOfCharacterGroup;
-		return `在${transitionResultGroupStringify(obj.Results)}的${TransitionCharacterType.toString(obj.CharType)}中，${mulitTargetStringify(obj.Group)}的${TransitionValueType.toString(obj.ValueType)}`;
+		return `在${transitionResultGroupStringify(
+			obj.Results
+		)}的${TransitionCharacterType.toString(obj.CharType)}中，${mulitTargetStringify(
+			obj.Group
+		)}的${TransitionValueType.toString(obj.ValueType)}`;
 	}
 	console.error(`Unknown ITransitionResultValue type: ${constant.$type}`);
 	debugger;

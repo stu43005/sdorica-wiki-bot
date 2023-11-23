@@ -1,14 +1,8 @@
 import { ImperiumData, RowWrapper } from "../imperium-data";
-import {
-	characterNameNormalization,
-	localizationString,
-} from "../localization";
+import { characterNameNormalization, localizationString } from "../localization";
 import { heroBaseTemplate } from "../templates/hero-base";
 import { heroPageTemplate } from "../templates/hero-page";
-import {
-	HeroSmallIconParams,
-	heroSmallIconTemplate,
-} from "../templates/hero-small-icon";
+import { HeroSmallIconParams, heroSmallIconTemplate } from "../templates/hero-small-icon";
 import { tooltipTemplate } from "../templates/tooltip";
 import { heroName, pointRegexp } from "../wiki-hero";
 import { Chapter } from "./chapter";
@@ -23,8 +17,7 @@ import { ItemPayRef } from "./item-pay-ref";
 import { Avatar } from "./avatar";
 
 const HeroesTable = ImperiumData.fromGamedata().getTable("Heroes");
-const RankUpItemRefsTable =
-	ImperiumData.fromGamedata().getTable("RankUpItemRefs");
+const RankUpItemRefsTable = ImperiumData.fromGamedata().getTable("RankUpItemRefs");
 
 const instances: Record<string, Hero> = {};
 let allInstances: Hero[] | null = null;
@@ -36,9 +29,7 @@ export class Hero {
 		const id = typeof rowOrId === "string" ? rowOrId : rowOrId.get("id");
 		if (!instances[id]) {
 			const row =
-				typeof rowOrId === "string"
-					? HeroesTable.find((r) => r.get("id") == id)
-					: rowOrId;
+				typeof rowOrId === "string" ? HeroesTable.find((r) => r.get("id") == id) : rowOrId;
 			if (row) {
 				instances[id] = new Hero(row);
 			}
@@ -46,11 +37,8 @@ export class Hero {
 		return instances[id];
 	}
 
-	public static getBySideStory(
-		chapterOrId: Chapter | string
-	): Hero | undefined {
-		const chapterId =
-			typeof chapterOrId === "string" ? chapterOrId : chapterOrId.id;
+	public static getBySideStory(chapterOrId: Chapter | string): Hero | undefined {
+		const chapterId = typeof chapterOrId === "string" ? chapterOrId : chapterOrId.id;
 		return Hero.find((hero) => hero.storyChapter?.id == chapterId);
 	}
 
@@ -182,9 +170,7 @@ export class Hero {
 
 	#skillSets: HeroSkillSet[] | null = null;
 	get skillSets(): HeroSkillSet[] {
-		return (this.#skillSets ??= HeroSkillSet.getByHeroId(this.id).filter(
-			(s) => s.name
-		));
+		return (this.#skillSets ??= HeroSkillSet.getByHeroId(this.id).filter((s) => s.name));
 	}
 	#skillSetWithLevels: (HeroSkillSet | HeroSkillLevel)[] | null = null;
 	get skillSetWithLevels() {
@@ -233,38 +219,20 @@ export class Hero {
 
 		let scName =
 			characterNameNormalization(
-				localizationString(
-					"CharacterName",
-					"",
-					"Key",
-					"ChineseSimplified"
-				)(this.model)
+				localizationString("CharacterName", "", "Key", "ChineseSimplified")(this.model)
 			) || name.firstname;
-		if (
-			this.internalName.endsWith("SP") &&
-			!String(scName).endsWith("SP")
-		) {
+		if (this.internalName.endsWith("SP") && !String(scName).endsWith("SP")) {
 			scName = `${scName}SP`;
 		}
 		this.scName = scName;
 
-		let japaneseName = localizationString(
-			"CharacterName",
-			"",
-			"Key",
-			"Japanese"
-		)(this.model);
+		let japaneseName = localizationString("CharacterName", "", "Key", "Japanese")(this.model);
 		if (japaneseName) {
 			japaneseName = japaneseName.replace(/\s?SP/, "(SP)");
 		}
 		this.japaneseName = japaneseName;
 
-		let koreanName = localizationString(
-			"HeroInfo",
-			"",
-			"Key",
-			"Korean"
-		)(this.model);
+		let koreanName = localizationString("HeroInfo", "", "Key", "Korean")(this.model);
 		if (koreanName) {
 			koreanName = koreanName.replace(pointRegexp, " ");
 			if (name.firstname.indexOf("SP") != -1) {
@@ -315,9 +283,7 @@ export class Hero {
 			二階: this.SR?.name,
 			三階: this.SSR?.name,
 			Alt: this.alts.map((alt) => alt.name),
-			Skin: this.skins
-				.filter((skin) => skin.id != "2027")
-				.map((skin) => skin.name),
+			Skin: this.skins.filter((skin) => skin.id != "2027").map((skin) => skin.name),
 			冬青少女: hasSkin2027,
 
 			三階技能強化次數: this.SSR?.skillLevels.length,
@@ -336,9 +302,7 @@ export class Hero {
 	 */
 	getSIKey() {
 		return `${this.enable ? "Ｖ" : "　"} ${this.firstname}${
-			this.internalName != this.firstname
-				? ` - (${this.internalName})`
-				: ""
+			this.internalName != this.firstname ? ` - (${this.internalName})` : ""
 		}`;
 	}
 
@@ -389,9 +353,7 @@ export class Hero {
 			gender: this.gender,
 			series: this.series,
 			enable: this.enable,
-			skillSets: this.skillSetWithLevels.map((skillset) =>
-				skillset.toJSON(true)
-			),
+			skillSets: this.skillSetWithLevels.map((skillset) => skillset.toJSON(true)),
 		};
 	}
 }

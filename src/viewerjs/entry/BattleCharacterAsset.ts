@@ -1,28 +1,47 @@
-import JSZip from 'jszip';
-import { localizationCharacterName, localizationCharacterNameWithDefault } from '../../localization';
-import { Logger } from '../../logger';
-import { BattleCharacterAsset } from '../../sdorica/BattleCharacterAsset';
-import { AssistantActiveCastSkill } from '../../sdorica/BattleModel/AssistantActiveCastSkill';
-import { AssistantActiveCastSkillWithPassiveBuff } from '../../sdorica/BattleModel/AssistantActiveCastSkillWithPassiveBuff';
-import { AssistantPassiveBuffSkill } from '../../sdorica/BattleModel/AssistantPassiveBuffSkill';
-import { AssistantSkill } from '../../sdorica/BattleModel/AssistantSkill';
-import { BattleCharacter } from '../../sdorica/BattleModel/BattleCharacter';
-import { BattleSkill } from '../../sdorica/BattleModel/BattleSkill';
-import { EnemyAI } from '../../sdorica/BattleModel/EnemyAI';
-import { IBattleSkill } from '../../sdorica/BattleModel/IBattleSkill';
-import { SequenceEnemyAI } from '../../sdorica/BattleModel/SequenceEnemyAI';
-import { SkillCastInfo } from '../../sdorica/BattleModel/SkillCastInfo';
-import { SkillSet } from '../../sdorica/BattleModel/SkillSet';
-import { StoneEraseType } from '../../sdorica/BattleModel/StoneSystem/StoneEraseType';
-import { StoneType } from '../../sdorica/BattleModel/StoneSystem/StoneType';
-import { Dictionary } from '../../sdorica/Dictionary';
-import { objectEach, sortByCharacterModelNo } from '../../utils';
-import { toLevel } from '../../wiki-hero';
-import { InterpretedAssistantActiveCastSkill, InterpretedAssistantActiveCastSkillWithPassiveBuff, InterpretedAssistantPassiveBuffSkill, InterpretedAssistantSkill, InterpretedBattleCharacter, InterpretedSkillSet } from '../interpreted-battle-character';
-import { ViewerJSHelper } from '../viewerjs-helper';
-import { addBuff, conditionStringify, getCharAsset, getCharAssets, ImperiumData, singleTargetStringify, skillUnitStringify, targetResolve } from './$ViewerInit';
+import JSZip from "jszip";
+import {
+	localizationCharacterName,
+	localizationCharacterNameWithDefault,
+} from "../../localization";
+import { Logger } from "../../logger";
+import { BattleCharacterAsset } from "../../sdorica/BattleCharacterAsset";
+import { AssistantActiveCastSkill } from "../../sdorica/BattleModel/AssistantActiveCastSkill";
+import { AssistantActiveCastSkillWithPassiveBuff } from "../../sdorica/BattleModel/AssistantActiveCastSkillWithPassiveBuff";
+import { AssistantPassiveBuffSkill } from "../../sdorica/BattleModel/AssistantPassiveBuffSkill";
+import { AssistantSkill } from "../../sdorica/BattleModel/AssistantSkill";
+import { BattleCharacter } from "../../sdorica/BattleModel/BattleCharacter";
+import { BattleSkill } from "../../sdorica/BattleModel/BattleSkill";
+import { EnemyAI } from "../../sdorica/BattleModel/EnemyAI";
+import { IBattleSkill } from "../../sdorica/BattleModel/IBattleSkill";
+import { SequenceEnemyAI } from "../../sdorica/BattleModel/SequenceEnemyAI";
+import { SkillCastInfo } from "../../sdorica/BattleModel/SkillCastInfo";
+import { SkillSet } from "../../sdorica/BattleModel/SkillSet";
+import { StoneEraseType } from "../../sdorica/BattleModel/StoneSystem/StoneEraseType";
+import { StoneType } from "../../sdorica/BattleModel/StoneSystem/StoneType";
+import { Dictionary } from "../../sdorica/Dictionary";
+import { objectEach, sortByCharacterModelNo } from "../../utils";
+import { toLevel } from "../../wiki-hero";
+import {
+	InterpretedAssistantActiveCastSkill,
+	InterpretedAssistantActiveCastSkillWithPassiveBuff,
+	InterpretedAssistantPassiveBuffSkill,
+	InterpretedAssistantSkill,
+	InterpretedBattleCharacter,
+	InterpretedSkillSet,
+} from "../interpreted-battle-character";
+import { ViewerJSHelper } from "../viewerjs-helper";
+import {
+	addBuff,
+	conditionStringify,
+	getCharAsset,
+	getCharAssets,
+	ImperiumData,
+	singleTargetStringify,
+	skillUnitStringify,
+	targetResolve,
+} from "./$ViewerInit";
 
-const logger = new Logger('BattleCharacterAsset');
+const logger = new Logger("BattleCharacterAsset");
 
 export default async function (helper: ViewerJSHelper, data: BattleCharacterAsset) {
 	// load imperium data
@@ -62,18 +81,17 @@ export default async function (helper: ViewerJSHelper, data: BattleCharacterAsse
 					error: String(error),
 				};
 			}
-		}
-		else {
+		} else {
 			logger.log(`${loadFromCharAssets ?? ""} not found.`);
 			debugger;
 			return {
 				result: `${loadFromCharAssets ?? ""} not found.`,
-				"可用的char清單": Object.keys(zip.files)
-					.filter(k => k.startsWith(prefix))
-					.map(k => k.replace(prefix, ''))
-					.map(k => k.replace(/\.[^\.]+$/, ''))
+				可用的char清單: Object.keys(zip.files)
+					.filter((k) => k.startsWith(prefix))
+					.map((k) => k.replace(prefix, ""))
+					.map((k) => k.replace(/\.[^\.]+$/, ""))
 					.sort(sortByCharacterModelNo)
-					.map(k => {
+					.map((k) => {
 						const name = localizationCharacterName()(k);
 						return `${k}${name ? ` (${name})` : ""}`;
 					}),
@@ -85,7 +103,7 @@ export default async function (helper: ViewerJSHelper, data: BattleCharacterAsse
 		logger.log(`No character.`);
 		debugger;
 		return {
-			result: `No character.`
+			result: `No character.`,
 		};
 	}
 
@@ -107,7 +125,7 @@ export default async function (helper: ViewerJSHelper, data: BattleCharacterAsse
 function enemyAi(ai: EnemyAI): string {
 	if (ai.$type == "BattleModel.SequenceEnemyAI") {
 		const seqAI = ai as SequenceEnemyAI;
-		return seqAI.OrderList.join(' -> ');
+		return seqAI.OrderList.join(" -> ");
 	}
 	logger.error(`Unknown enemy AI: ${ai.$type}`);
 	debugger;
@@ -131,12 +149,12 @@ function skillSetTable(skillset: Record<string, SkillSet>) {
 }
 
 function skillSet(skillset: SkillSet) {
-	return skillset.ComboList.map(combo => {
+	return skillset.ComboList.map((combo) => {
 		const out2: InterpretedSkillSet = {
-			"條件": combo.ConditionList.map(condition => conditionStringify(condition)),
-			"目標": singleTargetStringify(combo.assignTarget),
-			"技能列表": combo.SkillList.map(cast => skillCast(cast)),
-			"CoolDown": combo._characterCoolDown,
+			條件: combo.ConditionList.map((condition) => conditionStringify(condition)),
+			目標: singleTargetStringify(combo.assignTarget),
+			技能列表: combo.SkillList.map((cast) => skillCast(cast)),
+			CoolDown: combo._characterCoolDown,
 		};
 		return out2;
 	});
@@ -150,7 +168,9 @@ function battleSkills(skills: Record<string, IBattleSkill>) {
 			out[key].push(`${skill}`);
 		} else if (skill.$type == "BattleModel.BattleSkill") {
 			const bs = skill as BattleSkill;
-			out[key] = out[key].concat(bs._skillIdentifiers.map((unit) => skillUnitStringify(unit)));
+			out[key] = out[key].concat(
+				bs._skillIdentifiers.map((unit) => skillUnitStringify(unit))
+			);
 		}
 	});
 	return out;
@@ -160,46 +180,51 @@ function assistantSkill(a1: AssistantSkill) {
 	if (a1.$type == "BattleModel.AssistantPassiveBuffSkill") {
 		const a2 = a1 as AssistantPassiveBuffSkill;
 		const out: InterpretedAssistantPassiveBuffSkill = {
-			"類型": "被動參謀",
-			"起始CD": a1._startCD,
-			"技能CD": a1._skillCD,
-			"_startCastStack": a1._startCastStack,
-			"_maxCastStack": a1._maxCastStack,
-			"動作": `${targetResolve(a2.TargetSelector)}${addBuff(a2.BuffData)}`,
+			類型: "被動參謀",
+			起始CD: a1._startCD,
+			技能CD: a1._skillCD,
+			_startCastStack: a1._startCastStack,
+			_maxCastStack: a1._maxCastStack,
+			動作: `${targetResolve(a2.TargetSelector)}${addBuff(a2.BuffData)}`,
 		};
 		return out;
 	}
 	if (a1.$type == "BattleModel.AssistantActiveCastSkill") {
 		const a2 = a1 as AssistantActiveCastSkill;
 		const out: InterpretedAssistantActiveCastSkill = {
-			"類型": "技能參謀",
-			"起始CD": a1._startCD,
-			"技能CD": a1._skillCD,
-			"_startCastStack": a1._startCastStack,
-			"_maxCastStack": a1._maxCastStack,
-			"技能組": skillSet(a2.Skill),
+			類型: "技能參謀",
+			起始CD: a1._startCD,
+			技能CD: a1._skillCD,
+			_startCastStack: a1._startCastStack,
+			_maxCastStack: a1._maxCastStack,
+			技能組: skillSet(a2.Skill),
 		};
 		return out;
 	}
-	if (a1.$type == "BattleModel.AssistantActiveCastSkillWithPassiveBuff" || a1.$type == "AssistantActiveCastSkillWithPassiveBuff") {
+	if (
+		a1.$type == "BattleModel.AssistantActiveCastSkillWithPassiveBuff" ||
+		a1.$type == "AssistantActiveCastSkillWithPassiveBuff"
+	) {
 		const a2 = a1 as AssistantActiveCastSkillWithPassiveBuff;
 		const out: InterpretedAssistantActiveCastSkillWithPassiveBuff = {
-			"類型": "技能+被動參謀",
-			"起始CD": a1._startCD,
-			"技能CD": a1._skillCD,
-			"_startCastStack": a1._startCastStack,
-			"_maxCastStack": a1._maxCastStack,
-			"技能組": skillSet(a2.Skill),
-			"被動": a2.PassiveBuffDatas.map(p => `${targetResolve(p.TargetSelector)}${addBuff(p.BuffData)}`),
+			類型: "技能+被動參謀",
+			起始CD: a1._startCD,
+			技能CD: a1._skillCD,
+			_startCastStack: a1._startCastStack,
+			_maxCastStack: a1._maxCastStack,
+			技能組: skillSet(a2.Skill),
+			被動: a2.PassiveBuffDatas.map(
+				(p) => `${targetResolve(p.TargetSelector)}${addBuff(p.BuffData)}`
+			),
 		};
 		return out;
 	}
 	const out: InterpretedAssistantSkill = {
-		"類型": "參謀",
-		"起始CD": a1._startCD,
-		"技能CD": a1._skillCD,
-		"_startCastStack": a1._startCastStack,
-		"_maxCastStack": a1._maxCastStack,
+		類型: "參謀",
+		起始CD: a1._startCD,
+		技能CD: a1._skillCD,
+		_startCastStack: a1._startCastStack,
+		_maxCastStack: a1._maxCastStack,
 	};
 	if (a1.$type != "BattleModel.AssistantSkill") {
 		out.類型 = JSON.stringify(a1);
@@ -221,23 +246,23 @@ function stoneEraseSetting(setting: Dictionary<StoneEraseType, string>): Record<
 
 export function interpreted(name: string, data: BattleCharacter, level: number) {
 	const out: InterpretedBattleCharacter = {
-		"Localization": localizationCharacterNameWithDefault()(name),
-		"攻擊力": data._power,
-		"血量": data._bloodCapacity,
-		"疊盾": data._armorCapacity,
-		"攻擊力等級調整後": toLevel(data._power, level),
-		"血量等級調整後": toLevel(data._bloodCapacity, level),
-		"疊盾等級調整後": toLevel(data._armorCapacity, level),
-		"復活魂芯數": data._reviveCount,
-		"站位": StoneType.toString(data._stoneType),
-		"起始CD": data._initialCoolDown,
-		"預設CD": data._defaultCoolDown,
-		"敵人AI": data._characterAI ? enemyAi(data._characterAI) : undefined,
-		"被動Buff": data._passiveBuff.map(buff => addBuff(buff)),
-		"消魂設置": data._stoneEraseSetting ? stoneEraseSetting(data._stoneEraseSetting) : undefined,
-		"技能組": skillSetTable(data._skillsetTable),
-		"技能": battleSkills(data._skills),
-		"參謀技能": data._assistantSkill ? assistantSkill(data._assistantSkill) : undefined,
+		Localization: localizationCharacterNameWithDefault()(name),
+		攻擊力: data._power,
+		血量: data._bloodCapacity,
+		疊盾: data._armorCapacity,
+		攻擊力等級調整後: toLevel(data._power, level),
+		血量等級調整後: toLevel(data._bloodCapacity, level),
+		疊盾等級調整後: toLevel(data._armorCapacity, level),
+		復活魂芯數: data._reviveCount,
+		站位: StoneType.toString(data._stoneType),
+		起始CD: data._initialCoolDown,
+		預設CD: data._defaultCoolDown,
+		敵人AI: data._characterAI ? enemyAi(data._characterAI) : undefined,
+		被動Buff: data._passiveBuff.map((buff) => addBuff(buff)),
+		消魂設置: data._stoneEraseSetting ? stoneEraseSetting(data._stoneEraseSetting) : undefined,
+		技能組: skillSetTable(data._skillsetTable),
+		技能: battleSkills(data._skills),
+		參謀技能: data._assistantSkill ? assistantSkill(data._assistantSkill) : undefined,
 	};
 	return out;
 }

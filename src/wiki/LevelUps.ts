@@ -72,16 +72,8 @@ export default function wikiLevelUps() {
 			}
 			table.rows.push([
 				level,
-				`${hp}${
-					privHp == 0
-						? ""
-						: ` (x ${numeral(hp / privHp).format("0.[000]")})`
-				}`,
-				`${atk}${
-					privAtk == 0
-						? ""
-						: ` (x ${numeral(atk / privAtk).format("0.[000]")})`
-				}`,
+				`${hp}${privHp == 0 ? "" : ` (x ${numeral(hp / privHp).format("0.[000]")})`}`,
+				`${atk}${privAtk == 0 ? "" : ` (x ${numeral(atk / privAtk).format("0.[000]")})`}`,
 			]);
 			privHp = hp;
 			privAtk = atk;

@@ -5,25 +5,34 @@ import { discordWebhook } from "./discord-webhook";
 import { Logger } from "./logger";
 import { isDevMode } from "./utils";
 
-const logger = new Logger('mwbot');
+const logger = new Logger("mwbot");
 
 export async function getMWBot() {
 	const bot = new MWBot({
-		apiUrl: 'https://sdorica.xyz/api.php',
-		defaultSummary: 'Upload by MWBot',
+		apiUrl: "https://sdorica.xyz/api.php",
+		defaultSummary: "Upload by MWBot",
 	});
 	await bot.loginGetEditToken({
 		username: config.get<string>("mwbot.user"),
 		password: config.get<string>("mwbot.pass"),
 	});
 
-	bot.readText = async function (title: string, redirect: boolean, customRequestOptions?: MWBot.RequestOptions): Promise<string> {
-		const res = redirect ? await this.read(title, redirect, customRequestOptions) : await this.request({
-			action: 'query',
-			prop: 'revisions',
-			rvprop: 'content',
-			titles: title,
-		}, customRequestOptions);
+	bot.readText = async function (
+		title: string,
+		redirect: boolean,
+		customRequestOptions?: MWBot.RequestOptions
+	): Promise<string> {
+		const res = redirect
+			? await this.read(title, redirect, customRequestOptions)
+			: await this.request(
+					{
+						action: "query",
+						prop: "revisions",
+						rvprop: "content",
+						titles: title,
+					},
+					customRequestOptions
+			  );
 
 		if (res.query) {
 			if (res.query.redirects) {
@@ -42,10 +51,9 @@ export async function getMWBot() {
 						if ("slots" in page.revisions[0]) {
 							const slot = page.revisions[0] as MWRevisionSlot;
 							return slot["slots"]["main"]["*"];
-						}
-						else {
+						} else {
 							const revision = page.revisions[0] as MWRevision;
-							return revision['*'];
+							return revision["*"];
 						}
 					}
 				}
@@ -54,47 +62,64 @@ export async function getMWBot() {
 		return "";
 	};
 
-	bot.exists = async function (title: string, customRequestOptions?: MWBot.RequestOptions): Promise<boolean> {
+	bot.exists = async function (
+		title: string,
+		customRequestOptions?: MWBot.RequestOptions
+	): Promise<boolean> {
 		return (await this.readText(title, false, customRequestOptions)) ? true : false;
 	};
 
-	bot.editOnDifference = async function (title: string, content: string, summary?: string, customRequestOptions?: MWBot.RequestOptions): Promise<void> {
+	bot.editOnDifference = async function (
+		title: string,
+		content: string,
+		summary?: string,
+		customRequestOptions?: MWBot.RequestOptions
+	): Promise<void> {
 		const online = await this.readText(title, false, customRequestOptions);
 		content = content.replace(/\r/g, "\n");
 		if (content != online) {
 			// diffStrings(content, online);
 			// debugger;
-			const editRes = await this.edit(title, content, summary, Object.assign({}, customRequestOptions, {
-				bot: true,
-			}));
-			if (config.get('dcWebhook') && title.startsWith("使用者:小飄飄/wiki/") && editRes.edit.newrevid && !isDevMode()) {
+			const editRes = await this.edit(
+				title,
+				content,
+				summary,
+				Object.assign({}, customRequestOptions, {
+					bot: true,
+				})
+			);
+			if (
+				config.get("dcWebhook") &&
+				title.startsWith("使用者:小飄飄/wiki/") &&
+				editRes.edit.newrevid &&
+				!isDevMode()
+			) {
 				const pageUrl = url.format({
-					protocol: 'https',
-					hostname: 'sdorica.xyz',
-					pathname: '/index.php',
+					protocol: "https",
+					hostname: "sdorica.xyz",
+					pathname: "/index.php",
 					query: {
 						title,
-					}
+					},
 				});
 				const diffUrl = url.format({
-					protocol: 'https',
-					hostname: 'sdorica.xyz',
-					pathname: '/index.php',
+					protocol: "https",
+					hostname: "sdorica.xyz",
+					pathname: "/index.php",
 					query: {
 						title,
 						curid: editRes.edit.pageid,
 						diff: editRes.edit.newrevid,
 						oldid: editRes.edit.oldrevid,
-					}
+					},
 				});
 				await discordWebhook({
-					"username": "MWBot",
-					"content": `Edit: [${title}](${pageUrl}) ([diff](${diffUrl}))`,
+					username: "MWBot",
+					content: `Edit: [${title}](${pageUrl}) ([diff](${diffUrl}))`,
 				});
 			}
 			logger.log(`Edit: ${title}`);
-		}
-		else {
+		} else {
 			logger.log(`No modify: ${title}`);
 		}
 	};
@@ -103,8 +128,8 @@ export async function getMWBot() {
 }
 
 function diffStrings(str1: string, str2: string) {
-	const str1a = str1.split('\n');
-	const str2a = str2.split('\n');
+	const str1a = str1.split("\n");
+	const str2a = str2.split("\n");
 	for (let i = 0; i < Math.max(str1a.length, str2a.length); i++) {
 		const s1 = str1a[i];
 		const s2 = str2a[i];

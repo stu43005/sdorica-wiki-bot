@@ -1,3 +1,3 @@
 import { ISingleCharacter } from "../ISingleCharacter";
 
-export type ThisBuffOwner = ISingleCharacter
+export type ThisBuffOwner = ISingleCharacter;

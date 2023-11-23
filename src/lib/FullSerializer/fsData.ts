@@ -10,7 +10,7 @@ export enum fsDataType {
 	// Int64,
 	Boolean,
 	String,
-	Null
+	Null,
 }
 
 /**
@@ -113,7 +113,7 @@ export class fsData {
 
 	/**Returns true if this fsData instance maps back to a boolean. */
 	get IsBool() {
-		return typeof this._value == "boolean"
+		return typeof this._value == "boolean";
 	}
 
 	/**Returns true if this fsData instance maps back to a string. */
@@ -190,15 +190,22 @@ export class fsData {
 		}
 
 		switch (this.Type) {
-			case fsDataType.Null: return true;
+			case fsDataType.Null:
+				return true;
 
-			case fsDataType.Double: return this.AsDouble == other.AsDouble || Math.abs(this.AsDouble - other.AsDouble) < 4.94065645841247E-324;
+			case fsDataType.Double:
+				return (
+					this.AsDouble == other.AsDouble ||
+					Math.abs(this.AsDouble - other.AsDouble) < 4.94065645841247e-324
+				);
 
 			// case fsDataType.Int64: AsInt64: return;
 
-			case fsDataType.Boolean: return this.AsBool == other.AsBool;
+			case fsDataType.Boolean:
+				return this.AsBool == other.AsBool;
 
-			case fsDataType.String: return this.AsString == other.AsString;
+			case fsDataType.String:
+				return this.AsString == other.AsString;
 
 			case fsDataType.Array: {
 				const thisList = this.AsList;

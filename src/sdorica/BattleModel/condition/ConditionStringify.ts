@@ -1,7 +1,11 @@
 import { localizationBuffName } from "../../../localization";
 import { buffLabelStringify, singleBuffStringify } from "../buff/BuffStringify";
 import { BuffTag } from "../BuffTag";
-import { constantBuffStringify, constantCharStringify, constantStringify } from "../constant/ConstantStringify";
+import {
+	constantBuffStringify,
+	constantCharStringify,
+	constantStringify,
+} from "../constant/ConstantStringify";
 import { SkillProperty } from "../SkillProperty";
 import { StoneEraseType } from "../StoneSystem/StoneEraseType";
 import { StoneType } from "../StoneSystem/StoneType";
@@ -79,7 +83,9 @@ export function conditionStringify(condition: IConditionOfModel, isInverse = fal
 	if (condition.$type == "BattleModel.IntCompare") {
 		const obj = condition as IntCompare;
 		const op = isInverse ? NumericCompareOperator.inverse(obj.op) : obj.op;
-		return `${constantStringify(obj.left)} ${NumericCompareOperator.toString(op)} ${constantStringify(obj.right)}`;
+		return `${constantStringify(obj.left)} ${NumericCompareOperator.toString(
+			op
+		)} ${constantStringify(obj.right)}`;
 	}
 	if (condition.$type == "BattleModel.AndConditions") {
 		const obj = condition as AndConditions;
@@ -91,7 +97,9 @@ export function conditionStringify(condition: IConditionOfModel, isInverse = fal
 	}
 	if (condition.$type == "BattleModel.CharacterHasBuff") {
 		const obj = condition as CharacterHasBuff;
-		return `${singleTargetStringify(obj.character)}${isInverse ? "沒有" : "擁有"}${localizationBuffName(true)(obj.buffId)}狀態`;
+		return `${singleTargetStringify(obj.character)}${
+			isInverse ? "沒有" : "擁有"
+		}${localizationBuffName(true)(obj.buffId)}狀態`;
 	}
 	if (condition.$type == "BattleModel.CurrentTurnBelongsTo") {
 		const obj = condition as CurrentTurnBelongsTo;
@@ -99,47 +107,71 @@ export function conditionStringify(condition: IConditionOfModel, isInverse = fal
 	}
 	if (condition.$type == "BattleModel.ThisSkillEffectTagContains") {
 		const obj = condition as ThisSkillEffectTagContains;
-		return `施展的技能效果中${isInverse ? "不" : ""}包含(${SkillProperty.toString(obj.containsAll)})屬性`;
+		return `施展的技能效果中${isInverse ? "不" : ""}包含(${SkillProperty.toString(
+			obj.containsAll
+		)})屬性`;
 	}
 	if (condition.$type == "BattleModel.CharacterEqual") {
 		const obj = condition as CharacterEqual;
-		return `${singleTargetStringify(obj.left)}${isInverse ? "不" : ""}是${singleTargetStringify(obj.right)}`;
+		return `${singleTargetStringify(obj.left)}${isInverse ? "不" : ""}是${singleTargetStringify(
+			obj.right
+		)}`;
 	}
 	if (condition.$type == "BattleModel.CharacterInside") {
 		const obj = condition as CharacterInside;
-		return `${singleTargetStringify(obj.left)}${isInverse ? "不" : ""}是${mulitTargetStringify(obj.group)}的一員`;
+		return `${singleTargetStringify(obj.left)}${isInverse ? "不" : ""}是${mulitTargetStringify(
+			obj.group
+		)}的一員`;
 	}
 	if (condition.$type == "BattleModel.CharacterCondition") {
 		const obj = condition as CharacterCondition;
 		if (supportedInverseChar(obj.condition)) {
-			return `${singleTargetStringify(obj.character)} ${conditionCharStringify(obj.condition, isInverse)}`;
+			return `${singleTargetStringify(obj.character)} ${conditionCharStringify(
+				obj.condition,
+				isInverse
+			)}`;
 		}
 		if (isInverse) {
-			return `${singleTargetStringify(obj.character)} 相反(${conditionCharStringify(obj.condition)})`;
+			return `${singleTargetStringify(obj.character)} 相反(${conditionCharStringify(
+				obj.condition
+			)})`;
 		}
 		return `${singleTargetStringify(obj.character)} ${conditionCharStringify(obj.condition)}`;
 	}
 	if (condition.$type == "BattleModel.CharGroupCondition") {
 		const obj = condition as CharGroupCondition;
 		if (supportedInverseChar(obj.condition)) {
-			return `${mulitTargetStringify(obj.group)}中的${obj.everybody ? "所有角色皆" : "任意角色"} ${conditionCharStringify(obj.condition, isInverse)}`;
+			return `${mulitTargetStringify(obj.group)}中的${
+				obj.everybody ? "所有角色皆" : "任意角色"
+			} ${conditionCharStringify(obj.condition, isInverse)}`;
 		}
 		if (isInverse) {
-			return `${mulitTargetStringify(obj.group)}中的${obj.everybody ? "所有角色皆" : "任意角色"} 相反(${conditionCharStringify(obj.condition)})`;
+			return `${mulitTargetStringify(obj.group)}中的${
+				obj.everybody ? "所有角色皆" : "任意角色"
+			} 相反(${conditionCharStringify(obj.condition)})`;
 		}
-		return `${mulitTargetStringify(obj.group)}中的${obj.everybody ? "所有角色皆" : "任意角色"} ${conditionCharStringify(obj.condition)}`;
+		return `${mulitTargetStringify(obj.group)}中的${
+			obj.everybody ? "所有角色皆" : "任意角色"
+		} ${conditionCharStringify(obj.condition)}`;
 	}
 	if (condition.$type == "BattleModel.BuffEqual") {
 		const obj = condition as BuffEqual;
-		return `${singleBuffStringify(obj.left)}${isInverse ? "不" : ""}是${singleBuffStringify(obj.right)}`;
+		return `${singleBuffStringify(obj.left)}${isInverse ? "不" : ""}是${singleBuffStringify(
+			obj.right
+		)}`;
 	}
 	if (condition.$type == "BattleModel.BuffCondition") {
 		const obj = condition as BuffCondition;
 		if (supportedInverseBuff(obj.condition)) {
-			return `${singleBuffStringify(obj.buff)} ${conditionBuffStringify(obj.condition, isInverse)}`;
+			return `${singleBuffStringify(obj.buff)} ${conditionBuffStringify(
+				obj.condition,
+				isInverse
+			)}`;
 		}
 		if (isInverse) {
-			return `${singleBuffStringify(obj.buff)} 相反(${conditionBuffStringify(obj.condition)})`;
+			return `${singleBuffStringify(obj.buff)} 相反(${conditionBuffStringify(
+				obj.condition
+			)})`;
 		}
 		return `${singleBuffStringify(obj.buff)} ${conditionBuffStringify(obj.condition)}`;
 	}
@@ -154,7 +186,7 @@ export function conditionStringify(condition: IConditionOfModel, isInverse = fal
 			debugger;
 			return JSON.stringify(condition);
 		}
-		const pa = Math.floor(obj.lessThan / obj.randBase * 10000) / 100;
+		const pa = Math.floor((obj.lessThan / obj.randBase) * 10000) / 100;
 		return `${isInverse ? 100 - pa : pa}%機率`;
 	}
 	if (condition.$type == "BattleModel.ConsumedStoneEraseTypeEqual") {
@@ -183,7 +215,10 @@ function supportedInverseChar(condition: IConditionOfCharacter) {
 	return false;
 }
 
-export function conditionCharStringify(condition: IConditionOfCharacter, isInverse = false): string {
+export function conditionCharStringify(
+	condition: IConditionOfCharacter,
+	isInverse = false
+): string {
 	if (!condition) return "";
 	if (condition.$type == "BattleModel.InverseC") {
 		const obj = condition as InverseC;
@@ -194,7 +229,9 @@ export function conditionCharStringify(condition: IConditionOfCharacter, isInver
 	}
 	if (condition.$type == "BattleModel.IntCompareC") {
 		const obj = condition as IntCompareC;
-		return `${isInverse ? "不" : ""}符合條件 ${constantCharStringify(obj.left)} ${NumericCompareOperator.toString(obj.op)} ${constantCharStringify(obj.right)}`;
+		return `${isInverse ? "不" : ""}符合條件 ${constantCharStringify(
+			obj.left
+		)} ${NumericCompareOperator.toString(obj.op)} ${constantCharStringify(obj.right)}`;
 	}
 	if (condition.$type == "BattleModel.AndConditionsC") {
 		const obj = condition as AndConditionsC;
@@ -214,11 +251,16 @@ export function conditionCharStringify(condition: IConditionOfCharacter, isInver
 	}
 	if (condition.$type == "BattleModel.HasAnyConditionalBuff") {
 		const obj = condition as HasAnyConditionalBuff;
-		return `${isInverse ? "沒" : "擁"}有任何一個 ${conditionBuffStringify(obj.buffCondition)} 的狀態`;
+		return `${isInverse ? "沒" : "擁"}有任何一個 ${conditionBuffStringify(
+			obj.buffCondition
+		)} 的狀態`;
 	}
 	if (condition.$type == "BattleModel.HasConditionalBuff") {
 		const obj = condition as HasConditionalBuff;
-		return `狀態${localizationBuffName(true)(obj.buffId)} ${conditionBuffStringify(obj.buffCondition, isInverse)}`;
+		return `狀態${localizationBuffName(true)(obj.buffId)} ${conditionBuffStringify(
+			obj.buffCondition,
+			isInverse
+		)}`;
 	}
 	if (condition.$type == "BattleModel.HasBuff") {
 		const obj = condition as HasBuff;
@@ -253,7 +295,9 @@ export function conditionBuffStringify(condition: IConditionOfBuff, isInverse = 
 	}
 	if (condition.$type == "BattleModel.IntCompareB") {
 		const obj = condition as IntCompareB;
-		return `${isInverse ? "不" : ""}符合條件 ${constantBuffStringify(obj.left)} ${NumericCompareOperator.toString(obj.op)} ${constantBuffStringify(obj.right)}`;
+		return `${isInverse ? "不" : ""}符合條件 ${constantBuffStringify(
+			obj.left
+		)} ${NumericCompareOperator.toString(obj.op)} ${constantBuffStringify(obj.right)}`;
 	}
 	if (condition.$type == "BattleModel.AndConditionsB") {
 		const obj = condition as AndConditionsB;

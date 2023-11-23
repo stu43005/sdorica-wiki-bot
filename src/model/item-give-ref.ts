@@ -24,11 +24,11 @@ export class ItemGiveRef {
 		return new ItemGiveRef(ItemGiveType.Item, id, +amount || 0);
 	}
 
-	constructor (
+	constructor(
 		public type: ItemGiveType,
 		public id: string,
 		public amount: number = 0,
-		public chance: number = 10000,
+		public chance: number = 10000
 	) {
 		switch (this.type) {
 			case ItemGiveType.ExploreItem:
@@ -61,14 +61,16 @@ export class ItemGiveRef {
 
 	compare(another: ItemGiveRef) {
 		if (this === another) return true;
-		return this.type === another.type &&
+		return (
+			this.type === another.type &&
 			this.id === another.id &&
 			this.amount === another.amount &&
-			this.chance === another.chance;
+			this.chance === another.chance
+		);
 	}
 
 	getChanceString() {
-		return numeral(this.chance / 10000).format('0.[00]%');
+		return numeral(this.chance / 10000).format("0.[00]%");
 	}
 
 	private _toWiki(options?: Item2WikiOptions & HeroSmallIconParams) {
@@ -82,15 +84,17 @@ export class ItemGiveRef {
 			return this.heroSkillSet.toWiki(options) + (this.amount ? ` x${this.amount}` : "");
 		}
 		if (this.diligentChapter) {
-			return `${this.diligentChapter.getWikiTitle()}${this.diligentChapter.diligentItem?.toWiki({
-				...options,
-				count: this.amount,
-			})}`;
+			return `${this.diligentChapter.getWikiTitle()}${this.diligentChapter.diligentItem?.toWiki(
+				{
+					...options,
+					count: this.amount,
+				}
+			)}`;
 		}
 		return item2wikiWithType(this.type, this.id, this.amount, options);
 	}
 
 	toWiki(options?: Item2WikiOptions & HeroSmallIconParams) {
-		return this._toWiki(options) + (this.chance === 10000 ? '' : `：${this.getChanceString()}`);
+		return this._toWiki(options) + (this.chance === 10000 ? "" : `：${this.getChanceString()}`);
 	}
 }

@@ -8,11 +8,7 @@ import { ItemBase } from "./item.base";
 export class ItemPayRef {
 	item?: ItemBase;
 
-	constructor (
-		public type: ItemPayType,
-		public id: string,
-		public amount: number = 0,
-	) {
+	constructor(public type: ItemPayType, public id: string, public amount: number = 0) {
 		if (this.type == ItemPayType.ExploreItem) {
 			this.item = ExploreItem.get(this.id);
 		} else {
@@ -24,9 +20,11 @@ export class ItemPayRef {
 	}
 
 	toWiki(options?: Item2WikiOptions) {
-		return this.item?.toWiki({
-			...options,
-			count: this.amount,
-		}) ?? "";
+		return (
+			this.item?.toWiki({
+				...options,
+				count: this.amount,
+			}) ?? ""
+		);
 	}
 }

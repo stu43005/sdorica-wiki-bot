@@ -1,5 +1,5 @@
-import { IConditionOfBuff } from '../condition/IConditionOfBuff';
-import { ISingleCharacter } from '../target/ISingleCharacter';
+import { IConditionOfBuff } from "../condition/IConditionOfBuff";
+import { ISingleCharacter } from "../target/ISingleCharacter";
 import { BaseSkillEffect } from "./BaseSkillEffect";
 
 export interface CopyBuffFromCharacterSkillEffect extends BaseSkillEffect {

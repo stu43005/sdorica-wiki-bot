@@ -18,9 +18,12 @@ export class ExploreItem extends ItemBase {
 	public static get(row: RowWrapper): ExploreItem;
 	public static get(id: string): ExploreItem | undefined;
 	public static get(rowOrId: RowWrapper | string): ExploreItem {
-		const id = typeof rowOrId === 'string' ? rowOrId : rowOrId.get('id');
+		const id = typeof rowOrId === "string" ? rowOrId : rowOrId.get("id");
 		if (!instances[id]) {
-			const row = typeof rowOrId === 'string' ? ExploreItemsTable.find(r => r.get('id') == id) : rowOrId;
+			const row =
+				typeof rowOrId === "string"
+					? ExploreItemsTable.find((r) => r.get("id") == id)
+					: rowOrId;
 			if (row) {
 				instances[id] = new ExploreItem(row);
 			}
@@ -37,7 +40,7 @@ export class ExploreItem extends ItemBase {
 	}
 
 	public static getAll() {
-		return allInstances ??= Array.from(this.getAllGenerator());
+		return (allInstances ??= Array.from(this.getAllGenerator()));
 	}
 
 	public static *getAllGenerator() {
@@ -49,11 +52,21 @@ export class ExploreItem extends ItemBase {
 
 	readonly isExplore = true;
 
-	get id(): string { return this.row.get('id'); }
-	get no(): number { return +this.id; }
-	get category(): ExploreItemsCategory { return this.row.get('category'); }
-	get effectValue(): string { return this.row.get('effectValue'); }
-	get iconKey(): string { return `${this.row.get('iconKey')}`.replace(/Explore\//g, ''); }
+	get id(): string {
+		return this.row.get("id");
+	}
+	get no(): number {
+		return +this.id;
+	}
+	get category(): ExploreItemsCategory {
+		return this.row.get("category");
+	}
+	get effectValue(): string {
+		return this.row.get("effectValue");
+	}
+	get iconKey(): string {
+		return `${this.row.get("iconKey")}`.replace(/Explore\//g, "");
+	}
 
 	name: string;
 	scName: string;
@@ -66,12 +79,24 @@ export class ExploreItem extends ItemBase {
 		return true;
 	}
 
-	get label(): string[] { return `${this.row.get('label')}`.split(';'); }
-	get owner(): string { return this.row.get('owner'); }
-	get portable(): ExploreItemPortable { return this.row.get('portable'); }
-	get stackingNum(): number { return +this.row.get('stackingNum'); }
-	get tab(): string { return this.row.get('tab'); } // enum:ExploreItemsTab
-	get target(): string { return this.row.get('target'); } // enum:ExploreItemsTarget
+	get label(): string[] {
+		return `${this.row.get("label")}`.split(";");
+	}
+	get owner(): string {
+		return this.row.get("owner");
+	}
+	get portable(): ExploreItemPortable {
+		return this.row.get("portable");
+	}
+	get stackingNum(): number {
+		return +this.row.get("stackingNum");
+	}
+	get tab(): string {
+		return this.row.get("tab");
+	} // enum:ExploreItemsTab
+	get target(): string {
+		return this.row.get("target");
+	} // enum:ExploreItemsTarget
 
 	#transformTo: Item | undefined | null = null;
 	get transformTo(): Item | undefined {
@@ -97,9 +122,18 @@ export class ExploreItem extends ItemBase {
 
 	constructor(row: RowWrapper) {
 		super(row);
-		this.name = itemNameNormalization(localizationString("ExpItem")(row.get('localizationKeyName')) || this.iconKey);
-		this.scName = itemNameNormalization(localizationString("ExpItem", "", "Key", "ChineseSimplified")(row.get('localizationKeyName')) || this.iconKey);
-		this.description = localizationString("ExpItem")(row.get('localizationKeyDescription'));
+		this.name = itemNameNormalization(
+			localizationString("ExpItem")(row.get("localizationKeyName")) || this.iconKey
+		);
+		this.scName = itemNameNormalization(
+			localizationString(
+				"ExpItem",
+				"",
+				"Key",
+				"ChineseSimplified"
+			)(row.get("localizationKeyName")) || this.iconKey
+		);
+		this.description = localizationString("ExpItem")(row.get("localizationKeyDescription"));
 	}
 
 	getWikiPageName() {
@@ -115,18 +149,21 @@ export class ExploreItem extends ItemBase {
 	getItemInfoboxParams() {
 		const params = super.getItemInfoboxParams();
 
-		params.description = params.description.replace(/(精神值|飽食度)\s?([x\+\-]\d+)/g, '{{$1|$2}}');
+		params.description = params.description.replace(
+			/(精神值|飽食度)\s?([x\+\-]\d+)/g,
+			"{{$1|$2}}"
+		);
 		params.stack = this.stackingNum;
 		if (this.portable != ExploreItemPortable.Normal) params.portable = this.portable;
-		params.image = ' ';
+		params.image = " ";
 		return params;
 	}
 
 	toWikiTreasureList() {
 		if (this.category == ExploreItemsCategory.Treasure) {
-			return `${wikiH2('開啟寶箱獲得道具')}\n${this.treasureItems?.toWiki()}`;
+			return `${wikiH2("開啟寶箱獲得道具")}\n${this.treasureItems?.toWiki()}`;
 		}
-		return '';
+		return "";
 	}
 
 	toWikiCompositeList() {
@@ -144,7 +181,8 @@ export class ExploreItem extends ItemBase {
 			this.toWikiTreasureList(),
 			this.toWikiCompositeList(),
 			this.toWikiUsingList(),
-		].filter(a => a).join('\n');
+		]
+			.filter((a) => a)
+			.join("\n");
 	}
-
 }

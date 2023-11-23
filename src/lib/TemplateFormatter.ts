@@ -5,17 +5,17 @@ export class TemplateFormatter {
 
 	name: string;
 	format?: {
-		startOfLine?: string,
-		start: string,
-		paramName: string,
-		paramValue: string,
-		end: string,
-		endOfLine?: string,
+		startOfLine?: string;
+		start: string;
+		paramName: string;
+		paramValue: string;
+		end: string;
+		endOfLine?: string;
 	};
 	params: Record<string, any>;
 
 	constructor() {
-		this.name = '';
+		this.name = "";
 		this.params = {};
 	}
 
@@ -29,7 +29,7 @@ export class TemplateFormatter {
 			if (isNumber(key)) {
 				for (let paramNum = 1; paramNum < key; paramNum++) {
 					if (params[paramNum] === undefined) {
-						params[paramNum] = '';
+						params[paramNum] = "";
 					}
 				}
 			}
@@ -38,12 +38,12 @@ export class TemplateFormatter {
 	}
 
 	setFormat(format: string | TemplateFormatter.FORMAT) {
-		const inlineFormat = '{{_|_=_}}';
-		if (format === 'inline') {
+		const inlineFormat = "{{_|_=_}}";
+		if (format === "inline") {
 			format = inlineFormat;
 		}
-		if (format === 'block') {
-			format = '{{_\n| _ = _\n}}';
+		if (format === "block") {
+			format = "{{_\n| _ = _\n}}";
 		}
 		// Check format string for validity, and fall back to 'inline' if it's not.
 		let parsedFormat = format.match(TemplateFormatter.FORMATSTRING_REGEXP);
@@ -56,13 +56,13 @@ export class TemplateFormatter {
 			paramName: parsedFormat[3],
 			paramValue: parsedFormat[4],
 			end: parsedFormat[5],
-			endOfLine: parsedFormat[6]
+			endOfLine: parsedFormat[6],
 		};
 	}
 
 	getFormat() {
 		if (!this.format) {
-			this.setFormat('inline');
+			this.setFormat("inline");
 		}
 		return this.format!;
 	}
@@ -71,14 +71,14 @@ export class TemplateFormatter {
 		// Before building the template, fall back to inline format
 		// if there are no parameters (T190123).
 		if (isEmptyObject(this.params)) {
-			this.setFormat('inline');
+			this.setFormat("inline");
 		}
 		const format = this.getFormat();
 
 		// Start building the template.
-		let template = '';
+		let template = "";
 		if (format.startOfLine) {
-			template += '\n';
+			template += "\n";
 		}
 		template += TemplateFormatter.formatStringSubst(format.start, this.name);
 
@@ -88,7 +88,7 @@ export class TemplateFormatter {
 			if (!val) return;
 			if (isNumber(key)) {
 				// Render numeric/unnamed parameters inline, as Parsoid does it.
-				template += TemplateFormatter.formatStringSubst('|', '');
+				template += TemplateFormatter.formatStringSubst("|", "");
 			} else {
 				// Non-numeric keys are added as normal.
 				template += TemplateFormatter.formatStringSubst(format.paramName, key);
@@ -99,7 +99,7 @@ export class TemplateFormatter {
 		// End and return the template.
 		template += format.end;
 		if (format.endOfLine && !template.match(/\n$/)) {
-			template += '\n';
+			template += "\n";
 		}
 		return template;
 	}
@@ -113,14 +113,14 @@ export class TemplateFormatter {
 	 * @return {string}
 	 */
 	static formatStringSubst(format: string, value: string): string {
-		value = ('' + value).trim();
+		value = ("" + value).trim();
 		return format.replace(/_+/, function (hole) {
-			if (value === '' || hole.length <= value.length) {
+			if (value === "" || hole.length <= value.length) {
 				return value;
 			}
 			// Right-pad with spaces.
 			while (value.length < hole.length) {
-				value += ' ';
+				value += " ";
 			}
 			return value;
 		});

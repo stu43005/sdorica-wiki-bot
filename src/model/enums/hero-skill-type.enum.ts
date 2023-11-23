@@ -1,5 +1,5 @@
 export enum HeroSkillType {
-	Normal = 'Normal',
-	SkillBook = 'SkillBook',
-	Skin = 'Skin',
+	Normal = "Normal",
+	SkillBook = "SkillBook",
+	Skin = "Skin",
 }

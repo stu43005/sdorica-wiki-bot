@@ -4,23 +4,15 @@ import { ImperiumData } from "../imperium-data";
 import { localizationString } from "../localization";
 import { wikiH1, wikiH2, wikiH3 } from "../templates/wikiheader";
 import { wikiimage } from "../templates/wikiimage";
-import {
-	wikitable,
-	WikiTableCeil,
-	WikiTableStruct,
-} from "../templates/wikitable";
+import { wikitable, WikiTableCeil, WikiTableStruct } from "../templates/wikitable";
 import { range } from "../utils";
 import { item2wikiWithType } from "../wiki-item";
 import { wikiNextLine } from "../wiki-utils";
 
-const AdventureDailyRankTable =
-	ImperiumData.fromGamedata().getTable("AdventureDailyRank");
-const AdventureTierTable =
-	ImperiumData.fromGamedata().getTable("AdventureTier");
-const AdventureWeekPointTable =
-	ImperiumData.fromGamedata().getTable("AdventureWeekPoint");
-const AdventureWeekRankTable =
-	ImperiumData.fromGamedata().getTable("AdventureWeekRank");
+const AdventureDailyRankTable = ImperiumData.fromGamedata().getTable("AdventureDailyRank");
+const AdventureTierTable = ImperiumData.fromGamedata().getTable("AdventureTier");
+const AdventureWeekPointTable = ImperiumData.fromGamedata().getTable("AdventureWeekPoint");
+const AdventureWeekRankTable = ImperiumData.fromGamedata().getTable("AdventureWeekRank");
 
 export const dailyRankImage: Record<string, string> = {
 	rank_daily_01: "幻境試煉_日排名_01_Icon.png",
@@ -42,9 +34,7 @@ export default function wikiAdventureRank() {
 
 	out += `\n\n${wikiH2("本日總積分、評價與獎勵")}`;
 	const dailyRankGroups = _.groupBy(
-		AdventureDailyRankTable.filter(
-			(r) => r.get("image") !== "rank_daily_no"
-		),
+		AdventureDailyRankTable.filter((r) => r.get("image") !== "rank_daily_no"),
 		(r) => r.get("groupId")
 	);
 	for (const [groupId, group] of Object.entries(dailyRankGroups)) {
@@ -57,9 +47,7 @@ export default function wikiAdventureRank() {
 			table.rows.push([
 				`${wikiimage(dailyRankImage[entry.get("image")], {
 					width: 64,
-				})} (${entry.get("maxPercentage")}% ~ ${entry.get(
-					"minPercentage"
-				)}%)`,
+				})} (${entry.get("maxPercentage")}% ~ ${entry.get("minPercentage")}%)`,
 				...range(1, 4).map(
 					(i): WikiTableCeil => ({
 						text: item2wikiWithType(
@@ -71,9 +59,7 @@ export default function wikiAdventureRank() {
 				),
 			]);
 		}
-		out += `\n\n${wikiH3(`本日總積分、評價與獎勵 ${groupId}`)}\n${wikitable(
-			table
-		)}`;
+		out += `\n\n${wikiH3(`本日總積分、評價與獎勵 ${groupId}`)}\n${wikitable(table)}`;
 	}
 
 	out += `\n\n${wikiH2("本週總積分、排名與獎勵")}`;
@@ -99,9 +85,7 @@ export default function wikiAdventureRank() {
 					attributes: `style="text-align: center;"`,
 					text: wikiNextLine(
 						`No.${entry.get("maxRanking")}\n｜\n${
-							entry.get("minRanking") == -1
-								? "∞"
-								: `No.${entry.get("minRanking")}`
+							entry.get("minRanking") == -1 ? "∞" : `No.${entry.get("minRanking")}`
 						}`
 					),
 				},
@@ -116,9 +100,7 @@ export default function wikiAdventureRank() {
 				),
 			]);
 		}
-		out += `\n\n${wikiH3(`本週總積分、排名與獎勵 ${groupId}`)}\n${wikitable(
-			table
-		)}`;
+		out += `\n\n${wikiH3(`本週總積分、排名與獎勵 ${groupId}`)}\n${wikitable(table)}`;
 	}
 
 	out += `\n\n${wikiH2("階級排名獎勵")}`;
@@ -129,9 +111,7 @@ export default function wikiAdventureRank() {
 	for (const [groupId, group] of Object.entries(advTierGroups)) {
 		const table: WikiTableStruct = {
 			attributes: `class="wikitable mw-collapsible"`,
-			rows: [
-				[`! 階級`, `! 評價`, `! colspan="4" | 獎勵`, `! 下週階級變化`],
-			],
+			rows: [[`! 階級`, `! 評價`, `! colspan="4" | 獎勵`, `! 下週階級變化`]],
 		};
 		const rankGroups = _.groupBy(group, (r) => r.get("rankName"));
 		for (const [rankName, ranks] of Object.entries(rankGroups)) {
@@ -145,19 +125,16 @@ export default function wikiAdventureRank() {
 									header: true,
 									attributes: `rowspan="${ranks.length}"`,
 									text: wikiNextLine(
-										`${wikiimage(
-											`幻境${rankNameCh}_Icon.png`,
-											{ width: 30 }
-										)}\n${rankNameCh}`
+										`${wikiimage(`幻境${rankNameCh}_Icon.png`, {
+											width: 30,
+										})}\n${rankNameCh}`
 									),
 								},
 						  ]
 						: []),
 					{
 						attributes: `style="text-align: center;"`,
-						text: `${entry.get("maxPercentage")}% ~ ${entry.get(
-							"minPercentage"
-						)}%`,
+						text: `${entry.get("maxPercentage")}% ~ ${entry.get("minPercentage")}%`,
 					},
 					...range(1, 5).map(
 						(i): WikiTableCeil => ({
@@ -168,10 +145,7 @@ export default function wikiAdventureRank() {
 							),
 						})
 					),
-					localizationString(
-						"Adventure",
-						"tier_rank"
-					)(entry.get("nextRank")),
+					localizationString("Adventure", "tier_rank")(entry.get("nextRank")),
 				]);
 			}
 		}
@@ -179,9 +153,7 @@ export default function wikiAdventureRank() {
 	}
 
 	out += `\n\n${wikiH2("積分獎勵")}`;
-	const weekPointGroups = _.groupBy(AdventureWeekPointTable.rows, (r) =>
-		r.get("groupId")
-	);
+	const weekPointGroups = _.groupBy(AdventureWeekPointTable.rows, (r) => r.get("groupId"));
 	for (const [groupId, group] of Object.entries(weekPointGroups)) {
 		const sorted = group.sort((a, b) => a.get("points") - b.get("points"));
 		const table: WikiTableStruct = {

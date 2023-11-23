@@ -1,7 +1,7 @@
 import { ImperiumDataRaw, TableDataRaw } from "./data-raw-type";
-import { Logger } from './logger';
+import { Logger } from "./logger";
 
-const logger = new Logger('imperium-data');
+const logger = new Logger("imperium-data");
 
 export class ImperiumData {
 	private static instances: Record<string, ImperiumData> = {};
@@ -32,8 +32,7 @@ export class ImperiumData {
 
 	data: ImperiumDataRaw | null = null;
 
-	constructor(public name: string) {
-	}
+	constructor(public name: string) {}
 
 	async loadData() {
 		try {
@@ -102,10 +101,7 @@ export class TableWrapper implements Iterable<RowWrapper> {
 		return raw.C[this.name];
 	}
 
-	constructor(
-		public data: ImperiumData,
-		public name: string,
-	) { }
+	constructor(public data: ImperiumData, public name: string) {}
 
 	get length() {
 		return this.table.D.length;
@@ -120,7 +116,7 @@ export class TableWrapper implements Iterable<RowWrapper> {
 	}
 
 	get rows() {
-		return this.table.D.map(row => new RowWrapper(row, this));
+		return this.table.D.map((row) => new RowWrapper(row, this));
 	}
 
 	*[Symbol.iterator]() {
@@ -143,9 +139,9 @@ export class TableWrapper implements Iterable<RowWrapper> {
 	}
 
 	find(predicate: (value: RowWrapper, index: number, obj: TableWrapper) => boolean) {
-		if (typeof predicate !== 'function') {
+		if (typeof predicate !== "function") {
 			debugger;
-			throw new TypeError('predicate must be a function');
+			throw new TypeError("predicate must be a function");
 		}
 		const ret = this.table.D.find((row, index) => {
 			const wrap = new RowWrapper(row, this);
@@ -155,9 +151,9 @@ export class TableWrapper implements Iterable<RowWrapper> {
 	}
 
 	filter(predicate: (value: RowWrapper, index: number, array: RowWrapper[]) => boolean) {
-		if (typeof predicate !== 'function') {
+		if (typeof predicate !== "function") {
 			debugger;
-			throw new TypeError('predicate must be a function');
+			throw new TypeError("predicate must be a function");
 		}
 		return this.rows.filter(predicate);
 	}
@@ -200,13 +196,12 @@ export class RowWrapper {
 		if (type.startsWith("enum:")) {
 			if (!isNaN(Number(value))) {
 				const enumData = this.data.getEnum(type);
-				value = enumData && enumData[value] || value;
+				value = (enumData && enumData[value]) || value;
 				if (value == -1) {
 					value = null;
 				}
 			}
-		}
-		else if (type === "Boolean") {
+		} else if (type === "Boolean") {
 			switch (value) {
 				case true:
 				case "true":
@@ -217,15 +212,13 @@ export class RowWrapper {
 					value = false;
 					break;
 			}
-		}
-		else if (type === "String") {
-			value = '' + value;
-		}
-		else if (type === "Integer") {
+		} else if (type === "String") {
+			value = "" + value;
+		} else if (type === "Integer") {
 			value = +value;
 		}
 		if (typeof value === "string") {
-			value = value.replace('\b', '');
+			value = value.replace("\b", "");
 		}
 		return value;
 	}
@@ -238,7 +231,7 @@ export class RowWrapper {
 		const colindex = this.table.getColumnIndex(index);
 		if (colindex == -1) {
 			debugger;
-			throw new TypeError('no such index');
+			throw new TypeError("no such index");
 		}
 		this.row[colindex] = value;
 	}

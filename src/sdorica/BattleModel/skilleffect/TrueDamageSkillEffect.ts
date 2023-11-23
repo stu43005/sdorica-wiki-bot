@@ -1,3 +1,3 @@
 import { HpDamageSkillEffect } from "./HpDamageSkillEffect";
 
-export type TrueDamageSkillEffect = HpDamageSkillEffect
+export type TrueDamageSkillEffect = HpDamageSkillEffect;

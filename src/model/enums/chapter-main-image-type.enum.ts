@@ -1,5 +1,5 @@
 export enum ChapterMainImageType {
-	Art = 'Art',
-	SystemItem = 'SystemItem',
-	SystemBattlefieldSd = 'SystemBattlefieldSd',
+	Art = "Art",
+	SystemItem = "SystemItem",
+	SystemBattlefieldSd = "SystemBattlefieldSd",
 }

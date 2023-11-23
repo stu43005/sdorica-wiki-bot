@@ -19,9 +19,6 @@ export async function discordWebhook(data: any) {
 		body: JSON.stringify(data),
 	});
 	if (response.status >= 400) {
-		logger.error(
-			`Failed to call webhook with following error:`,
-			await response.json()
-		);
+		logger.error(`Failed to call webhook with following error:`, await response.json());
 	}
 }

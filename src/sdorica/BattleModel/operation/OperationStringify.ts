@@ -38,11 +38,15 @@ export function operationStringify(operation: IBaseOperation) {
 	if (!operation) return "";
 	if (operation.$type == "BattleModel.OperateCharacter") {
 		const obj = operation as OperateCharacter;
-		return `對${singleTargetStringify(obj.character)}${operateCharacterStringify(obj.operation)}`;
+		return `對${singleTargetStringify(obj.character)}${operateCharacterStringify(
+			obj.operation
+		)}`;
 	}
 	if (operation.$type == "BattleModel.OperateCharacterGroup") {
 		const obj = operation as OperateCharacterGroup;
-		return `對${mulitTargetStringify(obj.group)}所有角色${operateCharacterStringify(obj.operation)}`;
+		return `對${mulitTargetStringify(obj.group)}所有角色${operateCharacterStringify(
+			obj.operation
+		)}`;
 	}
 	if (operation.$type == "BattleModel.OperateThisBuff") {
 		const obj = operation as OperateThisBuff;
@@ -54,7 +58,9 @@ export function operationStringify(operation: IBaseOperation) {
 	}
 	if (operation.$type == "BattleModel.BonusEffectForSkillProperty") {
 		const obj = operation as BonusEffectForSkillProperty;
-		return `技能${obj.property > 0 ? `的(${SkillProperty.toString(obj.property)})屬性` : ""}效果增加(${constantStringify(obj.value)})${obj.isPercent ? "%" : ""}`;
+		return `技能${
+			obj.property > 0 ? `的(${SkillProperty.toString(obj.property)})屬性` : ""
+		}效果增加(${constantStringify(obj.value)})${obj.isPercent ? "%" : ""}`;
 	}
 	if (operation.$type == "BattleModel.ExtraPowerForSkillEffect") {
 		const obj = operation as ExtraPowerForSkillEffect;
@@ -62,7 +68,9 @@ export function operationStringify(operation: IBaseOperation) {
 	}
 	if (operation.$type == "BattleModel.CharacterAddPower") {
 		const obj = operation as CharacterAddPower;
-		return `${singleTargetStringify(obj.character)}的攻擊力增加(${constantStringify(obj.value)})${obj.isPercent ? "%" : ""}`;
+		return `${singleTargetStringify(obj.character)}的攻擊力增加(${constantStringify(
+			obj.value
+		)})${obj.isPercent ? "%" : ""}`;
 	}
 	if (operation.$type == "BattleModel.DirectSkillEffect") {
 		const obj = operation as DirectSkillEffect;
@@ -94,12 +102,10 @@ function assignValue(obj: any, value: ISingleInteger) {
 				const element = obj[index];
 				assignValue(element, value);
 			}
-		}
-		else if (obj.$type == "BattleModel.AssignedValue") {
+		} else if (obj.$type == "BattleModel.AssignedValue") {
 			const assignedValue = obj as AssignedValue;
 			assignedValue._value = value;
-		}
-		else {
+		} else {
 			for (const key in obj) {
 				if (obj.hasOwnProperty(key)) {
 					const element = obj[key];
@@ -117,24 +123,19 @@ function assignParameter(obj: any, value: AssignParameter) {
 				const element = obj[index];
 				assignParameter(element, value);
 			}
-		}
-		else if (obj.$type == "BattleModel.BuffAssignedCharacter") {
+		} else if (obj.$type == "BattleModel.BuffAssignedCharacter") {
 			const buffAssignedCharacter = obj as BuffAssignedCharacter;
 			buffAssignedCharacter._value = value.AssignCharacter;
-		}
-		else if (obj.$type == "BattleModel.BuffAssignedCharacterGroup") {
+		} else if (obj.$type == "BattleModel.BuffAssignedCharacterGroup") {
 			const buffAssignedCharacterGroup = obj as BuffAssignedCharacterGroup;
 			buffAssignedCharacterGroup._value = value.AssignCharacterGroup;
-		}
-		else if (obj.$type == "BattleModel.BuffAssignedInteger") {
+		} else if (obj.$type == "BattleModel.BuffAssignedInteger") {
 			const buffAssignedInteger = obj as BuffAssignedInteger;
 			buffAssignedInteger._value = value.AssignInteger;
-		}
-		else if (obj.$type == "BattleModel.BuffAssignedIntegerGroup") {
+		} else if (obj.$type == "BattleModel.BuffAssignedIntegerGroup") {
 			const buffAssignedIntegerGroup = obj as BuffAssignedIntegerGroup;
 			buffAssignedIntegerGroup._value = value.AssignIntegerGroup;
-		}
-		else {
+		} else {
 			for (const key in obj) {
 				if (obj.hasOwnProperty(key)) {
 					const element = obj[key];
@@ -161,7 +162,9 @@ export function operateCharacterStringify(operation: IOperationToCharacter) {
 	}
 	if (operation.$type == "BattleModel.OperateCharacterAllConditionalBuffs") {
 		const obj = operation as OperateCharacterAllConditionalBuffs;
-		return `符合(${conditionBuffStringify(obj.condition)})的狀態${operateBuffStringify(obj.operation)}`;
+		return `符合(${conditionBuffStringify(obj.condition)})的狀態${operateBuffStringify(
+			obj.operation
+		)}`;
 	}
 	console.error(`Unknown IOperationToCharacter type: ${operation.$type}`);
 	return JSON.stringify(operation);
@@ -171,7 +174,9 @@ export function operateBuffStringify(operation: IOperationToBuff) {
 	if (!operation) return "";
 	if (operation.$type == "BattleModel.SetBuffField") {
 		const obj = operation as SetBuffField;
-		return `的${BuffEnums.BuffIntergerField.toString(obj.targetField)}${BuffEnums.SetterOp.toString(obj.setOperator)}${constantStringify(obj.value)}`;
+		return `的${BuffEnums.BuffIntergerField.toString(
+			obj.targetField
+		)}${BuffEnums.SetterOp.toString(obj.setOperator)}${constantStringify(obj.value)}`;
 	}
 	if (operation.$type == "BattleModel.ReplaceBuffTag") {
 		const obj = operation as ReplaceBuffTag;

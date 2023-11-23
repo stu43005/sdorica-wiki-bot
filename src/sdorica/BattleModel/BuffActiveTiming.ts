@@ -52,6 +52,8 @@ const BuffActiveTimingList = [
 
 export namespace BuffActiveTiming {
 	export function toString(timing: BuffActiveTiming): string {
-		return BuffActiveTimingList.filter(t => (timing & t) == t).map(t => BuffActiveTiming[t]).join(" | ");
+		return BuffActiveTimingList.filter((t) => (timing & t) == t)
+			.map((t) => BuffActiveTiming[t])
+			.join(" | ");
 	}
 }

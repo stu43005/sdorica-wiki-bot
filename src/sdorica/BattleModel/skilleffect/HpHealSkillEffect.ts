@@ -1,3 +1,3 @@
 import { NumericSkillEffect } from "./NumericSkillEffect";
 
-export type HpHealSkillEffect = NumericSkillEffect
+export type HpHealSkillEffect = NumericSkillEffect;

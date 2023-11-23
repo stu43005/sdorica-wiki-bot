@@ -15,9 +15,12 @@ export class Battlefield {
 	public static get(row: RowWrapper): Battlefield;
 	public static get(id: string): Battlefield | undefined;
 	public static get(rowOrId: RowWrapper | string): Battlefield {
-		const id = typeof rowOrId === 'string' ? rowOrId : rowOrId.get('id');
+		const id = typeof rowOrId === "string" ? rowOrId : rowOrId.get("id");
 		if (!instances[id]) {
-			const row = typeof rowOrId === 'string' ? BattlefieldsTable.find(r => r.get('id') == id) : rowOrId;
+			const row =
+				typeof rowOrId === "string"
+					? BattlefieldsTable.find((r) => r.get("id") == id)
+					: rowOrId;
 			if (row) {
 				instances[id] = new Battlefield(row);
 			}
@@ -34,7 +37,7 @@ export class Battlefield {
 	}
 
 	public static getAll() {
-		return allInstances ??= Array.from(this.getAllGenerator());
+		return (allInstances ??= Array.from(this.getAllGenerator()));
 	}
 
 	public static *getAllGenerator() {
@@ -44,17 +47,25 @@ export class Battlefield {
 		}
 	}
 
-	get id(): string { return this.row.get('id'); }
-	get endTurnCount(): number { return +this.row.get('endTurnCount'); }
+	get id(): string {
+		return this.row.get("id");
+	}
+	get endTurnCount(): number {
+		return +this.row.get("endTurnCount");
+	}
 	/**
 	 * 對應 `BattlefieldDropItems` Table
 	 */
-	get questLvDropId(): string { return this.row.get('questLvDropId'); }
-	get statusInherit(): boolean { return !!this.row.get('statusInherit'); }
+	get questLvDropId(): string {
+		return this.row.get("questLvDropId");
+	}
+	get statusInherit(): boolean {
+		return !!this.row.get("statusInherit");
+	}
 
 	#chapters: Chapter[] | null = null;
 	get chapters(): Chapter[] {
-		return this.#chapters ??= Chapter.getByBattlefieldId(this.id);
+		return (this.#chapters ??= Chapter.getByBattlefieldId(this.id));
 	}
 
 	// === ChapterSetting 共用 ===
@@ -68,7 +79,9 @@ export class Battlefield {
 	 *
 	 * 對應 `BattlefieldRanks` Table
 	 */
-	get rankGroupId(): string | undefined { return this.chapterSettings?.get('rankGroupId'); }
+	get rankGroupId(): string | undefined {
+		return this.chapterSettings?.get("rankGroupId");
+	}
 
 	#targetItem: Item | undefined | null = null;
 	/**
@@ -79,7 +92,7 @@ export class Battlefield {
 			return undefined;
 		}
 		if (this.#targetItem === null) {
-			this.#targetItem = Item.get(this.chapterSettings.get('targetItemId'));
+			this.#targetItem = Item.get(this.chapterSettings.get("targetItemId"));
 		}
 		return this.#targetItem;
 	}
@@ -88,36 +101,45 @@ export class Battlefield {
 
 	private raidChapterSetting: RowWrapper | undefined;
 
-	get rankReward(): boolean | undefined { return this.raidChapterSetting && !!this.raidChapterSetting.get('rankReward'); }
+	get rankReward(): boolean | undefined {
+		return this.raidChapterSetting && !!this.raidChapterSetting.get("rankReward");
+	}
 
 	// === LoreChapterSetting ===
 
 	private loreChapterSettings: RowWrapper | undefined;
 
-	get bossIconId(): string | undefined { return this.loreChapterSettings?.get('bossIconId'); }
+	get bossIconId(): string | undefined {
+		return this.loreChapterSettings?.get("bossIconId");
+	}
 	/**
 	 * 評價成就
 	 *
 	 * 對應 `EvaluateAchievements` Table
 	 */
-	get evaluateAchievementGroupId(): string | undefined { return this.loreChapterSettings?.get('evaluateAchievementGroupId'); }
+	get evaluateAchievementGroupId(): string | undefined {
+		return this.loreChapterSettings?.get("evaluateAchievementGroupId");
+	}
 	/**
 	 * 戰鬥評價
 	 *
 	 * 對應 `Evaluates` Table
 	 */
-	get evaluateGroupId(): string | undefined { return this.loreChapterSettings?.get('evaluateGroupId'); }
+	get evaluateGroupId(): string | undefined {
+		return this.loreChapterSettings?.get("evaluateGroupId");
+	}
 	// get evaluateId(): string | undefined { return this.loreChapterSettings?.get('evaluateId'); }
 	/**
 	 * 積分獎勵
 	 *
 	 * 對應 `AdventureWeekPoint` Table
 	 */
-	get pointGroupId(): string | undefined { return this.loreChapterSettings?.get('pointGroupId'); }
-
-	constructor(private row: RowWrapper) {
-		this.raidChapterSetting = RaidChapterSettingsTable.find(r => r.get('id') == this.id);
-		this.loreChapterSettings = LoreChapterSettingsTable.find(r => r.get('id') == this.id);
+	get pointGroupId(): string | undefined {
+		return this.loreChapterSettings?.get("pointGroupId");
 	}
 
+	constructor(private row: RowWrapper) {
+		this.raidChapterSetting = RaidChapterSettingsTable.find((r) => r.get("id") == this.id);
+		this.loreChapterSettings = LoreChapterSettingsTable.find((r) => r.get("id") == this.id);
+	}
 }

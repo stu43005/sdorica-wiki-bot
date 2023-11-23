@@ -20,17 +20,23 @@ export default function wikiDiligents() {
 		const chapter = Chapter.get(chapterId);
 		const levels = group
 			.sort((a, b) => a.get("diligentAmount") - b.get("diligentAmount"))
-			.map(level => {
-				const diligents = DiligentsTable.filter(row => level.get("levelGroup") == row.get("levelGroup"));
+			.map((level) => {
+				const diligents = DiligentsTable.filter(
+					(row) => level.get("levelGroup") == row.get("levelGroup")
+				);
 				return {
 					level,
 					diligentId: level.get("diligentId") as string,
 					diligentAmount: +level.get("diligentAmount"),
-					diligents: diligents.map(diligent => ({
+					diligents: diligents.map((diligent) => ({
 						diligent,
 						diligentType: diligent.get("diligentType") as string,
-						effect: new TemplateString(localizationString("Diligents")(diligent.get("diligentI2Key"))).apply({
-							giveLinkId: localizationItemNameWithType()(`${diligent.get("giveLinkId")}:${diligent.get("giveType")}`),
+						effect: new TemplateString(
+							localizationString("Diligents")(diligent.get("diligentI2Key"))
+						).apply({
+							giveLinkId: localizationItemNameWithType()(
+								`${diligent.get("giveLinkId")}:${diligent.get("giveType")}`
+							),
 							giveAmount: diligent.get("giveAmount"),
 							abilityIncrease: diligent.get("abilityIncrease"),
 							buffId: diligent.get("buffId"),
@@ -62,20 +68,22 @@ export default function wikiDiligents() {
 				if (diligent.diligentType === "empty") {
 					styles.push("color: #ccc;");
 				}
-				if (i > 0 && !levels[i - 1].diligents.find(e => e.effect === diligent.effect)) {
+				if (i > 0 && !levels[i - 1].diligents.find((e) => e.effect === diligent.effect)) {
 					styles.push("background-color: #90ee90; color: #1e1e1e;");
 				}
 				table.rows.push([
-					...(j === 0 ? [
-						{
-							attributes: `rowspan="${level.diligents.length}"`,
-							text: i,
-						},
-						{
-							attributes: `rowspan="${level.diligents.length}"`,
-							text: numeral(level.diligentAmount).format("0,0"),
-						},
-					] : []),
+					...(j === 0
+						? [
+								{
+									attributes: `rowspan="${level.diligents.length}"`,
+									text: i,
+								},
+								{
+									attributes: `rowspan="${level.diligents.length}"`,
+									text: numeral(level.diligentAmount).format("0,0"),
+								},
+						  ]
+						: []),
 					{
 						attributes: styles.length ? `style="${styles.join(" ")}"` : "",
 						text: diligent.effect,
@@ -84,7 +92,9 @@ export default function wikiDiligents() {
 			}
 		}
 
-		out += `\n\n${wikiH2(chapter ? wikiPageLink("Chapter", chapter.getWikiFullName(), chapterId) : chapterId)}\n${wikitable(table)}`;
+		out += `\n\n${wikiH2(
+			chapter ? wikiPageLink("Chapter", chapter.getWikiFullName(), chapterId) : chapterId
+		)}\n${wikitable(table)}`;
 	}
 
 	return out;

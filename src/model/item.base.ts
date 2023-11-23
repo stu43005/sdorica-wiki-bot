@@ -2,7 +2,7 @@ import { RowWrapper } from "../imperium-data";
 import { itemDropQuestsTemplate } from "../templates/item-drop-quests";
 import { ItemInfoboxParams, itemInfoboxTemplate } from "../templates/item-infobox";
 import { item2wiki, Item2WikiOptions, itemCategoryName } from "../wiki-item";
-import { wikiTitleEscape } from '../wiki-utils';
+import { wikiTitleEscape } from "../wiki-utils";
 
 export abstract class ItemBase {
 	abstract isExplore: boolean;
@@ -12,7 +12,7 @@ export abstract class ItemBase {
 	abstract iconKey: string;
 	abstract enable: boolean;
 
-	constructor(protected row: RowWrapper) { }
+	constructor(protected row: RowWrapper) {}
 
 	toWiki(options?: Item2WikiOptions) {
 		return item2wiki(this.id, options?.count, this.isExplore, options);
@@ -54,5 +54,4 @@ export abstract class ItemBase {
 	toWikiPage() {
 		return this.toItemInfobox();
 	}
-
 }

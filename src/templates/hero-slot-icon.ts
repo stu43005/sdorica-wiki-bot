@@ -18,7 +18,7 @@ export interface HeroSlotIconParams {
  * 取得`{{站位圖標}}`模板
  */
 export function heroSlotIconTemplate(name: HeroSlot, params: HeroSlotIconParams = {}) {
-	return wikitemplate('站位圖標', {
+	return wikitemplate("站位圖標", {
 		1: name,
 		...params,
 	});

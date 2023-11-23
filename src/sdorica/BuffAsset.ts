@@ -3,7 +3,7 @@ import { Buff } from "./BattleModel/Buff";
 
 export interface BuffAsset extends BaseBuffAsset {
 	Model: Buff;
-	buffIcon?: /* Sprite */any;
+	buffIcon?: /* Sprite */ any;
 
 	$interpreted?: InterpretedBuffAsset;
 }

@@ -26,16 +26,20 @@ export interface HeroPageParams {
  * 取得`{{角色<noinclude>頁面</noinclude>}}`模板
  */
 export function heroPageTemplate(params: HeroPageParams) {
-	params.英文名稱 ||= ' ';
-	params.日文名稱 ||= ' ';
-	params.韓文名稱 ||= ' ';
-	params.角色故事 ||= ' ';
+	params.英文名稱 ||= " ";
+	params.日文名稱 ||= " ";
+	params.韓文名稱 ||= " ";
+	params.角色故事 ||= " ";
 
-	return wikitemplate('角色<noinclude>頁面</noinclude>', {
-		1: "{{{1|}}}",
-		2: "{{{2|}}}",
-		...params,
-		Alt: params.Alt?.join(','),
-		Skin: params.Skin?.join(','),
-	}, TemplateFormatter.FORMAT.BLOCK);
+	return wikitemplate(
+		"角色<noinclude>頁面</noinclude>",
+		{
+			1: "{{{1|}}}",
+			2: "{{{2|}}}",
+			...params,
+			Alt: params.Alt?.join(","),
+			Skin: params.Skin?.join(","),
+		},
+		TemplateFormatter.FORMAT.BLOCK
+	);
 }

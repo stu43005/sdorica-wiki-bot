@@ -7,7 +7,7 @@ import { sortKeyByTable } from "./out-sort-key";
 import { flipMatrix } from "./utils";
 
 export async function localizationChineseOnly() {
-	const chineseFilePath = path.join(DATA_PATH, 'localization-chinese-only.csv');
+	const chineseFilePath = path.join(DATA_PATH, "localization-chinese-only.csv");
 
 	const localization = ImperiumData.fromLocalization().getRawData();
 	for (const tablename in localization.C) {
@@ -17,7 +17,9 @@ export async function localizationChineseOnly() {
 			table.D.push(table.T);
 			table.D.push(table.K);
 			const data = flipMatrix(table.D)
-				.filter((value: any[]) => ['Key', 'Chinese'].indexOf('' + value[value.length - 1]) != -1)
+				.filter(
+					(value: any[]) => ["Key", "Chinese"].indexOf("" + value[value.length - 1]) != -1
+				)
 				.sort(sortKeyByTable(tablename));
 			const edited = flipMatrix(data);
 			table.K = edited.pop() || [];

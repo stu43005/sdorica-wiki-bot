@@ -1,3 +1,3 @@
 import { NumericSkillEffect } from "./NumericSkillEffect";
 
-export type AmrGainSkillEffect = NumericSkillEffect
+export type AmrGainSkillEffect = NumericSkillEffect;

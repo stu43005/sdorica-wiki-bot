@@ -36,8 +36,7 @@ import { TargetResolver } from "./TargetResolver";
 export function targetResolve(unit: SkillUnit | TargetResolver) {
 	if (unit.IsMultiple && unit.multi) {
 		return `對${mulitTargetStringify(unit.multi)}全體`;
-	}
-	else if (unit.single) {
+	} else if (unit.single) {
 		return `對${singleTargetStringify(unit.single)}`;
 	}
 	return "";
@@ -68,7 +67,9 @@ export function singleTargetStringify(target: ISingleCharacter): string {
 	if (target.$type == "BattleModel.IndexOfChars") {
 		const obj = target as IndexOfChars;
 		const index = constantStringify(obj.index);
-		return `${mulitTargetStringify(obj.group)}的${obj.backward ? "" : "倒數"}第${isNaN(Number(index)) ? `${index}+1` : Number(index) + 1}個角色`;
+		return `${mulitTargetStringify(obj.group)}的${obj.backward ? "" : "倒數"}第${
+			isNaN(Number(index)) ? `${index}+1` : Number(index) + 1
+		}個角色`;
 	}
 	if (target.$type == "BattleModel.ThisBuffCaster") {
 		const obj = target as ThisBuffCaster;
@@ -149,11 +150,15 @@ export function mulitTargetStringify(target: IGroupedCharacter): string {
 	}
 	if (target.$type == "BattleModel.CharGroupWhere") {
 		const obj = target as CharGroupWhere;
-		return `${mulitTargetStringify(obj.group)}中符合(${conditionCharStringify(obj.condition)})的角色`;
+		return `${mulitTargetStringify(obj.group)}中符合(${conditionCharStringify(
+			obj.condition
+		)})的角色`;
 	}
 	if (target.$type == "BattleModel.CharGroupWhereM") {
 		const obj = target as CharGroupWhereM;
-		return `${mulitTargetStringify(obj.group)}中符合(${conditionStringify(obj.condition)})的角色`;
+		return `${mulitTargetStringify(obj.group)}中符合(${conditionStringify(
+			obj.condition
+		)})的角色`;
 	}
 	if (target.$type == "BattleModel.UnionCharGroup") {
 		const obj = target as UnionCharGroup;
@@ -165,7 +170,9 @@ export function mulitTargetStringify(target: IGroupedCharacter): string {
 		if (obj.count == 1) {
 			return `${mulitTargetStringify(obj.group)}的${backward}第${obj.fromIndex + 1}個角色`;
 		}
-		return `${mulitTargetStringify(obj.group)}的${backward}第${obj.fromIndex + 1}個到第${obj.fromIndex + obj.count}個角色`;
+		return `${mulitTargetStringify(obj.group)}的${backward}第${obj.fromIndex + 1}個到第${
+			obj.fromIndex + obj.count
+		}個角色`;
 	}
 	if (target.$type == "BattleModel.SelftTeamEmptySlots") {
 		const obj = target as SelftTeamEmptySlots;

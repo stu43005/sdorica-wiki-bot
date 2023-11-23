@@ -41,6 +41,8 @@ const SkillPropertyList = [
 
 export namespace SkillProperty {
 	export function toString(prop: SkillProperty) {
-		return SkillPropertyList.filter(t => (prop & t) == t).map(t => SkillProperty[t]).join(" | ");
+		return SkillPropertyList.filter((t) => (prop & t) == t)
+			.map((t) => SkillProperty[t])
+			.join(" | ");
 	}
 }

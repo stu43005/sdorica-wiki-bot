@@ -4,7 +4,7 @@ import { HeroSlot } from "../model/enums/hero-slot.enum";
 import { wikiNextLine, wikitemplate } from "../wiki-utils";
 
 export interface HeroRankParams {
-	角色位置?: HeroSlot,
+	角色位置?: HeroSlot;
 	角色名稱?: string;
 	角色姓氏?: string;
 	角色稱號?: string;
@@ -25,16 +25,20 @@ export interface HeroRankParams {
  * 取得`{{角色/階級}}`模板
  */
 export function heroRankTemplate(params: HeroRankParams) {
-	params.角色名稱 ||= ' ';
-	params.角色姓氏 ||= ' ';
-	params.角色稱號 ||= ' ';
-	params.介紹 = params.介紹 ? wikiNextLine(params.介紹) : ' ';
-	params.年齡 = params.年齡 ? params.年齡.replace(/(.月)/g, "[[$1]]") : '{{?}}';
-	params.身高 ||= '{{?}}';
-	params.聲優 ||= '無';
+	params.角色名稱 ||= " ";
+	params.角色姓氏 ||= " ";
+	params.角色稱號 ||= " ";
+	params.介紹 = params.介紹 ? wikiNextLine(params.介紹) : " ";
+	params.年齡 = params.年齡 ? params.年齡.replace(/(.月)/g, "[[$1]]") : "{{?}}";
+	params.身高 ||= "{{?}}";
+	params.聲優 ||= "無";
 
-	return wikitemplate('角色/階級', {
-		1: "{{{1|}}}",
-		...params,
-	}, TemplateFormatter.FORMAT.BLOCK);
+	return wikitemplate(
+		"角色/階級",
+		{
+			1: "{{{1|}}}",
+			...params,
+		},
+		TemplateFormatter.FORMAT.BLOCK
+	);
 }

@@ -12,16 +12,11 @@ export default function wikiAdvAchievements() {
 	let out = wikiH1("幻境成就");
 
 	out += `\n\n${wikiH2("舊版幻境成就")}`;
-	const AdvAchievementGroups = _.groupBy(AdvAchievementsTable.rows, r => r.get("tab"));
+	const AdvAchievementGroups = _.groupBy(AdvAchievementsTable.rows, (r) => r.get("tab"));
 	for (const [groupId, group] of Object.entries(AdvAchievementGroups)) {
 		const table: WikiTableStruct = {
 			attributes: `class="wikitable mw-collapsible"`,
-			rows: [
-				[
-					`! 成就內容`,
-					`! 成就獎勵`,
-				],
-			],
+			rows: [[`! 成就內容`, `! 成就獎勵`]],
 		};
 		for (let i = 0; i < group.length; i++) {
 			const ach = group[i];
@@ -38,16 +33,13 @@ export default function wikiAdvAchievements() {
 	}
 
 	out += `\n\n${wikiH2("新版幻境成就")}`;
-	const AdventureAchievementGroups = _.groupBy(AdventureAchievementsTable.rows, r => r.get("tab"));
+	const AdventureAchievementGroups = _.groupBy(AdventureAchievementsTable.rows, (r) =>
+		r.get("tab")
+	);
 	for (const [groupId, group] of Object.entries(AdventureAchievementGroups)) {
 		const table: WikiTableStruct = {
 			attributes: `class="wikitable mw-collapsible"`,
-			rows: [
-				[
-					`! 成就內容`,
-					`! 成就獎勵`,
-				],
-			],
+			rows: [[`! 成就內容`, `! 成就獎勵`]],
 		};
 		for (let i = 0; i < group.length; i++) {
 			const ach = group[i];

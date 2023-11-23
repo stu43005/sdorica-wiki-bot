@@ -1,13 +1,13 @@
 import * as path from "path";
 import { GAMEDATA_PATH, LATEST_PATH, ORIGIN_PATH } from "./config";
 import { ImperiumDataRaw, LatestDataRaw } from "./data-raw-type";
-import { ImperiumData } from './imperium-data';
+import { ImperiumData } from "./imperium-data";
 import { inputFilePack, inputJsonSync, isImperiumData, isLatestData } from "./input";
 import { Logger } from "./logger";
 import { fsExists, outCsv, outJson, outXlsx, rpFile } from "./out";
 import { dataOut } from "./out-data";
 
-const logger = new Logger('downloader');
+const logger = new Logger("downloader");
 
 export function getLatestUrl(key: string, uuid: string) {
 	let host = "origin-sdorica.rayark.download";
@@ -45,7 +45,7 @@ export async function downloadLatest(key: string, uuid: string, force = false) {
 	try {
 		await rpFile(url, msgpackFilePath);
 	} catch (error) {
-		logger.error('download latest error:', error);
+		logger.error("download latest error:", error);
 		debugger;
 		return false;
 	}
@@ -60,7 +60,7 @@ export async function downloadLatest(key: string, uuid: string, force = false) {
 			throw new Error("Not LatestData");
 		}
 	} catch (error) {
-		logger.error('opening latest error:', error);
+		logger.error("opening latest error:", error);
 		debugger;
 		return false;
 	}
@@ -86,9 +86,8 @@ export async function downloadLatest(key: string, uuid: string, force = false) {
 			logger.log(`pass ${key}: ${data.I}`);
 		}
 		return updated;
-
 	} catch (error) {
-		logger.error('output latest error:', error);
+		logger.error("output latest error:", error);
 		debugger;
 		return false;
 	}
@@ -103,9 +102,8 @@ export async function downloadGamedata(key: string, latest: LatestDataRaw) {
 
 	try {
 		await rpFile(url, msgpackFilePath);
-	}
-	catch (e) {
-		logger.error('download gamedata error:', e);
+	} catch (e) {
+		logger.error("download gamedata error:", e);
 		debugger;
 		return false;
 	}
@@ -120,7 +118,7 @@ export async function downloadGamedata(key: string, latest: LatestDataRaw) {
 			throw new Error("Not ImperiumData");
 		}
 	} catch (error) {
-		logger.error('opening gamedata error:', error);
+		logger.error("opening gamedata error:", error);
 		debugger;
 		return false;
 	}
@@ -133,9 +131,8 @@ export async function downloadGamedata(key: string, latest: LatestDataRaw) {
 		if (ImperiumData.has(key)) {
 			await ImperiumData.from(key).reloadData();
 		}
-
 	} catch (error) {
-		logger.error('output gamedata error:', error);
+		logger.error("output gamedata error:", error);
 		debugger;
 		return false;
 	}

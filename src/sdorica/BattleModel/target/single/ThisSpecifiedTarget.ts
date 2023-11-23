@@ -1,3 +1,3 @@
 import { ISingleCharacter } from "../ISingleCharacter";
 
-export type ThisSpecifiedTarget = ISingleCharacter
+export type ThisSpecifiedTarget = ISingleCharacter;

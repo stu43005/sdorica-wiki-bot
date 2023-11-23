@@ -15,28 +15,40 @@ export class TavernMissionRequire {
 	public static get(idOrMission: string | TavernMission): TavernMissionRequire[] {
 		const id = typeof idOrMission === "string" ? idOrMission : idOrMission.id;
 		if (!instances[id]) {
-			const rows = TavernMissionRequireTable.filter(r => r.get("missionId") == id);
-			instances[id] = rows.map(row => new TavernMissionRequire(row));
+			const rows = TavernMissionRequireTable.filter((r) => r.get("missionId") == id);
+			instances[id] = rows.map((row) => new TavernMissionRequire(row));
 		}
 		return instances[id];
 	}
 
-	get missionId(): string { return this.row.get('missionId'); }
-	get mission(): Mission | undefined { return Mission.get(this.missionId); }
+	get missionId(): string {
+		return this.row.get("missionId");
+	}
+	get mission(): Mission | undefined {
+		return Mission.get(this.missionId);
+	}
 
-	get category(): TavernMissionSkillType { return this.row.get('category'); }
+	get category(): TavernMissionSkillType {
+		return this.row.get("category");
+	}
 
-	get skillId(): string { return this.row.get('skillId'); }
+	get skillId(): string {
+		return this.row.get("skillId");
+	}
 	skillName: string;
-	get skillLv(): number { return +this.row.get('skillLv'); }
-	get successRate(): number { return +this.row.get('successRate'); }
+	get skillLv(): number {
+		return +this.row.get("skillLv");
+	}
+	get successRate(): number {
+		return +this.row.get("successRate");
+	}
 
 	constructor(private row: RowWrapper) {
 		this.skillName = localizationMonsterSkillName()(this.skillId);
 	}
 
 	getSuccessRateString() {
-		return numeral(this.successRate / 10000).format('0.[00]%');
+		return numeral(this.successRate / 10000).format("0.[00]%");
 	}
 
 	getCategoryIcon() {
@@ -52,5 +64,4 @@ export class TavernMissionRequire {
 	toWiki() {
 		return `{{狀態圖示|${this.skillName}|24px|層數=${this.skillLv}}}${this.getCategoryIcon()}`;
 	}
-
 }

@@ -6,11 +6,11 @@ import { ImperiumData } from "../imperium-data";
 import { fsSerializer } from "../lib/FullSerializer/fsSerializer";
 import { Logger } from "../logger";
 import { objectEach } from "../utils";
-import { SdoricaInspectorApi } from './si-api';
+import { SdoricaInspectorApi } from "./si-api";
 import { SiContainer } from "./types/containers";
 import { ViewerJSHelper } from "./viewerjs-helper";
 
-const logger = new Logger('viewerjs/utils');
+const logger = new Logger("viewerjs/utils");
 
 export function siJsonParse(text: string) {
 	return JSON.parse(text.replace(/\:(-?)\.(\d)/g, ":$10.$2"));
@@ -21,7 +21,7 @@ export async function getImperiumName(helper: ViewerJSHelper, typeName: string) 
 	if (typeId < 0) return "";
 	const api = new SdoricaInspectorApi(helper);
 	const imperiums = await api.imperium();
-	const i = imperiums.find(x => x.type_id === typeId);
+	const i = imperiums.find((x) => x.type_id === typeId);
 	if (i) {
 		return `${i.id}::${i.name}`;
 	}
@@ -45,7 +45,7 @@ export async function containerSearchAuto(helper: ViewerJSHelper, path: string) 
 		queue.push({
 			path,
 			resolve,
-			reject
+			reject,
 		});
 		if (!queueTimer) {
 			queueTimer = setTimeout(async () => {
@@ -53,12 +53,14 @@ export async function containerSearchAuto(helper: ViewerJSHelper, path: string) 
 				queue = [];
 				if (queue2.length > 0) {
 					try {
-						const results = await containerSearchMultiSplit(helper, queue2.map(q => q.path));
+						const results = await containerSearchMultiSplit(
+							helper,
+							queue2.map((q) => q.path)
+						);
 						queue2.forEach((entry, index) => {
 							entry.resolve(results[index]);
 						});
-					}
-					catch (error) {
+					} catch (error) {
 						logger.error(error);
 						debugger;
 						queue2.forEach((entry) => {
@@ -76,7 +78,7 @@ export async function containerSearch(helper: ViewerJSHelper, path: string) {
 	const api = new SdoricaInspectorApi(helper);
 	// step 1: Container Search
 	const searchResult = await api.containerSearch(path);
-	const resultMatch = searchResult.find(r => r.name.toLowerCase() == path.toLowerCase());
+	const resultMatch = searchResult.find((r) => r.name.toLowerCase() == path.toLowerCase());
 	if (!resultMatch) {
 		logger.error(`Not found: ${path}`);
 		debugger;
@@ -99,13 +101,15 @@ export async function containerSearch(helper: ViewerJSHelper, path: string) {
 	// step 3: Get Container data
 	const container = await api.assetbundleContainer(assetBundle.md5, pathId);
 	// step 4: Run ViewerJS code
-	const interpretedData: SiContainer = helper.getCode(containers[pathId].type) ? await new Promise((resolve) => {
-		container.__skip_prompt = true;
-		helper.runCode(containers[pathId].type, container, null, (reuslt) => {
-			delete reuslt.__skip_prompt;
-			resolve(reuslt);
-		});
-	}) : container;
+	const interpretedData: SiContainer = helper.getCode(containers[pathId].type)
+		? await new Promise((resolve) => {
+				container.__skip_prompt = true;
+				helper.runCode(containers[pathId].type, container, null, (reuslt) => {
+					delete reuslt.__skip_prompt;
+					resolve(reuslt);
+				});
+		  })
+		: container;
 	return interpretedData;
 }
 
@@ -113,7 +117,7 @@ export async function containerSearchData(helper: ViewerJSHelper, path: string) 
 	const api = new SdoricaInspectorApi(helper);
 	// step 1: Container Search
 	const searchResult = await api.containerSearch(path);
-	const resultMatch = searchResult.find(r => r.name.toLowerCase() == path.toLowerCase());
+	const resultMatch = searchResult.find((r) => r.name.toLowerCase() == path.toLowerCase());
 	if (!resultMatch) {
 		logger.error(`Not found: ${path}`);
 		debugger;
@@ -155,22 +159,24 @@ export async function containerSearchMulti(helper: ViewerJSHelper, ql: string[])
 	// step 1: Container Search
 	const searchResults = await api.containerMultiSearch(ql);
 	const qlmd5: string[] = [];
-	const abl = [...searchResults.reduce((prev, curr, index) => {
-		const path = ql[index];
-		const resultMatch = curr.find(r => r.name.toLowerCase() == path.toLowerCase());
-		if (!resultMatch) {
-			logger.error(`Not found: ${path}`);
-			debugger;
-			throw `Not found: ${path}`;
-		}
-		const assetBundle = resultMatch.asset_bundles[resultMatch.asset_bundles.length - 1];
-		prev.add(assetBundle.md5);
-		qlmd5[index] = assetBundle.md5;
-		return prev;
-	}, new Set<string>())];
+	const abl = [
+		...searchResults.reduce((prev, curr, index) => {
+			const path = ql[index];
+			const resultMatch = curr.find((r) => r.name.toLowerCase() == path.toLowerCase());
+			if (!resultMatch) {
+				logger.error(`Not found: ${path}`);
+				debugger;
+				throw `Not found: ${path}`;
+			}
+			const assetBundle = resultMatch.asset_bundles[resultMatch.asset_bundles.length - 1];
+			prev.add(assetBundle.md5);
+			qlmd5[index] = assetBundle.md5;
+			return prev;
+		}, new Set<string>()),
+	];
 
 	// step 2: Get AssetBundle
-	const abd = await Promise.all(abl.map(async md5 => await api.assetbundleContainers(md5)));
+	const abd = await Promise.all(abl.map(async (md5) => await api.assetbundleContainers(md5)));
 	const qlpathid: string[] = [];
 	const qltype: string[] = [];
 	ql.forEach((path, index) => {
@@ -193,19 +199,21 @@ export async function containerSearchMulti(helper: ViewerJSHelper, ql: string[])
 	const containerResults = await api.assetbundleContainerMultiRetrieve(qll);
 
 	// step 4: Run ViewerJS code
-	const interpretedDatas: SiContainer[] = await Promise.all(qll.map(async (q, index) => {
-		const container = containerResults[index];
-		if (helper.getCode(qltype[index])) {
-			return new Promise<Record<string, any>>((resolve) => {
-				container.__skip_prompt = true;
-				helper.runCode(qltype[index], container, null, (reuslt) => {
-					delete reuslt.__skip_prompt;
-					resolve(reuslt);
+	const interpretedDatas: SiContainer[] = await Promise.all(
+		qll.map(async (q, index) => {
+			const container = containerResults[index];
+			if (helper.getCode(qltype[index])) {
+				return new Promise<Record<string, any>>((resolve) => {
+					container.__skip_prompt = true;
+					helper.runCode(qltype[index], container, null, (reuslt) => {
+						delete reuslt.__skip_prompt;
+						resolve(reuslt);
+					});
 				});
-			});
-		}
-		return container;
-	}));
+			}
+			return container;
+		})
+	);
 	return interpretedDatas;
 }
 
@@ -214,26 +222,26 @@ const dbVersion = 1;
 export function getDb() {
 	return idb.openDB(dbName, dbVersion, {
 		upgrade(db) {
-			db.createObjectStore('cache');
-		}
+			db.createObjectStore("cache");
+		},
 	});
 }
 
 export async function getDataFromCache<T>(key: string, fallback: () => Promise<T>): Promise<T> {
 	const db = await getDb();
-	let result: T = await db.get('cache', key);
+	let result: T = await db.get("cache", key);
 	if (result) {
-		logger.log('hit cache:', key);
+		logger.log("hit cache:", key);
 	} else {
 		result = await fallback();
-		await db.put('cache', result, key);
+		await db.put("cache", result, key);
 	}
 	return result;
 }
 
 export async function addDataToCache(key: string, value: any) {
 	const db = await getDb();
-	await db.put('cache', value, key);
+	await db.put("cache", value, key);
 }
 
 export async function downloadFileCors(url: string) {
@@ -262,7 +270,7 @@ export async function getCharAssets(helper: ViewerJSHelper): Promise<JSZip> {
 }
 
 export async function getCharAsset(zipEntry: JSZip.JSZipObject) {
-	const content = await zipEntry.async('uint8array');
+	const content = await zipEntry.async("uint8array");
 	const jsonBuffer = new Uint8Array(unzip(content));
 	const jsonString = new TextDecoder("utf-8").decode(jsonBuffer);
 	const json = siJsonParse(jsonString);

@@ -70,13 +70,11 @@ export class fsSerializer {
 			// debugger;
 			// throw new Error("TypeSpecified not supported.");
 			// const typeNameData = new fsData(data.AsDictionary[fsSerializer.Key_InstanceType]);
-
 			// do {
 			// 	if (typeNameData.IsString == false) {
 			// 		console.log(fsSerializer.Key_InstanceType + " value must be a string (in " + data + ")");
 			// 		break;
 			// 	}
-
 			// 	const typeName = typeNameData.AsString;
 			// 	const type = fsTypeCache.GetType(typeName);
 			// 	if (type == null) {
@@ -84,7 +82,6 @@ export class fsSerializer {
 			// 		debugger;
 			// 		break;
 			// 	}
-
 			// 	objectType = type;
 			// } while (false);
 		}
@@ -114,8 +111,7 @@ export class fsSerializer {
 					result[key] = this.TryDeserialize(new fsData(value));
 				}
 			}
-		}
-		else if (data.IsList) {
+		} else if (data.IsList) {
 			result = data.AsList;
 			for (let index = 0; index < result.length; index++) {
 				const value = result[index];

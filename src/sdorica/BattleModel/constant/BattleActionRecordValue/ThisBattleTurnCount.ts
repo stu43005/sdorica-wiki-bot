@@ -1,3 +1,3 @@
 import { IBattleActionRecordValue } from "./IBattleActionRecordValue";
 
-export type ThisBattleTurnCount = IBattleActionRecordValue
+export type ThisBattleTurnCount = IBattleActionRecordValue;

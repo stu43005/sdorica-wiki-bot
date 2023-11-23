@@ -1,3 +1,3 @@
 import { ISingleInteger } from "./ISingleInteger";
 
-export type ThisTeamExploreDays = ISingleInteger
+export type ThisTeamExploreDays = ISingleInteger;

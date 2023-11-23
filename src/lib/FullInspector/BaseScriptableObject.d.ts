@@ -1,8 +1,8 @@
 export interface BaseScriptableObject {
-	m_Name: string,
+	m_Name: string;
 
 	/**
 	 * SI skip prompt
 	 */
-	__skip_prompt?: boolean,
+	__skip_prompt?: boolean;
 }

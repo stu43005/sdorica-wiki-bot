@@ -1,5 +1,5 @@
 export enum TavernMissionSkillType {
-	Normal = 'Normal',
-	ReturnToZero = 'ReturnToZero',
-	ReduceTime = 'ReduceTime',
+	Normal = "Normal",
+	ReturnToZero = "ReturnToZero",
+	ReduceTime = "ReduceTime",
 }

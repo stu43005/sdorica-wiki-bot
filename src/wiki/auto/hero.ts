@@ -1,10 +1,10 @@
 import MWBot from "mwbot";
-import { Logger } from '../../logger';
+import { Logger } from "../../logger";
 import { getHeroJsonData } from "../../wiki-hero";
 
-const logger = new Logger('mwbot');
+const logger = new Logger("mwbot");
 
-const checkRanks = ['三階+', 'Skin', 'Alt'];
+const checkRanks = ["三階+", "Skin", "Alt"];
 
 export async function wikiHeroBot(bot: MWBot) {
 	const json = getHeroJsonData();
@@ -23,8 +23,7 @@ export async function wikiHeroBot(bot: MWBot) {
 					try {
 						await bot.create(hero.scName, `#重新導向 [[${hero.name}]]`, "簡中導向");
 						logger.log(`Redirect: ${hero.scName} -> ${hero.name}`);
-					} catch (error) {
-					}
+					} catch (error) {}
 				}
 
 				if (hero.cv) {
@@ -32,14 +31,15 @@ export async function wikiHeroBot(bot: MWBot) {
 					try {
 						await bot.create(cvCat, `{{角色聲優分類}}`);
 						logger.log(`Create: ${cvCat}`);
-					} catch (error) {
-					}
+					} catch (error) {}
 				}
 			}
 
 			for (const rankName in hero.ranks) {
 				if (hero.ranks.hasOwnProperty(rankName)) {
-					if (heroExists && !checkRanks.map(s => rankName.includes(s)).find(b => b)) { continue; }
+					if (heroExists && !checkRanks.map((s) => rankName.includes(s)).find((b) => b)) {
+						continue;
+					}
 
 					const rankExists = await bot.exists(rankName);
 					if (!rankExists) {
@@ -47,8 +47,7 @@ export async function wikiHeroBot(bot: MWBot) {
 							const rank = hero.ranks[rankName];
 							await bot.create(`模板:${rankName}`, rank);
 							logger.log(`Create: 模板:${rankName}`);
-						} catch (error) {
-						}
+						} catch (error) {}
 					}
 				}
 			}

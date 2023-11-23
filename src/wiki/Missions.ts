@@ -5,7 +5,7 @@ import { wikitable, WikiTableStruct } from "../templates/wikitable";
 import { sortCategory } from "../utils";
 
 export default function wikiMissions() {
-	let out = wikiH1('任務');
+	let out = wikiH1("任務");
 
 	const tabs = _.groupBy(Mission.getAll(), (r) => r.tab);
 	const sortedTabs = Object.entries(tabs).sort((a, b) => sortCategory(a[0], b[0]));
@@ -17,23 +17,24 @@ export default function wikiMissions() {
 		for (const [category, missions] of sortedCategorys) {
 			const table: WikiTableStruct = {
 				attributes: `class="wikitable mw-collapsible"`,
-				rows: [
-					[
-						`! 諦視者等級`,
-						`! 任務內容`,
-						`! 任務獎勵`,
-					],
-				],
+				rows: [[`! 諦視者等級`, `! 任務內容`, `! 任務獎勵`]],
 			};
 			const sortedMissions = missions.sort((a, b) => a.order - b.order);
 			for (const mission of sortedMissions) {
 				table.rows.push({
-					attributes: mission.enable && mission.weight != 0 ? "" : `style="background-color: #ccc; color: #1e1e1e;" title="停用"`,
+					attributes:
+						mission.enable && mission.weight != 0
+							? ""
+							: `style="background-color: #ccc; color: #1e1e1e;" title="停用"`,
 					ceils: [
-						mission.minLv == -1 ? {
-							attributes: `style="text-align: center;"`,
-							text: `-`,
-						} : mission.maxLv == 99 ? `${mission.minLv} ↑` : `${mission.minLv} ~ ${mission.maxLv}`,
+						mission.minLv == -1
+							? {
+									attributes: `style="text-align: center;"`,
+									text: `-`,
+							  }
+							: mission.maxLv == 99
+							? `${mission.minLv} ↑`
+							: `${mission.minLv} ~ ${mission.maxLv}`,
 						mission.getMissionName(true),
 						mission.giveItem.toWiki(),
 					],

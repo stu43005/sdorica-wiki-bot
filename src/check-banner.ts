@@ -1,12 +1,7 @@
 import axios from "axios";
 import config from "config";
 import path from "node:path";
-import {
-	API_CONFIG_PATH,
-	ApiConfig,
-	BANNERS_PATH,
-	LATEST_PATH,
-} from "./config";
+import { API_CONFIG_PATH, ApiConfig, BANNERS_PATH, LATEST_PATH } from "./config";
 import { LatestDataRaw } from "./data-raw-type";
 import { discordWebhook } from "./discord-webhook";
 import { inputJsonSync } from "./input";
@@ -26,12 +21,8 @@ function getBannerUrls(): string[] {
 
 async function loginToGame() {
 	const apiConfig: ApiConfig = inputJsonSync(API_CONFIG_PATH);
-	const gameAuthenticate = config.get<{ account: string; secret: string }>(
-		"gameAuthenticate"
-	);
-	const gamedataLatest: LatestDataRaw = inputJsonSync(
-		path.join(LATEST_PATH, "gamedata.json")
-	);
+	const gameAuthenticate = config.get<{ account: string; secret: string }>("gameAuthenticate");
+	const gamedataLatest: LatestDataRaw = inputJsonSync(path.join(LATEST_PATH, "gamedata.json"));
 
 	logger.log("get service token...");
 	const axiosInstance = axios.create({
@@ -47,14 +38,11 @@ async function loginToGame() {
 	const { auth_code: serviceToken } = res.data;
 
 	logger.log("get access token...");
-	res = await axiosInstance.post(
-		"https://2x0x0-api-phoebe.rayark.net/service/email/login",
-		{
-			service_token: serviceToken,
-			app_key: apiConfig.app_key,
-			params: apiConfig.params,
-		}
-	);
+	res = await axiosInstance.post("https://2x0x0-api-phoebe.rayark.net/service/email/login", {
+		service_token: serviceToken,
+		app_key: apiConfig.app_key,
+		params: apiConfig.params,
+	});
 	logger.debug("rayark pass login:", res.data);
 	const { access_token: accessToken } = res.data;
 
@@ -101,9 +89,7 @@ export async function checkBanner(debug = false, lang = "zh_TW") {
 		const gameInstance = await loginToGame();
 
 		logger.log("get banners...");
-		const bannersRes = await gameInstance.get<DataContainer<Banners>>(
-			"/p/banners"
-		);
+		const bannersRes = await gameInstance.get<DataContainer<Banners>>("/p/banners");
 		logger.debug("banners:", bannersRes.data);
 		for (const banner of bannersRes.data.data.banners) {
 			logger.log(`banner: ${banner.actionValue}`);
@@ -122,9 +108,7 @@ export async function checkBanner(debug = false, lang = "zh_TW") {
 		}
 
 		logger.log("get iap...");
-		const iapListRes = await gameInstance.post<DataContainer<IapList>>(
-			"/iap/list"
-		);
+		const iapListRes = await gameInstance.post<DataContainer<IapList>>("/iap/list");
 		logger.debug("iap:", iapListRes.data);
 		for (const banner of iapListRes.data.data.banners) {
 			logger.log(`banner: ${banner.actionValue}`);

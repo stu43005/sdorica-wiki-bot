@@ -1,9 +1,5 @@
 import { ImperiumData } from "../imperium-data";
-import {
-	applyStringRefer,
-	localizationString,
-	stringReferReplacer,
-} from "../localization";
+import { applyStringRefer, localizationString, stringReferReplacer } from "../localization";
 import { numMultiply } from "../utils";
 import { HeroRank } from "./enums/hero-rank.enum";
 import { SkillId } from "./enums/skill-id.enum";
@@ -77,25 +73,17 @@ export class HeroSkill {
 		public shape: StoneEraseShape = StoneEraseShape.None,
 		public tips: boolean = false
 	) {
-		this.name = localizationString("MetagameSkillInfo")(
-			`${skillSet.model}_${skillId}_name`
-		);
+		this.name = localizationString("MetagameSkillInfo")(`${skillSet.model}_${skillId}_name`);
 		this.info = applyStringRefer(
-			localizationString("MetagameSkillInfo")(
-				`${skillSet.model}_${skillId}_skillinfo`
-			),
+			localizationString("MetagameSkillInfo")(`${skillSet.model}_${skillId}_skillinfo`),
 			(...args) => this.infoReplacer(...args)
 		);
 
-		const triggerMatch = this.info.match(
-			/(^|\n+)\s*【觸發限制】：([^$\n]*)($|\n)/
-		);
+		const triggerMatch = this.info.match(/(^|\n+)\s*【觸發限制】：([^$\n]*)($|\n)/);
 		if (triggerMatch) {
 			this.triggerLimit = triggerMatch[2];
 		}
-		const counterattackMatch = this.info.match(
-			/(^|\n+)\s*【反擊限制】：([^$\n]*)($|\n)/
-		);
+		const counterattackMatch = this.info.match(/(^|\n+)\s*【反擊限制】：([^$\n]*)($|\n)/);
 		if (counterattackMatch) {
 			this.counterAttackLimit = true;
 		}
@@ -143,10 +131,7 @@ export class HeroSkill {
 			.replace(/(?:^|\n+)\s*【([^】]*)】：.*/g, (match, name) => {
 				if (name === "觸發限制" || name === "反擊限制") return "";
 				const buff = BuffInfoTable.find(
-					(r) =>
-						localizationString("BaseBuff")(
-							r.get("localizationNameKey")
-						) == name
+					(r) => localizationString("BaseBuff")(r.get("localizationNameKey")) == name
 				);
 				if (buff) return "";
 				return match;

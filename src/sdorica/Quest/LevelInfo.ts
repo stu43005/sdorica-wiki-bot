@@ -11,10 +11,10 @@ export interface LevelInfo {
 	enemySet: Record<string, string>;
 
 	/* data */
-	actorData?: any/*LevelActorModel*/;
+	actorData?: any /*LevelActorModel*/;
 	eventData?: LevelEventModel;
-	battleWavesData?: Record<string, any/*BattleWave*/>;
-	enemySetData?: Record<string, any/*EnemySetModel*/>;
+	battleWavesData?: Record<string, any /*BattleWave*/>;
+	enemySetData?: Record<string, any /*EnemySetModel*/>;
 
 	$interpreted?: InterpretedObjectBase[];
 }

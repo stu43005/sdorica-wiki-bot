@@ -29,7 +29,7 @@ export interface HeroSmallIconParams {
  * 取得`{{角色小圖示}}`模板
  */
 export function heroSmallIconTemplate(name: string, params: HeroSmallIconParams = {}) {
-	return wikitemplate('角色小圖示', {
+	return wikitemplate("角色小圖示", {
 		1: name,
 		...params,
 	});

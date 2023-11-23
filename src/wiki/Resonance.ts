@@ -1,16 +1,11 @@
 import { ImperiumData, RowWrapper } from "../imperium-data";
 import { rank } from "../localization";
 import { wikiH1, wikiH2 } from "../templates/wikiheader";
-import {
-	wikitable,
-	WikiTableCeil,
-	WikiTableStruct,
-} from "../templates/wikitable";
+import { wikitable, WikiTableCeil, WikiTableStruct } from "../templates/wikitable";
 import { item2wiki, Item2WikiOptions, item2wikiWithType } from "../wiki-item";
 import { wikiNextLine } from "../wiki-utils";
 
-const RankUpItemRefsTable =
-	ImperiumData.fromGamedata().getTable("RankUpItemRefs");
+const RankUpItemRefsTable = ImperiumData.fromGamedata().getTable("RankUpItemRefs");
 const RankUpItemsTable = ImperiumData.fromGamedata().getTable("RankUpItems");
 
 export default function wikiResonance() {
@@ -47,10 +42,7 @@ export default function wikiResonance() {
 		const row = RankUpItemRefsTable.get(i);
 		const category = row.get("category");
 		const param1 = row.get("param1");
-		if (
-			category == "Common" ||
-			(category == "HeroID" && param1 == "21") /* 安潔莉亞 */
-		) {
+		if (category == "Common" || (category == "HeroID" && param1 == "21") /* 安潔莉亞 */) {
 			const refId = row.get("refId");
 			ResonanceItems[refId] = row;
 			// payType,payLinkId,payAmount
@@ -157,48 +149,37 @@ export default function wikiResonance() {
 					header: true,
 					text: `+${rank1}`,
 				});
-				SubRankUpItemCount["1002"] =
-					(SubRankUpItemCount["1002"] || 0) + row.get("coin");
+				SubRankUpItemCount["1002"] = (SubRankUpItemCount["1002"] || 0) + row.get("coin");
 				if (item1)
 					SubRankUpItemCount[item1.get("payLinkId")] =
-						(SubRankUpItemCount[item1.get("payLinkId")] || 0) +
-						row.get("item1Count");
+						(SubRankUpItemCount[item1.get("payLinkId")] || 0) + row.get("item1Count");
 				if (item2)
 					SubRankUpItemCount[item2.get("payLinkId")] =
-						(SubRankUpItemCount[item2.get("payLinkId")] || 0) +
-						row.get("item2Count");
+						(SubRankUpItemCount[item2.get("payLinkId")] || 0) + row.get("item2Count");
 				if (item3)
 					SubRankUpItemCount[item3.get("payLinkId")] =
-						(SubRankUpItemCount[item3.get("payLinkId")] || 0) +
-						row.get("item3Count");
+						(SubRankUpItemCount[item3.get("payLinkId")] || 0) + row.get("item3Count");
 				if (item4)
 					SubRankUpItemCount[item4.get("payLinkId")] =
-						(SubRankUpItemCount[item4.get("payLinkId")] || 0) +
-						row.get("item4Count");
+						(SubRankUpItemCount[item4.get("payLinkId")] || 0) + row.get("item4Count");
 				if (item5)
 					SubRankUpItemCount[item5.get("payLinkId")] =
-						(SubRankUpItemCount[item5.get("payLinkId")] || 0) +
-						row.get("item5Count");
+						(SubRankUpItemCount[item5.get("payLinkId")] || 0) + row.get("item5Count");
 				if (ext1)
 					SubRankUpExtCount[ext1.get("payLinkId")] =
-						(SubRankUpExtCount[ext1.get("payLinkId")] || 0) +
-						row.get("ext1Count");
+						(SubRankUpExtCount[ext1.get("payLinkId")] || 0) + row.get("ext1Count");
 				if (ext2)
 					SubRankUpExtCount[ext2.get("payLinkId")] =
-						(SubRankUpExtCount[ext2.get("payLinkId")] || 0) +
-						row.get("ext2Count");
+						(SubRankUpExtCount[ext2.get("payLinkId")] || 0) + row.get("ext2Count");
 				if (ext3)
 					SubRankUpExtCount[ext3.get("payLinkId")] =
-						(SubRankUpExtCount[ext3.get("payLinkId")] || 0) +
-						row.get("ext3Count");
+						(SubRankUpExtCount[ext3.get("payLinkId")] || 0) + row.get("ext3Count");
 				if (ext4)
 					SubRankUpExtCount[ext4.get("payLinkId")] =
-						(SubRankUpExtCount[ext4.get("payLinkId")] || 0) +
-						row.get("ext4Count");
+						(SubRankUpExtCount[ext4.get("payLinkId")] || 0) + row.get("ext4Count");
 				if (ext5)
 					SubRankUpExtCount[ext5.get("payLinkId")] =
-						(SubRankUpExtCount[ext5.get("payLinkId")] || 0) +
-						row.get("ext5Count");
+						(SubRankUpExtCount[ext5.get("payLinkId")] || 0) + row.get("ext5Count");
 				break;
 			case "Sublimation":
 				ceil.push({
@@ -218,19 +199,12 @@ export default function wikiResonance() {
 		ceil.push(
 			{
 				attributes: `style="background-color: #ffd700; color: #1e1e1e;"`,
-				text: item2wiki(
-					"1002",
-					row.get("coin"),
-					false,
-					ResonanceItemOptions
-				),
+				text: item2wiki("1002", row.get("coin"), false, ResonanceItemOptions),
 			},
 			...items.map(
 				(item, index): WikiTableCeil => ({
 					attributes:
-						index >= 5
-							? `style="background-color: #00ffff; color: #1e1e1e;"`
-							: "",
+						index >= 5 ? `style="background-color: #00ffff; color: #1e1e1e;"` : "",
 					text:
 						index === 4 && category === "Sublimation"
 							? wikiNextLine(`➡️\n➡️\n➡️`)
@@ -263,41 +237,31 @@ export default function wikiResonance() {
 					},
 					item2wiki(
 						ResonanceItems["CommonB"].get("payLinkId"),
-						SubRankUpItemCount[
-							ResonanceItems["CommonB"].get("payLinkId")
-						],
+						SubRankUpItemCount[ResonanceItems["CommonB"].get("payLinkId")],
 						false,
 						ResonanceItemOptions
 					),
 					item2wiki(
 						ResonanceItems["CharItemC"].get("payLinkId"),
-						SubRankUpItemCount[
-							ResonanceItems["CharItemC"].get("payLinkId")
-						],
+						SubRankUpItemCount[ResonanceItems["CharItemC"].get("payLinkId")],
 						false,
 						ResonanceItemOptions
 					),
 					item2wiki(
 						ResonanceItems["CharItemF"].get("payLinkId"),
-						SubRankUpItemCount[
-							ResonanceItems["CharItemF"].get("payLinkId")
-						],
+						SubRankUpItemCount[ResonanceItems["CharItemF"].get("payLinkId")],
 						false,
 						ResonanceItemOptions
 					),
 					item2wiki(
 						ResonanceItems["CharItemA"].get("payLinkId"),
-						SubRankUpItemCount[
-							ResonanceItems["CharItemA"].get("payLinkId")
-						],
+						SubRankUpItemCount[ResonanceItems["CharItemA"].get("payLinkId")],
 						false,
 						ResonanceItemOptions
 					),
 					item2wiki(
 						ResonanceItems["CommonD"].get("payLinkId"),
-						SubRankUpItemCount[
-							ResonanceItems["CommonD"].get("payLinkId")
-						],
+						SubRankUpItemCount[ResonanceItems["CommonD"].get("payLinkId")],
 						false,
 						ResonanceItemOptions
 					),
@@ -305,9 +269,7 @@ export default function wikiResonance() {
 						attributes: `style="background-color: #00ffff; color: #1e1e1e;"`,
 						text: item2wiki(
 							ResonanceItems["CommonE"].get("payLinkId"),
-							SubRankUpExtCount[
-								ResonanceItems["CommonE"].get("payLinkId")
-							],
+							SubRankUpExtCount[ResonanceItems["CommonE"].get("payLinkId")],
 							false,
 							ResonanceItemOptions
 						),
@@ -349,41 +311,31 @@ export default function wikiResonance() {
 					},
 					item2wiki(
 						ResonanceItems["CommonB"].get("payLinkId"),
-						SubRankUpItemCount[
-							ResonanceItems["CommonB"].get("payLinkId")
-						],
+						SubRankUpItemCount[ResonanceItems["CommonB"].get("payLinkId")],
 						false,
 						ResonanceItemOptions
 					),
 					item2wiki(
 						ResonanceItems["CharItemC"].get("payLinkId"),
-						SubRankUpItemCount[
-							ResonanceItems["CharItemC"].get("payLinkId")
-						],
+						SubRankUpItemCount[ResonanceItems["CharItemC"].get("payLinkId")],
 						false,
 						ResonanceItemOptions
 					),
 					item2wiki(
 						ResonanceItems["CharItemF"].get("payLinkId"),
-						SubRankUpItemCount[
-							ResonanceItems["CharItemF"].get("payLinkId")
-						],
+						SubRankUpItemCount[ResonanceItems["CharItemF"].get("payLinkId")],
 						false,
 						ResonanceItemOptions
 					),
 					item2wiki(
 						ResonanceItems["CharItemA"].get("payLinkId"),
-						SubRankUpItemCount[
-							ResonanceItems["CharItemA"].get("payLinkId")
-						],
+						SubRankUpItemCount[ResonanceItems["CharItemA"].get("payLinkId")],
 						false,
 						ResonanceItemOptions
 					),
 					item2wiki(
 						ResonanceItems["CommonF"].get("payLinkId"),
-						SubRankUpItemCount[
-							ResonanceItems["CommonF"].get("payLinkId")
-						],
+						SubRankUpItemCount[ResonanceItems["CommonF"].get("payLinkId")],
 						false,
 						ResonanceItemOptions
 					),
@@ -391,9 +343,7 @@ export default function wikiResonance() {
 						attributes: `style="background-color: #00ffff; color: #1e1e1e;"`,
 						text: item2wiki(
 							ResonanceItems["CommonE"].get("payLinkId"),
-							SubRankUpExtCount[
-								ResonanceItems["CommonE"].get("payLinkId")
-							],
+							SubRankUpExtCount[ResonanceItems["CommonE"].get("payLinkId")],
 							false,
 							ResonanceItemOptions
 						),
@@ -402,9 +352,7 @@ export default function wikiResonance() {
 						attributes: `style="background-color: #00ffff; color: #1e1e1e;"`,
 						text: item2wiki(
 							ResonanceItems["CommonF"].get("payLinkId"),
-							SubRankUpExtCount[
-								ResonanceItems["CommonF"].get("payLinkId")
-							],
+							SubRankUpExtCount[ResonanceItems["CommonF"].get("payLinkId")],
 							false,
 							ResonanceItemOptions
 						),

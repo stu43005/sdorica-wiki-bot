@@ -31,9 +31,7 @@ export class HeroSkillLevel implements IHeroSkillSet {
 	}
 
 	public static getBySkillSetId(skillSetId: string): HeroSkillLevel[] {
-		const rows = SkillLevelTable.filter(
-			(s) => s.get("rootSkill") == skillSetId
-		);
+		const rows = SkillLevelTable.filter((s) => s.get("rootSkill") == skillSetId);
 		const skillSets = rows.map((row) => HeroSkillLevel.get(row));
 		return skillSets;
 	}
@@ -42,9 +40,7 @@ export class HeroSkillLevel implements IHeroSkillSet {
 		return HeroSkillLevel.find((s) => s.model == skillSet);
 	}
 
-	private static find(
-		predicate: (value: HeroSkillLevel) => boolean
-	): HeroSkillLevel | undefined {
+	private static find(predicate: (value: HeroSkillLevel) => boolean): HeroSkillLevel | undefined {
 		for (const item of this.getAllGenerator()) {
 			if (predicate(item)) {
 				return item;
@@ -155,71 +151,28 @@ export class HeroSkillLevel implements IHeroSkillSet {
 	payItems: ItemPayRef[];
 
 	constructor(private row: RowWrapper) {
-		this.P1 = new HeroSkill(
-			this,
-			SkillId.P1,
-			SkillType.P1,
-			StoneEraseShape.None,
-			this.tipsP1
-		);
-		this.A1 = new HeroSkill(
-			this,
-			SkillId.A1,
-			SkillType.A1,
-			StoneEraseShape.None,
-			this.tipsA1
-		);
-		this.S1 = HeroSkill.createByEraseType(
-			this,
-			SkillId.S1,
-			this.stoneEraseTypeS1,
-			this.tipsS1
-		);
-		this.S2 = HeroSkill.createByEraseType(
-			this,
-			SkillId.S2,
-			this.stoneEraseTypeS2,
-			this.tipsS2
-		);
-		this.S3 = HeroSkill.createByEraseType(
-			this,
-			SkillId.S3,
-			this.stoneEraseTypeS3,
-			this.tipsS3
-		);
+		this.P1 = new HeroSkill(this, SkillId.P1, SkillType.P1, StoneEraseShape.None, this.tipsP1);
+		this.A1 = new HeroSkill(this, SkillId.A1, SkillType.A1, StoneEraseShape.None, this.tipsA1);
+		this.S1 = HeroSkill.createByEraseType(this, SkillId.S1, this.stoneEraseTypeS1, this.tipsS1);
+		this.S2 = HeroSkill.createByEraseType(this, SkillId.S2, this.stoneEraseTypeS2, this.tipsS2);
+		this.S3 = HeroSkill.createByEraseType(this, SkillId.S3, this.stoneEraseTypeS3, this.tipsS3);
 
 		this.payItems = [];
 		if (row.get("pay1Type"))
 			this.payItems.push(
-				new ItemPayRef(
-					row.get("pay1Type"),
-					row.get("pay1LinkId"),
-					row.get("pay1Amount")
-				)
+				new ItemPayRef(row.get("pay1Type"), row.get("pay1LinkId"), row.get("pay1Amount"))
 			);
 		if (row.get("pay2Type"))
 			this.payItems.push(
-				new ItemPayRef(
-					row.get("pay2Type"),
-					row.get("pay2LinkId"),
-					row.get("pay2Amount")
-				)
+				new ItemPayRef(row.get("pay2Type"), row.get("pay2LinkId"), row.get("pay2Amount"))
 			);
 		if (row.get("pay3Type"))
 			this.payItems.push(
-				new ItemPayRef(
-					row.get("pay3Type"),
-					row.get("pay3LinkId"),
-					row.get("pay3Amount")
-				)
+				new ItemPayRef(row.get("pay3Type"), row.get("pay3LinkId"), row.get("pay3Amount"))
 			);
 		if (row.get("pay4Type"))
 			this.payItems.push(
-				new ItemPayRef(
-					row.get("pay4Type"),
-					row.get("pay4LinkId"),
-					row.get("pay4Amount")
-				)
+				new ItemPayRef(row.get("pay4Type"), row.get("pay4LinkId"), row.get("pay4Amount"))
 			);
 	}
 

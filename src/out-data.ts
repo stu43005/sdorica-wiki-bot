@@ -29,7 +29,7 @@ export function dataOut(data: ImperiumDataRaw) {
 
 function objectSortedForEach<T>(obj: Record<string, T>, callback: (key: string, value: T) => void) {
 	const keys = Object.keys(obj);
-	const sortedKeys = keys.sort((a, b) => ('' + a).localeCompare(b));
+	const sortedKeys = keys.sort((a, b) => ("" + a).localeCompare(b));
 	sortedKeys.forEach((key) => {
 		callback(key, obj[key]);
 	});
@@ -57,7 +57,9 @@ export function tableOut(out: any[], name: string, table: TableDataRaw) {
 	// localization sort key
 	table.D.push(table.T);
 	table.D.push(table.K);
-	const sorted = flipMatrix(flipMatrix(table.D).filter(filterKeyByTable(name)).sort(sortKeyByTable(name)));
+	const sorted = flipMatrix(
+		flipMatrix(table.D).filter(filterKeyByTable(name)).sort(sortKeyByTable(name))
+	);
 	table.K = sorted.pop() || [];
 	table.T = sorted.pop() || [];
 	table.D = sorted;
@@ -65,7 +67,7 @@ export function tableOut(out: any[], name: string, table: TableDataRaw) {
 	out.push(table.K);
 	out.push(table.T);
 	out.push(["##### Data #####"]);
-	table.D.forEach(row => out.push(row));
+	table.D.forEach((row) => out.push(row));
 }
 
 export function enumsOut(out: any[], enums: Record<string, string[]>) {

@@ -1,4 +1,4 @@
 export enum RewardGroupType {
-	Normal = 'Normal',
-	AchievementReward = 'AchievementReward',
+	Normal = "Normal",
+	AchievementReward = "AchievementReward",
 }

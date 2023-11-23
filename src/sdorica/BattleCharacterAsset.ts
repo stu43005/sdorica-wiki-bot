@@ -4,7 +4,7 @@ import { BattleCharacter } from "./BattleModel/BattleCharacter";
 
 export interface BattleCharacterAsset extends BaseScriptableObject {
 	character: BattleCharacter;
-	prefab?: /* GameObject */any;
+	prefab?: /* GameObject */ any;
 	ReferenceCharacterKeysForBattle?: string[];
 	ReferenceEffectKeysForBattle?: string[];
 	ReferenceBuffKeysForBattle?: string[];

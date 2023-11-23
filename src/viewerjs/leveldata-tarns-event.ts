@@ -10,23 +10,32 @@ import { item2wiki } from "../wiki-item";
 
 function OpTrans(opstr: string) {
 	switch (opstr) {
-		case "Equal": return "==";
-		case "NotEqual": return "!=";
-		case "LessThan": return "<";
-		case "GreaterThan": return ">";
-		case "GreaterThanOrEqual": return ">=";
-		case "LessThanOrEqual": return "<=";
+		case "Equal":
+			return "==";
+		case "NotEqual":
+			return "!=";
+		case "LessThan":
+			return "<";
+		case "GreaterThan":
+			return ">";
+		case "GreaterThanOrEqual":
+			return ">=";
+		case "LessThanOrEqual":
+			return "<=";
 	}
 }
 
-const eventFunction: Record<string, ((event: LevelEvent, index: number) => InterpretedObjectBase) | boolean> = {
-	"LevelBeginEventPoint": false,
-	"LevelEndEventPoint": false,
-	"BattleEventPoint": function (event: LevelEvent, index: number): InterpretedObjectBase {
+const eventFunction: Record<
+	string,
+	((event: LevelEvent, index: number) => InterpretedObjectBase) | boolean
+> = {
+	LevelBeginEventPoint: false,
+	LevelEndEventPoint: false,
+	BattleEventPoint: function (event: LevelEvent, index: number): InterpretedObjectBase {
 		const battleEventPoint = event as BattleEventPoint;
 		const out: InterpretedBattleEventPointObject = {
-			"類型": "戰鬥",
-			"BattleGroup": battleEventPoint._GroupName.Name,
+			類型: "戰鬥",
+			BattleGroup: battleEventPoint._GroupName.Name,
 		};
 		if (battleEventPoint.endCondition) {
 			out.結束條件 = conditionStringify(battleEventPoint.endCondition);
@@ -36,21 +45,21 @@ const eventFunction: Record<string, ((event: LevelEvent, index: number) => Inter
 		}
 		return out;
 	},
-	"SceneSwitchEventPoint": function (event: LevelEvent, index: number): InterpretedObjectBase {
+	SceneSwitchEventPoint: function (event: LevelEvent, index: number): InterpretedObjectBase {
 		const encounterEvent = event as SceneSwitchEventPoint;
 		const out: InterpretedSceneSwitchEventPointObject = {
-			"類型": "關卡切換",
-			"SceneName": encounterEvent.SceneName,
-			"LevelName": String(encounterEvent.LevelName).replace(/\//g, "_"),
-			"DropItemGroupId": encounterEvent.DropItemGroupId,
+			類型: "關卡切換",
+			SceneName: encounterEvent.SceneName,
+			LevelName: String(encounterEvent.LevelName).replace(/\//g, "_"),
+			DropItemGroupId: encounterEvent.DropItemGroupId,
 		};
 		return out;
 	},
 	"GamePlay.EncounterEvent": function (event: LevelEvent, index: number): InterpretedObjectBase {
 		const encounterEvent = event as EncounterEvent;
 		const out: InterpretedEncounterEventObject = {
-			"類型": "遭遇事件",
-			"optionSet": [],
+			類型: "遭遇事件",
+			optionSet: [],
 		};
 		for (const optionSetId in encounterEvent._encounterGroup._optionSets) {
 			if (encounterEvent._encounterGroup._optionSets.hasOwnProperty(optionSetId)) {
@@ -58,18 +67,20 @@ const eventFunction: Record<string, ((event: LevelEvent, index: number) => Inter
 				if (typeof optionSet == "object" && optionSet._encounterOptionList) {
 					const objectId = optionSet._encounterObjectId;
 					const optionSetOut: InterpretedOptionSet = {
-						"groupId": optionSet._groupId,
-						"物件": localizationCharacterNameWithDefault()(objectId),
-						"標題": localizationString("EncounterEvent")(optionSet._titleLocalizationKey),
-						"點擊型": !optionSet._mustTrigger,
-						"選項": [],
+						groupId: optionSet._groupId,
+						物件: localizationCharacterNameWithDefault()(objectId),
+						標題: localizationString("EncounterEvent")(optionSet._titleLocalizationKey),
+						點擊型: !optionSet._mustTrigger,
+						選項: [],
 					};
 					for (let k = 0; k < optionSet._encounterOptionList.length; k++) {
 						const option = optionSet._encounterOptionList[k];
 						const optionOut: InterpretedOption = {
-							"圖示": option._optionIconKey,
-							"選項": localizationString("EncounterEvent")(option._optionLocalizationKey),
-							"效果": [],
+							圖示: option._optionIconKey,
+							選項: localizationString("EncounterEvent")(
+								option._optionLocalizationKey
+							),
+							效果: [],
 						};
 						if (option._conditionId) {
 							if (option._conditionId == "cheat") {
@@ -95,7 +106,13 @@ const eventFunction: Record<string, ((event: LevelEvent, index: number) => Inter
 										const values = items[m].split(";");
 										const itemId = values[0];
 										const itemCount = Number(values[1]);
-										optionOut["效果"].push(`${isLose ? "lose" : "get"} ${item2wiki(itemId, itemCount, isExplore)}`);
+										optionOut["效果"].push(
+											`${isLose ? "lose" : "get"} ${item2wiki(
+												itemId,
+												itemCount,
+												isExplore
+											)}`
+										);
 									}
 									break;
 								}
@@ -121,10 +138,13 @@ const eventFunction: Record<string, ((event: LevelEvent, index: number) => Inter
 										const values = effect.Category.split(";");
 										const itemId = values[0];
 										const itemCount = Number(values[1]);
-										optionOut["效果"].push(`lose ${item2wiki(itemId, itemCount, true)}`);
-									}
-									else {
-										optionOut["效果"].push(`${effect.Category}(${effect.EffectValue})`);
+										optionOut["效果"].push(
+											`lose ${item2wiki(itemId, itemCount, true)}`
+										);
+									} else {
+										optionOut["效果"].push(
+											`${effect.Category}(${effect.EffectValue})`
+										);
 										// console.log(`Unknown effect: ${effect.Category}`);
 									}
 									break;
@@ -145,9 +165,9 @@ const eventFunction: Record<string, ((event: LevelEvent, index: number) => Inter
 		const AVGEvent = event as AVGEvent;
 		const objectId = AVGEvent._avgOption._encounterObjectId;
 		const out: InterpretedAVGEventObject = {
-			"類型": "AVGEvent",
-			"avgGroupId": AVGEvent._avgOption._avgGroupId,
-			"物件": localizationCharacterNameWithDefault()(objectId),
+			類型: "AVGEvent",
+			avgGroupId: AVGEvent._avgOption._avgGroupId,
+			物件: localizationCharacterNameWithDefault()(objectId),
 		};
 		return out;
 	},
@@ -165,11 +185,10 @@ export function tarnsEvent(obj: LevelEventModel) {
 				if (typeof func == "function") {
 					out.push(func(event, eventPoint.RoadPointIndex));
 				}
-			}
-			else {
+			} else {
 				const unknown: UnknownEventPointObject = {
-					"類型": event.$type,
-					"event": event,
+					類型: event.$type,
+					event: event,
 				};
 				out.push(unknown);
 				console.error(`Unknown event type: ${event.$type}`);

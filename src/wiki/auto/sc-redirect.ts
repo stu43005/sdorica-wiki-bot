@@ -1,7 +1,7 @@
 import MWBot from "mwbot";
 import { ImperiumData } from "../../imperium-data";
 import { setDefaultLanguage } from "../../localization";
-import { Logger } from '../../logger';
+import { Logger } from "../../logger";
 import { ExploreItem } from "../../model/explore-item";
 import { Hero } from "../../model/hero";
 import { questMetadata } from "../../wiki-quest";
@@ -15,11 +15,11 @@ const enable = {
 const ChaptersTable = ImperiumData.fromGamedata().getTable("Chapters");
 const QuestsTable = ImperiumData.fromGamedata().getTable("Quests");
 
-const logger = new Logger('mwbot');
+const logger = new Logger("mwbot");
 
 export async function wikiScRedirectBot(bot: MWBot) {
 	if (enable.hero) {
-		for (const hero of Hero.getAll().filter(h => h.enable)) {
+		for (const hero of Hero.getAll().filter((h) => h.enable)) {
 			const tcName = hero.firstname;
 			const scName = hero.scName;
 
@@ -43,7 +43,7 @@ export async function wikiScRedirectBot(bot: MWBot) {
 	}
 
 	if (enable.exploreItem) {
-		for (const item of ExploreItem.getAll().filter(i => i.enable)) {
+		for (const item of ExploreItem.getAll().filter((i) => i.enable)) {
 			const tcName = item.name;
 			const scName = item.scName;
 
@@ -73,7 +73,9 @@ export async function wikiScRedirectBot(bot: MWBot) {
 			if (!row.get("enable")) continue;
 
 			if (row.get("category") == "Challenge") {
-				const quests = QuestsTable.filter(q => q.get("chapter") == chID && q.get("enable"));
+				const quests = QuestsTable.filter(
+					(q) => q.get("chapter") == chID && q.get("enable")
+				);
 				for (let j = 0; j < quests.length; j++) {
 					const quest = quests[j];
 					const { prefix, ch, ch2, wikilink: tcWikilink } = questMetadata(quest, row);
@@ -89,7 +91,11 @@ export async function wikiScRedirectBot(bot: MWBot) {
 							if (tcExists) {
 								logger.log(`Redirect: ${scWikilink} -> ${tcWikilink}`);
 								try {
-									await bot.create(scWikilink, `#重新導向 [[${tcWikilink}]]`, "簡中導向");
+									await bot.create(
+										scWikilink,
+										`#重新導向 [[${tcWikilink}]]`,
+										"簡中導向"
+									);
 								} catch (error) {
 									logger.error(error);
 								}
@@ -103,7 +109,11 @@ export async function wikiScRedirectBot(bot: MWBot) {
 						if (tcExists) {
 							logger.log(`Redirect: ${questNumber} -> ${tcWikilink}`);
 							try {
-								await bot.create(questNumber, `#重新導向 [[${tcWikilink}]]`, "關卡編號導向");
+								await bot.create(
+									questNumber,
+									`#重新導向 [[${tcWikilink}]]`,
+									"關卡編號導向"
+								);
 							} catch (error) {
 								logger.error(error);
 							}

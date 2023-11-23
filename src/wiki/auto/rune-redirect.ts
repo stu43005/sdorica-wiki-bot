@@ -1,5 +1,5 @@
 import MWBot from "mwbot";
-import { Logger } from '../../logger';
+import { Logger } from "../../logger";
 
 const runeNames = [
 	"【未知符文】",
@@ -53,7 +53,7 @@ const runeNames = [
 	"【寶石】",
 ];
 
-const logger = new Logger('mwbot');
+const logger = new Logger("mwbot");
 
 export async function wikiRuneRedirectBot(bot: MWBot) {
 	for (const name of runeNames) {

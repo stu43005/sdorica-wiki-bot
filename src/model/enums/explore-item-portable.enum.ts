@@ -1,5 +1,5 @@
 export enum ExploreItemPortable {
-	Normal = 'Normal',
-	Keep = 'Keep',
-	Abandon = 'Abandon',
+	Normal = "Normal",
+	Keep = "Keep",
+	Abandon = "Abandon",
 }

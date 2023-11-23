@@ -1,4 +1,4 @@
 export enum ChestCategory {
-	Gold = 'Gold',
-	Silver = 'Silver',
+	Gold = "Gold",
+	Silver = "Silver",
 }

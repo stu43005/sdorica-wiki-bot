@@ -1,5 +1,5 @@
 export enum DropRuleCategory {
-	FirstThenRepeat = 'FirstThenRepeat',
-	DailyOnce = 'DailyOnce',
-	PlayerLevel = 'PlayerLevel',
+	FirstThenRepeat = "FirstThenRepeat",
+	DailyOnce = "DailyOnce",
+	PlayerLevel = "PlayerLevel",
 }

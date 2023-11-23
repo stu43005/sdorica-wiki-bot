@@ -5,7 +5,7 @@ import { outCsv, outXlsx } from "./out";
 import { dataOut } from "./out-data";
 
 export async function gamedataTranslate() {
-	const filename = 'gamedata-translated';
+	const filename = "gamedata-translated";
 	const csvFilePath = path.join(DATA_PATH, `${filename}.csv`);
 	const xlsxFilePath = path.join(DATA_PATH, `${filename}.xlsx`);
 

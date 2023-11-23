@@ -20,7 +20,12 @@ export interface ViewerJSHelper {
 	submitViewerJS(type: string, code: string): void;
 	getImperium(typeName: string): Promise<ImperiumDataRaw>;
 	toastMsg(msg: string): void;
-	runCode(type: string | null, data: any, extraCode: string | null, callback: (result: Record<string, any>) => void): void;
+	runCode(
+		type: string | null,
+		data: any,
+		extraCode: string | null,
+		callback: (result: Record<string, any>) => void
+	): void;
 }
 
 export interface VueExtends {

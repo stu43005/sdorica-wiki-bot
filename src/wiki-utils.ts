@@ -34,7 +34,11 @@ export function wikiNextLine(text: string) {
  * @param params (param只要判斷為false就會消失)
  * @param format
  */
-export function wikitemplate(name: string, params: Record<string, any>, format: string = TemplateFormatter.FORMAT.INLINE) {
+export function wikitemplate(
+	name: string,
+	params: Record<string, any>,
+	format: string = TemplateFormatter.FORMAT.INLINE
+) {
 	const formatter = new TemplateFormatter();
 	formatter.setTemplateName(name);
 	formatter.setParameters(params);
@@ -42,7 +46,7 @@ export function wikitemplate(name: string, params: Record<string, any>, format: 
 	return formatter.getTemplate();
 }
 
-export function titleparts(title = '', parts = 0, offset = 0) {
+export function titleparts(title = "", parts = 0, offset = 0) {
 	title = String(title);
 	const bits = title.split("/");
 	if (bits.length <= 0) {

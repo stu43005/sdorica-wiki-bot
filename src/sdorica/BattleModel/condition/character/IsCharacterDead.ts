@@ -1,3 +1,3 @@
 import { IConditionOfCharacter } from "../IConditionOfCharacter";
 
-export type IsCharacterDead = IConditionOfCharacter
+export type IsCharacterDead = IConditionOfCharacter;

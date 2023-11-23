@@ -1,12 +1,12 @@
 import { localizationQuestName, localizationVolumeNameById } from "../../localization";
 
 export enum StateCondition {
-	PlayerLevel = 'PlayerLevel',
-	QuestComplete = 'QuestComplete',
-	FlagCondition = 'FlagCondition',
-	HeroRank = 'HeroRank',
-	MissionComplete = 'MissionComplete',
-	VolumeExist = 'VolumeExist',
+	PlayerLevel = "PlayerLevel",
+	QuestComplete = "QuestComplete",
+	FlagCondition = "FlagCondition",
+	HeroRank = "HeroRank",
+	MissionComplete = "MissionComplete",
+	VolumeExist = "VolumeExist",
 }
 
 export function stateConditionText(cond: StateCondition, param1: string): string {

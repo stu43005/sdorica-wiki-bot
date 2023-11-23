@@ -27,38 +27,36 @@ interface VoiceData {
 export default function wikiCharVoice() {
 	const voiceData: VoiceData[] = [];
 	for (const infoVoice of CharaInfoVoiceTable) {
-		const model: string = infoVoice.get('prefabId');
+		const model: string = infoVoice.get("prefabId");
 		const skillSet = HeroSkillSet.getByModel(model);
 		const hero = skillSet?.hero;
-		const selectVoice = CharaSelectVoiceTable.find(row => row.get('prefabId') == model);
-		const victoryVoice = CharaVictoryVoiceTable.find(row => row.get('prefabId') == model);
-		const rankUpVoice = CharaRankUpVoiceTable.find(row => row.get('prefabId') == model);
+		const selectVoice = CharaSelectVoiceTable.find((row) => row.get("prefabId") == model);
+		const victoryVoice = CharaVictoryVoiceTable.find((row) => row.get("prefabId") == model);
+		const rankUpVoice = CharaRankUpVoiceTable.find((row) => row.get("prefabId") == model);
 		const info: string[] = [
-			infoVoice.get('sfxCharaInfo01'),
-			infoVoice.get('sfxCharaInfo02'),
-			infoVoice.get('sfxCharaInfo03'),
-			infoVoice.get('sfxCharaInfo04'),
-			infoVoice.get('sfxCharaInfo05'),
+			infoVoice.get("sfxCharaInfo01"),
+			infoVoice.get("sfxCharaInfo02"),
+			infoVoice.get("sfxCharaInfo03"),
+			infoVoice.get("sfxCharaInfo04"),
+			infoVoice.get("sfxCharaInfo05"),
 		].filter(Boolean);
 		const select: string[] = [
-			selectVoice?.get('sfxCharaSelect01'),
-			selectVoice?.get('sfxCharaSelect02'),
-			selectVoice?.get('sfxCharaSelect03'),
+			selectVoice?.get("sfxCharaSelect01"),
+			selectVoice?.get("sfxCharaSelect02"),
+			selectVoice?.get("sfxCharaSelect03"),
 		].filter(Boolean);
 		const start: string[] = [
-			selectVoice?.get('sfxStart01'),
-			selectVoice?.get('sfxStart02'),
+			selectVoice?.get("sfxStart01"),
+			selectVoice?.get("sfxStart02"),
 		].filter(Boolean);
 		const victory: string[] = [
-			victoryVoice?.get('sfxVictory01'),
-			victoryVoice?.get('sfxVictory02'),
-			victoryVoice?.get('sfxVictory03'),
-			victoryVoice?.get('sfxVictory04'),
-			victoryVoice?.get('sfxVictory05'),
+			victoryVoice?.get("sfxVictory01"),
+			victoryVoice?.get("sfxVictory02"),
+			victoryVoice?.get("sfxVictory03"),
+			victoryVoice?.get("sfxVictory04"),
+			victoryVoice?.get("sfxVictory05"),
 		].filter(Boolean);
-		const rankUp: string[] = [
-			rankUpVoice?.get('sfxRankUp01'),
-		].filter(Boolean);
+		const rankUp: string[] = [rankUpVoice?.get("sfxRankUp01")].filter(Boolean);
 
 		voiceData.push({
 			model,
@@ -69,7 +67,7 @@ export default function wikiCharVoice() {
 			start,
 			victory,
 			rankUp,
-			groupKey: `${info};${select};${start};${victory};${rankUp}`
+			groupKey: `${info};${select};${start};${victory};${rankUp}`,
 		});
 	}
 
@@ -90,26 +88,23 @@ export default function wikiCharVoice() {
 
 	const voiceGroups = _.groupBy(voiceData, (v) => v.groupKey);
 	for (const [, group] of Object.entries(voiceGroups)) {
-		const heroGroups = _.groupBy(group, (v) => typeof v.hero === 'string' ? v.hero : v.hero.id);
-		const heroList = Object.values(heroGroups).map((vs) => `${
-			typeof vs[0].hero === 'string'
-			? vs[0].hero
-			: vs[0].hero.toWiki()
-		} (${
-			vs.map((s) =>
-				typeof s.skillSet === 'string'
-				? s.skillSet
-				: s.skillSet.rank
-			).join(', ')
-		})`);
+		const heroGroups = _.groupBy(group, (v) =>
+			typeof v.hero === "string" ? v.hero : v.hero.id
+		);
+		const heroList = Object.values(heroGroups).map(
+			(vs) =>
+				`${typeof vs[0].hero === "string" ? vs[0].hero : vs[0].hero.toWiki()} (${vs
+					.map((s) => (typeof s.skillSet === "string" ? s.skillSet : s.skillSet.rank))
+					.join(", ")})`
+		);
 
 		table.rows.push([
-			wikiNextLine(heroList.join(',\n')),
-			wikiNextLine(group[0].info.join(',\n')),
-			wikiNextLine(group[0].select.join(',\n')),
-			wikiNextLine(group[0].start.join(',\n')),
-			wikiNextLine(group[0].victory.join(',\n')),
-			wikiNextLine(group[0].rankUp.join(',\n')),
+			wikiNextLine(heroList.join(",\n")),
+			wikiNextLine(group[0].info.join(",\n")),
+			wikiNextLine(group[0].select.join(",\n")),
+			wikiNextLine(group[0].start.join(",\n")),
+			wikiNextLine(group[0].victory.join(",\n")),
+			wikiNextLine(group[0].rankUp.join(",\n")),
 		]);
 	}
 	out += `\n\n${wikitable(table)}`;

@@ -1,4 +1,4 @@
 export enum DropItemCategory {
-	Weight = 'Weight',
-	Chance = 'Chance',
+	Weight = "Weight",
+	Chance = "Chance",
 }

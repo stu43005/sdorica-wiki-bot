@@ -1,29 +1,29 @@
-import * as bson from 'bson';
-import * as fs from 'fs-extra';
-import JSZip from 'jszip';
-import * as _ from 'lodash';
-import * as path from 'path';
-import { promisify } from 'util';
-import { unzip } from 'zlib';
-import { CHARASSETS_PATH } from './config';
-import { AssetDataRaw } from './data-raw-type';
+import * as bson from "bson";
+import * as fs from "fs-extra";
+import JSZip from "jszip";
+import * as _ from "lodash";
+import * as path from "path";
+import { promisify } from "util";
+import { unzip } from "zlib";
+import { CHARASSETS_PATH } from "./config";
+import { AssetDataRaw } from "./data-raw-type";
 import { ImperiumData } from "./imperium-data";
 import { inputJsonSync } from "./input";
-import { fsSerializer } from './lib/FullSerializer/fsSerializer';
+import { fsSerializer } from "./lib/FullSerializer/fsSerializer";
 import { localizationBuffName, localizationCharacterName } from "./localization";
-import { Logger } from './logger';
-import { fsExists, outJson, rpFile } from './out';
-import { conditionStringify } from './sdorica/BattleModel/condition/ConditionStringify';
+import { Logger } from "./logger";
+import { fsExists, outJson, rpFile } from "./out";
+import { conditionStringify } from "./sdorica/BattleModel/condition/ConditionStringify";
 import { sortByCharacterModelNo } from "./utils";
-import { interpreted as battleCharacterInterpreted } from './viewerjs/entry/BattleCharacterAsset';
-import { interpreted as buffInterpreted } from './viewerjs/entry/BuffAsset';
-import { siJsonParse } from './viewerjs/utils';
+import { interpreted as battleCharacterInterpreted } from "./viewerjs/entry/BattleCharacterAsset";
+import { interpreted as buffInterpreted } from "./viewerjs/entry/BuffAsset";
+import { siJsonParse } from "./viewerjs/utils";
 
 const doUnzip = promisify(unzip);
 
-const logger = new Logger('charassets-downloader');
-const metadataFilePath = path.join(CHARASSETS_PATH, 'metadata.json');
-const keysFilePath = path.join(CHARASSETS_PATH, 'charAssets-keys.json');
+const logger = new Logger("charassets-downloader");
+const metadataFilePath = path.join(CHARASSETS_PATH, "metadata.json");
+const keysFilePath = path.join(CHARASSETS_PATH, "charAssets-keys.json");
 
 export async function charAssetsDownloader(force = false) {
 	const charAssets = ImperiumData.fromCharAssets();
@@ -63,23 +63,22 @@ async function checkNeedDownload(asset: AssetDataRaw, force?: boolean) {
 				return false;
 			}
 		}
-	} catch (error) {
-	}
+	} catch (error) {}
 	return true;
 }
 
 export async function downloadCharAssetsBson(asset: AssetDataRaw, force?: boolean) {
-	const bsonFilePath = path.join(CHARASSETS_PATH, 'charAssets.bson');
-	const jsonFilePath = path.join(CHARASSETS_PATH, 'charAssets.json');
+	const bsonFilePath = path.join(CHARASSETS_PATH, "charAssets.bson");
+	const jsonFilePath = path.join(CHARASSETS_PATH, "charAssets.json");
 
-	if (!await checkNeedDownload(asset, force)) {
+	if (!(await checkNeedDownload(asset, force))) {
 		return false;
 	}
 
 	try {
 		await rpFile(asset.L, bsonFilePath);
 	} catch (error) {
-		logger.error('download charAssets.bson error:', error);
+		logger.error("download charAssets.bson error:", error);
 		debugger;
 		return false;
 	}
@@ -89,9 +88,8 @@ export async function downloadCharAssetsBson(asset: AssetDataRaw, force?: boolea
 		const b64content = await fs.readFile(bsonFilePath, { encoding: "utf8" });
 		const content = Buffer.from(b64content, "base64");
 		data = bson.deserialize(content);
-
 	} catch (error) {
-		logger.error('opening charAssets.bson error:', error);
+		logger.error("opening charAssets.bson error:", error);
 		debugger;
 		return false;
 	}
@@ -100,18 +98,21 @@ export async function downloadCharAssetsBson(asset: AssetDataRaw, force?: boolea
 		await outJson(jsonFilePath, data);
 
 		const keysJson = {
-			BattleCharacters: Object.keys(data.BattleCharacters).sort(sortByCharacterModelNo).map(k => {
-				const name = localizationCharacterName()(k);
-				return `${k}${name ? ` (${name})` : ""}`;
-			}),
-			Buffs: Object.keys(data.Buffs).sort(sortByCharacterModelNo).map(k => localizationBuffName(true)(k)),
+			BattleCharacters: Object.keys(data.BattleCharacters)
+				.sort(sortByCharacterModelNo)
+				.map((k) => {
+					const name = localizationCharacterName()(k);
+					return `${k}${name ? ` (${name})` : ""}`;
+				}),
+			Buffs: Object.keys(data.Buffs)
+				.sort(sortByCharacterModelNo)
+				.map((k) => localizationBuffName(true)(k)),
 		};
 		await outJson(keysFilePath, keysJson);
 
 		await outJson(metadataFilePath, asset);
-
 	} catch (error) {
-		logger.error('output charAssets error:', error);
+		logger.error("output charAssets error:", error);
 		debugger;
 		return false;
 	}
@@ -119,16 +120,16 @@ export async function downloadCharAssetsBson(asset: AssetDataRaw, force?: boolea
 }
 
 export async function downloadCharAssetsZip(asset: AssetDataRaw, force?: boolean) {
-	const zipFilePath = path.join(CHARASSETS_PATH, 'CharAssets.zip');
+	const zipFilePath = path.join(CHARASSETS_PATH, "CharAssets.zip");
 
-	if (!await checkNeedDownload(asset, force)) {
+	if (!(await checkNeedDownload(asset, force))) {
 		return false;
 	}
 
 	try {
 		await rpFile(asset.L, zipFilePath);
 	} catch (error) {
-		logger.error('download CharAssets.zip error:', error);
+		logger.error("download CharAssets.zip error:", error);
 		debugger;
 		return false;
 	}
@@ -141,9 +142,9 @@ export async function downloadCharAssetsZip(asset: AssetDataRaw, force?: boolean
 		for (const zipEntry of Object.values(zip.files)) {
 			try {
 				const info = getCharAssetEntryInfo(zipEntry.name);
-				const content = await zipEntry.async('nodebuffer');
+				const content = await zipEntry.async("nodebuffer");
 				const jsonBuffer = await doUnzip(content);
-				const jsonString = jsonBuffer.toString('utf8');
+				const jsonString = jsonBuffer.toString("utf8");
 				const json = siJsonParse(jsonString);
 				let data = json;
 				try {
@@ -160,39 +161,45 @@ export async function downloadCharAssetsZip(asset: AssetDataRaw, force?: boolean
 							data.$interpreted = conditionStringify(data);
 							break;
 					}
-				} catch (error) {
-				}
+				} catch (error) {}
 
 				const jsonFilePath = path.join(CHARASSETS_PATH, info.outJsonName);
 				await outJson(jsonFilePath, data);
 
-				if (info.modelName === 'Manifest') {
+				if (info.modelName === "Manifest") {
 					try {
 						function findKeys(infos: CharAssetEntryInfo[], type: CharAssetEntryType) {
-							const arr = infos.filter(info => info.type === type);
+							const arr = infos.filter((info) => info.type === type);
 							_.pull(infos, ...arr);
-							return arr.map(info => info.modelName);
+							return arr.map((info) => info.modelName);
 						}
 
-						const infos = Object.keys(data).map(name => getCharAssetEntryInfo(name));
-						const battleCharacters = findKeys(infos, CharAssetEntryType.BATTLECHARACTOR);
+						const infos = Object.keys(data).map((name) => getCharAssetEntryInfo(name));
+						const battleCharacters = findKeys(
+							infos,
+							CharAssetEntryType.BATTLECHARACTOR
+						);
 						const buffs = findKeys(infos, CharAssetEntryType.BUFF);
 						const keysJson = {
-							BattleCharacters: battleCharacters.sort(sortByCharacterModelNo).map(k => {
-								const name = localizationCharacterName()(k);
-								return `${k}${name ? ` (${name})` : ""}`;
-							}),
-							Buffs: buffs.sort(sortByCharacterModelNo).map(k => localizationBuffName(true)(k)),
-							Others: infos.map(info => info.fileName).sort((a, b) => a.localeCompare(b)),
+							BattleCharacters: battleCharacters
+								.sort(sortByCharacterModelNo)
+								.map((k) => {
+									const name = localizationCharacterName()(k);
+									return `${k}${name ? ` (${name})` : ""}`;
+								}),
+							Buffs: buffs
+								.sort(sortByCharacterModelNo)
+								.map((k) => localizationBuffName(true)(k)),
+							Others: infos
+								.map((info) => info.fileName)
+								.sort((a, b) => a.localeCompare(b)),
 						};
 						await outJson(keysFilePath, keysJson);
-
 					} catch (error) {
 						logger.error(`output charAssets-keys.json error:`, error);
 						debugger;
 					}
 				}
-
 			} catch (error) {
 				logger.error(`extract ${zipEntry.name} error:`, error);
 				debugger;
@@ -200,9 +207,8 @@ export async function downloadCharAssetsZip(asset: AssetDataRaw, force?: boolean
 		}
 
 		await outJson(metadataFilePath, asset);
-
 	} catch (error) {
-		logger.error('extracts CharAssets.zip error:', error);
+		logger.error("extracts CharAssets.zip error:", error);
 		debugger;
 		return false;
 	}
@@ -210,10 +216,10 @@ export async function downloadCharAssetsZip(asset: AssetDataRaw, force?: boolean
 }
 
 enum CharAssetEntryType {
-	UNKNOWN = 'unknown',
-	BATTLECHARACTOR = 'battlecharacter_',
-	BUFF = 'buff_',
-	CONDITION = 'condition_',
+	UNKNOWN = "unknown",
+	BATTLECHARACTOR = "battlecharacter_",
+	BUFF = "buff_",
+	CONDITION = "condition_",
 }
 
 interface CharAssetEntryInfo {
@@ -224,7 +230,7 @@ interface CharAssetEntryInfo {
 }
 
 function getCharAssetEntryInfo(filename: string): CharAssetEntryInfo {
-	const name = filename.replace(/\.[^\.]+$/, '');
+	const name = filename.replace(/\.[^\.]+$/, "");
 
 	let type = CharAssetEntryType.UNKNOWN;
 	if (name.startsWith(CharAssetEntryType.BATTLECHARACTOR)) {
@@ -237,7 +243,7 @@ function getCharAssetEntryInfo(filename: string): CharAssetEntryInfo {
 
 	return {
 		fileName: name,
-		modelName: name.replace(type, ''),
+		modelName: name.replace(type, ""),
 		type,
 		outJsonName: `${name}.json`,
 	};

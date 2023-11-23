@@ -13,17 +13,14 @@ const instances: Record<number, DropItemsGroup> = {};
 export class DropItemsGroup {
 	public static get(groupId: number): DropItemsGroup | undefined {
 		if (!instances[groupId]) {
-			const rows = DropItemsTable.filter(
-				(r) => r.get("groupId") == groupId
-			);
+			const rows = DropItemsTable.filter((r) => r.get("groupId") == groupId);
 			if (!rows.length) {
 				return undefined;
 			}
 			const subgroups = _.groupBy(rows, (r) => r.get("subgroupId"));
 			instances[groupId] = new DropItemsGroup(
 				Object.values(subgroups).map(
-					(subgroup) =>
-						new DropItems(subgroup as [RowWrapper, ...RowWrapper[]])
+					(subgroup) => new DropItems(subgroup as [RowWrapper, ...RowWrapper[]])
 				)
 			);
 		}
@@ -33,9 +30,7 @@ export class DropItemsGroup {
 	constructor(public subgroups: DropItems[]) {}
 
 	toWiki() {
-		return wikiul(
-			this.subgroups.map((items) => items.toWiki()).filter(Boolean)
-		);
+		return wikiul(this.subgroups.map((items) => items.toWiki()).filter(Boolean));
 	}
 }
 
@@ -103,8 +98,6 @@ export class DropItems {
 		if (this.items.length === 1) {
 			return this.items[0].toWiki();
 		}
-		return `隨機獲得以下其一：${wikiul(
-			this.items.map((item) => item.toWiki())
-		)}`;
+		return `隨機獲得以下其一：${wikiul(this.items.map((item) => item.toWiki()))}`;
 	}
 }

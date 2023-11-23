@@ -7,16 +7,22 @@ const StoreConfigsTable = ImperiumData.fromGamedata().getTable("StoreConfigs");
 const StoreItemGroupsTable = ImperiumData.fromGamedata().getTable("StoreItemGroups");
 
 export default function wikiStore() {
-	const storeGroup = objectMap(arrayGroupBy(StoreConfigsTable.filter(r => r.get("enable")).map(row => ({
-		condition: String(row.get("condition")),
-		param1: String(row.get("param1")),
-		param2: String(row.get("param2")),
-		param3: String(row.get("param3")),
-		itemGroup: String(row.get("itemGroup")),
-		store: String(row.get("store")),
-		slot: Number(row.get("slot")),
-		order: Number(row.get("order")),
-	})), r => r.store), (key, value) => arrayGroupBy(value, r => r.slot, true));
+	const storeGroup = objectMap(
+		arrayGroupBy(
+			StoreConfigsTable.filter((r) => r.get("enable")).map((row) => ({
+				condition: String(row.get("condition")),
+				param1: String(row.get("param1")),
+				param2: String(row.get("param2")),
+				param3: String(row.get("param3")),
+				itemGroup: String(row.get("itemGroup")),
+				store: String(row.get("store")),
+				slot: Number(row.get("slot")),
+				order: Number(row.get("order")),
+			})),
+			(r) => r.store
+		),
+		(key, value) => arrayGroupBy(value, (r) => r.slot, true)
+	);
 
 	const out: string[] = [];
 	for (const store in storeGroup) {
@@ -36,16 +42,28 @@ export default function wikiStore() {
 * ${config.condition}: ${config.param1} ~ ${config.param2}`;
 					}
 
-					const itemGroup = StoreItemGroupsTable.filter(g => g.get("group") == config.itemGroup && g.get("enable"));
+					const itemGroup = StoreItemGroupsTable.filter(
+						(g) => g.get("group") == config.itemGroup && g.get("enable")
+					);
 					let weightCount = 0;
-					itemGroup.forEach(ig => {
+					itemGroup.forEach((ig) => {
 						weightCount += Number(ig.get("weight"));
 					});
 					for (let j = 0; j < itemGroup.length; j++) {
 						const item = itemGroup[j];
-						str += `\n${indent} ${item2wikiWithType(item.get("giveType"), item.get("giveLinkId"), item.get("itemCount"))}：${item2wikiWithType(item.get("payType"), item.get("linkId"), item.get("amount"))}`;
+						str += `\n${indent} ${item2wikiWithType(
+							item.get("giveType"),
+							item.get("giveLinkId"),
+							item.get("itemCount")
+						)}：${item2wikiWithType(
+							item.get("payType"),
+							item.get("linkId"),
+							item.get("amount")
+						)}`;
 						if (itemGroup.length > 1) {
-							str += ` (${Math.floor(Number(item.get("weight")) / weightCount * 10000) / 100}%)`;
+							str += ` (${
+								Math.floor((Number(item.get("weight")) / weightCount) * 10000) / 100
+							}%)`;
 						}
 					}
 				}

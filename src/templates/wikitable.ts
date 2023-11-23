@@ -26,24 +26,23 @@ export interface Table {
 export type WikiTableStruct = Table | WikiTableRow[];
 
 export function wikitable(table: WikiTableStruct): string {
-	const {
-		attributes = `class="wikitable"`,
-		rows,
-	} = Array.isArray(table) ? { rows: table, attributes: void 0 } : table;
+	const { attributes = `class="wikitable"`, rows } = Array.isArray(table)
+		? { rows: table, attributes: void 0 }
+		: table;
 	return `<table${attributes ? ` ${attributes}` : ""}>
-${rows.map(row => renderTableRow(row)).join("\n")}
+${rows.map((row) => renderTableRow(row)).join("\n")}
 </table>`;
 }
 
 function renderTableRow(row: WikiTableRow): string {
-	const {
-		attributes,
-		headerBar,
-		ceils,
-	} = Array.isArray(row) ? { ceils: row, headerBar: void 0, attributes: void 0 } : row;
-	const ceilsText = ceils.map(ceil => renderTableCeil(ceil, headerBar));
+	const { attributes, headerBar, ceils } = Array.isArray(row)
+		? { ceils: row, headerBar: void 0, attributes: void 0 }
+		: row;
+	const ceilsText = ceils.map((ceil) => renderTableCeil(ceil, headerBar));
 	const ceilsTextCount = sumBy(ceilsText, "length");
-	const isSimpleRow = ceilsTextCount < 80 && ceils.every(ceil => typeof ceil === "string" && !ceil.includes("\n"));
+	const isSimpleRow =
+		ceilsTextCount < 80 &&
+		ceils.every((ceil) => typeof ceil === "string" && !ceil.includes("\n"));
 	return `<tr${attributes ? ` ${attributes}` : ""}>
 ${ceilsText.join(isSimpleRow ? "" : "\n")}
 </tr>`;
@@ -51,12 +50,8 @@ ${ceilsText.join(isSimpleRow ? "" : "\n")}
 
 function renderTableCeil(ceil: WikiTableCeil, headerBar?: boolean): string {
 	if (typeof ceil === "undefined") ceil = "";
-	const {
-		header,
-		attributes,
-		text,
-	} = typeof ceil !== "object" ? parseCeilText(ceil) : ceil;
-	const tag = (header ?? headerBar) ? "th" : "td";
+	const { header, attributes, text } = typeof ceil !== "object" ? parseCeilText(ceil) : ceil;
+	const tag = header ?? headerBar ? "th" : "td";
 	const multiLine = typeof text === "string" && text.includes("\n") ? "\n" : "";
 	return `<${tag}${attributes ? ` ${attributes}` : ""}>${multiLine}${text}${multiLine}</${tag}>`;
 }

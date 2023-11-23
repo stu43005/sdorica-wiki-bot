@@ -3,10 +3,10 @@ import { Logger } from "../../logger";
 import { siJsonParse } from "../utils";
 import { ViewerJSHelper } from "../viewerjs-helper";
 
-const logger = new Logger('$DataInit');
+const logger = new Logger("$DataInit");
 
 export default function (helper: ViewerJSHelper, data: Record<string, any>) {
-	logger.log('call $DataInit', helper, data);
+	logger.log("call $DataInit", helper, data);
 
 	const out: Record<string, any> = {};
 	for (const key in data) {
@@ -21,7 +21,7 @@ export default function (helper: ViewerJSHelper, data: Record<string, any>) {
 						let value2 = _serializedStateValues[i];
 						try {
 							value2 = siJsonParse(value2);
-						} catch (error) { }
+						} catch (error) {}
 						out[key2] = value2;
 					}
 					break;
@@ -41,6 +41,6 @@ export default function (helper: ViewerJSHelper, data: Record<string, any>) {
 	const serializer = new fsSerializer();
 	const deserialized = serializer.TryDeserialize(out);
 
-	logger.log('new data: ', deserialized);
+	logger.log("new data: ", deserialized);
 	return deserialized;
 }

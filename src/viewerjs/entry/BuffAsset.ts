@@ -6,13 +6,24 @@ import { BuffActiveTiming } from "../../sdorica/BattleModel/BuffActiveTiming";
 import { BuffEffect } from "../../sdorica/BattleModel/BuffEffect";
 import { BuffSequence } from "../../sdorica/BattleModel/BuffSequence";
 import { BuffTag } from "../../sdorica/BattleModel/BuffTag";
-import { BuffAsset, InterpretedBuffAsset, InterpretedBuffEffect, InterpretedBuffSequence } from "../../sdorica/BuffAsset";
+import {
+	BuffAsset,
+	InterpretedBuffAsset,
+	InterpretedBuffEffect,
+	InterpretedBuffSequence,
+} from "../../sdorica/BuffAsset";
 import { Dictionary } from "../../sdorica/Dictionary";
 import { sortByCharacterModelNo } from "../../utils";
 import { ViewerJSHelper } from "../viewerjs-helper";
-import { conditionStringify, getCharAsset, getCharAssets, ImperiumData, operationStringify } from "./$ViewerInit";
+import {
+	conditionStringify,
+	getCharAsset,
+	getCharAssets,
+	ImperiumData,
+	operationStringify,
+} from "./$ViewerInit";
 
-const logger = new Logger('BuffAsset');
+const logger = new Logger("BuffAsset");
 
 export default async function (helper: ViewerJSHelper, data: BuffAsset) {
 	// load imperium data
@@ -52,18 +63,17 @@ export default async function (helper: ViewerJSHelper, data: BuffAsset) {
 					error: String(error),
 				};
 			}
-		}
-		else {
+		} else {
 			logger.log(`${loadFromCharAssets ?? ""} not found.`);
 			debugger;
 			return {
 				result: `${loadFromCharAssets ?? ""} not found.`,
-				"可用的buff清單": Object.keys(zip.files)
-					.filter(k => k.startsWith(prefix))
-					.map(k => k.replace(prefix, ''))
-					.map(k => k.replace(/\.[^\.]+$/, ''))
+				可用的buff清單: Object.keys(zip.files)
+					.filter((k) => k.startsWith(prefix))
+					.map((k) => k.replace(prefix, ""))
+					.map((k) => k.replace(/\.[^\.]+$/, ""))
 					.sort(sortByCharacterModelNo)
-					.map(k => localizationBuffName(true)(k)),
+					.map((k) => localizationBuffName(true)(k)),
 			};
 		}
 	}
@@ -72,7 +82,7 @@ export default async function (helper: ViewerJSHelper, data: BuffAsset) {
 		logger.error(`No Model.`);
 		debugger;
 		return {
-			result: `No Model.`
+			result: `No Model.`,
 		};
 	}
 
@@ -85,21 +95,23 @@ export default async function (helper: ViewerJSHelper, data: BuffAsset) {
 
 function buffSequence(seq: BuffSequence): InterpretedBuffSequence {
 	const out: InterpretedBuffSequence = {
-		"條件": seq.Conditions.map(c => conditionStringify(c)),
-		"效果": seq.Actions.map(a => operationStringify(a.TargetField)),
+		條件: seq.Conditions.map((c) => conditionStringify(c)),
+		效果: seq.Actions.map((a) => operationStringify(a.TargetField)),
 	};
 	return out;
 }
 
-function buffActions(actionTable: Dictionary<BuffActiveTiming, BuffEffect>): Record<string, InterpretedBuffEffect> {
+function buffActions(
+	actionTable: Dictionary<BuffActiveTiming, BuffEffect>
+): Record<string, InterpretedBuffEffect> {
 	const out: Record<string, InterpretedBuffEffect> = {};
 	for (const i in actionTable) {
 		if (actionTable.hasOwnProperty(i)) {
 			const entry = actionTable[i];
 			const key = BuffActiveTiming.toString(entry.Key);
 			const out2: InterpretedBuffEffect = {
-				"條件": entry.Value.Conditions.map(c => conditionStringify(c)),
-				"效果": entry.Value.Actions.map(a => buffSequence(a)),
+				條件: entry.Value.Conditions.map((c) => conditionStringify(c)),
+				效果: entry.Value.Actions.map((a) => buffSequence(a)),
 			};
 			out[key] = out2;
 		}
@@ -109,11 +121,11 @@ function buffActions(actionTable: Dictionary<BuffActiveTiming, BuffEffect>): Rec
 
 export function interpreted(name: string, data: Buff) {
 	const out: InterpretedBuffAsset = {
-		"Localization": localizationString("Buff")(name),
-		"標籤": BuffTag.toString(data._tag),
-		"持續時間": data._duration,
-		"最高層數": data._maxLevel,
-		"動作": buffActions(data._actionTable),
+		Localization: localizationString("Buff")(name),
+		標籤: BuffTag.toString(data._tag),
+		持續時間: data._duration,
+		最高層數: data._maxLevel,
+		動作: buffActions(data._actionTable),
 	};
 	return out;
 }

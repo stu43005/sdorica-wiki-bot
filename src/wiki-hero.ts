@@ -28,7 +28,9 @@ export function heroName(hero: RowWrapper) {
 		firstname = nameMatch[1];
 		lastname = nameMatch[2].replace(pointRegexp, point);
 	}
-	firstname = characterNameNormalization(localizationString("CharacterName")(hero.get("model")) || firstname);
+	firstname = characterNameNormalization(
+		localizationString("CharacterName")(hero.get("model")) || firstname
+	);
 	if (String(hero.get("name")).endsWith("SP") && !String(firstname).endsWith("SP")) {
 		firstname = `${firstname}SP`;
 	}
@@ -37,7 +39,12 @@ export function heroName(hero: RowWrapper) {
 		firstname = nameMatch2[1];
 		lastname = nameMatch2[2].replace(pointRegexp, point);
 	}
-	const englishName = localizationString("CharacterName", "", "Key", "English")(hero.get("model"));
+	const englishName = localizationString(
+		"CharacterName",
+		"",
+		"Key",
+		"English"
+	)(hero.get("model"));
 	return {
 		fullname,
 		firstname,
@@ -48,14 +55,17 @@ export function heroName(hero: RowWrapper) {
 
 export function skillinfo(info: string, skill: string): string {
 	if (!info) return "";
-	skillinfoKeywords.forEach(keyword => {
+	skillinfoKeywords.forEach((keyword) => {
 		info = info.replace(new RegExp(keyword, "g"), "{{" + keyword + "}}");
 	});
 	// 轉
 	info = info.replace(/(魂芯)轉(成|為)/g, "$1{{轉}}$2");
 	info = info.replace(/轉(((一|二|三|四|五|六|七|八|九|十|\d)+(個|顆)|所有)魂芯)/g, "{{轉}}$1");
 	// 移除/消除/獲得
-	info = info.replace(/(移除|消除|獲得)((其|我方指定角色|指定的|玩家操作區(上|中)的)?((一|二|兩|三|四|五|六|七|八|九|十|\d)+(個|顆)|所有)非?(金|黑|白|同顏色的|本角色的)?(色?魂芯|珠)|其同樣數量與顏色的魂芯)/g, "{{$1}}$2");
+	info = info.replace(
+		/(移除|消除|獲得)((其|我方指定角色|指定的|玩家操作區(上|中)的)?((一|二|兩|三|四|五|六|七|八|九|十|\d)+(個|顆)|所有)非?(金|黑|白|同顏色的|本角色的)?(色?魂芯|珠)|其同樣數量與顏色的魂芯)/g,
+		"{{$1}}$2"
+	);
 	info = info.replace(/(將所有(金|黑|白|同顏色的)?(色?魂芯|珠))(移除|消除)/g, "$1{{$2}}");
 	// 免疫合傘
 	info = info.replace(/\{?\{?免疫\}?\}?合傘/g, "{{免疫合傘}}");

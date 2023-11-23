@@ -14,8 +14,7 @@ import { itemRename } from "./config/item";
 import { HeroSkillSet } from "./hero-skillset";
 import { ItemPayRef } from "./item-pay-ref";
 
-const ExtraProductsTable =
-	ImperiumData.fromGamedata().getTable("ExtraProducts");
+const ExtraProductsTable = ImperiumData.fromGamedata().getTable("ExtraProducts");
 const ItemsTable = ImperiumData.fromGamedata().getTable("Items");
 const VoucherGiftsTable = ImperiumData.fromGamedata().getTable("VoucherGifts");
 
@@ -29,9 +28,7 @@ export class Item extends ItemBase {
 		const id = typeof rowOrId === "string" ? rowOrId : rowOrId.get("id");
 		if (!instances[id]) {
 			const row =
-				typeof rowOrId === "string"
-					? ItemsTable.find((r) => r.get("id") == id)
-					: rowOrId;
+				typeof rowOrId === "string" ? ItemsTable.find((r) => r.get("id") == id) : rowOrId;
 			if (row) {
 				instances[id] = new Item(row);
 			}
@@ -155,9 +152,7 @@ export class Item extends ItemBase {
 			return undefined;
 		}
 		if (this.#voucherGifts === null) {
-			const items = VoucherGiftsTable.filter(
-				(r) => r.get("groupId") == this.effectValue
-			);
+			const items = VoucherGiftsTable.filter((r) => r.get("groupId") == this.effectValue);
 			if (items.length) {
 				this.#voucherGifts = new ItemGiveList(
 					items.map(
@@ -183,9 +178,7 @@ export class Item extends ItemBase {
 				this.internalName ||
 				this.iconKey
 		);
-		this.description = localizationString("Item")(
-			row.get("localizationKeyDescription")
-		);
+		this.description = localizationString("Item")(row.get("localizationKeyDescription"));
 	}
 
 	private getEnable() {
@@ -260,9 +253,7 @@ export class Item extends ItemBase {
 
 	toWikiTreasureList() {
 		if (this.category == ItemCategory.Treasure) {
-			return `${wikiH2(
-				"開啟寶箱獲得道具"
-			)}\n${this.treasureItems?.toWiki()}`;
+			return `${wikiH2("開啟寶箱獲得道具")}\n${this.treasureItems?.toWiki()}`;
 		} else if (this.category == ItemCategory.Voucher) {
 			return `${wikiH2("自選項目")}\n${this.voucherGifts?.toWiki()}`;
 		}

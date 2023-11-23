@@ -1,4 +1,4 @@
 export enum AvatarType {
-	event = 'event',
-	chara = 'chara',
+	event = "event",
+	chara = "chara",
 }

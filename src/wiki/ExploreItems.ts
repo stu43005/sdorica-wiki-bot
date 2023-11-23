@@ -21,7 +21,7 @@ export default function wikiExploreItems() {
 			],
 		],
 	};
-	for (const item of ExploreItem.getAll().filter(item => item.enable)) {
+	for (const item of ExploreItem.getAll().filter((item) => item.enable)) {
 		table.rows.push([
 			item.id,
 			item.toWiki(),
@@ -29,7 +29,11 @@ export default function wikiExploreItems() {
 			wikiNextLine(item.getWikiCategory().join(",\n")),
 			item.iconKey,
 			item.stackingNum,
-			item.portable == ExploreItemPortable.Keep ? "探索失敗後不會消失" : item.portable == ExploreItemPortable.Abandon ? "探索結算後會消耗" : "",
+			item.portable == ExploreItemPortable.Keep
+				? "探索失敗後不會消失"
+				: item.portable == ExploreItemPortable.Abandon
+				? "探索結算後會消耗"
+				: "",
 		]);
 	}
 

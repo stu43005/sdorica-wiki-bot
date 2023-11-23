@@ -3,6 +3,6 @@ export function wikiul(list: string[]) {
 	// return list.map(item => `${indentText}* ${item}`).join("\n");
 	if (!list.length) return `<ul></ul>`;
 	return `<ul>
-${list.map(item => `<li>${item}</li>`).join("\n")}
+${list.map((item) => `<li>${item}</li>`).join("\n")}
 </ul>`;
 }

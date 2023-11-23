@@ -1,6 +1,6 @@
 import { StoneAction } from "./StoneAction";
 
-export type BoardModificationStoneAction = StoneAction
+export type BoardModificationStoneAction = StoneAction;
 
 export namespace BoardModificationStoneAction {
 	export enum ChangeType {

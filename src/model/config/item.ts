@@ -22,7 +22,7 @@ export const itemRename: Record<string, string> = {
 	3109: "亂櫻之刀 (頭像)",
 	3110: "善意心魔",
 	3111: "惡意心魔",
-	4001: "傑克的餅乾", /* 傑克的餅乾X100 */
+	4001: "傑克的餅乾" /* 傑克的餅乾X100 */,
 	7028: "神秘寶箱 (連續登入)",
 	7097: "怦然心動禮盒 (2020)",
 	7100: "神秘寶箱 (Sdorica二週年)",
@@ -33,5 +33,5 @@ export const itemRename: Record<string, string> = {
 export const exploreItemRename: Record<string, string> = {
 	1004: "庫倫 (探索)",
 	1033: "魔物警報 (探索道具)",
-	"forest_9": "錫箔彩蛋 (探索)",
-}
+	forest_9: "錫箔彩蛋 (探索)",
+};

@@ -52,7 +52,9 @@ export default function wikiTavernMission() {
 				}
 
 				table.rows.push({
-					attributes: mission.enable ? "" : `style="background-color: #ccc; color: #1e1e1e;" title="停用"`,
+					attributes: mission.enable
+						? ""
+						: `style="background-color: #ccc; color: #1e1e1e;" title="停用"`,
 					ceils: [
 						`${mission.questRank} ★`,
 						mission.monsterLv,
@@ -61,7 +63,11 @@ export default function wikiTavernMission() {
 						mission.getTimeString(),
 						`x${mission.stamina}`,
 						mission.reqSkills.length > 0
-							? wikiNextLine(mission.reqSkills.map(r => `${r.toWiki()}${r.getSuccessRateString()}`).join("\n"))
+							? wikiNextLine(
+									mission.reqSkills
+										.map((r) => `${r.toWiki()}${r.getSuccessRateString()}`)
+										.join("\n")
+							  )
 							: "",
 						mission.spaceNum,
 						mission.displayDropItem.toWiki({ text: "", listType: "br" }),

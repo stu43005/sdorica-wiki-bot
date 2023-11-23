@@ -41,6 +41,7 @@ export interface InterpretedAssistantActiveCastSkill extends InterpretedAssistan
 	技能組: InterpretedSkillSet[];
 }
 
-export interface InterpretedAssistantActiveCastSkillWithPassiveBuff extends InterpretedAssistantActiveCastSkill {
+export interface InterpretedAssistantActiveCastSkillWithPassiveBuff
+	extends InterpretedAssistantActiveCastSkill {
 	被動: string[];
 }

@@ -13,7 +13,9 @@ function interpreted(data: WaveSetAsset) {
 		const waveKey = keys[i];
 		const wave = data.Model.waves[waveKey];
 		wave.weightedEnemySet.forEach((entry) => {
-			out.push(`wave ${waveKey}: ${entry.Key.name} (level: ${entry.Value.level}, weight: ${entry.Value.weight})`);
+			out.push(
+				`wave ${waveKey}: ${entry.Key.name} (level: ${entry.Value.level}, weight: ${entry.Value.weight})`
+			);
 		});
 	}
 	return out;

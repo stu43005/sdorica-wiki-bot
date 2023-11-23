@@ -11,9 +11,7 @@ export default function wikiTreasureItems() {
 
 	const groups = {
 		道具: Item.getAll().filter((item) =>
-			[ItemCategory.Treasure, ItemCategory.Voucher].includes(
-				item.category
-			)
+			[ItemCategory.Treasure, ItemCategory.Voucher].includes(item.category)
 		),
 		探索道具: ExploreItem.getAll().filter(
 			(item) => item.category == ExploreItemsCategory.Treasure

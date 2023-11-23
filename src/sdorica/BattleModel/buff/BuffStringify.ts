@@ -25,7 +25,9 @@ export function singleBuffStringify(buff: ISingleBuff) {
 	}
 	if (buff.$type == "BattleModel.BuffOnCharater") {
 		const obj = buff as BuffOnCharater;
-		return `在${singleTargetStringify(obj.character)}的${localizationBuffName(true)(obj.buffId)}狀態`;
+		return `在${singleTargetStringify(obj.character)}的${localizationBuffName(true)(
+			obj.buffId
+		)}狀態`;
 	}
 	console.error(`Unknown ISingleBuff type: ${buff.$type}`);
 	return JSON.stringify(buff);
@@ -60,7 +62,7 @@ export function groupedBuffIdStringify(buff: IGroupedBuffId) {
 }
 
 export function buffLabelStringify(buffLabel: BuffLabelData) {
-	const buffList = buffLabel.BuffIdList.map(b => localizationBuffName()(b));
+	const buffList = buffLabel.BuffIdList.map((b) => localizationBuffName()(b));
 	let prefix = "";
 	let separator = ", ";
 	let suffix = "";

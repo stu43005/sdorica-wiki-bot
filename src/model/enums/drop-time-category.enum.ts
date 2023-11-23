@@ -1,4 +1,4 @@
 export enum DropTimeCategory {
-	Walking = 'Walking',
-	OnClear = 'OnClear',
+	Walking = "Walking",
+	OnClear = "OnClear",
 }

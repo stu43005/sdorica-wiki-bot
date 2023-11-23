@@ -46,10 +46,7 @@ export class HeroSkillSet implements IHeroSkillSet {
 	}
 
 	public static getByModel(skillSet: string): IHeroSkillSet | undefined {
-		return (
-			HeroSkillSet.find((s) => s.model == skillSet) ??
-			HeroSkillLevel.getByModel(skillSet)
-		);
+		return HeroSkillSet.find((s) => s.model == skillSet) ?? HeroSkillLevel.getByModel(skillSet);
 	}
 
 	public static getList(list: string | string[]): (HeroSkillSet | string)[] {
@@ -59,9 +56,7 @@ export class HeroSkillSet implements IHeroSkillSet {
 		return list.map((str) => this.get(str) ?? str);
 	}
 
-	private static find(
-		predicate: (value: HeroSkillSet) => boolean
-	): HeroSkillSet | undefined {
+	private static find(predicate: (value: HeroSkillSet) => boolean): HeroSkillSet | undefined {
 		for (const item of this.getAllGenerator()) {
 			if (predicate(item)) {
 				return item;
@@ -184,38 +179,11 @@ export class HeroSkillSet implements IHeroSkillSet {
 	constructor(private row: RowWrapper) {
 		this.name = localizationString("HeroSkills", "skill_set_")(this.id);
 
-		this.P1 = new HeroSkill(
-			this,
-			SkillId.P1,
-			SkillType.P1,
-			StoneEraseShape.None,
-			this.tipsP1
-		);
-		this.A1 = new HeroSkill(
-			this,
-			SkillId.A1,
-			SkillType.A1,
-			StoneEraseShape.None,
-			this.tipsA1
-		);
-		this.S1 = HeroSkill.createByEraseType(
-			this,
-			SkillId.S1,
-			this.stoneEraseTypeS1,
-			this.tipsS1
-		);
-		this.S2 = HeroSkill.createByEraseType(
-			this,
-			SkillId.S2,
-			this.stoneEraseTypeS2,
-			this.tipsS2
-		);
-		this.S3 = HeroSkill.createByEraseType(
-			this,
-			SkillId.S3,
-			this.stoneEraseTypeS3,
-			this.tipsS3
-		);
+		this.P1 = new HeroSkill(this, SkillId.P1, SkillType.P1, StoneEraseShape.None, this.tipsP1);
+		this.A1 = new HeroSkill(this, SkillId.A1, SkillType.A1, StoneEraseShape.None, this.tipsA1);
+		this.S1 = HeroSkill.createByEraseType(this, SkillId.S1, this.stoneEraseTypeS1, this.tipsS1);
+		this.S2 = HeroSkill.createByEraseType(this, SkillId.S2, this.stoneEraseTypeS2, this.tipsS2);
+		this.S3 = HeroSkill.createByEraseType(this, SkillId.S3, this.stoneEraseTypeS3, this.tipsS3);
 	}
 
 	private getRank() {
@@ -276,9 +244,7 @@ export class HeroSkillSet implements IHeroSkillSet {
 		Object.assign(params, self.P1.getWikiTemplateParams());
 		Object.assign(params, self.A1.getWikiTemplateParams());
 		Object.assign(params, <HeroRankParams>{
-			共鳴材料: !self.isBook
-				? self.hero?.resonanceItem?.item?.name ?? "{{?}}"
-				: "",
+			共鳴材料: !self.isBook ? self.hero?.resonanceItem?.item?.name ?? "{{?}}" : "",
 			介紹: self.info?.info1,
 			年齡: self.info?.age,
 			身高: self.info?.height,

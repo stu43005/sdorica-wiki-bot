@@ -13,7 +13,12 @@ export interface SkillUnit {
 }
 
 export function skillUnitStringify(unit: SkillUnit): string {
-	return targetResolve(unit) + unit.skillEffects.map((effect) => {
-		return `${skillEffectStringify(effect)}`;
-	}).join("、");
+	return (
+		targetResolve(unit) +
+		unit.skillEffects
+			.map((effect) => {
+				return `${skillEffectStringify(effect)}`;
+			})
+			.join("、")
+	);
 }

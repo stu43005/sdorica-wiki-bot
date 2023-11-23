@@ -1,11 +1,20 @@
 import numeral from "numeral";
 import { ImperiumData, RowWrapper } from "./imperium-data";
-import { currency2Id, gamedataString, localizationCharacterNameByHeroId, localizationExploreBuildingName, localizationItemName, localizationMonsterNameById, localizationString, rank } from "./localization";
+import {
+	currency2Id,
+	gamedataString,
+	localizationCharacterNameByHeroId,
+	localizationExploreBuildingName,
+	localizationItemName,
+	localizationMonsterNameById,
+	localizationString,
+	rank,
+} from "./localization";
 import { Chapter } from "./model/chapter";
 import { ItemStackable } from "./model/enums/item-stackable.enum";
-import { ExploreItem } from './model/explore-item';
+import { ExploreItem } from "./model/explore-item";
 import { Hero } from "./model/hero";
-import { Item } from './model/item';
+import { Item } from "./model/item";
 import { arrayUnique } from "./utils";
 import { wikitemplate } from "./wiki-utils";
 
@@ -15,16 +24,22 @@ const ExploreCompositeTable = ImperiumData.fromGamedata().getTable("ExploreCompo
 
 export function getItemJsonData() {
 	const out: Record<string, Record<string, string>> = {
-		"item": Item.getAll()
-			.filter(item => item.enable)
-			.map<[string, string]>(item => [`${item.id}-${item.getWikiPageName()}`, item.toWikiPage()])
+		item: Item.getAll()
+			.filter((item) => item.enable)
+			.map<[string, string]>((item) => [
+				`${item.id}-${item.getWikiPageName()}`,
+				item.toWikiPage(),
+			])
 			.reduce<Record<string, string>>((p, c) => {
 				p[c[0]] = c[1];
 				return p;
 			}, {}),
-		"ExploreItems": ExploreItem.getAll()
-			.filter(item => item.enable)
-			.map<[string, string]>(item => [`${item.id}-${item.getWikiPageName()}`, item.toWikiPage()])
+		ExploreItems: ExploreItem.getAll()
+			.filter((item) => item.enable)
+			.map<[string, string]>((item) => [
+				`${item.id}-${item.getWikiPageName()}`,
+				item.toWikiPage(),
+			])
 			.reduce<Record<string, string>>((p, c) => {
 				p[c[0]] = c[1];
 				return p;
@@ -35,22 +50,37 @@ export function getItemJsonData() {
 
 export function exploreCompositeList(id: string) {
 	let str = "";
-	const composites = ExploreCompositeTable.filter(c => c.get("itemId") == id && c.get("enable"));
+	const composites = ExploreCompositeTable.filter(
+		(c) => c.get("itemId") == id && c.get("enable")
+	);
 	if (composites.length) {
-		const requireFlags = composites.reduce((pre, cur) => pre || !!cur.get("requireFlagId"), false);
+		const requireFlags = composites.reduce(
+			(pre, cur) => pre || !!cur.get("requireFlagId"),
+			false
+		);
 		str += `\n== 合成方式 ==
 {| class="wikitable"
 ! 合成素材 !! 需求`;
 		if (requireFlags) {
 			str += ` !! 合成配方取得方式`;
 		}
-		composites.forEach(composite => {
-			const building = ExploreBuildingTable.find(b => b.get("id") == composite.get("requireBuildingId"));
+		composites.forEach((composite) => {
+			const building = ExploreBuildingTable.find(
+				(b) => b.get("id") == composite.get("requireBuildingId")
+			);
 			if (building) {
 				const compositeItems = itemList(composite);
-				str += `\n|-\n| ${compositeItems.join(" ")} || [[${localizationExploreBuildingName()(building.get("type"))}]] Lv ${building.get("level")}`;
+				str += `\n|-\n| ${compositeItems.join(
+					" "
+				)} || [[${localizationExploreBuildingName()(
+					building.get("type")
+				)}]] Lv ${building.get("level")}`;
 				if (requireFlags) {
-					str += `\n| ${composite.get("requireFlagId") ? `{{?}}<!--取得方式-->` : `style="text-align: center" | -`}`;
+					str += `\n| ${
+						composite.get("requireFlagId")
+							? `{{?}}<!--取得方式-->`
+							: `style="text-align: center" | -`
+					}`;
 				}
 			}
 		});
@@ -61,31 +91,50 @@ export function exploreCompositeList(id: string) {
 
 export function exploreUsingList(id: string) {
 	let str = "";
-	const useComposites = ExploreCompositeTable.filter(c => [c.get("item1Id"), c.get("item2Id"), c.get("item3Id"), c.get("item4Id")].indexOf(id) != -1 && c.get("enable"));
-	const useBuilding = ExploreBuildingTable.filter(c => [c.get("item1Id"), c.get("item2Id"), c.get("item3Id"), c.get("item4Id")].indexOf(id) != -1);
+	const useComposites = ExploreCompositeTable.filter(
+		(c) =>
+			[c.get("item1Id"), c.get("item2Id"), c.get("item3Id"), c.get("item4Id")].indexOf(id) !=
+				-1 && c.get("enable")
+	);
+	const useBuilding = ExploreBuildingTable.filter(
+		(c) =>
+			[c.get("item1Id"), c.get("item2Id"), c.get("item3Id"), c.get("item4Id")].indexOf(id) !=
+			-1
+	);
 	if (useComposites.length || useBuilding.length) {
 		const CATEGORY_LEVEL_UP = "升級";
-		const compositeGroup = useComposites.reduce((group, composite) => {
-			const building = ExploreBuildingTable.find(b => b.get("id") == composite.get("requireBuildingId"));
-			const compItem = ExploreItemsTable.find(i => i.get("id") == composite.get("itemId"));
-			if (building && compItem) {
+		const compositeGroup = useComposites.reduce(
+			(group, composite) => {
+				const building = ExploreBuildingTable.find(
+					(b) => b.get("id") == composite.get("requireBuildingId")
+				);
+				const compItem = ExploreItemsTable.find(
+					(i) => i.get("id") == composite.get("itemId")
+				);
+				if (building && compItem) {
+					const buildingName = localizationExploreBuildingName()(building.get("type"));
+					group[buildingName] = group[buildingName] || {};
+					const category = itemCategoryName(compItem, "", "", true)[0] || "探索道具";
+					group[buildingName][category] = group[buildingName][category] || [];
+					if (
+						!group[buildingName][category].find(
+							(i) => i.get("id") == compItem.get("id")
+						)
+					) {
+						group[buildingName][category].push(compItem);
+					}
+				}
+				return group;
+			},
+			useBuilding.reduce((group, building) => {
 				const buildingName = localizationExploreBuildingName()(building.get("type"));
 				group[buildingName] = group[buildingName] || {};
-				const category = itemCategoryName(compItem, "", "", true)[0] || "探索道具";
+				const category = CATEGORY_LEVEL_UP;
 				group[buildingName][category] = group[buildingName][category] || [];
-				if (!group[buildingName][category].find(i => i.get("id") == compItem.get("id"))) {
-					group[buildingName][category].push(compItem);
-				}
-			}
-			return group;
-		}, useBuilding.reduce((group, building) => {
-			const buildingName = localizationExploreBuildingName()(building.get("type"));
-			group[buildingName] = group[buildingName] || {};
-			const category = CATEGORY_LEVEL_UP;
-			group[buildingName][category] = group[buildingName][category] || [];
-			group[buildingName][category].push(building);
-			return group;
-		}, {} as Record<string, Record<string, RowWrapper[]>>));
+				group[buildingName][category].push(building);
+				return group;
+			}, {} as Record<string, Record<string, RowWrapper[]>>)
+		);
 
 		str += `\n== 道具用途 ==`;
 		for (const buildingName in compositeGroup) {
@@ -96,14 +145,17 @@ export function exploreUsingList(id: string) {
 					if (catGroup.hasOwnProperty(cat)) {
 						if (cat == CATEGORY_LEVEL_UP) {
 							const buildings = catGroup[cat];
-							buildings.forEach(building => {
-								str += `\n:*升級至 [[${buildingName}]] Lv ${Number(building.get("level")) + 1}。`;
+							buildings.forEach((building) => {
+								str += `\n:*升級至 [[${buildingName}]] Lv ${
+									Number(building.get("level")) + 1
+								}。`;
 							});
-						}
-						else {
+						} else {
 							const compItems = catGroup[cat];
 							str += `\n:*合成{{系統圖標|${cat}|25px}}${cat}：`;
-							str += compItems.map(compItem => item2wiki(compItem.get("id"), undefined, true)).join("、");
+							str += compItems
+								.map((compItem) => item2wiki(compItem.get("id"), undefined, true))
+								.join("、");
 							str += `。`;
 						}
 					}
@@ -148,7 +200,12 @@ function exploreCategoryName(label: string) {
 	return arrayUnique(cats);
 }
 
-export function itemCategoryName(row: RowWrapper, itemName: string, itemDescription: string, isExplore = false) {
+export function itemCategoryName(
+	row: RowWrapper,
+	itemName: string,
+	itemDescription: string,
+	isExplore = false
+) {
 	const id = row.get("id");
 	const iconKey = row.get("iconKey");
 	const category = row.get("category");
@@ -156,13 +213,19 @@ export function itemCategoryName(row: RowWrapper, itemName: string, itemDescript
 		itemName = localizationItemName(isExplore)(id);
 	}
 	if (!itemDescription) {
-		itemDescription = localizationString(isExplore ? "ExpItem": "Item")(row.get("localizationKeyDescription")) || "";
+		itemDescription =
+			localizationString(isExplore ? "ExpItem" : "Item")(
+				row.get("localizationKeyDescription")
+			) || "";
 	}
 
 	let cats: string[] = [];
 	if (isExplore) {
 		cats = cats.concat(exploreCategoryName(row.get("label")));
-		if (itemDescription.indexOf("捕捉野獸道具") != -1 || itemDescription.indexOf("捕捉岡布奧道具") != -1) {
+		if (
+			itemDescription.indexOf("捕捉野獸道具") != -1 ||
+			itemDescription.indexOf("捕捉岡布奧道具") != -1
+		) {
 			cats.unshift("捕捉野獸道具");
 		}
 		if (itemDescription.indexOf("體力回復道具") != -1) {
@@ -186,23 +249,35 @@ export function itemCategoryName(row: RowWrapper, itemName: string, itemDescript
 		return cats;
 	}
 	switch (category) {
-		case "Mineral": return ["魂能結晶"];
-		case "WildcardMineral": return ["魂能結晶"];
-		case "WildcardOwnedAll": return ["魂能結晶"];
-		case "WildcardOwnedGold": return ["魂能結晶"];
-		case "WildcardOwnedBlack": return ["魂能結晶"];
-		case "WildcardOwnedWhite": return ["魂能結晶"];
-		case "Soul": return ["貨幣"];
-		case "Coin": return ["貨幣"];
-		case "PlayerExp": return ["貨幣"];
-		case "GashaponTicket": return ["書籤"];
+		case "Mineral":
+			return ["魂能結晶"];
+		case "WildcardMineral":
+			return ["魂能結晶"];
+		case "WildcardOwnedAll":
+			return ["魂能結晶"];
+		case "WildcardOwnedGold":
+			return ["魂能結晶"];
+		case "WildcardOwnedBlack":
+			return ["魂能結晶"];
+		case "WildcardOwnedWhite":
+			return ["魂能結晶"];
+		case "Soul":
+			return ["貨幣"];
+		case "Coin":
+			return ["貨幣"];
+		case "PlayerExp":
+			return ["貨幣"];
+		case "GashaponTicket":
+			return ["書籤"];
 		case "HeroSkill":
 			if (itemName.indexOf("造型書") !== -1) {
 				return ["造型書"];
 			}
 			return ["技能書"];
-		case "Avatar": return ["頭像"];
-		case "Treasure": return ["寶箱"];
+		case "Avatar":
+			return ["頭像"];
+		case "Treasure":
+			return ["寶箱"];
 		case "Space":
 			if (itemName == "獸廄擴充證") {
 				return ["野獸道具", "探索貨幣"];
@@ -215,11 +290,18 @@ export function itemCategoryName(row: RowWrapper, itemName: string, itemDescript
 			if (iconKey.endsWith("_collection")) {
 				return ["蒐集"];
 			}
-			if (iconKey.startsWith("soul") || iconKey.startsWith("coin") || iconKey.startsWith("ring") || iconKey.startsWith("gem") ||
-				iconKey.startsWith("medals") || iconKey.startsWith("GuildCoin") || iconKey.startsWith("GuildRing") ||
+			if (
+				iconKey.startsWith("soul") ||
+				iconKey.startsWith("coin") ||
+				iconKey.startsWith("ring") ||
+				iconKey.startsWith("gem") ||
+				iconKey.startsWith("medals") ||
+				iconKey.startsWith("GuildCoin") ||
+				iconKey.startsWith("GuildRing") ||
 				itemName == "殘光粉末" ||
 				itemName == "起源魂石" ||
-				itemName == "魂光粉塵") {
+				itemName == "魂光粉塵"
+			) {
 				return ["貨幣"];
 			}
 			if (Number(id) > 20000 && Number(id) < 30000) {
@@ -255,7 +337,12 @@ export interface Item2WikiOptions {
 	M?: string;
 }
 
-export function item2wiki(id: string, count?: number, isExplore = false, options: Item2WikiOptions = {}) {
+export function item2wiki(
+	id: string,
+	count?: number,
+	isExplore = false,
+	options: Item2WikiOptions = {}
+) {
 	let item: ExploreItem | Item | undefined;
 	if (isExplore) {
 		item = ExploreItem.get(id);
@@ -264,7 +351,7 @@ export function item2wiki(id: string, count?: number, isExplore = false, options
 	}
 	if (!item) return "";
 
-	options.text ??= 'true';
+	options.text ??= "true";
 
 	const avatar = (item.isExplore ? item.transformTo : item)?.avatar;
 	let suffix = avatar ? "([[頭像]])" : "";
@@ -295,7 +382,7 @@ export function item2wiki(id: string, count?: number, isExplore = false, options
 
 export function monster2wiki(id: string, count?: number, options?: Item2WikiOptions) {
 	options = options || {};
-	options.text = typeof options.text === 'undefined' ? 'true' : options.text;
+	options.text = typeof options.text === "undefined" ? "true" : options.text;
 	if (!id || id == "-1") return "";
 
 	const monsterName = localizationMonsterNameById()(id);
@@ -310,7 +397,12 @@ export function monster2wiki(id: string, count?: number, options?: Item2WikiOpti
 	return wikitemplate("野獸小圖示", args) + suffix;
 }
 
-export function item2wikiWithType(type: string, id: string, count?: number, options?: Item2WikiOptions) {
+export function item2wikiWithType(
+	type: string,
+	id: string,
+	count?: number,
+	options?: Item2WikiOptions
+) {
 	switch (type) {
 		case "coin": // old type
 		case "gem": // old type
@@ -340,7 +432,12 @@ export function item2wikiWithType(type: string, id: string, count?: number, opti
 		case "Diligent": {
 			const chapter = Chapter.get(id);
 			const diligentId = "1011";
-			return `章節${chapter ? `[[${chapter.getWikiTitle()}]]` : id}${item2wiki(diligentId, count, false, options)}`;
+			return `章節${chapter ? `[[${chapter.getWikiTitle()}]]` : id}${item2wiki(
+				diligentId,
+				count,
+				false,
+				options
+			)}`;
 		}
 	}
 }
@@ -348,7 +445,9 @@ export function item2wikiWithType(type: string, id: string, count?: number, opti
 export function itemList(row: RowWrapper, count = 4, isExplore = true, size = "20px") {
 	const items: string[] = [];
 	for (let k = 1; k <= count; k++) {
-		const wiki = item2wiki(row.get(`item${k}Id`), row.get(`item${k}Count`), isExplore, { size });
+		const wiki = item2wiki(row.get(`item${k}Id`), row.get(`item${k}Count`), isExplore, {
+			size,
+		});
 		if (wiki) items.push(wiki);
 	}
 	return items;

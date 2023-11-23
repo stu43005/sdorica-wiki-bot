@@ -17,9 +17,12 @@ export class TavernMission {
 	public static get(row: RowWrapper): TavernMission;
 	public static get(id: string): TavernMission | undefined;
 	public static get(rowOrId: RowWrapper | string): TavernMission {
-		const id = typeof rowOrId === 'string' ? rowOrId : rowOrId.get('id');
+		const id = typeof rowOrId === "string" ? rowOrId : rowOrId.get("id");
 		if (!instances[id]) {
-			const row = typeof rowOrId === 'string' ? TavernMissionTable.find(r => r.get('id') == id) : rowOrId;
+			const row =
+				typeof rowOrId === "string"
+					? TavernMissionTable.find((r) => r.get("id") == id)
+					: rowOrId;
 			if (row) {
 				instances[id] = new TavernMission(row);
 			}
@@ -36,7 +39,7 @@ export class TavernMission {
 	}
 
 	public static getAll() {
-		return allInstances ??= Array.from(this.getAllGenerator());
+		return (allInstances ??= Array.from(this.getAllGenerator()));
 	}
 
 	public static *getAllGenerator() {
@@ -46,41 +49,67 @@ export class TavernMission {
 		}
 	}
 
-	get id(): string { return this.row.get('id'); }
-	get enable(): boolean { return !!this.row.get('enable'); }
-	get tab(): string { return this.row.get('tab'); }
-	get category(): string { return this.row.get('category'); }
+	get id(): string {
+		return this.row.get("id");
+	}
+	get enable(): boolean {
+		return !!this.row.get("enable");
+	}
+	get tab(): string {
+		return this.row.get("tab");
+	}
+	get category(): string {
+		return this.row.get("category");
+	}
 
 	name: string;
-	get nameWithRank(): string { return `【${this.questRankStar}】${this.name}` }
-	get iconKey(): string { return this.row.get('iconKey'); }
+	get nameWithRank(): string {
+		return `【${this.questRankStar}】${this.name}`;
+	}
+	get iconKey(): string {
+		return this.row.get("iconKey");
+	}
 
 	/**
 	 * 內部註記 (不要用)
 	 * @deprecated
 	 */
-	get internalName(): string { return this.row.get('questKeyDescription'); }
+	get internalName(): string {
+		return this.row.get("questKeyDescription");
+	}
 
 	/**
 	 * 階級
 	 */
-	get questRank(): number { return +this.row.get('questRank'); }
-	get questRankStar(): string { return `${this.questRank} ★`; }
+	get questRank(): number {
+		return +this.row.get("questRank");
+	}
+	get questRankStar(): string {
+		return `${this.questRank} ★`;
+	}
 
 	/**
 	 * 所需時間，單位分鐘
 	 */
-	get time(): number { return +this.row.get('time'); }
+	get time(): number {
+		return +this.row.get("time");
+	}
 	/**
 	 * 消耗體力
 	 */
-	get stamina(): number { return +this.row.get('stamina'); }
+	get stamina(): number {
+		return +this.row.get("stamina");
+	}
 
-	get baseSuccessRate(): number { return +this.row.get('baseSuccessRate'); }
+	get baseSuccessRate(): number {
+		return +this.row.get("baseSuccessRate");
+	}
 	/**
 	 * 出場野獸數量
 	 */
-	get spaceNum(): number { return +this.row.get('spaceNum'); }
+	get spaceNum(): number {
+		return +this.row.get("spaceNum");
+	}
 
 	// 任務英雄限制
 	/**
@@ -88,7 +117,7 @@ export class TavernMission {
 	 */
 	#hero: Hero | undefined | null = null;
 	get hero(): Hero | undefined {
-		const heroid: string = this.row.get('heroid');
+		const heroid: string = this.row.get("heroid");
 		if (!heroid) {
 			return undefined;
 		}
@@ -100,21 +129,31 @@ export class TavernMission {
 	/**
 	 * 限制英雄等級
 	 */
-	get heroLv(): number { return +this.row.get('heroLv'); }
+	get heroLv(): number {
+		return +this.row.get("heroLv");
+	}
 	/**
 	 * 限制英雄階級
 	 */
-	get heroRank(): HeroRank { return this.getHeroRank(); }
-	get heroRankN(): number { return +this.row.get('heroRank'); }
+	get heroRank(): HeroRank {
+		return this.getHeroRank();
+	}
+	get heroRankN(): number {
+		return +this.row.get("heroRank");
+	}
 	/**
 	 * 限制英雄站位
 	 */
-	get heroSlot(): HeroSlot[] { return this.getHeroSlot(); }
+	get heroSlot(): HeroSlot[] {
+		return this.getHeroSlot();
+	}
 
 	/**
 	 * 環境
 	 */
-	get environment(): string { return this.row.get('environment'); }
+	get environment(): string {
+		return this.row.get("environment");
+	}
 
 	#dropItem: DropItemsGroup | undefined | null = null;
 	get dropItem(): DropItemsGroup | undefined {
@@ -134,23 +173,35 @@ export class TavernMission {
 
 	#displayDropItem: ItemGiveList | null = null;
 	get displayDropItem(): ItemGiveList {
-		return this.#displayDropItem ??= ItemGiveList.parseList(this.row.get("displayDropItem"));
+		return (this.#displayDropItem ??= ItemGiveList.parseList(this.row.get("displayDropItem")));
 	}
 
 	#displayExtraDropItem: ItemGiveList | null = null;
 	get displayExtraDropItem(): ItemGiveList {
-		return this.#displayExtraDropItem ??= ItemGiveList.parseList(this.row.get("displayExtraDropItem"));
+		return (this.#displayExtraDropItem ??= ItemGiveList.parseList(
+			this.row.get("displayExtraDropItem")
+		));
 	}
 
-	get homeExp(): number { return +this.row.get('homeExp'); }
-	get monsterExp(): number { return +this.row.get('monsterExp'); }
+	get homeExp(): number {
+		return +this.row.get("homeExp");
+	}
+	get monsterExp(): number {
+		return +this.row.get("monsterExp");
+	}
 
 	/**
 	 * 羈絆等級
 	 */
-	get monsterLv(): number { return +this.row.get('monsterLv'); }
-	get monsterLvPenaltyRatio(): number { return +this.row.get('monsterLvPenaltyRatio'); }
-	get monsterLvPenaltyMax(): number { return +this.row.get('monsterLvPenaltyMax'); }
+	get monsterLv(): number {
+		return +this.row.get("monsterLv");
+	}
+	get monsterLvPenaltyRatio(): number {
+		return +this.row.get("monsterLvPenaltyRatio");
+	}
+	get monsterLvPenaltyMax(): number {
+		return +this.row.get("monsterLvPenaltyMax");
+	}
 
 	#express: ItemPayRef | undefined | null = null;
 	/**
@@ -173,20 +224,27 @@ export class TavernMission {
 	 * 所需技能
 	 */
 	get reqSkills(): TavernMissionRequire[] {
-		return this.#reqSkills ??= TavernMissionRequire.get(this.id);
+		return (this.#reqSkills ??= TavernMissionRequire.get(this.id));
 	}
 
 	constructor(private row: RowWrapper) {
 		const questKeyName = row.get("questKeyName");
-		this.name = localizationString("TavernMission")(questKeyName) || row.get("questKeyDescription") || questKeyName;
+		this.name =
+			localizationString("TavernMission")(questKeyName) ||
+			row.get("questKeyDescription") ||
+			questKeyName;
 	}
 
 	private getHeroRank() {
 		switch (this.heroRankN) {
-			case 2: return HeroRank.N;
-			case 3: return HeroRank.R;
-			case 4: return HeroRank.SR;
-			case 5: return HeroRank.SSR;
+			case 2:
+				return HeroRank.N;
+			case 3:
+				return HeroRank.R;
+			case 4:
+				return HeroRank.SR;
+			case 5:
+				return HeroRank.SSR;
 		}
 		return HeroRank.Unknown;
 	}
@@ -197,7 +255,7 @@ export class TavernMission {
 			!!this.row.get("black") ? HeroSlot.BLACK : null,
 			!!this.row.get("white") ? HeroSlot.WHITE : null,
 		];
-		if (slots.every(slot => slot)) {
+		if (slots.every((slot) => slot)) {
 			// 都為真代表沒限制
 			return [];
 		}
@@ -250,5 +308,4 @@ export class TavernMission {
 		}
 		return this.name.replace(/【[^】]*】/, "");
 	}
-
 }

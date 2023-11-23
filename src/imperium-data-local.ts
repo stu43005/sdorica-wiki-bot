@@ -6,7 +6,7 @@ import { inputJsonSync } from "./input";
 import { Logger } from "./logger";
 import { fsExists } from "./out";
 
-const logger = new Logger('imperium-data');
+const logger = new Logger("imperium-data");
 
 export function registerImperiumLocalLoader() {
 	ImperiumData.dataLoader = (self) => {

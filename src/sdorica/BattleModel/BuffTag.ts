@@ -46,6 +46,8 @@ const BuffTagList = [
 
 export namespace BuffTag {
 	export function toString(tag: BuffTag): string {
-		return BuffTagList.filter(t => (tag & t) == t).map(t => BuffTag[t]).join(" | ");
+		return BuffTagList.filter((t) => (tag & t) == t)
+			.map((t) => BuffTag[t])
+			.join(" | ");
 	}
 }
