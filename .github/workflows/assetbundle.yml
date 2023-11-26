@@ -29,6 +29,14 @@ jobs:
         with:
           dotnet-version: "7.x"
 
+      - name: Set up S3cmd cli tool
+        uses: s3-actions/s3cmd@v1.5.0
+        with:
+          provider: aws
+          region: 'us-east-1'
+          access_key: ${{ secrets.AWS_KEY_ID }}
+          secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
       - name: Get npm cache directory
         id: npm-cache-dir
         shell: bash
@@ -51,13 +59,17 @@ jobs:
         env:
           NODE_ENV: production
 
-      - uses: shallwefootball/s3-upload-action@v1.3.3
-        with:
-          aws_key_id: ${{ secrets.AWS_KEY_ID }}
-          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
-          aws_bucket: ${{ secrets.AWS_BUCKET }}
-          source_dir: 'data/assetbundle/upload'
-          destination_dir: ''
+      - name: Upload to S3
+        run: |
+          s3cmd put -r data/assetbundle/upload/* s3://${{ secrets.AWS_BUCKET }}/
+
+      # - uses: shallwefootball/s3-upload-action@v1.3.3
+      #   with:
+      #     aws_key_id: ${{ secrets.AWS_KEY_ID }}
+      #     aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
+      #     aws_bucket: ${{ secrets.AWS_BUCKET }}
+      #     source_dir: 'data/assetbundle/upload'
+      #     destination_dir: ''
 
       - run: |
           cd data
