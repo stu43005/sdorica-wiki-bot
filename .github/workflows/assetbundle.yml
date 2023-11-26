@@ -1,4 +1,4 @@
-name: "Wiki"
+name: "Assetbundle"
 
 on:
   workflow_dispatch:
@@ -47,12 +47,17 @@ jobs:
 
       - name: Create local changes
         timeout-minutes: 15
-        run: npm run wiki
+        run: npm run assetbundle
         env:
-          MW_USER: ${{ secrets.MW_USER }}
-          MW_PASS: ${{ secrets.MW_PASS }}
-          DC_WEBHOOK: ${{ secrets.DC_WEBHOOK }}
           NODE_ENV: production
+
+      - uses: shallwefootball/s3-upload-action@v1.3.3
+        with:
+          aws_key_id: ${{ secrets.AWS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
+          aws_bucket: ${{ secrets.AWS_BUCKET }}
+          source_dir: 'data/assetbundle/upload'
+          destination_dir: ''
 
       - run: |
           cd data
@@ -61,11 +66,5 @@ jobs:
       - name: Commit files
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: 更新Wiki資料 ${{ github.event.head_commit.sha }}
+          commit_message: 更新Assetbundle資料 ${{ github.event.head_commit.sha }}
           repository: data
-
-      - name: Wiki Workflow Dispatch
-        uses: benc-uk/workflow-dispatch@v1
-        with:
-          workflow: Assetbundle
-          token: ${{ secrets.PAT }}
