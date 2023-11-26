@@ -35,6 +35,8 @@ export const needUploadAssets = new SetFile<string>(
 const ignoredAssets = new SetFile<string>(path.join(ASSETBUNDLE_PATH, "ignored_assets.json"));
 
 export async function assetBundleDownloader(force = false): Promise<boolean> {
+	await mkdir(uploadFolder);
+
 	await AssetbundleLookupTable.getInstance().updateLookupTable();
 	updateNeedUpdateList();
 
