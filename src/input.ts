@@ -6,11 +6,10 @@ import streamToPromise from "stream-to-promise";
 import { DataRaw, ImperiumDataRaw, LatestDataRaw } from "./data-raw-type";
 import { fsExists } from "./out";
 
-export async function inputDir(
+export async function* inputDir(
 	dirname: string,
-	callback: (name: string, file: fs.Stats) => Promise<void>,
-	includeSubDir = false
-) {
+	includeSubDir = true
+): AsyncGenerator<{ filepath: string; filename: string; stat: fs.Stats }, void, unknown> {
 	const files: string[] = await fs.readdir(dirname);
 	while (files.length > 0) {
 		const file = files.shift();
@@ -19,9 +18,13 @@ export async function inputDir(
 			const name = path.join(dirname, file);
 			const stat = await fs.stat(name);
 			if (includeSubDir && stat.isDirectory()) {
-				await inputDir(name, callback, includeSubDir);
+				yield* inputDir(name, includeSubDir);
 			} else if (stat.isFile()) {
-				await callback.call(name, name, stat);
+				yield {
+					filepath: name,
+					filename: file,
+					stat,
+				};
 			}
 		}
 	}

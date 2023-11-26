@@ -2,6 +2,7 @@ import * as bson from "bson";
 import * as fs from "fs-extra";
 import JSZip from "jszip";
 import * as _ from "lodash";
+import pWaterfall from "p-waterfall";
 import * as path from "path";
 import { promisify } from "util";
 import { unzip } from "zlib";
@@ -85,9 +86,14 @@ export async function downloadCharAssetsBson(asset: AssetDataRaw, force?: boolea
 
 	let data: any;
 	try {
-		const b64content = await fs.readFile(bsonFilePath, { encoding: "utf8" });
-		const content = Buffer.from(b64content, "base64");
-		data = bson.deserialize(content);
+		data = await pWaterfall(
+			[
+				(filePath) => fs.readFile(filePath, { encoding: "utf8" }),
+				(b64content) => Buffer.from(b64content, "base64"),
+				(buf) => bson.deserialize(buf),
+			],
+			bsonFilePath
+		);
 	} catch (error) {
 		logger.error("opening charAssets.bson error:", error);
 		debugger;
@@ -135,20 +141,26 @@ export async function downloadCharAssetsZip(asset: AssetDataRaw, force?: boolean
 	}
 
 	try {
-		const data = await fs.readFile(zipFilePath);
-		const zip = await JSZip.loadAsync(data);
+		const zip = await pWaterfall(
+			[(filePath) => fs.readFile(filePath), (data) => JSZip.loadAsync(data)],
+			zipFilePath
+		);
 
 		const serializer = new fsSerializer();
 		for (const zipEntry of Object.values(zip.files)) {
 			try {
 				const info = getCharAssetEntryInfo(zipEntry.name);
-				const content = await zipEntry.async("nodebuffer");
-				const jsonBuffer = await doUnzip(content);
-				const jsonString = jsonBuffer.toString("utf8");
-				const json = siJsonParse(jsonString);
-				let data = json;
+				let data = await pWaterfall(
+					[
+						(zipEntry) => zipEntry.async("nodebuffer"),
+						(buf) => doUnzip(buf),
+						(buf) => buf.toString("utf8"),
+						(jsonString) => siJsonParse(jsonString),
+					],
+					zipEntry
+				);
 				try {
-					data = serializer.TryDeserialize(json);
+					data = serializer.TryDeserialize(data);
 
 					switch (info.type) {
 						case CharAssetEntryType.BATTLECHARACTOR:

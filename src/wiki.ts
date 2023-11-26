@@ -1,6 +1,7 @@
 import MWBot from "mwbot";
 import fs from "node:fs/promises";
 import path from "node:path";
+import { AssetbundleLookupTable } from "./assetbundle-lookup-table";
 import { WIKI_PATH } from "./config";
 import { getConstants } from "./localization";
 import { Logger } from "./logger";
@@ -139,6 +140,10 @@ export async function wikiMain(updateWiki?: boolean) {
 	} catch (error) {
 		logger.log(`[MWBOT] Login failed: ${error}`);
 	}
+
+	try {
+		await AssetbundleLookupTable.getInstance().updateLookupTable();
+	} catch (error) {}
 
 	await outWiki(bot, "AdvAchievements", wikiAdvAchievements());
 	await outWiki(bot, "Adventure", wikiAdventure());

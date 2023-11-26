@@ -3,6 +3,7 @@ import fs from "fs-extra";
 import jsonStableStringify from "json-stable-stringify";
 import fetch from "node-fetch";
 import { once } from "node:events";
+import fsp from "node:fs/promises";
 import * as path from "path";
 import * as xlsx from "xlsx";
 import { ImperiumDataRaw, TableDataRaw } from "./data-raw-type";
@@ -98,20 +99,9 @@ export async function outXlsx(filename: string, data: ImperiumDataRaw) {
 }
 
 export async function mkdir(dirname: string) {
-	const dirnames = [dirname];
-	for (let i = 0; i < 3; i++) {
-		const name = path.dirname(dirnames[dirnames.length - 1]);
-		if (name == ".") break;
-		dirnames.push(name);
-	}
-	while (dirnames.length) {
-		try {
-			const c = dirnames.pop();
-			if (c) {
-				await fs.mkdir(c);
-			}
-		} catch (e) {}
-	}
+	await fsp.mkdir(dirname, {
+		recursive: true,
+	});
 }
 
 export async function rpFile(url: string, filePath: string) {

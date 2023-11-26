@@ -25,6 +25,7 @@ export async function downloadDialog(name: string, asset: AssetDataRaw) {
 	const dialogFilePath = path.join(DIALOG_PATH, name);
 	const jsonFilePath = path.join(DIALOG_PATH, `${name}.json`);
 
+	logger.info(`downloading ${name}...`);
 	try {
 		await rpFile(asset.L, dialogFilePath);
 	} catch (error) {
