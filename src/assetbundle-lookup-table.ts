@@ -40,7 +40,7 @@ export class AssetbundleLookupTable extends ResourceFile<LookupTable> {
 
 	protected loadData(): LookupTable {
 		try {
-			return inputJsonSync(lookupTablePath);
+			return this.transformTable(inputJsonSync(lookupTablePath));
 		} catch (error) {}
 		return {};
 	}
@@ -48,6 +48,21 @@ export class AssetbundleLookupTable extends ResourceFile<LookupTable> {
 	protected async cleanupData(data: LookupTable): Promise<void> {
 		this.logger.info(`Saving file...: ${lookupTablePath}`);
 		await outJson(lookupTablePath, data);
+	}
+
+	private transformTable(data: LookupTable) {
+		for (const key in data) {
+			if (Object.prototype.hasOwnProperty.call(data, key)) {
+				if (key === "@asset") {
+					continue;
+				}
+				const table = data[key];
+				data[key] = Object.fromEntries(
+					Object.entries(table).map(([itemKey, item]) => [itemKey.toLowerCase(), item])
+				);
+			}
+		}
+		return data;
 	}
 
 	public async updateLookupTable(force = false) {
@@ -63,7 +78,9 @@ export class AssetbundleLookupTable extends ResourceFile<LookupTable> {
 				"assets/assetbundleLookupTable.json"
 			);
 			if (outLookupTablePath) {
-				const outLookupTable = await inputJsonDefault<LookupTable>(outLookupTablePath, {});
+				const outLookupTable = this.transformTable(
+					await inputJsonDefault<LookupTable>(outLookupTablePath, {})
+				);
 				_.extend(this.data, outLookupTable);
 			}
 			this.data["@asset"] = asset;
@@ -76,12 +93,13 @@ export class AssetbundleLookupTable extends ResourceFile<LookupTable> {
 		return Object.values(cate).map((item) => item.AssetName.toLowerCase());
 	}
 
-	public getContainerPath(category: LookupTableCategory, key: string): string {
-		return this.data[category][key].AssetName.toLowerCase();
+	public getContainerPath(category: LookupTableCategory, key: string): string | undefined {
+		const lowerCaseKey = key.toLowerCase();
+		return this.data[category][lowerCaseKey]?.AssetName.toLowerCase();
 	}
 
-	public getAssetUrl(category: LookupTableCategory, key: string): string {
+	public getAssetUrl(category: LookupTableCategory, key: string): string | undefined {
 		const containerPath = this.getContainerPath(category, key);
-		return getAssetUrl(containerPath);
+		return containerPath && getAssetUrl(containerPath);
 	}
 }
