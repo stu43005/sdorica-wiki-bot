@@ -1,11 +1,8 @@
 import { minimatch } from "minimatch";
-import path from "node:path";
-import { needUploadAssets, uploadedAssets } from "./assetbundle-downloader";
-import { AssetbundleLookupTable, LookupTableCategory } from "./assetbundle-lookup-table";
+import { addAsset, needUploadAssets, uploadedAssets } from "./assetbundle-asset";
+import { AssetbundleLookupTable } from "./assetbundle-lookup-table";
 import { AssetbundleMapping, AssetbundleMappingItem } from "./assetbundle-mapping";
-import { ASSET_HOSTNAME } from "./config";
-
-export const IMAGE_FORMAT = "webp";
+import { LookupTableCategory } from "./model/enums/lookup-table-category.enum";
 
 const uploadGlobs: string[] = ["assets/game/character/character_image/**/*.@(png|jpg|bmp|tga|psd)"];
 const uploadCategories: LookupTableCategory[] = [
@@ -63,32 +60,6 @@ export function filterAsset(containerPath: string): boolean {
 		}
 	}
 	return false;
-}
-
-export function getAssetPath(containerPath: string): string {
-	const extname = path.extname(containerPath);
-	switch (extname) {
-		case ".png":
-		case ".jpg":
-		case ".bmp":
-		case ".tga":
-		case ".psd":
-			containerPath = containerPath.replace(new RegExp(`\\${extname}$`), `.${IMAGE_FORMAT}`);
-			break;
-	}
-	return containerPath;
-}
-
-export function getAssetUrl(containerPath: string): string {
-	containerPath = containerPath.toLowerCase();
-	addAsset(containerPath);
-	return new URL(getAssetPath(containerPath), ASSET_HOSTNAME).toString();
-}
-
-function addAsset(containerPath: string) {
-	if (!uploadedAssets.has(containerPath)) {
-		needUploadAssets.add(containerPath);
-	}
 }
 
 export function getNeedUploadBundleList() {

@@ -5,11 +5,12 @@ import pMap from "p-map";
 import { execAssetStudioModCLI } from "./asset-studio-cli";
 import {
 	IMAGE_FORMAT,
-	filterAsset,
 	getAssetPath,
-	getNeedUploadBundleList,
-	updateNeedUpdateList,
-} from "./assetbundle-filter";
+	ignoredAssets,
+	needUploadAssets,
+	uploadedAssets,
+} from "./assetbundle-asset";
+import { filterAsset, getNeedUploadBundleList, updateNeedUpdateList } from "./assetbundle-filter";
 import { AssetbundleLookupTable } from "./assetbundle-lookup-table";
 import { AssetbundleMapping } from "./assetbundle-mapping";
 import { ASSETBUNDLE_PATH } from "./config";
@@ -18,21 +19,12 @@ import { ImperiumData } from "./imperium-data";
 import { inputDir } from "./input";
 import { Logger } from "./logger";
 import { mkdir, outJson, rpFile } from "./out";
-import { SetFile } from "./out-set-file";
 
 const logger = new Logger("assetbundle-downloader");
 const metadataFilePath = path.join(ASSETBUNDLE_PATH, "metadata.json");
 const downloadFolder = path.join(ASSETBUNDLE_PATH, "download");
 const extractFolder = path.join(ASSETBUNDLE_PATH, "extract");
 const uploadFolder = path.join(ASSETBUNDLE_PATH, "upload");
-
-export const uploadedAssets = new SetFile<string>(
-	path.join(ASSETBUNDLE_PATH, "uploaded_assets.json")
-);
-export const needUploadAssets = new SetFile<string>(
-	path.join(ASSETBUNDLE_PATH, "need_upload_assets.json")
-);
-const ignoredAssets = new SetFile<string>(path.join(ASSETBUNDLE_PATH, "ignored_assets.json"));
 
 export async function assetBundleDownloader(force = false): Promise<boolean> {
 	await mkdir(uploadFolder);
