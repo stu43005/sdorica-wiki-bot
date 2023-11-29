@@ -1,8 +1,8 @@
 import csvStringify from "csv-stringify";
-import fs from "fs-extra";
 import jsonStableStringify from "json-stable-stringify";
 import fetch from "node-fetch";
 import { once } from "node:events";
+import fs from "node:fs";
 import fsp from "node:fs/promises";
 import * as path from "path";
 import * as xlsx from "xlsx";
@@ -31,7 +31,7 @@ export function outCsv(filename: string, out: any[]) {
 				}
 				try {
 					await mkdir(path.dirname(filename));
-					await fs.writeFile(filename, data, { encoding: "utf8" });
+					await fsp.writeFile(filename, data, { encoding: "utf8" });
 					resolve();
 				} catch (error) {
 					reject(error);
@@ -68,13 +68,13 @@ export function jsonStringify(data: any) {
 export async function outJson(filename: string, data: any) {
 	logger.debug(`saving json to ${filename}`);
 	await mkdir(path.dirname(filename));
-	await fs.writeFile(filename, jsonStringify(data), { encoding: "utf8" });
+	await fsp.writeFile(filename, jsonStringify(data), { encoding: "utf8" });
 }
 
 export async function outText(filename: string, text: string) {
 	logger.debug(`saving text to ${filename}`);
 	await mkdir(path.dirname(filename));
-	await fs.writeFile(filename, text, { encoding: "utf8" });
+	await fsp.writeFile(filename, text, { encoding: "utf8" });
 }
 
 export async function outXlsx(filename: string, data: ImperiumDataRaw) {
@@ -115,9 +115,31 @@ export async function rpFile(url: string, filePath: string) {
 
 export async function fsExists(filepath: string) {
 	try {
-		await fs.access(filepath);
+		await fsp.access(filepath);
 	} catch (error) {
 		return false;
 	}
 	return true;
+}
+
+export async function cleanEmptyFoldersRecursively(folder: string) {
+	const stat = await fsp.stat(folder);
+	const isDir = stat.isDirectory();
+	if (!isDir) {
+		return;
+	}
+	let files = await fsp.readdir(folder);
+	if (files.length > 0) {
+		for (const file of files) {
+			const fullPath = path.join(folder, file);
+			await cleanEmptyFoldersRecursively(fullPath);
+		}
+
+		files = await fsp.readdir(folder);
+	}
+
+	if (files.length == 0) {
+		await fsp.rmdir(folder);
+		return;
+	}
 }

@@ -96,6 +96,7 @@ async function processAsset(
 				}
 			}
 			await fsp.unlink(filePath);
+			await fsp.rm(path.join(extractFolder, name), { recursive: true, force: true });
 			break;
 		}
 		case name.endsWith(".mp4"): {
@@ -167,10 +168,10 @@ async function getAssetList(name: string, filePath: string): Promise<ABAsset[]> 
 	const assetsListPath = path.join(outDir, "assets.xml");
 	const assetList = await parseAssetList(assetsListPath);
 	return assetList.filter((abAsset) => {
-		const hasTexture2D = assetList
+		const hasSprite = assetList
 			.filter((a) => a !== abAsset && a.Container === abAsset.Container)
-			.some((a) => a.Type["#text"] === "Texture2D");
-		if (hasTexture2D) {
+			.some((a) => a.Type["#text"] === "Sprite");
+		if (hasSprite) {
 			return false;
 		}
 		return true;
