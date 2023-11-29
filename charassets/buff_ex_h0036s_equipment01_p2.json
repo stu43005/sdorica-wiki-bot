@@ -2,6 +2,32 @@
   "$interpreted": {
     "Localization": "",
     "動作": {
+      "OnBuffAdd": {
+        "效果": [
+          {
+            "效果": [
+              "立即施展技能：對本角色精神值+1"
+            ],
+            "條件": [
+              "當前事件的狀態是本狀態",
+              "目前戰鬥回合數 == 0",
+              "探索Flag\"3\"的數值 <= 60"
+            ]
+          },
+          {
+            "效果": [
+              "立即施展技能：對本角色精神值+1"
+            ],
+            "條件": [
+              "當前事件的狀態是本狀態",
+              "目前戰鬥回合數 == 0",
+              "探索Flag\"3\"的數值 <= 30"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
       "OnEachSkillTargetEffect": {
         "效果": [
           {
@@ -10,32 +36,6 @@
             ],
             "條件": [
               "本角色是施術者"
-            ]
-          }
-        ],
-        "條件": [
-        ]
-      },
-      "OnTurnBegin": {
-        "效果": [
-          {
-            "效果": [
-              "立即施展技能：對本角色精神值+1",
-              "對本狀態的變數一改為1"
-            ],
-            "條件": [
-              "本狀態的變數一 == 0",
-              "探索Flag\"3\"的數值 <= 60"
-            ]
-          },
-          {
-            "效果": [
-              "立即施展技能：對本角色精神值+1",
-              "對本狀態的變數二改為1"
-            ],
-            "條件": [
-              "本狀態的變數二 == 0",
-              "探索Flag\"3\"的數值 <= 30"
             ]
           }
         ],
@@ -52,7 +52,7 @@
   ],
   "_actionTable": [
     {
-      "Key": 1,
+      "Key": 16384,
       "Value": {
         "Actions": [
           {
@@ -85,32 +85,25 @@
                   },
                   "willTriggerBuff": false
                 }
-              },
-              {
-                "TargetField": {
-                  "$type": "BattleModel.OperateThisBuff",
-                  "operation": {
-                    "$type": "BattleModel.SetBuffField",
-                    "lastIndepedentStack": false,
-                    "setOperator": 0,
-                    "targetField": 4,
-                    "value": {
-                      "$type": "BattleModel.ConstanctInt",
-                      "constant": 1
-                    }
-                  }
-                }
               }
             ],
             "Conditions": [
               {
+                "$type": "BattleModel.BuffEqual",
+                "left": {
+                  "$type": "BattleModel.SpecifiedBuff"
+                },
+                "right": {
+                  "$type": "BattleModel.ThisBuff"
+                }
+              },
+              {
                 "$type": "BattleModel.IntCompare",
                 "left": {
-                  "$type": "BattleModel.IntBuffField",
-                  "buff": {
-                    "$type": "BattleModel.ThisBuff"
-                  },
-                  "targetField": 4
+                  "$type": "BattleModel.BattleActionRecordValue",
+                  "RecordValue": {
+                    "$type": "BattleModel.ThisBattleTurnCount"
+                  }
                 },
                 "op": 0,
                 "right": {
@@ -162,32 +155,25 @@
                   },
                   "willTriggerBuff": false
                 }
-              },
-              {
-                "TargetField": {
-                  "$type": "BattleModel.OperateThisBuff",
-                  "operation": {
-                    "$type": "BattleModel.SetBuffField",
-                    "lastIndepedentStack": false,
-                    "setOperator": 0,
-                    "targetField": 8,
-                    "value": {
-                      "$type": "BattleModel.ConstanctInt",
-                      "constant": 1
-                    }
-                  }
-                }
               }
             ],
             "Conditions": [
               {
+                "$type": "BattleModel.BuffEqual",
+                "left": {
+                  "$type": "BattleModel.SpecifiedBuff"
+                },
+                "right": {
+                  "$type": "BattleModel.ThisBuff"
+                }
+              },
+              {
                 "$type": "BattleModel.IntCompare",
                 "left": {
-                  "$type": "BattleModel.IntBuffField",
-                  "buff": {
-                    "$type": "BattleModel.ThisBuff"
-                  },
-                  "targetField": 8
+                  "$type": "BattleModel.BattleActionRecordValue",
+                  "RecordValue": {
+                    "$type": "BattleModel.ThisBattleTurnCount"
+                  }
                 },
                 "op": 0,
                 "right": {

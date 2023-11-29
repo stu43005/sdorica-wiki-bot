@@ -6,7 +6,7 @@
         "效果": [
           {
             "效果": [
-              "對本狀態覆蓋標籤為(NotRemoveAfterBattle | Forever | StackIndependent | InfinityTrigger)"
+              "對本狀態覆蓋標籤為(NotRemoveAfterBattle | Forever | InfinityTrigger)"
             ],
             "條件": [
               "本角色擁有long_term(長效)狀態"
@@ -20,7 +20,7 @@
         "效果": [
           {
             "效果": [
-              "對本狀態覆蓋標籤為(NotRemoveAfterBattle | Forever | StackIndependent | InfinityTrigger)"
+              "對本狀態覆蓋標籤為(NotRemoveAfterBattle | Forever | InfinityTrigger)"
             ],
             "條件": [
               "本角色擁有long_term(長效)狀態"
@@ -30,11 +30,10 @@
         "條件": [
         ]
       },
-      "OnEachSkillTargetEffect": {
+      "OnEachSkillSetEnd": {
         "效果": [
           {
             "效果": [
-              "{\"property\":16,\"value\":{\"constant\":50,\"$type\":\"BattleModel.ConstanctInt\"},\"isPercent\":true,\"$type\":\"BattleModel.ExtraBonusEffectForSkillProperty\"}",
               "對本狀態的層數增加-1"
             ],
             "條件": [
@@ -47,7 +46,23 @@
               "對本角色移除狀態BreakArmorCritical(破甲爆擊)"
             ],
             "條件": [
-              "本狀態 符合條件 層數 == 0"
+              "本狀態 符合條件 層數 <= 0"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnEachSkillTargetEffect": {
+        "效果": [
+          {
+            "效果": [
+              "{\"property\":16,\"value\":{\"constant\":50,\"$type\":\"BattleModel.ConstanctInt\"},\"isPercent\":true,\"$type\":\"BattleModel.ExtraBonusEffectForSkillProperty\"}"
+            ],
+            "條件": [
+              "施術者是本角色",
+              "施展的技能效果中包含(BreakArmor)屬性",
+              "本狀態 符合條件 層數 > 0"
             ]
           }
         ],
@@ -58,7 +73,7 @@
         "效果": [
           {
             "效果": [
-              "對本狀態覆蓋標籤為(NotRemoveAfterBattle | Forever | StackIndependent | InfinityTrigger)"
+              "對本狀態覆蓋標籤為(NotRemoveAfterBattle | Forever | InfinityTrigger)"
             ],
             "條件": [
               "本角色擁有long_term(長效)狀態"
@@ -71,7 +86,7 @@
     },
     "持續時間": 1,
     "最高層數": 99,
-    "標籤": "Forever | StackIndependent | InfinityTrigger"
+    "標籤": "Forever | InfinityTrigger"
   },
   "$type": "BattleModel.Buff",
   "ReferenceBuffKeys": [
@@ -93,7 +108,146 @@
                     "constant": 50
                   }
                 }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                },
+                "right": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                }
               },
+              {
+                "$type": "BattleModel.ThisSkillEffectTagContains",
+                "containsAll": 16
+              },
+              {
+                "$type": "BattleModel.BuffCondition",
+                "buff": {
+                  "$type": "BattleModel.ThisBuff"
+                },
+                "condition": {
+                  "$type": "BattleModel.IntCompareB",
+                  "left": {
+                    "$type": "BattleModel.IntFieldB",
+                    "targetField": 1
+                  },
+                  "op": 2,
+                  "right": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 0
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 16384,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.ReplaceBuffTag",
+                    "newTag": 32834
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterHasBuff",
+                "buffId": "long_term",
+                "character": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 8192,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.ReplaceBuffTag",
+                    "newTag": 32834
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterHasBuff",
+                "buffId": "long_term",
+                "character": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 1,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.ReplaceBuffTag",
+                    "newTag": 32834
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterHasBuff",
+                "buffId": "long_term",
+                "character": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 8,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
               {
                 "TargetField": {
                   "$type": "BattleModel.OperateThisBuff",
@@ -153,104 +307,11 @@
                     "$type": "BattleModel.IntFieldB",
                     "targetField": 1
                   },
-                  "op": 0,
+                  "op": 3,
                   "right": {
-                    "$type": "BattleModel.ConstantIntB",
+                    "$type": "BattleModel.ConstanctInt",
                     "constant": 0
                   }
-                }
-              }
-            ]
-          }
-        ],
-        "Conditions": [
-        ]
-      }
-    },
-    {
-      "Key": 16384,
-      "Value": {
-        "Actions": [
-          {
-            "Actions": [
-              {
-                "TargetField": {
-                  "$type": "BattleModel.OperateThisBuff",
-                  "operation": {
-                    "$type": "BattleModel.ReplaceBuffTag",
-                    "newTag": 33858
-                  }
-                }
-              }
-            ],
-            "Conditions": [
-              {
-                "$type": "BattleModel.CharacterHasBuff",
-                "buffId": "long_term",
-                "character": {
-                  "$type": "BattleModel.ThisBuffOwner"
-                }
-              }
-            ]
-          }
-        ],
-        "Conditions": [
-        ]
-      }
-    },
-    {
-      "Key": 8192,
-      "Value": {
-        "Actions": [
-          {
-            "Actions": [
-              {
-                "TargetField": {
-                  "$type": "BattleModel.OperateThisBuff",
-                  "operation": {
-                    "$type": "BattleModel.ReplaceBuffTag",
-                    "newTag": 33858
-                  }
-                }
-              }
-            ],
-            "Conditions": [
-              {
-                "$type": "BattleModel.CharacterHasBuff",
-                "buffId": "long_term",
-                "character": {
-                  "$type": "BattleModel.ThisBuffOwner"
-                }
-              }
-            ]
-          }
-        ],
-        "Conditions": [
-        ]
-      }
-    },
-    {
-      "Key": 1,
-      "Value": {
-        "Actions": [
-          {
-            "Actions": [
-              {
-                "TargetField": {
-                  "$type": "BattleModel.OperateThisBuff",
-                  "operation": {
-                    "$type": "BattleModel.ReplaceBuffTag",
-                    "newTag": 33858
-                  }
-                }
-              }
-            ],
-            "Conditions": [
-              {
-                "$type": "BattleModel.CharacterHasBuff",
-                "buffId": "long_term",
-                "character": {
-                  "$type": "BattleModel.ThisBuffOwner"
                 }
               }
             ]
@@ -271,5 +332,5 @@
       }
     }
   ],
-  "_tag": 33856
+  "_tag": 32832
 }
