@@ -1,7 +1,7 @@
+import axios from "axios";
+import axiosRetry from "axios-retry";
 import csvStringify from "csv-stringify";
 import jsonStableStringify from "json-stable-stringify";
-import fetch from "node-fetch";
-import { once } from "node:events";
 import fs from "node:fs";
 import fsp from "node:fs/promises";
 import * as path from "path";
@@ -13,6 +13,11 @@ import { sortKeyByTable } from "./out-sort-key";
 import { flipMatrix } from "./utils";
 
 const logger = new Logger("out");
+
+axiosRetry(axios, {
+	retries: 5,
+	retryDelay: axiosRetry.exponentialDelay,
+});
 
 export function outCsv(filename: string, out: any[]) {
 	logger.debug(`saving csv to ${filename}`);
@@ -107,10 +112,17 @@ export async function mkdir(dirname: string) {
 export async function rpFile(url: string, filePath: string) {
 	logger.debug(`downloading ${url} to ${filePath}`);
 	await mkdir(path.dirname(filePath));
-	const res = await fetch(url);
+	const res = await axios({
+		method: "GET",
+		url: url,
+		responseType: "stream",
+	});
 	const ws = fs.createWriteStream(filePath);
-	res.body.pipe(ws);
-	await once(ws, "close");
+	res.data.pipe(ws);
+	return new Promise((resolve, reject) => {
+		ws.on("finish", resolve);
+		ws.on("error", reject);
+	});
 }
 
 export async function fsExists(filepath: string) {
