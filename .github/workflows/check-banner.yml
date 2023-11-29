@@ -3,6 +3,9 @@ name: "Check Banner"
 on:
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }}
+
 jobs:
   script:
     name: Script
@@ -10,13 +13,14 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Checkout data
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: data
           path: data
+          filter: blob:none
 
       - name: Install Node.js
         uses: actions/setup-node@v3
@@ -56,5 +60,5 @@ jobs:
         id: auto-commit-action
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: 更新Banner資料 ${{ github.event.head_commit.sha }}
+          commit_message: 更新Banner資料
           repository: data
