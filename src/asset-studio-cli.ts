@@ -151,14 +151,160 @@ function spawnAsync(
 	});
 }
 
+export interface CLIOptions {
+	/**
+	 * Specify working mode
+	 * @default "export"
+	 */
+	mode?: "export" | "exportRaw" | "dump" | "info" | "live2d" | "splitObjects";
+	/**
+	 * Specify asset type(s) to export
+	 * @default "all"
+	 */
+	assetType?: (
+		| "tex2d"
+		| "sprite"
+		| "textAsset"
+		| "monoBehaviour"
+		| "font"
+		| "shader"
+		| "movieTexture"
+		| "audio"
+		| "video"
+		| "mesh"
+		| "all"
+	)[];
+	/**
+	 * Specify the way in which exported assets should be grouped
+	 * @default "container"
+	 */
+	groupOption?: "none" | "type" | "container" | "containerFull" | "filename";
+	/**
+	 * Specify path to the output folder
+	 */
+	output?: string;
+	/**
+	 * Specify the log level
+	 * @default "info"
+	 */
+	logLevel?: "verbose" | "debug" | "info" | "warning" | "error";
+	/**
+	 * Specify the format for converting image assets
+	 * @default "png"
+	 */
+	imageFormat?: "none" | "jpg" | "png" | "bmp" | "tga" | "webp";
+	/**
+	 * Specify the format for converting audio assets
+	 * @default "wav"
+	 */
+	audioFormat?: "none" | "wav";
+	/**
+	 * Specify the FBX Scale Factor
+	 *
+	 * Value: float number from 0 to 100 (default=1)
+	 */
+	fbxScaleFactor?: number;
+	/**
+	 * Specify the FBX Bone Size
+	 *
+	 * Value: integer number from 0 to 100 (default=10)
+	 */
+	fbxBoneSize?: number;
+	/**
+	 * Specify the name by which assets should be filtered
+	 */
+	filterByName?: string[];
+	/**
+	 * Specify the container by which assets should be filtered
+	 */
+	filterByContainer?: string[];
+	/**
+	 * Specify the PathID by which assets should be filtered
+	 */
+	filterByPathId?: string[];
+	/**
+	 * Specify the text by which assets should be filtered
+	 *
+	 * Looks for assets that contain the specified text in their names or containers
+	 */
+	filterByText?: string[];
+	/**
+	 * Specify the format in which you want to export asset list
+	 * @default "none"
+	 */
+	exportAssetList?: "none" | "xml";
+	/**
+	 * Specify the path to the assembly folder
+	 */
+	assemblyFolder?: string;
+	/**
+	 * Specify Unity version
+	 */
+	unityVersion?: string;
+	/**
+	 * If specified, AssetStudio will not try to use/restore original TextAsset
+	 * extension name, and will just export all TextAssets with the ".txt" extension
+	 */
+	notRestoreExtension?: boolean;
+	/**
+	 * If specified, AssetStudio will load assets of all types
+	 * (Only for Dump, Info and ExportRaw modes)
+	 */
+	loadAll?: boolean;
+}
+
+function getCliArgs(options: CLIOptions) {
+	const args: string[] = [];
+	if (options.mode) args.push("--mode", options.mode);
+	if (options.assetType) args.push("--asset-type", options.assetType.join(","));
+	if (options.groupOption) args.push("--group-option", options.groupOption);
+	if (options.output) args.push("--output", options.output);
+	if (options.logLevel) args.push("--log-level", options.logLevel);
+	if (options.imageFormat) args.push("--image-format", options.imageFormat);
+	if (options.audioFormat) args.push("--audio-format", options.audioFormat);
+	if (options.fbxScaleFactor) args.push("--fbx-scale-factor", options.fbxScaleFactor.toString());
+	if (options.fbxBoneSize) args.push("--fbx-bone-size", options.fbxBoneSize.toString());
+	if (options.filterByName) args.push("--filter-by-name", options.filterByName.join(","));
+	if (options.filterByContainer)
+		args.push("--filter-by-container", options.filterByContainer.join(","));
+	if (options.filterByPathId) args.push("--filter-by-pathid", options.filterByPathId.join(","));
+	if (options.filterByText) args.push("--filter-by-text", options.filterByText.join(","));
+	if (options.exportAssetList) args.push("--export-asset-list", options.exportAssetList);
+	if (options.assemblyFolder) args.push("--assembly-folder", options.assemblyFolder);
+	if (options.unityVersion) args.push("--unity-version", options.unityVersion);
+	if (options.notRestoreExtension) args.push("--not-restore-extension");
+	if (options.loadAll) args.push("--load-all");
+	return args;
+}
+
 let cliDownloaded = false;
 const limit = pLimit(1);
 
-export async function execAssetStudioModCLI(args: string[], signal: AbortSignal) {
+export async function execAssetStudioModCLI(
+	input: string,
+	options: CLIOptions & {
+		signal: AbortSignal;
+		verbose?: boolean;
+	}
+) {
 	await limit(async () => {
 		if (!cliDownloaded) {
 			cliDownloaded = await downloadCli();
 		}
 	});
-	await spawnAsync("dotnet", [CLI_DLL, ...args], { signal, verbose: false });
+	await spawnAsync(
+		"dotnet",
+		[
+			CLI_DLL,
+			input,
+			...getCliArgs({
+				logLevel: "debug",
+				...options,
+			}),
+		],
+		{
+			signal: options.signal,
+			verbose: options.verbose,
+		}
+	);
 }

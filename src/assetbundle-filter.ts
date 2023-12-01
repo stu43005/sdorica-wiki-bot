@@ -4,7 +4,13 @@ import { AssetbundleLookupTable } from "./assetbundle-lookup-table";
 import { AssetbundleMapping, AssetbundleMappingItem } from "./assetbundle-mapping";
 import { LookupTableCategory } from "./model/enums/lookup-table-category.enum";
 
-const uploadGlobs: string[] = ["assets/game/character/character_image/**/*.@(png|jpg|bmp|tga|psd)"];
+const globImageExt = "@(png|jpg|bmp|tga|psd)";
+const uploadGlobs: string[] = [
+	`assets/game/character/character_image/**/*.${globImageExt}`,
+	`assets/game/ui/common/itemicon/**/*.${globImageExt}`,
+	// `assets/game/ui/levelscene/stonepanel/texture/**/*.${globImageExt}`,
+	`assets/game/ui/loadingscene/loadingbg/**/*.${globImageExt}`,
+];
 const uploadCategories: LookupTableCategory[] = [
 	LookupTableCategory.AvgFlagUI,
 	LookupTableCategory.BattleField_SD,

@@ -79,6 +79,7 @@ async function processAsset(
 			const assetList = await getAssetList(name, filePath);
 			for (const abAsset of assetList) {
 				if (assetFilter(abAsset)) {
+					logger.debug(`[${name}] extracting asset file ${abAsset.Container}...`);
 					const assetFilePath = await extractAssetBundleByPathId(
 						name,
 						filePath,
@@ -92,7 +93,13 @@ async function processAsset(
 						uploadedAssets.add(abAsset.Container);
 						needUploadAssets.delete(abAsset.Container);
 						logger.info(`upload ${abAsset.Container}`);
+					} else {
+						logger.error(
+							`[${name}] extract asset ${abAsset.Container} (${abAsset.PathID}) failed.`
+						);
 					}
+				} else {
+					logger.debug(`[${name}] skip asset file ${abAsset.Container}`);
 				}
 			}
 			await fsp.unlink(filePath);
@@ -143,18 +150,13 @@ export async function extractAssetBundleByContainerPath(
 async function extractAssetBundleByPathId(name: string, filePath: string, pathId: string) {
 	const outDir = path.join(extractFolder, name, pathId);
 	const timeout = AbortSignal.timeout(600_000);
-	const args = [
-		filePath,
-		"--output",
-		outDir,
-		"--group-option",
-		"none",
-		"--filter-by-pathid",
-		pathId,
-		"--image-format",
-		IMAGE_FORMAT,
-	];
-	await execAssetStudioModCLI(args, timeout);
+	await execAssetStudioModCLI(filePath, {
+		output: outDir,
+		groupOption: "none",
+		filterByPathId: [pathId],
+		imageFormat: IMAGE_FORMAT,
+		signal: timeout,
+	});
 	for await (const { filepath } of inputDir(outDir)) {
 		return filepath;
 	}
@@ -163,8 +165,12 @@ async function extractAssetBundleByPathId(name: string, filePath: string, pathId
 async function getAssetList(name: string, filePath: string): Promise<ABAsset[]> {
 	const outDir = path.join(extractFolder, name);
 	const timeout = AbortSignal.timeout(600_000);
-	const args = [filePath, "--output", outDir, "--mode", "info", "--export-asset-list", "xml"];
-	await execAssetStudioModCLI(args, timeout);
+	await execAssetStudioModCLI(filePath, {
+		output: outDir,
+		mode: "info",
+		exportAssetList: "xml",
+		signal: timeout,
+	});
 	const assetsListPath = path.join(outDir, "assets.xml");
 	const assetList = await parseAssetList(assetsListPath);
 	return assetList.filter((abAsset) => {
