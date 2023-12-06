@@ -1,5 +1,7 @@
 import _ from "lodash";
+import { AssetbundleLookupTable } from "../assetbundle-lookup-table";
 import { ImperiumData } from "../imperium-data";
+import { LookupTableCategory } from "../model/enums/lookup-table-category.enum";
 import { Hero } from "../model/hero";
 import { HeroSkillSet } from "../model/hero-skillset";
 import { IHeroSkillSet } from "../model/hero-skillset.interface";
@@ -91,23 +93,36 @@ export default function wikiCharVoice() {
 		const heroGroups = _.groupBy(group, (v) =>
 			typeof v.hero === "string" ? v.hero : v.hero.id
 		);
-		const heroList = Object.values(heroGroups).map(
-			(vs) =>
-				`${typeof vs[0].hero === "string" ? vs[0].hero : vs[0].hero.toWiki()} (${vs
-					.map((s) => (typeof s.skillSet === "string" ? s.skillSet : s.skillSet.rank))
-					.join(", ")})`
+		const heroList = Object.values(heroGroups).map((vs) =>
+			vs
+				.map((s) => (typeof s.skillSet === "string" ? s.skillSet : s.skillSet.toWiki()))
+				.join("\n")
 		);
 
 		table.rows.push([
-			wikiNextLine(heroList.join(",\n")),
-			wikiNextLine(group[0].info.join(",\n")),
-			wikiNextLine(group[0].select.join(",\n")),
-			wikiNextLine(group[0].start.join(",\n")),
-			wikiNextLine(group[0].victory.join(",\n")),
-			wikiNextLine(group[0].rankUp.join(",\n")),
+			wikiNextLine(heroList.join("\n")),
+			formatVoiceList(group[0].info),
+			formatVoiceList(group[0].select),
+			formatVoiceList(group[0].start),
+			formatVoiceList(group[0].victory),
+			formatVoiceList(group[0].rankUp),
 		]);
 	}
 	out += `\n\n${wikitable(table)}`;
 
 	return out;
+}
+
+function formatVoiceList(voices: string[]) {
+	return wikiNextLine(
+		voices
+			.map((voice) => {
+				const url = AssetbundleLookupTable.getInstance().getAssetUrl(
+					LookupTableCategory.Audio_SFX,
+					`${voice}_jp`
+				);
+				return `<a href="${url}">${voice}</a>`;
+			})
+			.join(",\n")
+	);
 }

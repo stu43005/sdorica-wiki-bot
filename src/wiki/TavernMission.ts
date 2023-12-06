@@ -2,7 +2,7 @@ import _ from "lodash";
 import { localizationString } from "../localization";
 import { TavernMission } from "../model/tavern-mission";
 import { wikiH1, wikiH2, wikiH3 } from "../templates/wikiheader";
-import { wikitable, WikiTableStruct } from "../templates/wikitable";
+import { WikiTableStruct, wikitable } from "../templates/wikitable";
 import { sortCategory } from "../utils";
 import { wikiNextLine } from "../wiki-utils";
 
@@ -47,8 +47,8 @@ export default function wikiTavernMission() {
 				if (mission.heroRankN > 2) {
 					reqHero.push(`${mission.heroRank}`);
 				}
-				if (mission.heroSlot.length) {
-					reqHero.push(...mission.heroSlot);
+				if (mission.heroSlot) {
+					reqHero.push(mission.heroSlot);
 				}
 
 				table.rows.push({

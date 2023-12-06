@@ -2,8 +2,8 @@ import { ExploreItemsCategory } from "../model/enums/explore-items-category.enum
 import { ItemCategory } from "../model/enums/item-category.enum";
 import { ExploreItem } from "../model/explore-item";
 import { Item } from "../model/item";
-import { wikiH1, wikiH2 } from "../templates/wikiheader";
-import { wikitable, WikiTableStruct } from "../templates/wikitable";
+import { wikiH1, wikiH2, wikiH3 } from "../templates/wikiheader";
+import { WikiTableStruct, wikitable } from "../templates/wikitable";
 import { wikiNextLine } from "../wiki-utils";
 
 export default function wikiTreasureItems() {
@@ -32,7 +32,7 @@ export default function wikiTreasureItems() {
 		for (const item of group) {
 			tableItem.push([
 				item.id,
-				item.toWiki(),
+				wikiH3(item.toWiki(), item.id, true),
 				wikiNextLine(item.description),
 				item.iconKey,
 				"treasureItems" in item && item.treasureItems

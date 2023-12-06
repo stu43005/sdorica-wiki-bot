@@ -1,9 +1,9 @@
 import _ from "lodash";
 import { ImperiumData } from "../imperium-data";
+import { ItemGiveRef } from "../model/item-give-ref";
 import { wikiH1, wikiH2 } from "../templates/wikiheader";
-import { wikitable, WikiTableCeil, WikiTableStruct } from "../templates/wikitable";
+import { WikiTableCeil, WikiTableStruct, wikitable } from "../templates/wikitable";
 import { range } from "../utils";
-import { item2wikiWithType } from "../wiki-item";
 
 const BattlefieldDropItemsTable = ImperiumData.fromGamedata().getTable("BattlefieldDropItems");
 
@@ -24,15 +24,12 @@ export default function wikiBattlefieldDropItems() {
 							entry.get(`giveLinkId${i}`) != lv1.get(`giveLinkId${i}`)
 								? `style="background-color: #ffd700; color: #1e1e1e;"`
 								: "",
-						text: `${item2wikiWithType(
+						text: new ItemGiveRef(
 							entry.get(`giveType${i}`),
 							entry.get(`giveLinkId${i}`),
-							entry.get(`giveAmount${i}`)
-						)}${
-							entry.get(`chance${i}`) != 10000 && entry.get(`chance${i}`) != -1
-								? `：${entry.get(`chance${i}`) / 100}%`
-								: ""
-						}`,
+							entry.get(`giveAmount${i}`),
+							entry.get(`chance${i}`)
+						).toWiki(),
 					})
 				),
 			]);

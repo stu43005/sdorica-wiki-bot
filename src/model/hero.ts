@@ -1,10 +1,11 @@
 import { ImperiumData, RowWrapper } from "../imperium-data";
 import { characterNameNormalization, localizationString } from "../localization";
 import { heroBaseTemplate } from "../templates/hero-base";
+import { HeroIconParams } from "../templates/hero-icon";
 import { heroPageTemplate } from "../templates/hero-page";
-import { HeroSmallIconParams, heroSmallIconTemplate } from "../templates/hero-small-icon";
 import { tooltipTemplate } from "../templates/tooltip";
 import { heroName, pointRegexp } from "../wiki-hero";
+import { Avatar } from "./avatar";
 import { Chapter } from "./chapter";
 import { CharacterSeriesType } from "./enums/character-series-type.enum";
 import { GenderType } from "./enums/gender-type.enum";
@@ -14,7 +15,6 @@ import { HeroViewableType } from "./enums/hero-viewable-type.enum";
 import { HeroSkillLevel } from "./hero-skilllevel";
 import { HeroSkillSet } from "./hero-skillset";
 import { ItemPayRef } from "./item-pay-ref";
-import { Avatar } from "./avatar";
 
 const HeroesTable = ImperiumData.fromGamedata().getTable("Heroes");
 const RankUpItemRefsTable = ImperiumData.fromGamedata().getTable("RankUpItemRefs");
@@ -23,8 +23,8 @@ const instances: Record<string, Hero> = {};
 let allInstances: Hero[] | null = null;
 
 export class Hero {
-	public static get(row: RowWrapper): Hero;
 	public static get(id: string): Hero | undefined;
+	public static get(row: RowWrapper): Hero;
 	public static get(rowOrId: RowWrapper | string): Hero {
 		const id = typeof rowOrId === "string" ? rowOrId : rowOrId.get("id");
 		if (!instances[id]) {
@@ -43,7 +43,7 @@ export class Hero {
 	}
 
 	public static find(predicate: (value: Hero) => boolean): Hero | undefined {
-		for (const item of this.getAllGenerator()) {
+		for (const item of this) {
 			if (predicate(item)) {
 				return item;
 			}
@@ -51,10 +51,10 @@ export class Hero {
 	}
 
 	public static getAll() {
-		return (allInstances ??= Array.from(this.getAllGenerator()));
+		return (allInstances ??= Array.from(this));
 	}
 
-	public static *getAllGenerator() {
+	public static *[Symbol.iterator]() {
 		for (let i = 0; i < HeroesTable.length; i++) {
 			const row = HeroesTable.get(i);
 			yield Hero.get(row);
@@ -117,11 +117,16 @@ export class Hero {
 			: HeroSlot.GOLD;
 	}
 
-	#storyChapter: Chapter | null = null;
+	#storyChapter: Chapter | undefined | null = null;
 	get storyChapter(): Chapter | undefined {
 		const storyChapter = this.row.get("storyChapter");
-		if (!storyChapter) return undefined;
-		return (this.#storyChapter ??= Chapter.get(storyChapter));
+		if (!storyChapter) {
+			return;
+		}
+		if (this.#storyChapter === null) {
+			this.#storyChapter ??= Chapter.get(storyChapter);
+		}
+		return this.#storyChapter;
 	}
 
 	get avatarId(): string {
@@ -209,6 +214,9 @@ export class Hero {
 	get SSR() {
 		return this.skillSets.find((s) => s.rank === HeroRank.SSR);
 	}
+	get highestRank() {
+		return this.SSR ?? this.SR ?? this.R ?? this.N;
+	}
 
 	constructor(private row: RowWrapper) {
 		const name = heroName(row);
@@ -246,20 +254,19 @@ export class Hero {
 		return this.skillSets.find((ss) => ss.rankId === rankId);
 	}
 
-	/**
-	 * 取得`{{角色小圖示}}`模板
-	 */
-	toWiki(options: HeroSmallIconParams = {}) {
+	toWiki(options?: HeroIconParams): string {
 		if (!this.enable) {
 			if (this.firstname != this.internalName) {
 				return tooltipTemplate(this.firstname, this.internalName);
 			}
 			return this.firstname;
 		}
-		return heroSmallIconTemplate(this.firstname, {
-			text: "true",
-			...options,
-		});
+		return (
+			this.highestRank?.toWiki({
+				showRank: false,
+				...options,
+			}) ?? ""
+		);
 	}
 
 	/**

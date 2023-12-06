@@ -1,11 +1,15 @@
 import { ImperiumData, RowWrapper } from "../imperium-data";
 import { itemNameNormalization, localizationString } from "../localization";
+import { ItemIconParams } from "../templates/item-icon";
 import { wikiH2 } from "../templates/wikiheader";
 import { exploreCompositeList, exploreUsingList } from "../wiki-item";
 import { exploreItemRename } from "./config/item";
 import { DropItemsGroup } from "./drop-items";
 import { ExploreItemPortable } from "./enums/explore-item-portable.enum";
 import { ExploreItemsCategory } from "./enums/explore-items-category.enum";
+import { ItemType } from "./enums/item-type.enum";
+import { ExploreComposite } from "./explore-composite";
+import { Hero } from "./hero";
 import { Item } from "./item";
 import { ItemBase } from "./item.base";
 
@@ -15,8 +19,8 @@ const instances: Record<string, ExploreItem> = {};
 let allInstances: ExploreItem[] | null = null;
 
 export class ExploreItem extends ItemBase {
-	public static get(row: RowWrapper): ExploreItem;
 	public static get(id: string): ExploreItem | undefined;
+	public static get(row: RowWrapper): ExploreItem;
 	public static get(rowOrId: RowWrapper | string): ExploreItem {
 		const id = typeof rowOrId === "string" ? rowOrId : rowOrId.get("id");
 		if (!instances[id]) {
@@ -32,7 +36,7 @@ export class ExploreItem extends ItemBase {
 	}
 
 	public static find(predicate: (value: ExploreItem) => boolean): ExploreItem | undefined {
-		for (const item of this.getAllGenerator()) {
+		for (const item of this) {
 			if (predicate(item)) {
 				return item;
 			}
@@ -40,22 +44,22 @@ export class ExploreItem extends ItemBase {
 	}
 
 	public static getAll() {
-		return (allInstances ??= Array.from(this.getAllGenerator()));
+		return (allInstances ??= Array.from(this));
 	}
 
-	public static *getAllGenerator() {
+	public static *[Symbol.iterator]() {
 		for (let i = 0; i < ExploreItemsTable.length; i++) {
 			const row = ExploreItemsTable.get(i);
 			yield ExploreItem.get(row);
 		}
 	}
 
-	readonly isExplore = true;
+	readonly itemType = ItemType.ExploreItem;
 
 	get id(): string {
 		return this.row.get("id");
 	}
-	get no(): number {
+	private get no(): number {
 		return +this.id;
 	}
 	get category(): ExploreItemsCategory {
@@ -65,13 +69,16 @@ export class ExploreItem extends ItemBase {
 		return this.row.get("effectValue");
 	}
 	get iconKey(): string {
-		return `${this.row.get("iconKey")}`.replace(/Explore\//g, "");
+		return this.row.get("iconKey");
 	}
 
 	name: string;
 	scName: string;
 	description: string;
 
+	get order(): number {
+		return +this.row.get("order");
+	}
 	get enable() {
 		if (this.no >= 1 && this.no <= 11) return false;
 		if (this.no >= 10000 && this.no <= 10019) return false;
@@ -82,8 +89,12 @@ export class ExploreItem extends ItemBase {
 	get label(): string[] {
 		return `${this.row.get("label")}`.split(";");
 	}
-	get owner(): string {
-		return this.row.get("owner");
+	#owner: Hero | undefined | null = null;
+	get owner(): Hero | undefined {
+		if (this.#owner === null) {
+			this.#owner = Hero.get(this.row.get("owner"));
+		}
+		return this.#owner;
 	}
 	get portable(): ExploreItemPortable {
 		return this.row.get("portable");
@@ -120,6 +131,14 @@ export class ExploreItem extends ItemBase {
 		return this.#treasureItems;
 	}
 
+	#composite: ExploreComposite[] | null = null;
+	get composite(): ExploreComposite[] {
+		if (this.#composite === null) {
+			this.#composite = ExploreComposite.getByItem(this);
+		}
+		return this.#composite;
+	}
+
 	constructor(row: RowWrapper) {
 		super(row);
 		this.name = itemNameNormalization(
@@ -134,6 +153,16 @@ export class ExploreItem extends ItemBase {
 			)(row.get("localizationKeyName")) || this.iconKey
 		);
 		this.description = localizationString("ExpItem")(row.get("localizationKeyDescription"));
+	}
+
+	toWiki(options?: ItemIconParams) {
+		if (this.transformTo) {
+			return this.transformTo.toWiki({
+				iconUrl: this.getIconAssetUrl(options?.smallIcon),
+				...options,
+			});
+		}
+		return super.toWiki(options);
 	}
 
 	getWikiPageName() {

@@ -2,7 +2,7 @@ import _ from "lodash";
 import { ImperiumData } from "../imperium-data";
 import { localizationString } from "../localization";
 import { wikiH1, wikiH2 } from "../templates/wikiheader";
-import { wikitable, WikiTableStruct } from "../templates/wikitable";
+import { WikiTableStruct, wikitable } from "../templates/wikitable";
 import { range } from "../utils";
 import { item2wikiWithType } from "../wiki-item";
 
@@ -32,7 +32,7 @@ export default function wikiHomelandBuilding() {
 								nextLevel.get(`payType${i}`),
 								nextLevel.get(`linkId${i}`),
 								nextLevel.get(`amount${i}`),
-								{ size: "20px" }
+								{ width: "20px" }
 							)
 						)
 						.filter(Boolean)

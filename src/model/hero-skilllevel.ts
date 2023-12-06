@@ -1,4 +1,7 @@
+import { render } from "preact-render-to-string";
 import { ImperiumData, RowWrapper } from "../imperium-data";
+import { HeroIconParams, heroIconTemplate } from "../templates/hero-icon";
+import { range } from "../utils";
 import { SkillId } from "./enums/skill-id.enum";
 import { SkillType } from "./enums/skill-type.enum";
 import { StoneEraseShape } from "./enums/stone-erase-shape.enum";
@@ -14,8 +17,8 @@ const instances: Record<string, HeroSkillLevel> = {};
 let allInstances: HeroSkillLevel[] | null = null;
 
 export class HeroSkillLevel implements IHeroSkillSet {
-	public static get(row: RowWrapper): HeroSkillLevel;
 	public static get(id: string): HeroSkillLevel | undefined;
+	public static get(row: RowWrapper): HeroSkillLevel;
 	public static get(rowOrId: RowWrapper | string): HeroSkillLevel {
 		const id = typeof rowOrId === "string" ? rowOrId : rowOrId.get("id");
 		if (!instances[id]) {
@@ -41,7 +44,7 @@ export class HeroSkillLevel implements IHeroSkillSet {
 	}
 
 	private static find(predicate: (value: HeroSkillLevel) => boolean): HeroSkillLevel | undefined {
-		for (const item of this.getAllGenerator()) {
+		for (const item of this) {
 			if (predicate(item)) {
 				return item;
 			}
@@ -49,10 +52,10 @@ export class HeroSkillLevel implements IHeroSkillSet {
 	}
 
 	public static getAll() {
-		return (allInstances ??= Array.from(this.getAllGenerator()));
+		return (allInstances ??= Array.from(this));
 	}
 
-	public static *getAllGenerator() {
+	public static *[Symbol.iterator]() {
 		for (let i = 0; i < SkillLevelTable.length; i++) {
 			const row = SkillLevelTable.get(i);
 			yield HeroSkillLevel.get(row);
@@ -83,6 +86,9 @@ export class HeroSkillLevel implements IHeroSkillSet {
 
 	get model(): string {
 		return this.row.get("targetSkillSet");
+	}
+	get heroSd() {
+		return this.rootSkillSet?.heroSd;
 	}
 	get name() {
 		return this.rootSkillSet?.name;
@@ -148,7 +154,22 @@ export class HeroSkillLevel implements IHeroSkillSet {
 		return this.rootSkillSet?.info;
 	}
 
-	payItems: ItemPayRef[];
+	#payItems: ItemPayRef[] | null = null;
+	get payItems(): ItemPayRef[] {
+		if (this.#payItems === null) {
+			this.#payItems = range(1, 4)
+				.map(
+					(i) =>
+						new ItemPayRef(
+							this.row.get(`pay${i}Type`),
+							this.row.get(`pay${i}LinkId`),
+							this.row.get(`pay${i}Amount`)
+						)
+				)
+				.filter((ref) => !!ref.item);
+		}
+		return this.#payItems;
+	}
 
 	constructor(private row: RowWrapper) {
 		this.P1 = new HeroSkill(this, SkillId.P1, SkillType.P1, StoneEraseShape.None, this.tipsP1);
@@ -156,24 +177,14 @@ export class HeroSkillLevel implements IHeroSkillSet {
 		this.S1 = HeroSkill.createByEraseType(this, SkillId.S1, this.stoneEraseTypeS1, this.tipsS1);
 		this.S2 = HeroSkill.createByEraseType(this, SkillId.S2, this.stoneEraseTypeS2, this.tipsS2);
 		this.S3 = HeroSkill.createByEraseType(this, SkillId.S3, this.stoneEraseTypeS3, this.tipsS3);
+	}
 
-		this.payItems = [];
-		if (row.get("pay1Type"))
-			this.payItems.push(
-				new ItemPayRef(row.get("pay1Type"), row.get("pay1LinkId"), row.get("pay1Amount"))
-			);
-		if (row.get("pay2Type"))
-			this.payItems.push(
-				new ItemPayRef(row.get("pay2Type"), row.get("pay2LinkId"), row.get("pay2Amount"))
-			);
-		if (row.get("pay3Type"))
-			this.payItems.push(
-				new ItemPayRef(row.get("pay3Type"), row.get("pay3LinkId"), row.get("pay3Amount"))
-			);
-		if (row.get("pay4Type"))
-			this.payItems.push(
-				new ItemPayRef(row.get("pay4Type"), row.get("pay4LinkId"), row.get("pay4Amount"))
-			);
+	toWiki(options?: HeroIconParams) {
+		return render(heroIconTemplate(this, options));
+	}
+
+	getSdAssetUrl() {
+		return this.rootSkillSet?.getSdAssetUrl();
 	}
 
 	toJSON(minify?: boolean) {

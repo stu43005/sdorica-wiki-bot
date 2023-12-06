@@ -1,5 +1,5 @@
+import { ItemIconParams } from "../templates/item-icon";
 import { wikiul } from "../templates/wikilist";
-import { Item2WikiOptions } from "../wiki-item";
 import { wikiNextLine } from "../wiki-utils";
 import { ItemGiveRef } from "./item-give-ref";
 
@@ -19,7 +19,7 @@ export class ItemGiveList {
 	}
 
 	toWiki(
-		options?: Item2WikiOptions & {
+		options?: ItemIconParams & {
 			listType?: "ul" | "br" | "none" | "separator";
 			separator?: string;
 		}

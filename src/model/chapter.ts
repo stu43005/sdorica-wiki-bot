@@ -1,5 +1,6 @@
+import { AssetbundleLookupTable } from "../assetbundle-lookup-table";
 import { ImperiumData, RowWrapper } from "../imperium-data";
-import { gamedataString, localizationString } from "../localization";
+import { localizationString } from "../localization";
 import { wikiTitleEscape } from "../wiki-utils";
 import { Battlefield } from "./battlefield";
 import { ChapterCount } from "./chapter-count";
@@ -12,6 +13,7 @@ import { TimeDisplayType } from "./enums/chapter-time-display-type.enum";
 import { TitleViewType } from "./enums/chapter-title-view-type.enum";
 import { ChapterWikiGroup } from "./enums/chapter-wiki-group.enum";
 import { ItemPayType } from "./enums/item-pay-type.enum";
+import { LookupTableCategory } from "./enums/lookup-table-category.enum";
 import { RewardGroupType } from "./enums/reward-group-type.enum";
 import { StateCondition, stateConditionText } from "./enums/state-condition.enum";
 import { VolumeEnum } from "./enums/volume.enum";
@@ -22,13 +24,14 @@ import { Quest } from "./quest";
 import { Volume } from "./volume";
 
 const ChaptersTable = ImperiumData.fromGamedata().getTable("Chapters");
+const DiligentGroupsTable = ImperiumData.fromGamedata().getTable("DiligentGroups");
 
 const instances: Record<string, Chapter> = {};
 let allInstances: Chapter[] | null = null;
 
 export class Chapter {
-	public static get(row: RowWrapper): Chapter;
 	public static get(id: string): Chapter | undefined;
+	public static get(row: RowWrapper): Chapter;
 	public static get(rowOrId: RowWrapper | string): Chapter {
 		const id = typeof rowOrId === "string" ? rowOrId : rowOrId.get("id");
 		if (!instances[id]) {
@@ -69,7 +72,7 @@ export class Chapter {
 	}
 
 	public static find(predicate: (value: Chapter) => boolean): Chapter | undefined {
-		for (const item of this.getAllGenerator()) {
+		for (const item of this) {
 			if (predicate(item)) {
 				return item;
 			}
@@ -77,10 +80,10 @@ export class Chapter {
 	}
 
 	public static getAll() {
-		return (allInstances ??= Array.from(this.getAllGenerator()));
+		return (allInstances ??= Array.from(this));
 	}
 
-	public static *getAllGenerator() {
+	public static *[Symbol.iterator]() {
 		for (let i = 0; i < ChaptersTable.length; i++) {
 			const row = ChaptersTable.get(i);
 			yield Chapter.get(row);
@@ -97,9 +100,12 @@ export class Chapter {
 		return !!this.row.get("isLock");
 	}
 
-	#volume: Volume | null = null;
-	get volume(): Volume {
-		return (this.#volume ??= Volume.get(this.row.get("volume")));
+	#volume: Volume | undefined | null = null;
+	get volume(): Volume | undefined {
+		if (this.#volume === null) {
+			this.#volume ??= Volume.get(this.row.get("volume"));
+		}
+		return this.#volume;
 	}
 	/**
 	 * @deprecated 改用 {@link volume}
@@ -188,12 +194,15 @@ export class Chapter {
 	 */
 	extraCountItem: ItemPayRef[];
 
-	#chapterCount: ChapterCount | null = null;
+	#chapterCount: ChapterCount | undefined | null = null;
 	/**
 	 * 章節可用次數
 	 */
-	get chapterCount(): ChapterCount {
-		return (this.#chapterCount ??= ChapterCount.get(this.row.get("chapterCountId")));
+	get chapterCount(): ChapterCount | undefined {
+		if (this.#chapterCount === null) {
+			this.#chapterCount ??= ChapterCount.get(this.row.get("chapterCountId"));
+		}
+		return this.#chapterCount;
 	}
 
 	/**
@@ -227,12 +236,15 @@ export class Chapter {
 		return this.#dropGroup;
 	}
 
-	#battlefield: Battlefield | null = null;
+	#battlefield: Battlefield | undefined | null = null;
 	/**
 	 * 戰場
 	 */
-	get battlefield(): Battlefield {
-		return (this.#battlefield ??= Battlefield.get(this.row.get("battlefieldId")));
+	get battlefield(): Battlefield | undefined {
+		if (this.#battlefield === null) {
+			this.#battlefield ??= Battlefield.get(this.row.get("battlefieldId"));
+		}
+		return this.#battlefield;
 	}
 
 	/**
@@ -246,8 +258,13 @@ export class Chapter {
 	#diligentItem: Item | undefined | null = null;
 	get diligentItem(): Item | undefined {
 		if (this.#diligentItem === null) {
-			const diligentId = gamedataString("DiligentGroups", "chapterId", "diligentId")(this.id);
-			this.#diligentItem = Item.get(diligentId);
+			const row = DiligentGroupsTable.find((r) => r.get("chapterId") == this.id);
+			if (row) {
+				const diligentId = row.get("diligentId") || "1011";
+				this.#diligentItem = Item.get(diligentId);
+			} else {
+				this.#diligentItem = undefined;
+			}
 		}
 		return this.#diligentItem;
 	}
@@ -301,13 +318,27 @@ export class Chapter {
 			);
 	}
 
+	public getMainImageAssetUrl() {
+		return AssetbundleLookupTable.getInstance().getAssetUrl(
+			LookupTableCategory.MainPageImage,
+			this.mainImage
+		);
+	}
+
+	public getMainImageIconsAssetUrl() {
+		return AssetbundleLookupTable.getInstance().getAssetUrl(
+			LookupTableCategory.BattleField_SD,
+			this.mainImageIcons
+		);
+	}
+
 	#wikiGroup: ChapterWikiGroup | null = null;
 	public getWikiGroup(): ChapterWikiGroup {
 		return (this.#wikiGroup ??= this._getWikiGroup());
 	}
 
 	private _getWikiGroup(): ChapterWikiGroup {
-		switch (this.volume.volume) {
+		switch (this.volume?.volume) {
 			case VolumeEnum.Main:
 				if (this.mainImage.startsWith("ch")) {
 					return ChapterWikiGroup.SdoricaSunset;
@@ -364,10 +395,8 @@ export class Chapter {
 					return ChapterWikiGroup.SideStoryEvent;
 				}
 				return ChapterWikiGroup.Event;
-
-			case VolumeEnum.Test:
-				return ChapterWikiGroup.Test;
 		}
+		return ChapterWikiGroup.Test;
 	}
 
 	public getWikiName() {
@@ -382,7 +411,7 @@ export class Chapter {
 		return wikiTitleEscape(this.name);
 	}
 
-	public getWikiTitle() {
+	public getWikiTitle(): string {
 		if (chapterTitleRename[this.id]) {
 			return chapterTitleRename[this.id];
 		}
@@ -420,7 +449,7 @@ export class Chapter {
 	}
 
 	public getWikiImageName() {
-		if (this.volume.volume == VolumeEnum.Main) {
+		if (this.volume?.volume == VolumeEnum.Main) {
 			return this.getWikiName().replace(/(S\d)?\s?Chapter (\d+)/, "$1第$2章");
 		}
 		return this.getWikiTitle();

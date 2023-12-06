@@ -1,6 +1,16 @@
 import { wikitemplate } from "../wiki-utils";
 import { HeroSlot } from "../model/enums/hero-slot.enum";
 
+// TODO:
+const asset = {
+	[HeroSlot.WHITE]:
+		"assets/game/ui/common/commonui/texture/heroes_frame_position_white_withicon.png",
+	[HeroSlot.GOLD]:
+		"assets/game/ui/common/commonui/texture/heroes_frame_position_gold_withicon.png",
+	[HeroSlot.BLACK]:
+		"assets/game/ui/common/commonui/texture/heroes_frame_position_black_withicon.png",
+};
+
 export interface HeroSlotIconParams {
 	/**
 	 * 圖示大小

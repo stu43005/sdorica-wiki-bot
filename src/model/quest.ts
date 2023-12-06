@@ -17,8 +17,8 @@ const instances: Record<string, Quest> = {};
 let allInstances: Quest[] | null = null;
 
 export class Quest {
-	public static get(row: RowWrapper): Quest;
 	public static get(id: string): Quest | undefined;
+	public static get(row: RowWrapper): Quest;
 	public static get(rowOrId: RowWrapper | string): Quest {
 		const id = typeof rowOrId === "string" ? rowOrId : rowOrId.get("id");
 		if (!instances[id]) {
@@ -38,7 +38,7 @@ export class Quest {
 	}
 
 	public static find(predicate: (value: Quest) => boolean): Quest | undefined {
-		for (const item of this.getAllGenerator()) {
+		for (const item of this) {
 			if (predicate(item)) {
 				return item;
 			}
@@ -46,10 +46,10 @@ export class Quest {
 	}
 
 	public static getAll() {
-		return (allInstances ??= Array.from(this.getAllGenerator()));
+		return (allInstances ??= Array.from(this));
 	}
 
-	public static *getAllGenerator() {
+	public static *[Symbol.iterator]() {
 		for (let i = 0; i < QuestsTable.length; i++) {
 			const row = QuestsTable.get(i);
 			yield Quest.get(row);
@@ -78,9 +78,12 @@ export class Quest {
 		return !!this.row.get("enable");
 	}
 
-	#chapter: Chapter | null = null;
-	get chapter(): Chapter {
-		return (this.#chapter ??= Chapter.get(this.row.get("chapter")));
+	#chapter: Chapter | undefined | null = null;
+	get chapter(): Chapter | undefined {
+		if (this.#chapter === null) {
+			this.#chapter ??= Chapter.get(this.row.get("chapter"));
+		}
+		return this.#chapter;
 	}
 
 	get levelId(): string {
@@ -186,7 +189,7 @@ export class Quest {
 			return questWikiLinkRename[this.id];
 		}
 		const title = wikiTitleEscape(this.title);
-		switch (this.chapter.getWikiGroup()) {
+		switch (this.chapter?.getWikiGroup()) {
 			case ChapterWikiGroup.Multiplayer:
 				return `${this.chapter.getWikiTitle()}/${title}${
 					this.recommendLevel === 50 ? "(Lv.50)" : ""

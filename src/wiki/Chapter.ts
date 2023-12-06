@@ -1,23 +1,28 @@
 import _ from "lodash";
 import { Chapter } from "../model/chapter";
+import { ChapterMainImageType } from "../model/enums/chapter-main-image-type.enum";
 import { RewardGroupType } from "../model/enums/reward-group-type.enum";
 import { wikiH1, wikiH2, wikiH3 } from "../templates/wikiheader";
 import { wikiimage } from "../templates/wikiimage";
 import { wikiPageLink } from "../templates/wikilink";
 import { wikiul } from "../templates/wikilist";
-import { wikitable, WikiTableStruct } from "../templates/wikitable";
+import { WikiTableStruct, wikitable } from "../templates/wikitable";
 
 export default function wikiChapter() {
 	let out = wikiH1("章節");
 
 	const chapterGroups = _.groupBy(Chapter.getAll(), (c) => c.getWikiGroup());
 	for (const [groupId, group] of Object.entries(chapterGroups)) {
+		out += `\n\n${wikiH2(groupId)}\n`;
+
 		const volume = group[0].volume;
-		const volumeHints = [
-			`${volume.name}可見條件：${volume.visibleConditionText}`,
-			`${volume.name}解鎖條件：${volume.unlockConditionText}`,
-		];
-		out += `\n\n${wikiH2(groupId)}\n${wikiul(volumeHints)}\n`;
+		if (volume) {
+			const volumeHints = [
+				`${volume.name}可見條件：${volume.visibleConditionText}`,
+				`${volume.name}解鎖條件：${volume.unlockConditionText}`,
+			];
+			out += `${wikiul(volumeHints)}\n`;
+		}
 
 		for (const chapter of group) {
 			const chapterHints = [
@@ -107,11 +112,21 @@ export default function wikiChapter() {
 					questHints.length ? wikiul(questHints) : "",
 				]);
 			}
+			const mainImage =
+				chapter.mainImageType === ChapterMainImageType.SystemBattlefieldSd
+					? wikiimage({
+							url: chapter.getMainImageIconsAssetUrl(),
+							width: 64,
+					  })
+					: wikiimage({
+							url: chapter.getMainImageAssetUrl(),
+							width: 400,
+					  });
 			out += `\n
 ${wikiH3(chapter.getWikiFullName(), chapter.id)}
 ${wikiul(chapterHints)}
 
-${wikiimage(chapter.getWikiImageName(), { width: 400 })}
+${mainImage}
 ${wikitable(table)}`;
 		}
 	}

@@ -15,8 +15,8 @@ const instances: Record<string, QuestExtraSetting> = {};
 let allInstances: QuestExtraSetting[] | null = null;
 
 export class QuestExtraSetting {
-	public static get(row: RowWrapper): QuestExtraSetting;
 	public static get(id: string): QuestExtraSetting | undefined;
+	public static get(row: RowWrapper): QuestExtraSetting;
 	public static get(rowOrId: RowWrapper | string): QuestExtraSetting {
 		const id = typeof rowOrId === "string" ? rowOrId : rowOrId.get("id");
 		if (!instances[id]) {
@@ -34,7 +34,7 @@ export class QuestExtraSetting {
 	public static find(
 		predicate: (value: QuestExtraSetting) => boolean
 	): QuestExtraSetting | undefined {
-		for (const item of this.getAllGenerator()) {
+		for (const item of this) {
 			if (predicate(item)) {
 				return item;
 			}
@@ -42,10 +42,10 @@ export class QuestExtraSetting {
 	}
 
 	public static getAll() {
-		return (allInstances ??= Array.from(this.getAllGenerator()));
+		return (allInstances ??= Array.from(this));
 	}
 
-	public static *getAllGenerator() {
+	public static *[Symbol.iterator]() {
 		for (let i = 0; i < QuestExtraSettingsTable.length; i++) {
 			const row = QuestExtraSettingsTable.get(i);
 			yield QuestExtraSetting.get(row);

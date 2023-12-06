@@ -10,8 +10,8 @@ const instances: Record<string, Volume> = {};
 let allInstances: Volume[] | null = null;
 
 export class Volume {
-	public static get(row: RowWrapper): Volume;
 	public static get(volume: VolumeEnum): Volume | undefined;
+	public static get(row: RowWrapper): Volume;
 	public static get(rowOrVolume: RowWrapper | VolumeEnum): Volume {
 		const volume = typeof rowOrVolume === "string" ? rowOrVolume : rowOrVolume.get("volume");
 		if (!instances[volume]) {
@@ -27,7 +27,7 @@ export class Volume {
 	}
 
 	public static find(predicate: (value: Volume) => boolean): Volume | undefined {
-		for (const item of this.getAllGenerator()) {
+		for (const item of this) {
 			if (predicate(item)) {
 				return item;
 			}
@@ -35,10 +35,10 @@ export class Volume {
 	}
 
 	public static getAll() {
-		return (allInstances ??= Array.from(this.getAllGenerator()));
+		return (allInstances ??= Array.from(this));
 	}
 
-	public static *getAllGenerator() {
+	public static *[Symbol.iterator]() {
 		for (let i = 0; i < VolumeTable.length; i++) {
 			const row = VolumeTable.get(i);
 			yield Volume.get(row);

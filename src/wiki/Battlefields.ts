@@ -6,7 +6,7 @@ import { wikiul } from "../templates/wikilist";
 export default function wikiBattlefields() {
 	let out = wikiH1("戰場");
 
-	for (const battlefield of Battlefield.getAllGenerator()) {
+	for (const battlefield of Battlefield) {
 		const ul = [
 			`最大回合數：${battlefield.endTurnCount}`,
 			`通關獎勵：${wikiPageLink("BattlefieldDropItems", "", battlefield.questLvDropId)}`,

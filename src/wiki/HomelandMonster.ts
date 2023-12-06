@@ -1,43 +1,10 @@
 import _ from "lodash";
-import numeral from "numeral";
-import { ImperiumData } from "../imperium-data";
-import {
-	gbw,
-	localizationCharacterName,
-	localizationMonsterSkillName,
-	localizationMonsterSpecialityName,
-	localizationString,
-} from "../localization";
+import { Monster } from "../model/monster";
+import { MonsterAbilityDropGroup } from "../model/monster-ability-drop";
 import { wikiH1, wikiHr } from "../templates/wikiheader";
 import { wikiimage } from "../templates/wikiimage";
-import { wikitable, WikiTableStruct } from "../templates/wikitable";
+import { WikiTableStruct, wikitable } from "../templates/wikitable";
 import { wikiNextLine } from "../wiki-utils";
-
-const AbilityDropTable = ImperiumData.fromGamedata().getTable("AbilityDrop");
-const HomelandMonsterTable = ImperiumData.fromGamedata().getTable("HomelandMonster");
-
-function abilityDrop(groupId: string) {
-	const entries = AbilityDropTable.filter((r) => r.get("groupId") == groupId);
-	const weightSum = _.sumBy(entries, (r) => +r.get("weight"));
-	return entries
-		.map((r) => {
-			let str: string = r.get("abilityId");
-			switch (r.get("type")) {
-				case "Skill":
-					str = localizationMonsterSkillName()(r.get("abilityId"));
-					break;
-				case "Speciality":
-					str = localizationMonsterSpecialityName()(r.get("abilityId"));
-					break;
-			}
-			str = `${wikiimage(`${str}_Icon.png`, { width: 24 })} ${str}`;
-			if (weightSum && r.get("weight") != weightSum) {
-				str += `：${numeral(r.get("weight") / weightSum).format("0.[00]%")}`;
-			}
-			return str;
-		})
-		.join("\n");
-}
 
 export default function wikiHomelandMonster() {
 	let out = wikiH1("獸廄野獸");
@@ -63,37 +30,44 @@ export default function wikiHomelandMonster() {
 		],
 	];
 
-	const monsters = _.groupBy(HomelandMonsterTable.rows, (r) => r.get("monsterId"));
+	const monsters = _.groupBy(Monster.getAll(), (r) => r.monsterId);
 	for (const [, group] of Object.entries(monsters)) {
 		const monsterFirst = group[0];
-		const name =
-			localizationCharacterName()(monsterFirst.get("keyName")) || monsterFirst.get("keyName");
 
-		const speciality1List = Object.entries(_.groupBy(group, (r) => r.get("speciality1")))
+		const speciality1List = Object.entries(_.groupBy(group, (r) => r.speciality1?.groupId))
 			.map(([speciality1, group1]) => {
-				const ranks: string[] = group1.map((r) => r.get("rank"));
-				return `rank ${ranks.join(", ")}:\n${abilityDrop(speciality1)}`;
+				const ranks: number[] = group1.map((r) => r.rank);
+				const group = MonsterAbilityDropGroup.get(speciality1);
+				return `rank ${ranks.join(", ")}:<br/>${group?.toWiki()}`;
 			})
-			.join(`\n${wikiHr()}\n`);
+			.join(wikiHr());
 
-		const speciality2List = Object.entries(_.groupBy(group, (r) => r.get("speciality2")))
+		const speciality2List = Object.entries(_.groupBy(group, (r) => r.speciality2?.groupId))
 			.map(([speciality2, group2]) => {
-				const ranks: string[] = group2.map((r) => r.get("rank"));
-				return `rank ${ranks.join(", ")}:\n${abilityDrop(speciality2)}`;
+				const ranks: number[] = group2.map((r) => r.rank);
+				const group = MonsterAbilityDropGroup.get(speciality2);
+				return `rank ${ranks.join(", ")}:<br/>${group?.toWiki()}`;
 			})
-			.join(`\n${wikiHr()}\n`);
+			.join(wikiHr());
 
 		table.push([
-			`{{站位圖標|${gbw()(monsterFirst.get("monsterType"))}位}}`,
+			wikiimage({
+				url: monsterFirst.getMonsterTypeAssetUrl(),
+				width: 50,
+			}),
 			{
 				attributes: `style="text-align: center; width: 70px;"`,
-				text: `{{野獸圖標|${name}}}`,
+				text: monsterFirst.toWiki({
+					width: 70,
+					direction: "vertical",
+					showRank: false,
+				}),
 			},
-			localizationString("MonsterInfo")(monsterFirst.get("monsterDescKey")),
-			wikiNextLine(abilityDrop(monsterFirst.get("skill1"))),
-			wikiNextLine(abilityDrop(monsterFirst.get("skill2"))),
-			wikiNextLine(speciality1List),
-			wikiNextLine(speciality2List),
+			monsterFirst.description,
+			monsterFirst.skill1?.toWiki({ listType: "none" }) ?? "",
+			monsterFirst.skill2?.toWiki({ listType: "none" }) ?? "",
+			speciality1List,
+			speciality2List,
 		]);
 	}
 

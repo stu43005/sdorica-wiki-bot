@@ -229,7 +229,7 @@ export class RowWrapper {
 			}
 		} else if (type === "String") {
 			value = "" + value;
-		} else if (type === "Integer") {
+		} else if (type === "Integer" || type === "Float") {
 			value = +value;
 		}
 		if (typeof value === "string") {

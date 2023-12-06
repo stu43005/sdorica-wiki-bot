@@ -1,3 +1,5 @@
+import { h } from "preact";
+import { wrapRender } from "./preact-wrapper";
 import { normalizationHeaderId } from "./wikiheader";
 
 export function wikiSectionLink(section: string, text?: string) {
@@ -5,7 +7,9 @@ export function wikiSectionLink(section: string, text?: string) {
 	// return `[${text ?? section}](#${section})`;
 }
 
-export function wikiPageLink(page: string, text?: string, section?: string) {
+export const wikiPageLink = wrapRender(wikiPageLinkElement);
+
+export function wikiPageLinkElement(page: string, text?: string, section?: string): h.JSX.Element {
 	if (!text) {
 		if (section) {
 			text = `${page}＃${section}`;
@@ -14,6 +18,5 @@ export function wikiPageLink(page: string, text?: string, section?: string) {
 		}
 	}
 	const link = `${page}.html${section ? `#${normalizationHeaderId(section)}` : ""}`;
-	return `<a href="${link}">${text}</a>`;
-	// return `[${text}](${link})`;
+	return <a href={link}>{text}</a>;
 }

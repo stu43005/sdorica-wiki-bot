@@ -5,7 +5,7 @@ import { TavernMission } from "../model/tavern-mission";
 import { TavernMissionRequire } from "../model/tavern-mission-require";
 import { wikiH1, wikiH2, wikiH3 } from "../templates/wikiheader";
 import { wikiimage } from "../templates/wikiimage";
-import { wikitable, WikiTableStruct } from "../templates/wikitable";
+import { WikiTableStruct, wikitable } from "../templates/wikitable";
 import { range } from "../utils";
 import { wikiNextLine } from "../wiki-utils";
 
@@ -27,7 +27,7 @@ export default function wikiTavernMissionCompact() {
 	let out = wikiH1(`篝火 (完整版)`);
 
 	const TavernMissionDropEnabled = TavernMissionDropTable.filter(
-		(r) => TavernMission.get(r.get("missionId"))?.enable
+		(r) => TavernMission.get(r.get("missionId"))?.enable ?? false
 	);
 
 	out += `\n\n${wikiH2(`每日任務`)}`;
@@ -81,7 +81,7 @@ export default function wikiTavernMissionCompact() {
 		for (const [, group2] of Object.entries(groupIds)) {
 			const missions = group2
 				.map((r) => TavernMission.get(r.get("missionId")))
-				.filter(Boolean);
+				.filter((r): r is TavernMission => !!r);
 			const sameDropItem = missions.every((m1, index) =>
 				missions
 					.slice(index + 1)
@@ -101,17 +101,20 @@ export default function wikiTavernMissionCompact() {
 								{
 									attributes: `rowspan="${group2.length}" style="text-align: center;"`,
 									text: wikiNextLine(
-										`${wikiimage(
-											`冒險任務_${mission.getWikiCategoryName()}_Icon.png`,
-											{ width: 40 }
-										)}\n${mission.getWikiCategoryName()}`
+										`${wikiimage({
+											url: mission.getIconAssetUrl(),
+											width: 40,
+										})}\n${mission.getWikiCategoryName()}`
 									),
 								},
 						  ]
 						: []),
 					`${
-						mission.heroSlot.length
-							? `{{站位圖標|${mission.heroSlot[0]}|size=24px}} `
+						mission.heroSlot
+							? `${wikiimage({
+									url: mission.getHeroSlotAssetUrl(),
+									height: 24,
+							  })} `
 							: ""
 					}${mission.name}`,
 					...range(1, maxReqSkillCount).map(
@@ -199,10 +202,10 @@ export default function wikiTavernMissionCompact() {
 							{
 								attributes: `rowspan="${group1.length}" style="text-align: center;"`,
 								text: wikiNextLine(
-									`${wikiimage(
-										`冒險任務_${mission.getWikiCategoryName()}_Icon.png`,
-										{ width: 40 }
-									)}\n${mission.getWikiCategoryName()}`
+									`${wikiimage({
+										url: mission.getIconAssetUrl(),
+										width: 40,
+									})}\n${mission.getWikiCategoryName()}`
 								),
 							},
 					  ]
@@ -210,7 +213,12 @@ export default function wikiTavernMissionCompact() {
 				`Lv ${row.get("param2") == -1 ? row.get("param1") : row.get("param2")}`,
 				mission.questRankStar,
 				`${
-					mission.heroSlot.length ? `{{站位圖標|${mission.heroSlot[0]}|size=24px}} ` : ""
+					mission.heroSlot
+						? `${wikiimage({
+								url: mission.getHeroSlotAssetUrl(),
+								height: 24,
+						  })} `
+						: ""
 				}${mission.name}`,
 				...range(1, maxReqSkillCount).map(
 					(value) => mission.reqSkills[value - 1]?.toWiki() ?? ""

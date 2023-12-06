@@ -1,9 +1,9 @@
 import _ from "lodash";
 import { ImperiumData } from "../imperium-data";
 import { localizationString } from "../localization";
+import { ItemGiveRef } from "../model/item-give-ref";
 import { wikiH1, wikiH2, wikiH3 } from "../templates/wikiheader";
-import { wikitable, WikiTableStruct } from "../templates/wikitable";
-import { item2wiki, item2wikiWithType } from "../wiki-item";
+import { WikiTableStruct, wikitable } from "../templates/wikitable";
 
 const AdvAchievementsTable = ImperiumData.fromGamedata().getTable("AdvAchievements");
 const AdventureAchievementsTable = ImperiumData.fromGamedata().getTable("AdventureAchievements");
@@ -22,12 +22,11 @@ export default function wikiAdvAchievements() {
 			const ach = group[i];
 			// const title = localizationString("Adventure", "achi_title_")(ach.get("id"));
 			const content = localizationString("Adventure", "achi_")(ach.get("id"));
-			const reward = ach.get("rewardItemId");
-			const rewardCount = ach.get("rewardCount");
-			table.rows.push([
-				content,
-				item2wiki(reward, rewardCount == 1 ? undefined : rewardCount),
-			]);
+			const rewardRef = ItemGiveRef.createItem(
+				ach.get("rewardItemId"),
+				ach.get("rewardCount")
+			);
+			table.rows.push([content, rewardRef.toWiki()]);
 		}
 		out += `\n\n${wikiH3(localizationString("Adventure")(groupId))}\n${wikitable(table)}`;
 	}
@@ -45,13 +44,12 @@ export default function wikiAdvAchievements() {
 			const ach = group[i];
 			// const title = localizationString("Adventure", "achi_title_")(ach.get("id"));
 			const content = localizationString("Adventure", "achi_")(ach.get("id"));
-			const giveType = ach.get("giveType");
-			const giveLinkId = ach.get("giveLinkId");
-			const giveAmount = ach.get("giveAmount");
-			table.rows.push([
-				content,
-				item2wikiWithType(giveType, giveLinkId, giveAmount == 1 ? undefined : giveAmount),
-			]);
+			const giveRef = new ItemGiveRef(
+				ach.get("giveType"),
+				ach.get("giveLinkId"),
+				ach.get("giveAmount")
+			);
+			table.rows.push([content, giveRef.toWiki()]);
 		}
 		out += `\n\n${wikiH3(localizationString("Adventure")(groupId))}\n${wikitable(table)}`;
 	}

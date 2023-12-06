@@ -1,10 +1,12 @@
 import _ from "lodash";
 import { ImperiumData } from "../imperium-data";
-import { achReplacer, localizationQuestModeName, localizationString } from "../localization";
+import { achReplacer, localizationString } from "../localization";
+import { QuestMode } from "../model/quest-mode";
 import { wikiH1, wikiH2, wikiH3 } from "../templates/wikiheader";
 import { WikiTableStruct, wikitable } from "../templates/wikitable";
 import { arraySortBy } from "../utils";
 import { wikiNextLine } from "../wiki-utils";
+import { wikiimage } from "../templates/wikiimage";
 
 const EvaluateAchievementsTable = ImperiumData.fromGamedata().getTable("EvaluateAchievements");
 const AchievementConditionsTable = ImperiumData.fromGamedata().getTable("AchievementConditions");
@@ -20,6 +22,7 @@ export default function wikiEvaluateAchievements() {
 
 		const modes = _.groupBy(group, (r) => r.get("questModeId"));
 		for (const [questModeId, mode] of Object.entries(modes)) {
+			const questMode = QuestMode.get(questModeId);
 			const table: WikiTableStruct = {
 				attributes: `class="wikitable mw-collapsible"`,
 				rows: [[`! 成就類型`, `! 點數`, `! 說明`, `! 詳細說明`]],
@@ -51,8 +54,15 @@ export default function wikiEvaluateAchievements() {
 				}
 			}
 
-			const questMode = localizationQuestModeName()(questModeId);
-			out += `\n\n${wikiH3(questMode, `${groupId}_${questModeId}`)}\n${wikitable(table)}`;
+			out += `\n\n${wikiH3(
+				questMode
+					? `${wikiimage({
+							url: questMode.getModeImageAssetUrl(),
+							height: 25,
+					  })} ${questMode.name}`
+					: questModeId,
+				`${groupId}_${questModeId}`
+			)}\n${wikitable(table)}`;
 		}
 	}
 

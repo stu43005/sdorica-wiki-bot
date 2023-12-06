@@ -1,7 +1,9 @@
 import { ImperiumData } from "../imperium-data";
 import { localizationString } from "../localization";
+import { LookupTableCategory } from "../model/enums/lookup-table-category.enum";
 import { wikiH1, wikiH3 } from "../templates/wikiheader";
-import { wikitable, WikiTableStruct } from "../templates/wikitable";
+import { wikiimage } from "../templates/wikiimage";
+import { WikiTableStruct, wikitable } from "../templates/wikitable";
 
 const BuffInfoTable = ImperiumData.fromGamedata().getTable("BuffInfo");
 
@@ -25,7 +27,23 @@ export default function wikiBuffs() {
 			attributes: row.get("viewable")
 				? ``
 				: `style="background-color: #ccc; color: #1e1e1e;" title="不可見"`,
-			ceils: [id, wikiH3(name, id, true), enname, info, iconKey],
+			ceils: [
+				id,
+				wikiH3(
+					(iconKey
+						? wikiimage({
+								category: LookupTableCategory.MonsterSkillIcon,
+								key: iconKey,
+								width: 25,
+						  }) + " "
+						: "") + name,
+					id,
+					true
+				),
+				enname,
+				info,
+				iconKey,
+			],
 		});
 	}
 

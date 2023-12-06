@@ -1,0 +1,75 @@
+import { h } from "preact";
+import { getAssetUrl } from "../assetbundle-asset";
+import { AssetbundleLookupTable } from "../assetbundle-lookup-table";
+import { LookupTableCategory } from "../model/enums/lookup-table-category.enum";
+import { wrapRender } from "./preact-wrapper";
+
+export function wikiimage_old(
+	filename: string,
+	{
+		width,
+		height,
+	}: {
+		width?: number;
+		height?: number;
+	} = {}
+) {
+	return `[[File:${filename}|${width ? `${width}px` : ""}${height ? `x${height}px` : ""}]]`;
+}
+
+type WikiImageSource =
+	| {
+			url: string | undefined;
+	  }
+	| {
+			containerPath: string;
+	  }
+	| {
+			category: LookupTableCategory;
+			key: string;
+	  };
+type ImageElementProps = h.JSX.DetailedHTMLProps<
+	h.JSX.HTMLAttributes<HTMLImageElement>,
+	HTMLImageElement
+>;
+export type WikiImageParams = WikiImageSource & {
+	width?: number | string;
+	height?: number | string;
+	props?: ImageElementProps;
+};
+
+export const wikiimage = wrapRender(wikiimageElement);
+
+export function wikiimageElement(options: WikiImageParams): h.JSX.Element {
+	let src = "";
+	if ("url" in options && options.url) {
+		src = options.url;
+	} else if ("containerPath" in options && options.containerPath) {
+		src = getAssetUrl(options.containerPath);
+	} else if ("category" in options) {
+		const assetUrl = AssetbundleLookupTable.getInstance().getAssetUrl(
+			options.category,
+			options.key
+		);
+		if (!assetUrl) {
+			return (
+				<>
+					[{options.category}::{options.key}]
+				</>
+			);
+		}
+		src = assetUrl;
+	}
+	if (!src) {
+		return <>[Unknown image]</>;
+	}
+	return (
+		<img
+			loading="lazy"
+			src={src}
+			width={options.width}
+			height={options.height}
+			{...options.props}
+		/>
+	);
+}

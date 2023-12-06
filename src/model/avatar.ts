@@ -1,8 +1,10 @@
+import { AssetbundleLookupTable } from "../assetbundle-lookup-table";
 import { ImperiumData, RowWrapper } from "../imperium-data";
 import { localizationString } from "../localization";
 import { AvatarInfoboxParams, avatarInfoboxTemplate } from "../templates/avatar-infobox";
 import { AvatarType } from "./enums/avatar-type.enum";
 import { ItemCategory } from "./enums/item-category.enum";
+import { LookupTableCategory } from "./enums/lookup-table-category.enum";
 import { Hero } from "./hero";
 import { Item } from "./item";
 
@@ -12,8 +14,8 @@ const instances: Record<string, Avatar> = {};
 let allInstances: Avatar[] | null = null;
 
 export class Avatar {
-	public static get(row: RowWrapper): Avatar;
 	public static get(id: string): Avatar | undefined;
+	public static get(row: RowWrapper): Avatar;
 	public static get(rowOrId: RowWrapper | string): Avatar {
 		const id = typeof rowOrId === "string" ? rowOrId : rowOrId.get("id");
 		if (!instances[id]) {
@@ -27,10 +29,10 @@ export class Avatar {
 	}
 
 	public static getAll() {
-		return (allInstances ??= Array.from(this.getAllGenerator()));
+		return (allInstances ??= Array.from(this));
 	}
 
-	public static *getAllGenerator() {
+	public static *[Symbol.iterator]() {
 		for (let i = 0; i < AvatarsTable.length; i++) {
 			const row = AvatarsTable.get(i);
 			yield Avatar.get(row);
@@ -88,5 +90,18 @@ export class Avatar {
 			params.imagename = pageName;
 		}
 		return avatarInfoboxTemplate(params);
+	}
+
+	getIconAssetUrl(small = true) {
+		if (small) {
+			return AssetbundleLookupTable.getInstance().getAssetUrl(
+				LookupTableCategory.CharacterPortrait,
+				this.asset + "_icon"
+			);
+		}
+		return AssetbundleLookupTable.getInstance().getAssetUrl(
+			LookupTableCategory.CharacterPortrait_LARGE,
+			this.asset + "_iconL"
+		);
 	}
 }

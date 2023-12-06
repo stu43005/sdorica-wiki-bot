@@ -9,8 +9,8 @@ const ChapterCountTable = ImperiumData.fromGamedata().getTable("ChapterCount");
 const instances: Record<string, ChapterCount> = {};
 
 export class ChapterCount {
-	public static get(row: RowWrapper): ChapterCount;
 	public static get(id: string): ChapterCount | undefined;
+	public static get(row: RowWrapper): ChapterCount;
 	public static get(rowOrId: RowWrapper | string): ChapterCount {
 		const id = typeof rowOrId === "string" ? rowOrId : rowOrId.get("id");
 		if (!instances[id]) {

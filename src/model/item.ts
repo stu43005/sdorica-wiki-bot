@@ -13,6 +13,8 @@ import { ItemGiveRef } from "./item-give-ref";
 import { itemRename } from "./config/item";
 import { HeroSkillSet } from "./hero-skillset";
 import { ItemPayRef } from "./item-pay-ref";
+import { ItemIconParams } from "../templates/item-icon";
+import { ItemType } from "./enums/item-type.enum";
 
 const ExtraProductsTable = ImperiumData.fromGamedata().getTable("ExtraProducts");
 const ItemsTable = ImperiumData.fromGamedata().getTable("Items");
@@ -22,8 +24,8 @@ const instances: Record<string, Item> = {};
 let allInstances: Item[] | null = null;
 
 export class Item extends ItemBase {
-	public static get(row: RowWrapper): Item;
 	public static get(id: string): Item | undefined;
+	public static get(row: RowWrapper): Item;
 	public static get(rowOrId: RowWrapper | string): Item {
 		const id = typeof rowOrId === "string" ? rowOrId : rowOrId.get("id");
 		if (!instances[id]) {
@@ -37,7 +39,7 @@ export class Item extends ItemBase {
 	}
 
 	public static find(predicate: (value: Item) => boolean): Item | undefined {
-		for (const item of this.getAllGenerator()) {
+		for (const item of this) {
 			if (predicate(item)) {
 				return item;
 			}
@@ -45,17 +47,17 @@ export class Item extends ItemBase {
 	}
 
 	public static getAll() {
-		return (allInstances ??= Array.from(this.getAllGenerator()));
+		return (allInstances ??= Array.from(this));
 	}
 
-	public static *getAllGenerator() {
+	public static *[Symbol.iterator]() {
 		for (let i = 0; i < ItemsTable.length; i++) {
 			const row = ItemsTable.get(i);
 			yield Item.get(row);
 		}
 	}
 
-	readonly isExplore = false;
+	readonly itemType = ItemType.Item;
 
 	get id(): string {
 		return this.row.get("id");
@@ -67,7 +69,7 @@ export class Item extends ItemBase {
 		return +this.row.get("effectValue");
 	}
 	get iconKey(): string {
-		return this.row.get("iconKey");
+		return `${this.row.get("iconKey")}`.replace(/Avatar_Explore\//gi, "Avatar_");
 	}
 	get rank(): number {
 		return +this.row.get("rank");
@@ -171,6 +173,16 @@ export class Item extends ItemBase {
 		return this.#voucherGifts;
 	}
 
+	#transformExploreItems: ExploreItem[] | null = null;
+	get transformExploreItems(): ExploreItem[] {
+		if (this.#transformExploreItems === null) {
+			this.#transformExploreItems = ExploreItem.getAll().filter(
+				(item) => item.transformTo == this
+			);
+		}
+		return this.#transformExploreItems;
+	}
+
 	constructor(row: RowWrapper) {
 		super(row);
 		this.name = itemNameNormalization(
@@ -201,6 +213,20 @@ export class Item extends ItemBase {
 		return true;
 	}
 
+	toWiki(options?: ItemIconParams) {
+		if (
+			this.stackable == ItemStackable.Sell &&
+			this.sellItem?.item &&
+			this.sellItem?.item !== this
+		) {
+			return this.sellItem.toWiki({
+				iconUrl: this.getIconAssetUrl(options?.smallIcon),
+				...options,
+			});
+		}
+		return super.toWiki(options);
+	}
+
 	getWikiPageName() {
 		if (itemRename[this.id]) {
 			return itemRename[this.id];
@@ -221,10 +247,6 @@ export class Item extends ItemBase {
 			return this.sellItem.item.getWikiPageName();
 		}
 		return super.getWikiPageName();
-	}
-
-	getTransformExploreItems() {
-		return ExploreItem.getAll().filter((item) => item.transformTo == this);
 	}
 
 	getItemInfoboxParams() {
@@ -261,9 +283,7 @@ export class Item extends ItemBase {
 	}
 
 	toWikiCompositeList() {
-		return this.getTransformExploreItems()
-			.map((item) => item.toWikiCompositeList())
-			.join("");
+		return this.transformExploreItems.map((item) => item.toWikiCompositeList()).join("");
 	}
 
 	toWikiPage() {

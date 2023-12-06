@@ -1,5 +1,7 @@
+import { AssetbundleLookupTable } from "../assetbundle-lookup-table";
 import { ImperiumData, RowWrapper } from "../imperium-data";
 import { localizationStringAuto } from "../localization";
+import { LookupTableCategory } from "./enums/lookup-table-category.enum";
 import { QuestModeBonusType } from "./enums/quest-mode-bonus-type.enum";
 
 const QuestModeTable = ImperiumData.fromGamedata().getTable("QuestMode");
@@ -8,8 +10,8 @@ const instances: Record<string, QuestMode> = {};
 let allInstances: QuestMode[] | null = null;
 
 export class QuestMode {
-	public static get(row: RowWrapper): QuestMode;
 	public static get(id: string): QuestMode | undefined;
+	public static get(row: RowWrapper): QuestMode;
 	public static get(rowOrId: RowWrapper | string): QuestMode {
 		const id = typeof rowOrId === "string" ? rowOrId : rowOrId.get("id");
 		if (!instances[id]) {
@@ -25,7 +27,7 @@ export class QuestMode {
 	}
 
 	public static find(predicate: (value: QuestMode) => boolean): QuestMode | undefined {
-		for (const item of this.getAllGenerator()) {
+		for (const item of this) {
 			if (predicate(item)) {
 				return item;
 			}
@@ -33,10 +35,10 @@ export class QuestMode {
 	}
 
 	public static getAll() {
-		return (allInstances ??= Array.from(this.getAllGenerator()));
+		return (allInstances ??= Array.from(this));
 	}
 
-	public static *getAllGenerator() {
+	public static *[Symbol.iterator]() {
 		for (let i = 0; i < QuestModeTable.length; i++) {
 			const row = QuestModeTable.get(i);
 			yield QuestMode.get(row);
@@ -73,6 +75,13 @@ export class QuestMode {
 
 	constructor(private row: RowWrapper) {
 		this.name = localizationStringAuto()(row.get("modeI2")).trim();
+	}
+
+	getModeImageAssetUrl() {
+		return AssetbundleLookupTable.getInstance().getAssetUrl(
+			LookupTableCategory.TierMedalSprite,
+			this.modeImage
+		);
 	}
 
 	getBonusSymbol() {

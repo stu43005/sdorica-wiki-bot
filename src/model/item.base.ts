@@ -1,21 +1,43 @@
+import render from "preact-render-to-string";
+import { AssetbundleLookupTable } from "../assetbundle-lookup-table";
 import { RowWrapper } from "../imperium-data";
 import { itemDropQuestsTemplate } from "../templates/item-drop-quests";
+import { ItemIconParams, itemIconTemplate } from "../templates/item-icon";
 import { ItemInfoboxParams, itemInfoboxTemplate } from "../templates/item-infobox";
-import { item2wiki, Item2WikiOptions, itemCategoryName } from "../wiki-item";
+import { itemCategoryName } from "../wiki-item";
 import { wikiTitleEscape } from "../wiki-utils";
+import { LookupTableCategory } from "./enums/lookup-table-category.enum";
+import { ItemType } from "./enums/item-type.enum";
 
 export abstract class ItemBase {
-	abstract isExplore: boolean;
+	abstract itemType: ItemType;
 	abstract id: string;
 	abstract name: string;
 	abstract description: string;
 	abstract iconKey: string;
 	abstract enable: boolean;
 
+	get isExplore(): boolean {
+		return this.itemType === ItemType.ExploreItem;
+	}
+
 	constructor(protected row: RowWrapper) {}
 
-	toWiki(options?: Item2WikiOptions) {
-		return item2wiki(this.id, options?.count, this.isExplore, options);
+	getIconAssetUrl(small = false) {
+		if (small && !this.isExplore) {
+			return AssetbundleLookupTable.getInstance().getAssetUrl(
+				LookupTableCategory.ItemIconSmall,
+				this.iconKey
+			);
+		}
+		return AssetbundleLookupTable.getInstance().getAssetUrl(
+			LookupTableCategory.ItemIconMid,
+			this.iconKey + "_M"
+		);
+	}
+
+	toWiki(options?: ItemIconParams) {
+		return render(itemIconTemplate(this, options));
 	}
 
 	getWikiPageName() {

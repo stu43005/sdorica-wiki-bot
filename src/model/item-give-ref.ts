@@ -1,7 +1,9 @@
 import numeral from "numeral";
 import { currency2Id } from "../localization";
-import { HeroSmallIconParams } from "../templates/hero-small-icon";
-import { Item2WikiOptions, item2wikiWithType } from "../wiki-item";
+import { HeroIconParams } from "../templates/hero-icon";
+import { ItemIconParams } from "../templates/item-icon";
+import { MonsterIconParams } from "../templates/monster-icon";
+import { item2wikiWithType } from "../wiki-item";
 import { Chapter } from "./chapter";
 import { ItemGiveType } from "./enums/item-give-type.enum";
 import { ExploreItem } from "./explore-item";
@@ -9,9 +11,13 @@ import { Hero } from "./hero";
 import { HeroSkillSet } from "./hero-skillset";
 import { Item } from "./item";
 import { ItemBase } from "./item.base";
+import { Monster } from "./monster";
+
+type ToWikiParam = ItemIconParams & HeroIconParams & MonsterIconParams;
 
 export class ItemGiveRef {
 	item?: ItemBase;
+	monster?: Monster;
 	heroSkillSet?: HeroSkillSet;
 	diligentChapter?: Chapter;
 
@@ -46,7 +52,7 @@ export class ItemGiveRef {
 				this.item = Item.get(this.id);
 				break;
 			case ItemGiveType.Monster:
-				// TODO: support Monster GiveType
+				this.monster = Monster.get(this.id);
 				break;
 			case ItemGiveType.Hero: {
 				const [heroId, rankId] = this.id.split("_");
@@ -73,28 +79,34 @@ export class ItemGiveRef {
 		return numeral(this.chance / 10000).format("0.[00]%");
 	}
 
-	private _toWiki(options?: Item2WikiOptions & HeroSmallIconParams) {
+	private _toWiki(input?: ToWikiParam) {
+		let count = typeof input?.count === "number" ? input.count : 1;
+		count *= this.amount;
+		const options: ToWikiParam = {
+			...input,
+			count: count,
+		};
 		if (this.item) {
-			return this.item.toWiki({
-				...options,
-				count: this.amount,
-			});
+			return this.item.toWiki(options);
+		}
+		if (this.monster) {
+			return this.monster.toWiki(options);
 		}
 		if (this.heroSkillSet) {
-			return this.heroSkillSet.toWiki(options) + (this.amount ? ` x${this.amount}` : "");
+			return this.heroSkillSet.toWiki(options) + (count > 1 ? ` x${count}` : "");
 		}
 		if (this.diligentChapter) {
 			return `${this.diligentChapter.getWikiTitle()}${this.diligentChapter.diligentItem?.toWiki(
-				{
-					...options,
-					count: this.amount,
-				}
+				options
 			)}`;
 		}
-		return item2wikiWithType(this.type, this.id, this.amount, options);
+		return item2wikiWithType(this.type, this.id, count, options);
 	}
 
-	toWiki(options?: Item2WikiOptions & HeroSmallIconParams) {
-		return this._toWiki(options) + (this.chance === 10000 ? "" : `：${this.getChanceString()}`);
+	toWiki(options?: ToWikiParam) {
+		return (
+			this._toWiki(options) +
+			(this.chance === 10000 || this.chance < 0 ? "" : `：${this.getChanceString()}`)
+		);
 	}
 }

@@ -1,4 +1,6 @@
 import { localizationCharacterNameWithDefault, localizationString } from "../localization";
+import { ItemPayType } from "../model/enums/item-pay-type.enum";
+import { ItemPayRef } from "../model/item-pay-ref";
 import { BattleEventPoint } from "../sdorica/BattleEventPoint";
 import { conditionStringify } from "../sdorica/BattleModel/condition/ConditionStringify";
 import { AVGEvent } from "../sdorica/GamePlay/AVGEvent";
@@ -6,7 +8,6 @@ import { EncounterEvent } from "../sdorica/GamePlay/EncounterEvent";
 import { LevelEvent } from "../sdorica/LevelEvent";
 import { LevelEventModel } from "../sdorica/LevelEventModel";
 import { SceneSwitchEventPoint } from "../sdorica/SceneSwitchEventPoint";
-import { item2wiki } from "../wiki-item";
 
 function OpTrans(opstr: string) {
 	switch (opstr) {
@@ -106,12 +107,13 @@ const eventFunction: Record<
 										const values = items[m].split(";");
 										const itemId = values[0];
 										const itemCount = Number(values[1]);
+										const item = new ItemPayRef(
+											isExplore ? ItemPayType.ExploreItem : ItemPayType.Item,
+											itemId,
+											itemCount
+										);
 										optionOut["效果"].push(
-											`${isLose ? "lose" : "get"} ${item2wiki(
-												itemId,
-												itemCount,
-												isExplore
-											)}`
+											`${isLose ? "lose" : "get"} ${item.toWiki()}`
 										);
 									}
 									break;
@@ -138,9 +140,12 @@ const eventFunction: Record<
 										const values = effect.Category.split(";");
 										const itemId = values[0];
 										const itemCount = Number(values[1]);
-										optionOut["效果"].push(
-											`lose ${item2wiki(itemId, itemCount, true)}`
+										const item = new ItemPayRef(
+											ItemPayType.ExploreItem,
+											itemId,
+											itemCount
 										);
+										optionOut["效果"].push(`lose ${item.toWiki()}`);
 									} else {
 										optionOut["效果"].push(
 											`${effect.Category}(${effect.EffectValue})`

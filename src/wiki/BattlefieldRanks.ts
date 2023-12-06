@@ -1,12 +1,12 @@
 import _ from "lodash";
 import { ImperiumData } from "../imperium-data";
+import { LookupTableCategory } from "../model/enums/lookup-table-category.enum";
+import { ItemGiveRef } from "../model/item-give-ref";
 import { wikiH1, wikiH2 } from "../templates/wikiheader";
 import { wikiimage } from "../templates/wikiimage";
-import { wikitable, WikiTableCeil, WikiTableStruct } from "../templates/wikitable";
+import { WikiTableCeil, WikiTableStruct, wikitable } from "../templates/wikitable";
 import { range } from "../utils";
-import { item2wikiWithType } from "../wiki-item";
 import { wikiNextLine } from "../wiki-utils";
-import { weekRankImage } from "./AdventureRank";
 
 const BattlefieldRanksTable = ImperiumData.fromGamedata().getTable("BattlefieldRanks");
 
@@ -20,10 +20,17 @@ export default function wikiBattlefieldRanks() {
 			rows: [[`! colspan="2" | 排名`, `! colspan="4" | 獎勵`]],
 		};
 		for (const entry of group) {
+			const rankIcon = entry.get("rankIcon");
 			table.rows.push([
 				{
 					attributes: `style="text-align: center;"`,
-					text: wikiimage(weekRankImage[entry.get("rankIcon")], { width: 64 }),
+					text: rankIcon
+						? wikiimage({
+								category: LookupTableCategory.TierMedalSprite,
+								key: rankIcon,
+								width: 64,
+						  })
+						: "",
 				},
 				{
 					attributes: `style="text-align: center;"`,
@@ -35,11 +42,11 @@ export default function wikiBattlefieldRanks() {
 				},
 				...range(1, 4).map(
 					(i): WikiTableCeil => ({
-						text: item2wikiWithType(
+						text: new ItemGiveRef(
 							entry.get(`giveType${i}`),
 							entry.get(`giveLinkId${i}`),
 							entry.get(`giveAmount${i}`)
-						),
+						).toWiki(),
 					})
 				),
 			]);

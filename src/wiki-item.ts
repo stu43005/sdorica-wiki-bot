@@ -1,22 +1,19 @@
-import numeral from "numeral";
 import { ImperiumData, RowWrapper } from "./imperium-data";
 import {
 	currency2Id,
-	gamedataString,
 	localizationCharacterNameByHeroId,
 	localizationExploreBuildingName,
 	localizationItemName,
-	localizationMonsterNameById,
 	localizationString,
 	rank,
 } from "./localization";
 import { Chapter } from "./model/chapter";
-import { ItemStackable } from "./model/enums/item-stackable.enum";
 import { ExploreItem } from "./model/explore-item";
 import { Hero } from "./model/hero";
 import { Item } from "./model/item";
+import { Monster } from "./model/monster";
+import { ItemIconParams } from "./templates/item-icon";
 import { arrayUnique } from "./utils";
-import { wikitemplate } from "./wiki-utils";
 
 const ExploreItemsTable = ImperiumData.fromGamedata().getTable("ExploreItems");
 const ExploreBuildingTable = ImperiumData.fromGamedata().getTable("ExploreBuilding");
@@ -312,36 +309,11 @@ export function itemCategoryName(
 	return ["其他"];
 }
 
-export interface Item2WikiOptions {
-	/**
-	 * 道具數量
-	 *
-	 * ※ 此選項會複寫參數值的count。
-	 */
-	count?: number;
-	/**
-	 * 圖示大小
-	 * @default "25px"
-	 */
-	size?: string;
-	/**
-	 * `text=true` 時將會輸出道具名稱並包含連結，或是給予自訂文字。
-	 * @default "true"
-	 */
-	text?: string;
-	/**
-	 * `direction=vertical`時將會以垂直方式顯示道具名稱及數量。
-	 * @default "horizontal"
-	 */
-	direction?: string;
-	M?: string;
-}
-
 export function item2wiki(
 	id: string,
 	count?: number,
 	isExplore = false,
-	options: Item2WikiOptions = {}
+	options: ItemIconParams = {}
 ) {
 	let item: ExploreItem | Item | undefined;
 	if (isExplore) {
@@ -350,58 +322,26 @@ export function item2wiki(
 		item = Item.get(id);
 	}
 	if (!item) return "";
-
-	options.text ??= "true";
-
-	const avatar = (item.isExplore ? item.transformTo : item)?.avatar;
-	let suffix = avatar ? "([[頭像]])" : "";
-	const args: Record<string, string | number | undefined> = {
-		1: item.getWikiPageName(),
-		text: options.text,
-		size: options.size,
+	return item.toWiki({
+		...options,
 		count: count,
-	};
-	Object.assign(args, options);
-	if (options.text !== "true") {
-		args.text = options.text;
-	} else if (args[1] !== item.name) {
-		args.text = item.name;
-	}
-	if (!item.isExplore && item.stackable == ItemStackable.Sell) {
-		const price = item.sellItem.amount;
-		const count = args.count ? +args.count : 1;
-		if (price > 1) {
-			suffix += `<sub>(${numeral(price * count).format("0,0")})</sub>`;
-		}
-	}
-	if (args.count) {
-		args.count = numeral(Number(args.count)).format("0,0");
-	}
-	return wikitemplate("道具圖示", args) + suffix;
+	});
 }
 
-export function monster2wiki(id: string, count?: number, options?: Item2WikiOptions) {
-	options = options || {};
-	options.text = typeof options.text === "undefined" ? "true" : options.text;
-	if (!id || id == "-1") return "";
-
-	const monsterName = localizationMonsterNameById()(id);
-	const rank = gamedataString("HomelandMonster", "id", "rank")(id);
-	const suffix = `(${rank}階)` + (count ? ` x${count}` : "");
-	const args: Record<string, string | number | undefined> = {
-		1: monsterName,
-		text: options.text,
-		size: options.size,
-	};
-	Object.assign(args, options);
-	return wikitemplate("野獸小圖示", args) + suffix;
+export function monster2wiki(id: string, count?: number, options?: ItemIconParams) {
+	const monster = Monster.get(id);
+	if (!monster) return "";
+	return monster.toWiki({
+		...options,
+		count: count,
+	});
 }
 
 export function item2wikiWithType(
 	type: string,
 	id: string,
 	count?: number,
-	options?: Item2WikiOptions
+	options?: ItemIconParams
 ) {
 	switch (type) {
 		case "coin": // old type
@@ -446,7 +386,7 @@ export function itemList(row: RowWrapper, count = 4, isExplore = true, size = "2
 	const items: string[] = [];
 	for (let k = 1; k <= count; k++) {
 		const wiki = item2wiki(row.get(`item${k}Id`), row.get(`item${k}Count`), isExplore, {
-			size,
+			width: size,
 		});
 		if (wiki) items.push(wiki);
 	}

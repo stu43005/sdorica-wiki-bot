@@ -192,7 +192,7 @@ export async function wikiMain(updateWiki?: boolean) {
 
 	for (const hero of Hero.getAll().filter((hero) => hero.enable)) {
 		for (const skillset of hero.skillSetWithLevels) {
-			await outWikiJson(bot, `Heroes/${skillset.model}`, skillset.toJSON());
+			await outWikiJson(bot, path.join("Heroes", skillset.model), skillset.toJSON());
 		}
 	}
 

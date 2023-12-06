@@ -13,8 +13,8 @@ const instances: Record<string, Mission> = {};
 let allInstances: Mission[] | null = null;
 
 export class Mission {
-	public static get(row: RowWrapper): Mission;
 	public static get(id: string): Mission | undefined;
+	public static get(row: RowWrapper): Mission;
 	public static get(rowOrId: RowWrapper | string): Mission {
 		const id = typeof rowOrId === "string" ? rowOrId : rowOrId.get("id");
 		if (!instances[id]) {
@@ -30,7 +30,7 @@ export class Mission {
 	}
 
 	public static find(predicate: (value: Mission) => boolean): Mission | undefined {
-		for (const item of this.getAllGenerator()) {
+		for (const item of this) {
 			if (predicate(item)) {
 				return item;
 			}
@@ -38,10 +38,10 @@ export class Mission {
 	}
 
 	public static getAll() {
-		return (allInstances ??= Array.from(this.getAllGenerator()));
+		return (allInstances ??= Array.from(this));
 	}
 
-	public static *getAllGenerator() {
+	public static *[Symbol.iterator]() {
 		for (let i = 0; i < MissionsTable.length; i++) {
 			const row = MissionsTable.get(i);
 			yield Mission.get(row);

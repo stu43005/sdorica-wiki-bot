@@ -1,3 +1,4 @@
+import { HeroIconParams } from "../templates/hero-icon";
 import { HeroRank } from "./enums/hero-rank.enum";
 import { HeroSkillType } from "./enums/hero-skill-type.enum";
 import { Hero } from "./hero";
@@ -7,6 +8,7 @@ import { HeroSkill } from "./hero-skill";
 export interface IHeroSkillSet {
 	hero?: Hero;
 	model: string;
+	heroSd?: string;
 	name?: string;
 
 	type?: HeroSkillType;
@@ -27,4 +29,7 @@ export interface IHeroSkillSet {
 	S3: HeroSkill;
 
 	info?: HeroInfo;
+
+	toWiki(options?: HeroIconParams): string;
+	getSdAssetUrl(): string | undefined;
 }

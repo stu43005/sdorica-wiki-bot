@@ -1,7 +1,9 @@
 import _ from "lodash";
 import { ImperiumData } from "../imperium-data";
 import { localizationString } from "../localization";
+import { LookupTableCategory } from "../model/enums/lookup-table-category.enum";
 import { wikiH1, wikiH2 } from "../templates/wikiheader";
+import { wikiimage } from "../templates/wikiimage";
 import { WikiTableStruct, wikitable } from "../templates/wikitable";
 
 const BlessEffectsTable = ImperiumData.fromGamedata().getTable("BlessEffects");
@@ -28,7 +30,13 @@ export default function wikiBlessEffects() {
 								},
 						  ]
 						: []),
-					row.get("iconKey"),
+					wikiimage({
+						category: LookupTableCategory.EncounterOptionIcon,
+						key: row.get("iconKey"),
+						width: 25,
+					}) +
+						" " +
+						row.get("iconKey"),
 					localizationString("BlessEffects")(row.get("i2Key")),
 				]);
 			}

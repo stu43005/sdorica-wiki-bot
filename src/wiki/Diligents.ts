@@ -3,11 +3,11 @@ import numeral from "numeral";
 import { ImperiumData } from "../imperium-data";
 import { localizationItemNameWithType, localizationString } from "../localization";
 import { Chapter } from "../model/chapter";
+import { Item } from "../model/item";
 import { TemplateString } from "../model/template-string";
 import { wikiH1, wikiH2 } from "../templates/wikiheader";
 import { wikiPageLink } from "../templates/wikilink";
-import { wikitable, WikiTableStruct } from "../templates/wikitable";
-import { item2wiki } from "../wiki-item";
+import { WikiTableStruct, wikitable } from "../templates/wikitable";
 
 const DiligentGroupsTable = ImperiumData.fromGamedata().getTable("DiligentGroups");
 const DiligentsTable = ImperiumData.fromGamedata().getTable("Diligents");
@@ -54,7 +54,7 @@ export default function wikiDiligents() {
 					`! 階段`,
 					{
 						header: true,
-						text: item2wiki(diligentId),
+						text: (diligentId && Item.get(diligentId)?.toWiki()) || "閱歷值",
 					},
 					`! 效果`,
 				],

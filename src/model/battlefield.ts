@@ -12,8 +12,8 @@ const instances: Record<string, Battlefield> = {};
 let allInstances: Battlefield[] | null = null;
 
 export class Battlefield {
-	public static get(row: RowWrapper): Battlefield;
 	public static get(id: string): Battlefield | undefined;
+	public static get(row: RowWrapper): Battlefield;
 	public static get(rowOrId: RowWrapper | string): Battlefield {
 		const id = typeof rowOrId === "string" ? rowOrId : rowOrId.get("id");
 		if (!instances[id]) {
@@ -29,7 +29,7 @@ export class Battlefield {
 	}
 
 	public static find(predicate: (value: Battlefield) => boolean): Battlefield | undefined {
-		for (const item of this.getAllGenerator()) {
+		for (const item of this) {
 			if (predicate(item)) {
 				return item;
 			}
@@ -37,10 +37,10 @@ export class Battlefield {
 	}
 
 	public static getAll() {
-		return (allInstances ??= Array.from(this.getAllGenerator()));
+		return (allInstances ??= Array.from(this));
 	}
 
-	public static *getAllGenerator() {
+	public static *[Symbol.iterator]() {
 		for (let i = 0; i < BattlefieldsTable.length; i++) {
 			const row = BattlefieldsTable.get(i);
 			yield Battlefield.get(row);

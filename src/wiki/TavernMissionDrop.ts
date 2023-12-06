@@ -4,7 +4,7 @@ import { ImperiumData } from "../imperium-data";
 import { localizationHomelandBuildingName } from "../localization";
 import { TavernMission } from "../model/tavern-mission";
 import { wikiH1, wikiH2 } from "../templates/wikiheader";
-import { wikitable, WikiTableStruct } from "../templates/wikitable";
+import { WikiTableStruct, wikitable } from "../templates/wikitable";
 
 const TavernMissionDropTable = ImperiumData.fromGamedata().getTable("TavernMissionDrop");
 
@@ -28,7 +28,7 @@ export default function wikiTavernMissionDrop() {
 	let out = wikiH1(`篝火出現任務`);
 
 	const TavernMissionDropEnabled = TavernMissionDropTable.filter(
-		(r) => TavernMission.get(r.get("missionId"))?.enable
+		(r) => TavernMission.get(r.get("missionId"))?.enable ?? false
 	);
 	const dropTypes = _.groupBy(
 		TavernMissionDropEnabled,
@@ -61,7 +61,7 @@ export default function wikiTavernMissionDrop() {
 								},
 						  ]
 						: []),
-					mission.nameWithRank,
+					mission?.nameWithRank ?? "",
 					numeral(row.get("weight") / weightSum).format("0.[00]%"),
 				]);
 			}

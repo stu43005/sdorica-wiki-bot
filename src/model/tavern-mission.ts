@@ -1,8 +1,10 @@
+import { AssetbundleLookupTable } from "../assetbundle-lookup-table";
 import { ImperiumData, RowWrapper } from "../imperium-data";
 import { localizationString } from "../localization";
 import { DropItemsGroup } from "./drop-items";
 import { HeroRank } from "./enums/hero-rank.enum";
 import { HeroSlot } from "./enums/hero-slot.enum";
+import { LookupTableCategory } from "./enums/lookup-table-category.enum";
 import { Hero } from "./hero";
 import { ItemGiveList } from "./item-give-list";
 import { ItemPayRef } from "./item-pay-ref";
@@ -14,8 +16,8 @@ const instances: Record<string, TavernMission> = {};
 let allInstances: TavernMission[] | null = null;
 
 export class TavernMission {
-	public static get(row: RowWrapper): TavernMission;
 	public static get(id: string): TavernMission | undefined;
+	public static get(row: RowWrapper): TavernMission;
 	public static get(rowOrId: RowWrapper | string): TavernMission {
 		const id = typeof rowOrId === "string" ? rowOrId : rowOrId.get("id");
 		if (!instances[id]) {
@@ -31,7 +33,7 @@ export class TavernMission {
 	}
 
 	public static find(predicate: (value: TavernMission) => boolean): TavernMission | undefined {
-		for (const item of this.getAllGenerator()) {
+		for (const item of this) {
 			if (predicate(item)) {
 				return item;
 			}
@@ -39,10 +41,10 @@ export class TavernMission {
 	}
 
 	public static getAll() {
-		return (allInstances ??= Array.from(this.getAllGenerator()));
+		return (allInstances ??= Array.from(this));
 	}
 
-	public static *getAllGenerator() {
+	public static *[Symbol.iterator]() {
 		for (let i = 0; i < TavernMissionTable.length; i++) {
 			const row = TavernMissionTable.get(i);
 			yield TavernMission.get(row);
@@ -144,7 +146,7 @@ export class TavernMission {
 	/**
 	 * 限制英雄站位
 	 */
-	get heroSlot(): HeroSlot[] {
+	get heroSlot(): HeroSlot | undefined {
 		return this.getHeroSlot();
 	}
 
@@ -249,17 +251,29 @@ export class TavernMission {
 		return HeroRank.Unknown;
 	}
 
-	private getHeroSlot() {
-		const slots = [
-			!!this.row.get("gold") ? HeroSlot.GOLD : null,
-			!!this.row.get("black") ? HeroSlot.BLACK : null,
-			!!this.row.get("white") ? HeroSlot.WHITE : null,
-		];
-		if (slots.every((slot) => slot)) {
+	private getHeroSlot(): HeroSlot | undefined {
+		const slots: HeroSlot[] = [];
+		if (!!this.row.get("gold")) slots.push(HeroSlot.GOLD);
+		if (!!this.row.get("black")) slots.push(HeroSlot.BLACK);
+		if (!!this.row.get("white")) slots.push(HeroSlot.WHITE);
+		if (slots.length === 3) {
 			// 都為真代表沒限制
-			return [];
+			return;
 		}
-		return slots.filter(Boolean) as HeroSlot[];
+		return slots.at(0);
+	}
+
+	public getHeroSlotAssetUrl() {
+		return AssetbundleLookupTable.getInstance().getAssetUrl(
+			LookupTableCategory.Monster_SpSkillIcon,
+			this.heroSlot === HeroSlot.GOLD
+				? "expedition_frame_gold"
+				: this.heroSlot === HeroSlot.BLACK
+				? "expedition_frame_black"
+				: this.heroSlot === HeroSlot.WHITE
+				? "expedition_frame_white"
+				: ""
+		);
 	}
 
 	public getTimeString() {
@@ -273,6 +287,13 @@ export class TavernMission {
 			str += `${time}分鐘`;
 		}
 		return str;
+	}
+
+	public getIconAssetUrl() {
+		return AssetbundleLookupTable.getInstance().getAssetUrl(
+			LookupTableCategory.Monster_SpSkillIcon,
+			this.iconKey
+		);
 	}
 
 	public getWikiCategoryName() {

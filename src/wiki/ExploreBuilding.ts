@@ -1,21 +1,18 @@
 import _ from "lodash";
-import { ImperiumData } from "../imperium-data";
 import { localizationExploreBuildingName } from "../localization";
+import { ExploreBuildingType } from "../model/enums/explore-building-type.enum";
+import { ExploreBuilding } from "../model/explore-building";
 import { wikiH1, wikiH2 } from "../templates/wikiheader";
-import { wikitable, WikiTableStruct } from "../templates/wikitable";
-import { range } from "../utils";
-import { item2wiki } from "../wiki-item";
-
-const ExploreBuildingTable = ImperiumData.fromGamedata().getTable("ExploreBuilding");
+import { WikiTableStruct, wikitable } from "../templates/wikitable";
 
 export default function wikiExploreBuilding() {
 	let out = wikiH1("探索建築");
 
-	const buildings = _.groupBy(ExploreBuildingTable.rows, (r) => r.get("type"));
+	const buildings = _.groupBy(ExploreBuilding.getAll(), (r) => r.type);
 	for (const [type, building] of Object.entries(buildings)) {
 		const table: WikiTableStruct = [];
 		switch (type) {
-			case "Warehouse":
+			case ExploreBuildingType.Warehouse:
 				table.push([`! 倉庫等級`, `! 倉庫格數`, `! 升級素材`]);
 				break;
 			default:
@@ -23,30 +20,23 @@ export default function wikiExploreBuilding() {
 				break;
 		}
 		for (const level of building) {
-			const items = range(1, 4)
-				.map((i) =>
-					item2wiki(level.get(`item${i}Id`), level.get(`item${i}Count`), true, {
-						size: "20px",
-					})
-				)
-				.filter(Boolean);
 			table.push([
 				{
 					attributes: `style="text-align:center"`,
-					text: `Lv ${level.get("level")}`,
+					text: `Lv ${level.level}`,
 				},
-				...(type === "Warehouse"
+				...(type === ExploreBuildingType.Warehouse
 					? [
 							{
 								attributes: `style="text-align:center"`,
-								text: level.get("effectValue"),
+								text: level.storageSize,
 							},
 					  ]
 					: []),
-				...(items.length > 0
+				...(level.levelUpItems.length > 0
 					? [
 							{
-								text: items.join(" "),
+								text: level.levelUpItems.map((ref) => ref.toWiki()).join(" "),
 							},
 					  ]
 					: [

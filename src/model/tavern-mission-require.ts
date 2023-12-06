@@ -1,8 +1,10 @@
 import numeral from "numeral";
 import { ImperiumData, RowWrapper } from "../imperium-data";
-import { localizationMonsterSkillName } from "../localization";
+import { wikiimage } from "../templates/wikiimage";
+import { LookupTableCategory } from "./enums/lookup-table-category.enum";
 import { TavernMissionSkillType } from "./enums/tavern-mission-skill-type.enum";
 import { Mission } from "./mission";
+import { MonsterSkill } from "./monster-skill";
 import { TavernMission } from "./tavern-mission";
 
 const TavernMissionRequireTable = ImperiumData.fromGamedata().getTable("TavernMissionRequire");
@@ -35,17 +37,23 @@ export class TavernMissionRequire {
 	get skillId(): string {
 		return this.row.get("skillId");
 	}
-	skillName: string;
 	get skillLv(): number {
 		return +this.row.get("skillLv");
 	}
+
+	#skill: MonsterSkill | undefined | null = null;
+	get skill(): MonsterSkill | undefined {
+		if (this.#skill === null) {
+			this.#skill = MonsterSkill.getBySkillId(this.skillId, this.skillLv);
+		}
+		return this.#skill;
+	}
+
 	get successRate(): number {
 		return +this.row.get("successRate");
 	}
 
-	constructor(private row: RowWrapper) {
-		this.skillName = localizationMonsterSkillName()(this.skillId);
-	}
+	constructor(private row: RowWrapper) {}
 
 	getSuccessRateString() {
 		return numeral(this.successRate / 10000).format("0.[00]%");
@@ -54,14 +62,22 @@ export class TavernMissionRequire {
 	getCategoryIcon() {
 		switch (this.category) {
 			case TavernMissionSkillType.ReturnToZero:
-				return "{{系統圖標|任務骷顱頭|24px}}";
+				return wikiimage({
+					category: LookupTableCategory.Monster_SpSkillIcon,
+					key: "expedition_success_debuff",
+					width: 24,
+				});
 			case TavernMissionSkillType.ReduceTime:
-				return "{{系統圖標|任務時鐘|24px}}";
+				return wikiimage({
+					category: LookupTableCategory.Monster_SpSkillIcon,
+					key: "expedition_time_debuff",
+					width: 24,
+				});
 		}
 		return "";
 	}
 
-	toWiki() {
-		return `{{狀態圖示|${this.skillName}|24px|層數=${this.skillLv}}}${this.getCategoryIcon()}`;
+	toWiki(): string {
+		return `${this.skill?.toWiki({ width: 24, text: "" })}${this.getCategoryIcon()}`;
 	}
 }

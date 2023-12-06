@@ -1,11 +1,14 @@
+import { render } from "preact-render-to-string";
+import { AssetbundleLookupTable } from "../assetbundle-lookup-table";
 import { ImperiumData, RowWrapper } from "../imperium-data";
 import { localizationString } from "../localization";
+import { HeroIconParams, heroIconTemplate } from "../templates/hero-icon";
 import { HeroRankParams, heroRankTemplate } from "../templates/hero-rank";
 import { heroSkinTemplate } from "../templates/hero-skin";
-import { HeroSmallIconParams } from "../templates/hero-small-icon";
 import { HeroRank } from "./enums/hero-rank.enum";
 import { HeroSkillType } from "./enums/hero-skill-type.enum";
 import { ItemCategory } from "./enums/item-category.enum";
+import { LookupTableCategory } from "./enums/lookup-table-category.enum";
 import { SkillId } from "./enums/skill-id.enum";
 import { SkillType } from "./enums/skill-type.enum";
 import { StoneEraseShape } from "./enums/stone-erase-shape.enum";
@@ -23,8 +26,8 @@ const instances: Record<string, HeroSkillSet> = {};
 let allInstances: HeroSkillSet[] | null = null;
 
 export class HeroSkillSet implements IHeroSkillSet {
-	public static get(row: RowWrapper): HeroSkillSet;
 	public static get(id: string): HeroSkillSet | undefined;
+	public static get(row: RowWrapper): HeroSkillSet;
 	public static get(rowOrId: RowWrapper | string): HeroSkillSet {
 		const id = typeof rowOrId === "string" ? rowOrId : rowOrId.get("id");
 		if (!instances[id]) {
@@ -57,7 +60,7 @@ export class HeroSkillSet implements IHeroSkillSet {
 	}
 
 	private static find(predicate: (value: HeroSkillSet) => boolean): HeroSkillSet | undefined {
-		for (const item of this.getAllGenerator()) {
+		for (const item of this) {
 			if (predicate(item)) {
 				return item;
 			}
@@ -65,10 +68,10 @@ export class HeroSkillSet implements IHeroSkillSet {
 	}
 
 	public static getAll() {
-		return (allInstances ??= Array.from(this.getAllGenerator()));
+		return (allInstances ??= Array.from(this));
 	}
 
-	public static *getAllGenerator() {
+	public static *[Symbol.iterator]() {
 		for (let i = 0; i < HeroSkillsTable.length; i++) {
 			const row = HeroSkillsTable.get(i);
 			yield HeroSkillSet.get(row);
@@ -88,6 +91,31 @@ export class HeroSkillSet implements IHeroSkillSet {
 	get model(): string {
 		return this.row.get("skillSet");
 	}
+	/**
+	 * 橫幅
+	 */
+	private get figure(): string {
+		return this.row.get("figure");
+	}
+	/**
+	 * 小橫幅
+	 */
+	private get figureM(): string {
+		return this.row.get("figureM");
+	}
+	/**
+	 * 簽名
+	 */
+	private get heroAg(): string {
+		return this.row.get("heroAg");
+	}
+	/**
+	 * 頭像
+	 */
+	get heroSd(): string {
+		return this.row.get("heroSd");
+	}
+
 	name: string;
 
 	get type(): HeroSkillType {
@@ -213,6 +241,43 @@ export class HeroSkillSet implements IHeroSkillSet {
 		return HeroRank.Unknown;
 	}
 
+	/**
+	 * 橫幅
+	 */
+	getFigureLargeAssetUrl() {
+		return AssetbundleLookupTable.getInstance().getAssetUrl(
+			LookupTableCategory.CharacterImage_LARGE,
+			this.figure
+		);
+	}
+	/**
+	 * 小橫幅
+	 */
+	getFigureMidAssetUrl() {
+		return AssetbundleLookupTable.getInstance().getAssetUrl(
+			LookupTableCategory.CharacterImage_MID,
+			this.figureM
+		);
+	}
+	/**
+	 * 簽名
+	 */
+	getAutographAssetUrl() {
+		return AssetbundleLookupTable.getInstance().getAssetUrl(
+			LookupTableCategory.CharacterAutograph,
+			this.heroAg
+		);
+	}
+	/**
+	 * 頭像
+	 */
+	getSdAssetUrl() {
+		return AssetbundleLookupTable.getInstance().getAssetUrl(
+			LookupTableCategory.CharacterImage_SD,
+			this.heroSd
+		);
+	}
+
 	static toWikiPage(self: IHeroSkillSet) {
 		if (self.isSkin && self.name != "冬青少女") {
 			const skinParams = {
@@ -253,8 +318,8 @@ export class HeroSkillSet implements IHeroSkillSet {
 		return heroRankTemplate(params);
 	}
 
-	toWiki(options?: HeroSmallIconParams) {
-		return `${this.hero?.toWiki(options)} (${this.rank})`;
+	toWiki(options?: HeroIconParams): string {
+		return render(heroIconTemplate(this, options));
 	}
 
 	toJSON(minify?: boolean) {
