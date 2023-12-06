@@ -1,24 +1,36 @@
 import { XMLParser } from "fast-xml-parser";
+import JSZip from "jszip";
 import * as fsp from "node:fs/promises";
 import * as path from "node:path";
 import pMap from "p-map";
+import pWaterfall from "p-waterfall";
+import { promisify } from "util";
+import { unzip } from "zlib";
 import { execAssetStudioModCLI } from "./asset-studio-cli";
 import {
 	IMAGE_FORMAT,
+	addAsset,
+	assetbundleMapping,
 	getAssetPath,
 	ignoredAssets,
 	needUploadAssets,
+	pathIdMappingContainer,
+	prefabMappingSprite,
 	uploadedAssets,
 } from "./assetbundle-asset";
 import { filterAsset, getNeedUploadBundleList, updateNeedUpdateList } from "./assetbundle-filter";
 import { AssetbundleLookupTable } from "./assetbundle-lookup-table";
-import { AssetbundleMapping } from "./assetbundle-mapping";
 import { ASSETBUNDLE_PATH } from "./config";
 import { assetDownload } from "./imperium-asset-download";
 import { ImperiumData } from "./imperium-data";
 import { inputDir } from "./input";
 import { Logger } from "./logger";
 import { mkdir, outJson, rpFile } from "./out";
+import { siJsonParse } from "./viewerjs/utils";
+import { parse as parseJson } from "lossless-json";
+import { P, match } from "ts-pattern";
+
+const doUnzip = promisify(unzip);
 
 const logger = new Logger("assetbundle-downloader");
 const metadataFilePath = path.join(ASSETBUNDLE_PATH, "metadata.json");
@@ -29,15 +41,22 @@ const uploadFolder = path.join(ASSETBUNDLE_PATH, "upload");
 export async function assetBundleDownloader(force = false): Promise<boolean> {
 	await mkdir(uploadFolder);
 
+	logger.info("update assetbundle lookup table");
 	await AssetbundleLookupTable.getInstance().updateLookupTable();
 	updateNeedUpdateList();
 
 	for (const imperiumName of ["android", "androidExp"]) {
+		logger.info(`check '${imperiumName}' update`);
 		const imperium = ImperiumData.from(imperiumName);
 		await assetDownload(metadataFilePath, imperium, force, async (name, asset) =>
 			processAsset(name, asset.L, (abAsset) => {
-				AssetbundleMapping.getInstance().set(abAsset.Container, name, asset);
-				return filterAsset(abAsset.Container);
+				assetbundleMapping.set(abAsset.Container, {
+					bundleName: name,
+					uuid: asset.I,
+					url: asset.L,
+				});
+				pathIdMappingContainer.set(abAsset.PathID, abAsset.Container);
+				return filterAsset(abAsset.Container) && filterPrefab(abAsset);
 			}).catch((error) => {
 				logger.error(`${name}:`, error);
 				debugger;
@@ -47,6 +66,7 @@ export async function assetBundleDownloader(force = false): Promise<boolean> {
 	}
 
 	logger.info("check need upload list");
+	updateNeedUpdateList();
 	await pMap(
 		getNeedUploadBundleList().values(),
 		async ({ mapping, containerPaths }) => {
@@ -54,10 +74,10 @@ export async function assetBundleDownloader(force = false): Promise<boolean> {
 				await processAsset(
 					path.join(mapping.uuid, mapping.bundleName),
 					mapping.url,
-					(abAsset) => containerPaths.has(abAsset.Container)
+					(abAsset) => containerPaths.has(abAsset.Container) && filterPrefab(abAsset)
 				);
 			} catch (error) {
-				logger.error(`processing ${name} error:`, error);
+				logger.error(`processing ${mapping.bundleName} error:`, error);
 			}
 		},
 		{
@@ -69,55 +89,67 @@ export async function assetBundleDownloader(force = false): Promise<boolean> {
 }
 
 async function processAsset(
-	name: string,
+	bundleName: string,
 	assetUrl: string,
 	assetFilter: (abAsset: ABAsset) => boolean
 ): Promise<boolean> {
 	switch (true) {
-		case name.endsWith(".ab"): {
-			const filePath = await downloadAsset(name, assetUrl);
-			const assetList = await getAssetList(name, filePath);
+		case bundleName.endsWith(".ab"): {
+			const filePath = await downloadAsset(bundleName, assetUrl);
+			const assetList = await getAssetList(bundleName, filePath);
 			for (const abAsset of assetList) {
 				if (assetFilter(abAsset)) {
-					logger.debug(`[${name}] extracting asset file ${abAsset.Container}...`);
+					logger.debug(`[${bundleName}] extracting asset file ${abAsset.Container}...`);
 					const assetFilePath = await extractAssetBundleByPathId(
-						name,
+						bundleName,
 						filePath,
 						abAsset.PathID
 					);
 					if (assetFilePath) {
-						const assetPath = getAssetPath(abAsset.Container);
-						const dist = path.join(uploadFolder, assetPath);
-						await mkdir(path.dirname(dist));
-						await fsp.cp(assetFilePath, dist);
-						uploadedAssets.add(abAsset.Container);
-						needUploadAssets.delete(abAsset.Container);
-						logger.info(`upload ${abAsset.Container}`);
+						let uploadSuccess = false;
+						if (abAsset.Container.endsWith(".prefab")) {
+							uploadSuccess = await parsePrefab(bundleName, assetFilePath, abAsset);
+						} else {
+							const assetPath = getAssetPath(abAsset.Container);
+							const dist = path.join(uploadFolder, assetPath);
+							await mkdir(path.dirname(dist));
+							await fsp.cp(assetFilePath, dist);
+							uploadSuccess = true;
+							logger.info(`upload ${abAsset.Container}`);
+						}
+						if (uploadSuccess) {
+							uploadedAssets.add(abAsset.Container);
+							needUploadAssets.delete(abAsset.Container);
+						}
 					} else {
 						logger.error(
-							`[${name}] extract asset ${abAsset.Container} (${abAsset.PathID}) failed.`
+							`[${bundleName}] extract asset ${abAsset.Container} (${abAsset.PathID}) failed.`
 						);
 					}
 				} else {
-					logger.debug(`[${name}] skip asset file ${abAsset.Container}`);
+					logger.debug(`[${bundleName}] skip asset file ${abAsset.Container}`);
 				}
 			}
 			await fsp.unlink(filePath);
-			await fsp.rm(path.join(extractFolder, name), { recursive: true, force: true });
+			// await fsp.rm(path.join(extractFolder, bundleName), { recursive: true, force: true });
 			break;
 		}
-		case name.endsWith(".mp4"): {
-			const filePath = await downloadAsset(name, assetUrl);
-			const dist = path.join(uploadFolder, "resources", path.basename(name));
+		case bundleName.endsWith(".mp4"): {
+			const filePath = await downloadAsset(bundleName, assetUrl);
+			const dist = path.join(uploadFolder, "resources", path.basename(bundleName));
 			await mkdir(path.dirname(dist));
 			await fsp.cp(filePath, dist);
 			await fsp.unlink(filePath);
-			logger.info(`upload ${name}`);
+			logger.info(`upload ${bundleName}`);
+			break;
+		}
+		case bundleName === "BundleDependencyTable.zip": {
+			await downloadBundleDependencyTable(bundleName, assetUrl);
 			break;
 		}
 		default: {
-			logger.info(`ignore ${name}`);
-			ignoredAssets.add(name);
+			logger.info(`ignore ${bundleName}`);
+			ignoredAssets.add(bundleName);
 			return false;
 		}
 	}
@@ -211,13 +243,89 @@ async function parseAssetList(xmlListPath: string): Promise<ABAsset[]> {
 	await outJson(jsonListPath, json);
 	return (
 		json.Assets?.Asset?.map((asset: ABAsset): ABAsset => {
-			const name = (asset.Name && `${asset.Name}`.toLowerCase()) ?? asset.PathID.toString();
+			const name = asset.Name ?? asset.PathID.toString();
 			return {
 				...asset,
 				Name: name,
-				Container: asset.Container?.toLowerCase() ?? `assets/${name}`,
+				Container: asset.Container?.toLowerCase() ?? `assets/${name.toLowerCase()}`,
 				PathID: asset.PathID.toString(),
 			};
 		}) ?? []
 	);
+}
+
+async function downloadBundleDependencyTable(name: string, assetUrl: string) {
+	const filePath = await downloadAsset(name, assetUrl);
+	const outDir = path.join(extractFolder, name);
+
+	const zip = await pWaterfall(
+		[(filePath) => fsp.readFile(filePath), (data) => JSZip.loadAsync(data)],
+		filePath
+	);
+
+	for (const zipEntry of Object.values(zip.files)) {
+		try {
+			const data = await pWaterfall(
+				[
+					(zipEntry) => zipEntry.async("nodebuffer"),
+					(buf) => doUnzip(buf),
+					(buf) => buf.toString("utf8"),
+					(jsonString) => siJsonParse(jsonString),
+				],
+				zipEntry
+			);
+			const jsonFilePath = path.join(outDir, zipEntry.name.replace(/\.[^\.]+$/, ".json"));
+			await outJson(jsonFilePath, data);
+		} catch (error) {}
+	}
+	await fsp.unlink(filePath);
+}
+
+function filterPrefab(abAsset: ABAsset): boolean {
+	if (abAsset.Container.endsWith(".prefab")) {
+		if (abAsset.Type["#text"] === "MonoBehaviour" && abAsset.Name === "Image") {
+			return true;
+		}
+		return false;
+	}
+	return true;
+}
+
+async function parsePrefab(
+	bundleName: string,
+	assetFilePath: string,
+	abAsset: ABAsset
+): Promise<boolean> {
+	const content = await fsp.readFile(assetFilePath, { encoding: "utf8" });
+	const data = match(parseJson(content))
+		.with(
+			{
+				m_Sprite: {
+					m_FileID: P.select("fileId"),
+					m_PathID: P.select("pathId"),
+				},
+			},
+			({ fileId, pathId }) => ({
+				fileId: Number(fileId),
+				pathId: `${pathId}`,
+			})
+		)
+		.otherwise(() => null);
+	if (data) {
+		if (!data.pathId || data.pathId === "0") {
+			logger.info(`[parsePrefab] skiped ${abAsset.Container}`);
+			return true;
+		}
+		prefabMappingSprite.set(abAsset.Container, data);
+		const containerPath = pathIdMappingContainer.get(data.pathId);
+		if (containerPath) {
+			addAsset(containerPath);
+		}
+		logger.info(`[parsePrefab] parsed ${abAsset.Container}`);
+		return true;
+	}
+	logger.error(
+		`[parsePrefab][${bundleName}] parse ${abAsset.Container} (${abAsset.PathID}) failed.`
+	);
+	return false;
 }

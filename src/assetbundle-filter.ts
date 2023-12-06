@@ -1,13 +1,22 @@
 import { minimatch } from "minimatch";
-import { addAsset, needUploadAssets, uploadedAssets } from "./assetbundle-asset";
+import {
+	AssetbundleMappingItem,
+	addAsset,
+	assetbundleMapping,
+	needUploadAssets,
+	pathIdMappingContainer,
+	prefabMappingSprite,
+	uploadedAssets,
+} from "./assetbundle-asset";
 import { AssetbundleLookupTable } from "./assetbundle-lookup-table";
-import { AssetbundleMapping, AssetbundleMappingItem } from "./assetbundle-mapping";
 import { LookupTableCategory } from "./model/enums/lookup-table-category.enum";
 
 const globImageExt = "@(png|jpg|bmp|tga|psd)";
 const uploadGlobs: string[] = [
 	`assets/game/character/character_image/**/*.${globImageExt}`,
+	`assets/game/character/spinedata/**/*.@(png|atlas.txt|skel.bytes)`,
 	`assets/game/ui/common/itemicon/**/*.${globImageExt}`,
+	`assets/game/ui/metagame/mainpagepanel/covertexture/**/*.${globImageExt}`,
 	// `assets/game/ui/levelscene/stonepanel/texture/**/*.${globImageExt}`,
 	`assets/game/ui/loadingscene/loadingbg/**/*.${globImageExt}`,
 ];
@@ -31,6 +40,7 @@ const uploadCategories: LookupTableCategory[] = [
 	LookupTableCategory.MonsterSkillIcon,
 	LookupTableCategory.StoreTagIcon,
 	LookupTableCategory.TierMedalSprite,
+	LookupTableCategory.MainPageImage,
 ];
 
 export function updateNeedUpdateList() {
@@ -40,7 +50,7 @@ export function updateNeedUpdateList() {
 			addAsset(containerPath);
 		}
 	}
-	for (const containerPath of AssetbundleMapping.getInstance().keys()) {
+	for (const containerPath of assetbundleMapping.keys()) {
 		if (uploadedAssets.has(containerPath) || needUploadAssets.has(containerPath)) {
 			continue;
 		}
@@ -49,6 +59,12 @@ export function updateNeedUpdateList() {
 				addAsset(containerPath);
 				break;
 			}
+		}
+	}
+	for (const ref of prefabMappingSprite.values()) {
+		const containerPath = pathIdMappingContainer.get(ref.pathId);
+		if (containerPath) {
+			addAsset(containerPath);
 		}
 	}
 }
@@ -77,7 +93,7 @@ export function getNeedUploadBundleList() {
 		}
 	>();
 	for (const containerPath of needUploadAssets.values()) {
-		const mapping = AssetbundleMapping.getInstance().get(containerPath);
+		const mapping = assetbundleMapping.get(containerPath);
 		if (mapping) {
 			const bundle = bundles.get(mapping.url);
 			if (bundle) {
