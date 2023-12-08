@@ -1,10 +1,12 @@
 import { XMLParser } from "fast-xml-parser";
 import JSZip from "jszip";
+import { parse as parseJson } from "lossless-json";
 import * as fsp from "node:fs/promises";
 import * as path from "node:path";
+import { promisify } from "node:util";
 import pMap from "p-map";
 import pWaterfall from "p-waterfall";
-import { promisify } from "util";
+import { P, match } from "ts-pattern";
 import { unzip } from "zlib";
 import { execAssetStudioModCLI } from "./asset-studio-cli";
 import {
@@ -27,8 +29,6 @@ import { inputDir } from "./input";
 import { Logger } from "./logger";
 import { mkdir, outJson, rpFile } from "./out";
 import { siJsonParse } from "./viewerjs/utils";
-import { parse as parseJson } from "lossless-json";
-import { P, match } from "ts-pattern";
 
 const doUnzip = promisify(unzip);
 
