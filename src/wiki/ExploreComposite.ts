@@ -22,7 +22,7 @@ export default function wikiExploreComposite() {
 					text: `Lv.${building.level}`,
 				},
 				`${composite.item?.toWiki()}${reset}`,
-				composite.materials.map((ref) => ref.toWiki()).join(" "),
+				composite.materials.toWiki(),
 				{
 					attributes: `style="text-align: center"`,
 					text: composite.requireFlagId || "-",
@@ -52,7 +52,7 @@ export default function wikiExploreComposite() {
 						text: composite.requireBuilding?.nameLevel ?? "",
 					},
 					`${composite.item?.toWiki()}${reset}`,
-					composite.materials.map((ref) => ref.toWiki()).join(" "),
+					composite.materials.toWiki(),
 					{
 						attributes: `style="text-align: center"`,
 						text: composite.requireFlagId || "-",

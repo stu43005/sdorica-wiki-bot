@@ -7,8 +7,9 @@ import { SkillType } from "./enums/custom/skill-type.enum.js";
 import { StoneEraseShape } from "./enums/custom/stone-erase-shape.enum.js";
 import { StoneEraseType } from "./enums/stone-erase-type.enum.js";
 import { HeroSkill } from "./hero-skill.js";
-import { HeroSkillSet } from "./hero-skillset.js";
 import { IHeroSkillSet } from "./hero-skillset.interface.js";
+import { HeroSkillSet } from "./hero-skillset.js";
+import { ItemPayList } from "./item-pay-list.js";
 import { ItemPayRef } from "./item-pay-ref.js";
 
 const SkillLevelTable = ImperiumData.fromGamedata().getTable("SkillLevel");
@@ -155,19 +156,21 @@ export class HeroSkillLevel implements IHeroSkillSet {
 		return this.rootSkillSet?.info;
 	}
 
-	#payItems: ItemPayRef[] | null = null;
-	get payItems(): ItemPayRef[] {
+	#payItems: ItemPayList | null = null;
+	get payItems(): ItemPayList {
 		if (this.#payItems === null) {
-			this.#payItems = range(1, 4)
-				.map(
-					(i) =>
-						new ItemPayRef(
-							this.row.get(`pay${i}Type`),
-							this.row.get(`pay${i}LinkId`),
-							this.row.get(`pay${i}Amount`),
-						),
-				)
-				.filter((ref) => !!ref.item);
+			this.#payItems = new ItemPayList(
+				range(1, 4)
+					.map(
+						(i) =>
+							new ItemPayRef(
+								this.row.get(`pay${i}Type`),
+								this.row.get(`pay${i}LinkId`),
+								this.row.get(`pay${i}Amount`),
+							),
+					)
+					.filter((ref) => !!ref.item),
+			);
 		}
 		return this.#payItems;
 	}

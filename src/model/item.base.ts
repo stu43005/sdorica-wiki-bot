@@ -23,6 +23,11 @@ export abstract class ItemBase {
 
 	constructor(protected row: RowWrapper) {}
 
+	compare(another: ItemBase): boolean {
+		if (this === another) return true;
+		return this.itemType === another.itemType && this.id === another.id;
+	}
+
 	getIconAssetUrl(small = false): string | undefined {
 		if (small && !this.isExplore) {
 			return AssetbundleLookupTable.getInstance().getAssetUrl(

@@ -1,10 +1,10 @@
 import * as _ from "lodash-es";
 import { ImperiumData, RowWrapper } from "../imperium-data.js";
 import { localizationString } from "../localization.js";
+import { ItemGiveRef } from "../model/item-give-ref.js";
 import { wikiH1, wikiH2, wikiH3 } from "../templates/wikiheader.js";
-import { wikitable, WikiTableRow, WikiTableStruct } from "../templates/wikitable.js";
+import { WikiTableRow, WikiTableStruct, wikitable } from "../templates/wikitable.js";
 import { range } from "../utils.js";
-import { item2wikiWithType } from "../wiki-item.js";
 
 const SignInRewardTable = ImperiumData.fromGamedata().getTable("SignInReward");
 
@@ -34,11 +34,11 @@ export default function wikiSignInReward() {
 						header: true,
 						text: `第 ${row.get("param1")} ~ ${row.get("param2")} 天`,
 					},
-					item2wikiWithType(
+					new ItemGiveRef(
 						row.get("giveType"),
 						row.get("giveLinkId"),
 						row.get("giveAmount"),
-					),
+					).toWiki(),
 				],
 			);
 			out += `\n${wikiH3(
@@ -86,26 +86,24 @@ function buildWeekTable(days: RowWrapper[], weeks?: RowWrapper[]): WikiTableStru
 				},
 				...range(0, 6).map((j) =>
 					days[i + j]
-						? item2wikiWithType(
+						? new ItemGiveRef(
 								days[i + j].get("giveType"),
 								days[i + j].get("giveLinkId"),
 								days[i + j].get("giveAmount"),
-								{
-									direction: "vertical",
-								},
-						  )
+						  ).toWiki({
+								direction: "vertical",
+						  })
 						: "",
 				),
 				...(weekRow
 					? [
-							item2wikiWithType(
+							new ItemGiveRef(
 								weekRow.get("giveType"),
 								weekRow.get("giveLinkId"),
 								weekRow.get("giveAmount"),
-								{
-									direction: "vertical",
-								},
-							),
+							).toWiki({
+								direction: "vertical",
+							}),
 					  ]
 					: []),
 			],

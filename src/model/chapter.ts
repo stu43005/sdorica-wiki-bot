@@ -19,6 +19,7 @@ import { TimeDisplayType } from "./enums/time-display-type.enum.js";
 import { TitleViewType } from "./enums/title-view-type.enum.js";
 import { Volume as VolumeEnum } from "./enums/volume.enum.js";
 import { Hero } from "./hero.js";
+import { ItemPayList } from "./item-pay-list.js";
 import { ItemPayRef } from "./item-pay-ref.js";
 import { Item } from "./item.js";
 import { Quest } from "./quest.js";
@@ -194,7 +195,7 @@ export class Chapter {
 	/**
 	 * @deprecated 改用 {@link chapterCount}.payItem
 	 */
-	extraCountItem: ItemPayRef[];
+	extraCountItem: ItemPayList;
 
 	#chapterCount: ChapterCount | undefined | null = null;
 	/**
@@ -305,9 +306,9 @@ export class Chapter {
 			this.unlockConditionParam,
 		);
 
-		this.extraCountItem = [];
+		const extraCountItem: ItemPayRef[] = [];
 		if (row.get("extraCountItem"))
-			this.extraCountItem.push(
+			extraCountItem.push(
 				new ItemPayRef(
 					PayType.Item,
 					row.get("extraCountItem"),
@@ -315,9 +316,15 @@ export class Chapter {
 				),
 			);
 		if (row.get("extraCountCurrency"))
-			this.extraCountItem.push(
+			extraCountItem.push(
 				new ItemPayRef(row.get("extraCountCurrency"), "", row.get("extraCountPrice")),
 			);
+		this.extraCountItem = new ItemPayList(extraCountItem);
+	}
+
+	compare(another: Chapter): boolean {
+		if (this === another) return true;
+		return this.id === another.id;
 	}
 
 	public getMainImageAssetUrl() {

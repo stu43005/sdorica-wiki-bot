@@ -33,10 +33,10 @@ export default function wikiExploreBuilding() {
 							},
 					  ]
 					: []),
-				...(level.levelUpItems.length > 0
+				...(level.levelUpItems.items.length > 0
 					? [
 							{
-								text: level.levelUpItems.map((ref) => ref.toWiki()).join(" "),
+								text: level.levelUpItems.toWiki(),
 							},
 					  ]
 					: [

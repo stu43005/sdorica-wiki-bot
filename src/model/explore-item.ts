@@ -1,18 +1,26 @@
+import * as _ from "lodash-es";
 import { ImperiumData, RowWrapper } from "../imperium-data.js";
-import { itemNameNormalization, localizationString } from "../localization.js";
+import {
+	itemNameNormalization,
+	localizationExploreBuildingName,
+	localizationString,
+} from "../localization.js";
 import { ItemIconParams } from "../templates/item-icon.js";
+import { ItemInfoboxParams } from "../templates/item-infobox.js";
 import { wikiH2 } from "../templates/wikiheader.js";
-import { exploreCompositeList, exploreUsingList } from "../wiki-item.js";
+import { wikiul } from "../templates/wikilist.js";
+import { WikiTableStruct, wikitable } from "../templates/wikitable.js";
 import { exploreItemRename } from "./config/item.js";
 import { DropItemsGroup } from "./drop-items.js";
+import { ExploreBuildingType } from "./enums/explore-building-type.enum.js";
 import { ExploreItemPortable } from "./enums/explore-item-portable.enum.js";
 import { ExploreItemsCategory } from "./enums/explore-items-category.enum.js";
 import { ItemType } from "./enums/item-type.enum.js";
+import { ExploreBuilding } from "./explore-building.js";
 import { ExploreComposite } from "./explore-composite.js";
 import { Hero } from "./hero.js";
-import { Item } from "./item.js";
 import { ItemBase } from "./item.base.js";
-import { ItemInfoboxParams } from "../templates/item-infobox.js";
+import { Item } from "./item.js";
 
 const ExploreItemsTable = ImperiumData.fromGamedata().getTable("ExploreItems");
 
@@ -134,11 +142,19 @@ export class ExploreItem extends ItemBase {
 	}
 
 	#composite: ExploreComposite[] | null = null;
-	get composite(): ExploreComposite[] {
+	get composites(): ExploreComposite[] {
 		if (this.#composite === null) {
 			this.#composite = ExploreComposite.getByItem(this);
 		}
 		return this.#composite;
+	}
+
+	#usingList: Map<ExploreBuildingType, (ExploreComposite | ExploreBuilding)[]> | null = null;
+	get usingList(): Map<ExploreBuildingType, (ExploreComposite | ExploreBuilding)[]> {
+		if (this.#usingList === null) {
+			this.#usingList = this.getUsingList();
+		}
+		return this.#usingList;
 	}
 
 	constructor(row: RowWrapper) {
@@ -155,6 +171,31 @@ export class ExploreItem extends ItemBase {
 			)(row.get("localizationKeyName")) || this.iconKey,
 		);
 		this.description = localizationString("ExpItem")(row.get("localizationKeyDescription"));
+	}
+
+	private getUsingList() {
+		const groupByBuilding = new Map<
+			ExploreBuildingType,
+			(ExploreBuilding | ExploreComposite)[]
+		>();
+		const useBuilding = ExploreBuilding.getAll().filter((building) =>
+			building.levelUpItems.includes(this),
+		);
+		for (const building of useBuilding) {
+			const list = groupByBuilding.get(building.type) ?? [];
+			groupByBuilding.set(building.type, list);
+			list.push(building);
+		}
+		const useComposites = ExploreComposite.getAll().filter((comp) =>
+			comp.materials.includes(this),
+		);
+		for (const composite of useComposites) {
+			if (!composite.requireBuilding) continue;
+			const list = groupByBuilding.get(composite.requireBuilding.type) ?? [];
+			groupByBuilding.set(composite.requireBuilding.type, list);
+			list.push(composite);
+		}
+		return groupByBuilding;
 	}
 
 	override toWiki(options?: ItemIconParams): string {
@@ -198,11 +239,77 @@ export class ExploreItem extends ItemBase {
 	}
 
 	toWikiCompositeList(): string {
-		return exploreCompositeList(this.id);
+		if (this.composites.length) {
+			const showReset = this.composites.some((comp) => comp.resetDay != -1);
+			const showRequireFlag = this.composites.some((comp) => comp.requireFlagId);
+			const table: WikiTableStruct = [
+				[
+					`! 設施`,
+					`! 合成素材`,
+					...(showReset ? [`! 限購次數`] : []),
+					...(showRequireFlag ? [`! 合成配方取得方式`] : []),
+				],
+			];
+			for (const composite of this.composites) {
+				const reset =
+					composite.resetDay != -1
+						? `\n(${composite.maxCount}次/${composite.resetDay}日)`
+						: "-";
+				table.push([
+					{
+						attributes: `style="text-align:center"`,
+						text: composite.requireBuilding?.nameLevel ?? "",
+					},
+					composite.materials.toWiki(),
+					...(showReset
+						? [
+								{
+									attributes: `style="text-align: center"`,
+									text: reset,
+								},
+						  ]
+						: []),
+					...(showRequireFlag
+						? [
+								{
+									attributes: `style="text-align: center"`,
+									text: composite.requireFlagId || "-",
+								},
+						  ]
+						: []),
+				]);
+			}
+			return `${wikiH2("合成方式")}\n${wikitable(table)}`;
+		}
+		return "";
 	}
 
 	toWikiUsingList(): string {
-		return exploreUsingList(this.id);
+		if (this.usingList.size) {
+			const list: string[] = [];
+			for (const [building, usage] of this.usingList.entries()) {
+				const buildingName = localizationExploreBuildingName()(building);
+				const buildingList = usage
+					.filter((use): use is ExploreBuilding => use instanceof ExploreBuilding)
+					.map((use) => `升級至 ${use.name} Lv.${use.level + 1}。`);
+				const composites = usage.filter(
+					(use): use is ExploreComposite => use instanceof ExploreComposite && !!use.item,
+				);
+				const compositesCategories = _.groupBy(
+					composites,
+					(comp) => comp.item?.getWikiCategory()[0] || "探索道具",
+				);
+				const compositeList = Object.entries(compositesCategories).map(
+					([category, composites]) =>
+						`合成${category}：${composites
+							.map((comp) => comp.item?.toWiki())
+							.join("、")}。`,
+				);
+				list.push(`${buildingName}\n${wikiul([...buildingList, ...compositeList])}`);
+			}
+			return `${wikiH2("道具用途")}\n${wikiul(list)}`;
+		}
+		return "";
 	}
 
 	override toWikiPage(): string {

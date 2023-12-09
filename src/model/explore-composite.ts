@@ -3,6 +3,7 @@ import { range } from "../utils.js";
 import { PayType } from "./enums/pay-type.enum.js";
 import { ExploreBuilding } from "./explore-building.js";
 import { ExploreItem } from "./explore-item.js";
+import { ItemPayList } from "./item-pay-list.js";
 import { ItemPayRef } from "./item-pay-ref.js";
 
 const ExploreCompositeTable = ImperiumData.fromGamedata().getTable("ExploreComposite");
@@ -101,22 +102,24 @@ export class ExploreComposite {
 		return this.#item;
 	}
 
-	#materials: ItemPayRef[] | null = null;
+	#materials: ItemPayList | null = null;
 	/**
 	 * 合成素材
 	 */
-	get materials(): ItemPayRef[] {
+	get materials(): ItemPayList {
 		if (this.#materials === null) {
-			this.#materials = range(1, 4)
-				.map(
-					(i) =>
-						new ItemPayRef(
-							PayType.ExploreItem,
-							this.row.get(`item${i}Id`),
-							this.row.get(`item${i}Count`),
-						),
-				)
-				.filter((ref) => !!ref.item);
+			this.#materials = new ItemPayList(
+				range(1, 4)
+					.map(
+						(i) =>
+							new ItemPayRef(
+								PayType.ExploreItem,
+								this.row.get(`item${i}Id`),
+								this.row.get(`item${i}Count`),
+							),
+					)
+					.filter((ref) => !!ref.item),
+			);
 		}
 		return this.#materials;
 	}

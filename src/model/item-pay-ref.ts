@@ -8,11 +8,11 @@ import { ItemBase } from "./item.base.js";
 export class ItemPayRef {
 	item?: ItemBase;
 
-	public static createItem(id: string, amount = 0) {
+	public static createItem(id: string, amount = 0): ItemPayRef {
 		return new ItemPayRef(PayType.Item, id, amount);
 	}
 
-	public static parseItem(str: string, separator = ":") {
+	public static parseItem(str: string, separator = ":"): ItemPayRef {
 		const [id, amount] = str.split(separator);
 		return new ItemPayRef(PayType.Item, id, +amount || 0);
 	}
@@ -32,14 +32,17 @@ export class ItemPayRef {
 		}
 	}
 
-	compare(another: ItemPayRef) {
+	compare(another: ItemPayRef | ItemBase): boolean {
 		if (this === another) return true;
+		if (another instanceof ItemBase) {
+			return this.item?.compare(another) ?? false;
+		}
 		return (
 			this.type === another.type && this.id === another.id && this.amount === another.amount
 		);
 	}
 
-	toWiki(options?: ItemIconParams) {
+	toWiki(options?: ItemIconParams): string {
 		let count = typeof options?.count === "number" ? options.count : 1;
 		count *= this.amount;
 		return (

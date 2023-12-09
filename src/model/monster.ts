@@ -5,6 +5,7 @@ import { localizationCharacterName, localizationString } from "../localization.j
 import { MonsterIconParams, monsterIconTemplate } from "../templates/monster-icon.js";
 import { range } from "../utils.js";
 import { LookupTableCategory } from "./enums/custom/lookup-table-category.enum.js";
+import { ItemPayList } from "./item-pay-list.js";
 import { ItemPayRef } from "./item-pay-ref.js";
 import { MonsterAbilityDropGroup } from "./monster-ability-drop.js";
 
@@ -171,19 +172,21 @@ export class Monster {
 		return !!this.rankRow?.get("speciality3");
 	}
 
-	#payItems: ItemPayRef[] | null = null;
-	get payItems(): ItemPayRef[] {
+	#payItems: ItemPayList | null = null;
+	get payItems(): ItemPayList {
 		if (this.#payItems === null) {
-			this.#payItems = range(1, 4)
-				.map(
-					(i) =>
-						new ItemPayRef(
-							this.row.get(`payType${i}`),
-							this.row.get(`linkId${i}`),
-							this.row.get(`amount${i}`),
-						),
-				)
-				.filter((ref) => !!ref.item);
+			this.#payItems = new ItemPayList(
+				range(1, 4)
+					.map(
+						(i) =>
+							new ItemPayRef(
+								this.row.get(`payType${i}`),
+								this.row.get(`linkId${i}`),
+								this.row.get(`amount${i}`),
+							),
+					)
+					.filter((ref) => !!ref.item),
+			);
 		}
 		return this.#payItems;
 	}
@@ -219,6 +222,16 @@ export class Monster {
 	constructor(private row: RowWrapper) {
 		this.name = localizationCharacterName()(this.keyName);
 		this.description = localizationString("MonsterInfo")(row.get("monsterDescKey"));
+	}
+
+	compare(another: Monster): boolean {
+		if (this === another) return true;
+		return this.id === another.id;
+	}
+
+	compareMonster(another: Monster): boolean {
+		if (this === another) return true;
+		return this.monsterId === another.monsterId;
 	}
 
 	/**

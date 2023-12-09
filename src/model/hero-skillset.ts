@@ -215,6 +215,22 @@ export class HeroSkillSet implements IHeroSkillSet {
 		this.S3 = HeroSkill.createByEraseType(this, SkillId.S3, this.stoneEraseTypeS3, this.tipsS3);
 	}
 
+	compare(another: HeroSkillSet): boolean {
+		if (this === another) return true;
+		return this.id === another.id;
+	}
+
+	compareHero(another: Hero | IHeroSkillSet): boolean {
+		if (this === another) return true;
+		if (another instanceof Hero) {
+			return this.heroId === another.id;
+		}
+		if (another.hero) {
+			return this.heroId === another.hero.id;
+		}
+		return false;
+	}
+
 	private getRank() {
 		switch (this.rankId) {
 			case 2:

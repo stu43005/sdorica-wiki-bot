@@ -1,10 +1,10 @@
 import * as _ from "lodash-es";
 import { ImperiumData } from "../imperium-data.js";
 import { localizationString } from "../localization.js";
+import { ItemPayRef } from "../model/item-pay-ref.js";
 import { wikiH1, wikiH2 } from "../templates/wikiheader.js";
 import { WikiTableStruct, wikitable } from "../templates/wikitable.js";
 import { range } from "../utils.js";
-import { item2wikiWithType } from "../wiki-item.js";
 
 const HomelandBuildingTable = ImperiumData.fromGamedata().getTable("HomelandBuilding");
 
@@ -28,12 +28,11 @@ export default function wikiHomelandBuilding() {
 			const items = nextLevel
 				? range(1, 3)
 						.map((i) =>
-							item2wikiWithType(
+							new ItemPayRef(
 								nextLevel.get(`payType${i}`),
 								nextLevel.get(`linkId${i}`),
 								nextLevel.get(`amount${i}`),
-								{ width: "20px" },
-							),
+							).toWiki({ width: "20px" }),
 						)
 						.filter(Boolean)
 				: [];

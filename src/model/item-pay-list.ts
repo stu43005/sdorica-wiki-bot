@@ -1,22 +1,16 @@
 import { ItemIconParams } from "../templates/item-icon.js";
 import { wikiul } from "../templates/wikilist.js";
 import { wikiNextLine } from "../wiki-utils.js";
-import { ItemGiveRef } from "./item-give-ref.js";
+import { ItemPayRef } from "./item-pay-ref.js";
 
-export class ItemGiveList {
-	public static parseList(str: string, separator = ";"): ItemGiveList {
-		const items = str.split(separator);
-		const refs = items.map((item) => ItemGiveRef.parseItem(item));
-		return new ItemGiveList(refs);
-	}
+export class ItemPayList {
+	constructor(public items: ItemPayRef[]) {}
 
-	constructor(public items: ItemGiveRef[]) {}
-
-	includes(...args: Parameters<typeof ItemGiveRef.prototype.compare>): boolean {
+	includes(...args: Parameters<typeof ItemPayRef.prototype.compare>): boolean {
 		return !!this.items.find((ref) => ref.compare(...args));
 	}
 
-	compare(another: ItemGiveList): boolean {
+	compare(another: ItemPayList): boolean {
 		if (this === another) return true;
 		if (this.items.length !== another.items.length) return false;
 		return this.items.every((item, index) => another.items[index]?.compare(item));
@@ -24,14 +18,16 @@ export class ItemGiveList {
 
 	toWiki(
 		options?: ItemIconParams & {
-			listType?: "ul" | "br" | "none" | "separator";
+			listType?: "space" | "ul" | "br" | "none" | "separator";
 			separator?: string;
 		},
 	): string {
 		const list = this.items.map((item) => item.toWiki(options));
 		switch (options?.listType) {
-			case "ul":
+			case "space":
 			default:
+				return list.join(" ");
+			case "ul":
 				return wikiul(list);
 			case "br":
 				return wikiNextLine(list.join("\n"));

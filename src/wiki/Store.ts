@@ -1,7 +1,8 @@
 import { ImperiumData } from "../imperium-data.js";
 import { localizationString } from "../localization.js";
+import { ItemGiveRef } from "../model/item-give-ref.js";
+import { ItemPayRef } from "../model/item-pay-ref.js";
 import { arrayGroupBy, objectMap } from "../utils.js";
-import { item2wikiWithType } from "../wiki-item.js";
 
 const StoreConfigsTable = ImperiumData.fromGamedata().getTable("StoreConfigs");
 const StoreItemGroupsTable = ImperiumData.fromGamedata().getTable("StoreItemGroups");
@@ -51,15 +52,15 @@ export default function wikiStore() {
 					});
 					for (let j = 0; j < itemGroup.length; j++) {
 						const item = itemGroup[j];
-						str += `\n${indent} ${item2wikiWithType(
+						str += `\n${indent} ${new ItemGiveRef(
 							item.get("giveType"),
 							item.get("giveLinkId"),
 							item.get("itemCount"),
-						)}：${item2wikiWithType(
+						).toWiki()}：${new ItemPayRef(
 							item.get("payType"),
 							item.get("linkId"),
 							item.get("amount"),
-						)}`;
+						).toWiki()}`;
 						if (itemGroup.length > 1) {
 							str += ` (${
 								Math.floor((Number(item.get("weight")) / weightCount) * 10000) / 100

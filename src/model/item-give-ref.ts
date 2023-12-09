@@ -3,14 +3,13 @@ import { currency2Id } from "../localization.js";
 import { HeroIconParams } from "../templates/hero-icon.js";
 import { ItemIconParams } from "../templates/item-icon.js";
 import { MonsterIconParams } from "../templates/monster-icon.js";
-import { item2wikiWithType } from "../wiki-item.js";
 import { Chapter } from "./chapter.js";
 import { GiveType } from "./enums/give-type.enum.js";
 import { ExploreItem } from "./explore-item.js";
-import { Hero } from "./hero.js";
 import { HeroSkillSet } from "./hero-skillset.js";
-import { Item } from "./item.js";
+import { Hero } from "./hero.js";
 import { ItemBase } from "./item.base.js";
+import { Item } from "./item.js";
 import { Monster } from "./monster.js";
 
 type ToWikiParam = ItemIconParams & HeroIconParams & MonsterIconParams;
@@ -21,11 +20,11 @@ export class ItemGiveRef {
 	heroSkillSet?: HeroSkillSet;
 	diligentChapter?: Chapter;
 
-	public static createItem(id: string, amount = 0) {
+	public static createItem(id: string, amount = 0): ItemGiveRef {
 		return new ItemGiveRef(GiveType.Item, id, amount);
 	}
 
-	public static parseItem(str: string, separator = ":") {
+	public static parseItem(str: string, separator = ":"): ItemGiveRef {
 		const [id, amount] = str.split(separator);
 		return new ItemGiveRef(GiveType.Item, id, +amount || 0);
 	}
@@ -65,8 +64,23 @@ export class ItemGiveRef {
 		}
 	}
 
-	compare(another: ItemGiveRef) {
+	compare(another: ItemGiveRef | ItemBase | Monster | HeroSkillSet | Hero | Chapter): boolean {
 		if (this === another) return true;
+		if (another instanceof ItemBase) {
+			return this.item?.compare(another) ?? false;
+		}
+		if (another instanceof Monster) {
+			return this.monster?.compare(another) ?? false;
+		}
+		if (another instanceof HeroSkillSet) {
+			return this.heroSkillSet?.compare(another) ?? false;
+		}
+		if (another instanceof Hero) {
+			return this.heroSkillSet?.compareHero(another) ?? false;
+		}
+		if (another instanceof Chapter) {
+			return this.diligentChapter?.compare(another) ?? false;
+		}
 		return (
 			this.type === another.type &&
 			this.id === another.id &&
@@ -75,7 +89,7 @@ export class ItemGiveRef {
 		);
 	}
 
-	getChanceString() {
+	getChanceString(): string {
 		return numeral(this.chance / 10000).format("0.[00]%");
 	}
 
@@ -100,10 +114,10 @@ export class ItemGiveRef {
 				options,
 			)}`;
 		}
-		return item2wikiWithType(this.type, this.id, count, options);
+		return "";
 	}
 
-	toWiki(options?: ToWikiParam) {
+	toWiki(options?: ToWikiParam): string {
 		return (
 			this._toWiki(options) +
 			(this.chance === 10000 || this.chance < 0 ? "" : `：${this.getChanceString()}`)

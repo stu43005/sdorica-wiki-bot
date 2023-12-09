@@ -7,50 +7,6 @@ import { outText } from "../out.js";
 import { sortKeyByTable } from "../out-sort-key.js";
 import { flipMatrix } from "../utils.js";
 
-(async () => {
-	const out: string[] = [];
-	const gamedata = ImperiumData.fromGamedata();
-	const raw = gamedata.getRawData();
-	for (const tableName of Object.keys(raw.C)) {
-		const table = raw.C[tableName];
-		const [types, keys] = flipMatrix(
-			flipMatrix([table.T, table.K]).sort(sortKeyByTable(tableName)),
-		);
-		const columns: string[] = [];
-		for (let i = 0; i < keys.length; i++) {
-			const columnName = keys[i];
-			if (/^\w+$/.test(columnName)) {
-				columns.push(
-					`  ${columnName} ${typeName(types[i] ?? "")}${quickInlineRef(columnName)}`,
-				);
-			}
-		}
-		out.push(`Table ${tableName} {
-${columns.join("\n")}
-}`);
-	}
-	for (const enumName of Object.keys(raw.E)) {
-		const values = raw.E[enumName];
-		out.push(`Enum ${enumName.substring("enum:".length)} {
-${values.map((v) => `  ${v}`).join("\n")}
-}`);
-	}
-	out.push(`
-Ref: ExploreComposite.requireBuildingId > ExploreBuilding.id
-Ref: Chapters.dropGroupID > DropItems.groupId
-Ref: Quests.dropGroupId > DropItems.groupId
-Ref: AchievementConditions.conditionGroupId > EvaluateAchievements.conditionGroupId
-Ref: EvaluateAchievements.groupId > LoreChapterSettings.evaluateAchievementGroupId
-Ref: Evaluates.groupId > LoreChapterSettings.evaluateGroupId
-Ref: AdventureWeekPoint.groupId > LoreChapterSettings.pointGroupId
-Ref: BattlefieldRanks.groupId > LoreChapterSettings.rankGroupId
-Ref: BattlefieldRanks.groupId > Battlefields.id
-Ref: BattlefieldDropItems.groupId > Battlefields.questLvDropId
-// Ref: QuestExtraSettings.extraMode >
-`);
-	await outText(path.join(DATA_PATH, `dbml.txt`), out.join("\n\n"));
-})();
-
 function typeName(type: string): string {
 	if (type.startsWith("enum:")) {
 		return type.substring("enum:".length);
@@ -77,3 +33,45 @@ function quickInlineRef(columnName: string) {
 	if (columnName === "questModeId") return ` [ref: > QuestMode.id]`;
 	return "";
 }
+
+const out: string[] = [];
+const gamedata = ImperiumData.fromGamedata();
+const raw = gamedata.getRawData();
+for (const tableName of Object.keys(raw.C)) {
+	const table = raw.C[tableName];
+	const [types, keys] = flipMatrix(
+		flipMatrix([table.T, table.K]).sort(sortKeyByTable(tableName)),
+	);
+	const columns: string[] = [];
+	for (let i = 0; i < keys.length; i++) {
+		const columnName = keys[i];
+		if (/^\w+$/.test(columnName)) {
+			columns.push(
+				`  ${columnName} ${typeName(types[i] ?? "")}${quickInlineRef(columnName)}`,
+			);
+		}
+	}
+	out.push(`Table ${tableName} {
+${columns.join("\n")}
+}`);
+}
+for (const enumName of Object.keys(raw.E)) {
+	const values = raw.E[enumName];
+	out.push(`Enum ${enumName.substring("enum:".length)} {
+${values.map((v) => `  ${v}`).join("\n")}
+}`);
+}
+out.push(`
+Ref: ExploreComposite.requireBuildingId > ExploreBuilding.id
+Ref: Chapters.dropGroupID > DropItems.groupId
+Ref: Quests.dropGroupId > DropItems.groupId
+Ref: AchievementConditions.conditionGroupId > EvaluateAchievements.conditionGroupId
+Ref: EvaluateAchievements.groupId > LoreChapterSettings.evaluateAchievementGroupId
+Ref: Evaluates.groupId > LoreChapterSettings.evaluateGroupId
+Ref: AdventureWeekPoint.groupId > LoreChapterSettings.pointGroupId
+Ref: BattlefieldRanks.groupId > LoreChapterSettings.rankGroupId
+Ref: BattlefieldRanks.groupId > Battlefields.id
+Ref: BattlefieldDropItems.groupId > Battlefields.questLvDropId
+// Ref: QuestExtraSettings.extraMode >
+`);
+await outText(path.join(DATA_PATH, `dbml.txt`), out.join("\n\n"));

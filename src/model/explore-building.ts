@@ -4,6 +4,7 @@ import { range } from "../utils.js";
 import { ExploreBuildingType } from "./enums/explore-building-type.enum.js";
 import { PayType } from "./enums/pay-type.enum.js";
 import { ExploreComposite } from "./explore-composite.js";
+import { ItemPayList } from "./item-pay-list.js";
 import { ItemPayRef } from "./item-pay-ref.js";
 
 const ExploreBuildingTable = ImperiumData.fromGamedata().getTable("ExploreBuilding");
@@ -88,19 +89,21 @@ export class ExploreBuilding {
 		return NaN;
 	}
 
-	#levelUpItems: ItemPayRef[] | null = null;
-	get levelUpItems(): ItemPayRef[] {
+	#levelUpItems: ItemPayList | null = null;
+	get levelUpItems(): ItemPayList {
 		if (this.#levelUpItems === null) {
-			this.#levelUpItems = range(1, 4)
-				.map(
-					(i) =>
-						new ItemPayRef(
-							PayType.ExploreItem,
-							this.row.get(`item${i}Id`),
-							this.row.get(`item${i}Count`),
-						),
-				)
-				.filter((ref) => !!ref.item);
+			this.#levelUpItems = new ItemPayList(
+				range(1, 4)
+					.map(
+						(i) =>
+							new ItemPayRef(
+								PayType.ExploreItem,
+								this.row.get(`item${i}Id`),
+								this.row.get(`item${i}Count`),
+							),
+					)
+					.filter((ref) => !!ref.item),
+			);
 		}
 		return this.#levelUpItems;
 	}
