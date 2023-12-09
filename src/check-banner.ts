@@ -3,13 +3,14 @@ import path from "node:path";
 import { API_CONFIG_PATH, ApiConfig, BANNERS_PATH, LATEST_PATH } from "./config.js";
 import { LatestDataRaw } from "./data-raw-type.js";
 import { discordWebhook } from "./discord-webhook.js";
-import { inputJsonDefault, inputJsonSync } from "./input.js";
+import { inputJsonSync } from "./input.js";
 import { Logger } from "./logger.js";
-import { outJson, rpFile } from "./out.js";
+import { SetFile } from "./out-set-file.js";
+import { rpFile } from "./out.js";
 import { axios } from "./utilities/axios.js";
 
 const logger = new Logger("check-banner");
-const bannerUrlsPath = path.join(BANNERS_PATH, "banner_urls.json");
+export const bannerUrls = new SetFile<string>(path.join(BANNERS_PATH, "banner_urls.json"));
 
 async function loginToGame() {
 	const apiConfig: ApiConfig = inputJsonSync(API_CONFIG_PATH);
@@ -75,8 +76,6 @@ async function downloadBanner(type: string, url: string) {
 }
 
 export async function checkBanner(debug = false, lang = "zh_TW") {
-	const bannerUrls = await inputJsonDefault<string[]>(bannerUrlsPath, []);
-
 	try {
 		const gameInstance = await loginToGame();
 
@@ -86,7 +85,7 @@ export async function checkBanner(debug = false, lang = "zh_TW") {
 		for (const banner of bannersRes.data.data.banners) {
 			logger.log(`banner: ${banner.actionValue}`);
 			for (const [type, url] of Object.entries(banner.bannerUrls[lang])) {
-				if (!bannerUrls.includes(url) || debug) {
+				if (!bannerUrls.has(url) || debug) {
 					logger.log(`new ${type}: ${url}`);
 					await downloadBanner(type, url);
 					if (!debug) {
@@ -94,7 +93,7 @@ export async function checkBanner(debug = false, lang = "zh_TW") {
 							content: `<:DankPuggi:493777695008882688> ${type}: ${url}`,
 						});
 					}
-					bannerUrls.push(url);
+					bannerUrls.add(url);
 				}
 			}
 		}
@@ -106,7 +105,7 @@ export async function checkBanner(debug = false, lang = "zh_TW") {
 			logger.log(`banner: ${banner.actionValue}`);
 			for (const [, url] of Object.entries(banner.bannerUrls[lang])) {
 				const type = "iap";
-				if (!bannerUrls.includes(url) || debug) {
+				if (!bannerUrls.has(url) || debug) {
 					logger.log(`new ${type}: ${url}`);
 					await downloadBanner(type, url);
 					if (!debug) {
@@ -114,7 +113,7 @@ export async function checkBanner(debug = false, lang = "zh_TW") {
 							content: `<:DankPuggi:493777695008882688> ${type}: ${url}`,
 						});
 					}
-					bannerUrls.push(url);
+					bannerUrls.add(url);
 				}
 			}
 		}
@@ -133,7 +132,7 @@ export async function checkBanner(debug = false, lang = "zh_TW") {
 		throw error;
 	} finally {
 		try {
-			await outJson(bannerUrlsPath, bannerUrls);
+			await bannerUrls.cleanup();
 		} catch (error) {
 			logger.error("output bannerUrls error:", error);
 			debugger;
