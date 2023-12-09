@@ -8,13 +8,14 @@ import pMap from "p-map";
 import pWaterfall from "p-waterfall";
 import { P, match } from "ts-pattern";
 import { unzip } from "zlib";
-import { execAssetStudioModCLI } from "./asset-studio-cli.js";
+import { CLIOptions, execAssetStudioModCLI } from "./asset-studio-cli.js";
 import {
 	IMAGE_FORMAT,
 	addAsset,
 	assetbundleMapping,
 	getAssetPath,
 	ignoredAssets,
+	isSpineImage,
 	needUploadAssets,
 	pathIdMappingContainer,
 	prefabMappingSprite,
@@ -111,6 +112,7 @@ async function processAsset(
 						bundleName,
 						filePath,
 						abAsset.PathID,
+						isSpineImage(abAsset.Container) ? "png" : IMAGE_FORMAT,
 					);
 					if (assetFilePath) {
 						let uploadSuccess = false;
@@ -174,12 +176,18 @@ export async function extractAssetBundleByContainerPath(
 	name: string,
 	filePath: string,
 	containerPath: string,
+	imageFormat?: CLIOptions["imageFormat"],
 ): Promise<string | undefined> {
 	containerPath = containerPath.toLowerCase();
 	const assetList = await getAssetList(name, filePath);
 	const abAsset = assetList.find((a) => a.Container === containerPath);
 	if (abAsset) {
-		const assetFilePath = await extractAssetBundleByPathId(name, filePath, abAsset.PathID);
+		const assetFilePath = await extractAssetBundleByPathId(
+			name,
+			filePath,
+			abAsset.PathID,
+			imageFormat,
+		);
 		if (assetFilePath) {
 			return assetFilePath;
 		}
@@ -191,6 +199,7 @@ async function extractAssetBundleByPathId(
 	name: string,
 	filePath: string,
 	pathId: string,
+	imageFormat: CLIOptions["imageFormat"] = IMAGE_FORMAT,
 ): Promise<string | undefined> {
 	const outDir = path.join(extractFolder, name, pathId);
 	const timeout = AbortSignal.timeout(600_000);
@@ -198,7 +207,7 @@ async function extractAssetBundleByPathId(
 		output: outDir,
 		groupOption: "none",
 		filterByPathId: [pathId],
-		imageFormat: IMAGE_FORMAT,
+		imageFormat: imageFormat,
 		signal: timeout,
 	});
 	for await (const { filepath } of inputDir(outDir)) {

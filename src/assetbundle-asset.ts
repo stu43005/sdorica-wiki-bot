@@ -1,7 +1,8 @@
 import path from "node:path";
+import picomatch from "picomatch";
 import { ASSETBUNDLE_PATH, ASSET_HOSTNAME } from "./config.js";
-import { SetFile } from "./out-set-file.js";
 import { MapFile } from "./out-map-file.js";
+import { SetFile } from "./out-set-file.js";
 
 export const IMAGE_FORMAT = "webp";
 const imageExtensions = [".png", ".jpg", ".psd", ".bmp", ".tga"];
@@ -32,12 +33,19 @@ export const pathIdMappingContainer = new MapFile<string>(
 	path.join(ASSETBUNDLE_PATH, "pathid_mapping_container.json"),
 );
 
+export function isSpineImage(containerPath: string): boolean {
+	return picomatch.isMatch(containerPath, `assets/game/character/spinedata/**/*.png`, {
+		nocase: true,
+	});
+}
+
 export function getAssetPath(containerPath: string): string {
 	const extname = path.extname(containerPath);
 	switch (true) {
-		case imageExtensions.includes(extname):
-			containerPath = containerPath.replace(new RegExp(`\\${extname}$`), `.${IMAGE_FORMAT}`);
+		case isSpineImage(containerPath):
 			break;
+		case imageExtensions.includes(extname):
+			return containerPath.replace(new RegExp(`\\${extname}$`), `.${IMAGE_FORMAT}`);
 		case containerPath.endsWith(".prefab"): {
 			const spritePtr = prefabMappingSprite.get(containerPath);
 			if (spritePtr) {
