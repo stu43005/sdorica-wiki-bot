@@ -1,10 +1,10 @@
-import _ from "lodash";
-import { ImperiumData, RowWrapper } from "../imperium-data";
-import { wikiul } from "../templates/wikilist";
-import { ChestCategory } from "./enums/chest-category.enum";
-import { DropItemCategory } from "./enums/drop-item-category.enum";
-import { DropTimeCategory } from "./enums/drop-time-category.enum";
-import { ItemGiveRef } from "./item-give-ref";
+import * as _ from "lodash-es";
+import { ImperiumData, RowWrapper } from "../imperium-data.js";
+import { wikiul } from "../templates/wikilist.js";
+import { ChestCategory } from "./enums/chest-category.enum.js";
+import { DropItemCategory } from "./enums/drop-item-category.enum.js";
+import { DropTimeCategory } from "./enums/drop-time-category.enum.js";
+import { ItemGiveRef } from "./item-give-ref.js";
 
 const DropItemsTable = ImperiumData.fromGamedata().getTable("DropItems");
 
@@ -20,8 +20,8 @@ export class DropItemsGroup {
 			const subgroups = _.groupBy(rows, (r) => r.get("subgroupId"));
 			instances[groupId] = new DropItemsGroup(
 				Object.values(subgroups).map(
-					(subgroup) => new DropItems(subgroup as [RowWrapper, ...RowWrapper[]])
-				)
+					(subgroup) => new DropItems(subgroup as [RowWrapper, ...RowWrapper[]]),
+				),
 			);
 		}
 		return instances[groupId];
@@ -71,8 +71,8 @@ export class DropItems {
 							r.get("giveType"),
 							r.get("giveLinkId"),
 							+r.get("giveAmount"),
-							+r.get("value")
-						)
+							+r.get("value"),
+						),
 				);
 				break;
 			case DropItemCategory.Weight:
@@ -83,8 +83,8 @@ export class DropItems {
 							r.get("giveType"),
 							r.get("giveLinkId"),
 							+r.get("giveAmount"),
-							(r.get("value") / weightSum) * 10000
-						)
+							(r.get("value") / weightSum) * 10000,
+						),
 				);
 				break;
 		}

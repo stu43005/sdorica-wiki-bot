@@ -1,4 +1,4 @@
-import { DialogIconLocate } from "./DialogIconLocate";
+import { DialogIconLocate } from "./DialogIconLocate.js";
 
 export interface DialogMessage {
 	ID: string;

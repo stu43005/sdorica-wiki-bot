@@ -1,5 +1,5 @@
 export function isDevMode() {
-	return process.env.NODE_ENV === "development";
+	return process.env["NODE_ENV"] === "development";
 }
 
 /**
@@ -124,7 +124,7 @@ export function isEmptyObject(obj: any) {
 
 export function objectEach<T>(
 	obj: Record<string, T>,
-	callback: (key: string, value: T) => boolean | void
+	callback: (key: string, value: T) => boolean | void,
 ) {
 	for (const i in obj) {
 		if (callback(i, obj[i]) === false) {
@@ -136,7 +136,7 @@ export function objectEach<T>(
 
 export function objectMap<T, U>(
 	obj: Record<string, T>,
-	callback: (key: string, value: T) => U
+	callback: (key: string, value: T) => U,
 ): Record<string, U> {
 	const out: Record<string, U> = {};
 	for (const i in obj) {
@@ -174,12 +174,12 @@ export function arrayGroupBy<T>(arr: T[], getter: (value: T) => number, isNumber
 export function arrayGroupBy<T>(
 	arr: T[],
 	getter: (value: T) => string,
-	isNumber?: false
+	isNumber?: false,
 ): Record<string, T[]>;
 export function arrayGroupBy<T>(
 	arr: T[],
 	getter: ((value: T) => number) | ((value: T) => string),
-	isNumber = false
+	isNumber = false,
 ): T[][] | Record<string, T[]> {
 	if (isNumber) {
 		const getter2 = getter as (value: T) => number;

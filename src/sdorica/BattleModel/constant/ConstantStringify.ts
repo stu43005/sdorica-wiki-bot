@@ -1,57 +1,57 @@
-import { localizationItemName } from "../../../localization";
-import { groupedBuffStringify, singleBuffStringify } from "../buff/BuffStringify";
-import { BuffEnums } from "../BuffEnums";
-import { conditionStringify } from "../condition/ConditionStringify";
-import { StoneType } from "../StoneSystem/StoneType";
-import { mulitTargetStringify, singleTargetStringify } from "../target/TargetStringify";
-import { AssignedValue } from "./AssignedValue";
-import { BattleActionRecordValue } from "./BattleActionRecordValue";
-import { IBattleActionRecordValue } from "./BattleActionRecordValue/IBattleActionRecordValue";
-import { ThisBattleTurnCount } from "./BattleActionRecordValue/ThisBattleTurnCount";
-import { BuffAssignedInteger } from "./BuffAssignedInteger";
-import { ConditionalInteger } from "./ConditionalInteger";
-import { ConstanctInt } from "./ConstanctInt";
-import { ConstantIntB } from "./ConstantIntB";
-import { ConstantIntC } from "./ConstantIntC";
-import { CountOfBuffGroup } from "./CountOfBuffGroup";
-import { CountOfCharGroup } from "./CountOfCharGroup";
-import { BuffAssignedIntegerGroup } from "./grouped/BuffAssignedIntegerGroup";
-import { ConstanctIntegerGroup } from "./grouped/ConstanctIntegerGroup";
-import { IGroupedInteger } from "./grouped/IGroupedInteger";
-import { IntsOnBuffGroup } from "./grouped/IntsOnBuffGroup";
-import { IntsOnCharGroup } from "./grouped/IntsOnCharGroup";
-import { SingleIntegerGroup } from "./grouped/SingleIntegerGroup";
-import { IntBuffField } from "./IntBuffField";
-import { IntCharaterField } from "./IntCharaterField";
-import { IntFieldB } from "./IntFieldB";
-import { IntFieldC } from "./IntFieldC";
-import { ISingleInteger } from "./ISingleInteger";
-import { ISingleIntegerOfBuff } from "./ISingleIntegerOfBuff";
-import { ISingleIntegerOfCharacter } from "./ISingleIntegerOfCharacter";
-import { MaxOfInts } from "./MaxOfInts";
-import { MinOfInts } from "./MinOfInts";
-import { ModuleInt } from "./ModuleInt";
-import { ModuleIntB } from "./ModuleIntB";
-import { ModuleIntC } from "./ModuleIntC";
-import { MultiplyFloat } from "./MultiplyFloat";
-import { MultiplyFloatB } from "./MultiplyFloatB";
-import { MultiplyFloatC } from "./MultiplyFloatC";
-import { MultiplyInt } from "./MultiplyInt";
-import { MultiplyIntB } from "./MultiplyIntB";
-import { MultiplyIntC } from "./MultiplyIntC";
-import { PlusInt } from "./PlusInt";
-import { PlusIntB } from "./PlusIntB";
-import { PlusIntC } from "./PlusIntC";
-import { RandomInt } from "./RandomInt";
-import { SkillCasterPower } from "./SkillCasterPower";
-import { StonePanelColorCount } from "./StonePanelColorCount";
-import { SumOfInts } from "./SumOfInts";
-import { ThisBuffLevel } from "./ThisBuffLevel";
-import { ThisTeamExploreDays } from "./ThisTeamExploreDays";
-import { ThisTeamExploreFlagValue } from "./ThisTeamExploreFlagValue";
-import { ThisTeamExploreItemCount } from "./ThisTeamExploreItemCount";
-import { transitionResultValueStringify } from "./transitionResult/transitionResultStringify";
-import { TransitionResultValue } from "./TransitionResultValue";
+import { localizationItemName } from "../../../localization.js";
+import { groupedBuffStringify, singleBuffStringify } from "../buff/BuffStringify.js";
+import { BuffEnums } from "../BuffEnums.js";
+import { conditionStringify } from "../condition/ConditionStringify.js";
+import { StoneType } from "../StoneSystem/StoneType.js";
+import { mulitTargetStringify, singleTargetStringify } from "../target/TargetStringify.js";
+import { AssignedValue } from "./AssignedValue.js";
+import { BattleActionRecordValue } from "./BattleActionRecordValue.js";
+import { IBattleActionRecordValue } from "./BattleActionRecordValue/IBattleActionRecordValue.js";
+import { ThisBattleTurnCount } from "./BattleActionRecordValue/ThisBattleTurnCount.js";
+import { BuffAssignedInteger } from "./BuffAssignedInteger.js";
+import { ConditionalInteger } from "./ConditionalInteger.js";
+import { ConstanctInt } from "./ConstanctInt.js";
+import { ConstantIntB } from "./ConstantIntB.js";
+import { ConstantIntC } from "./ConstantIntC.js";
+import { CountOfBuffGroup } from "./CountOfBuffGroup.js";
+import { CountOfCharGroup } from "./CountOfCharGroup.js";
+import { BuffAssignedIntegerGroup } from "./grouped/BuffAssignedIntegerGroup.js";
+import { ConstanctIntegerGroup } from "./grouped/ConstanctIntegerGroup.js";
+import { IGroupedInteger } from "./grouped/IGroupedInteger.js";
+import { IntsOnBuffGroup } from "./grouped/IntsOnBuffGroup.js";
+import { IntsOnCharGroup } from "./grouped/IntsOnCharGroup.js";
+import { SingleIntegerGroup } from "./grouped/SingleIntegerGroup.js";
+import { IntBuffField } from "./IntBuffField.js";
+import { IntCharaterField } from "./IntCharaterField.js";
+import { IntFieldB } from "./IntFieldB.js";
+import { IntFieldC } from "./IntFieldC.js";
+import { ISingleInteger } from "./ISingleInteger.js";
+import { ISingleIntegerOfBuff } from "./ISingleIntegerOfBuff.js";
+import { ISingleIntegerOfCharacter } from "./ISingleIntegerOfCharacter.js";
+import { MaxOfInts } from "./MaxOfInts.js";
+import { MinOfInts } from "./MinOfInts.js";
+import { ModuleInt } from "./ModuleInt.js";
+import { ModuleIntB } from "./ModuleIntB.js";
+import { ModuleIntC } from "./ModuleIntC.js";
+import { MultiplyFloat } from "./MultiplyFloat.js";
+import { MultiplyFloatB } from "./MultiplyFloatB.js";
+import { MultiplyFloatC } from "./MultiplyFloatC.js";
+import { MultiplyInt } from "./MultiplyInt.js";
+import { MultiplyIntB } from "./MultiplyIntB.js";
+import { MultiplyIntC } from "./MultiplyIntC.js";
+import { PlusInt } from "./PlusInt.js";
+import { PlusIntB } from "./PlusIntB.js";
+import { PlusIntC } from "./PlusIntC.js";
+import { RandomInt } from "./RandomInt.js";
+import { SkillCasterPower } from "./SkillCasterPower.js";
+import { StonePanelColorCount } from "./StonePanelColorCount.js";
+import { SumOfInts } from "./SumOfInts.js";
+import { ThisBuffLevel } from "./ThisBuffLevel.js";
+import { ThisTeamExploreDays } from "./ThisTeamExploreDays.js";
+import { ThisTeamExploreFlagValue } from "./ThisTeamExploreFlagValue.js";
+import { ThisTeamExploreItemCount } from "./ThisTeamExploreItemCount.js";
+import { transitionResultValueStringify } from "./transitionResult/transitionResultStringify.js";
+import { TransitionResultValue } from "./TransitionResultValue.js";
 
 function isFloat(constant: ISingleInteger) {
 	switch (constant.$type) {
@@ -90,13 +90,13 @@ export function constantStringify(constant: ISingleInteger): string {
 	if (constant.$type == "BattleModel.IntCharaterField") {
 		const obj = constant as IntCharaterField;
 		return `${singleTargetStringify(obj.character)}的${BuffEnums.CharacterIntegerField.toString(
-			obj.targetField
+			obj.targetField,
 		)}`;
 	}
 	if (constant.$type == "BattleModel.IntBuffField") {
 		const obj = constant as IntBuffField;
 		return `${singleBuffStringify(obj.buff)}的${BuffEnums.BuffIntergerField.toString(
-			obj.targetField
+			obj.targetField,
 		)}`;
 	}
 	if (constant.$type == "BattleModel.PlusInt") {
@@ -195,14 +195,14 @@ export function constantStringify(constant: ISingleInteger): string {
 	if (constant.$type == "BattleModel.ConditionalInteger") {
 		const obj = constant as ConditionalInteger;
 		return `[如果(${conditionStringify(obj.Condition)})條件為真(${constantStringify(
-			obj.PassValue
+			obj.PassValue,
 		)})，否則(${constantStringify(obj.NotPassValue)})]`;
 	}
 	console.error(`Unknown ISingleInteger type: ${constant.$type}`);
 	return JSON.stringify(constant);
 }
 
-export function constantCharStringify(constant: ISingleIntegerOfCharacter) {
+export function constantCharStringify(constant: ISingleIntegerOfCharacter): string {
 	if (!constant) return "";
 	if (constant.$type == "BattleModel.ConstanctInt") {
 		const obj = constant as ConstanctInt;
@@ -210,7 +210,7 @@ export function constantCharStringify(constant: ISingleIntegerOfCharacter) {
 	}
 	if (constant.$type == "BattleModel.ConstantIntC") {
 		const obj = constant as ConstantIntC;
-		return obj.constant;
+		return obj.constant.toString();
 	}
 	if (constant.$type == "BattleModel.RandomInt") {
 		const obj = constant as RandomInt;
@@ -264,7 +264,7 @@ export function constantCharStringify(constant: ISingleIntegerOfCharacter) {
 	return JSON.stringify(constant);
 }
 
-export function constantBuffStringify(constant: ISingleIntegerOfBuff) {
+export function constantBuffStringify(constant: ISingleIntegerOfBuff): string {
 	if (!constant) return "";
 	if (constant.$type == "BattleModel.ConstanctInt") {
 		const obj = constant as ConstanctInt;
@@ -272,7 +272,7 @@ export function constantBuffStringify(constant: ISingleIntegerOfBuff) {
 	}
 	if (constant.$type == "BattleModel.ConstantIntB") {
 		const obj = constant as ConstantIntB;
-		return obj.constant;
+		return obj.constant.toString();
 	}
 	if (constant.$type == "BattleModel.RandomInt") {
 		const obj = constant as RandomInt;
@@ -341,13 +341,13 @@ export function groupedIntegerStringify(constant: IGroupedInteger) {
 	if (constant.$type == "BattleModel.IntsOnBuffGroup") {
 		const obj = constant as IntsOnBuffGroup;
 		return `${groupedBuffStringify(obj.group)}中的${BuffEnums.BuffIntergerField.toString(
-			obj.targetField
+			obj.targetField,
 		)}`;
 	}
 	if (constant.$type == "BattleModel.IntsOnCharGroup") {
 		const obj = constant as IntsOnCharGroup;
 		return `${mulitTargetStringify(obj.group)}中的${BuffEnums.CharacterIntegerField.toString(
-			obj.targetField
+			obj.targetField,
 		)}`;
 	}
 	if (constant.$type == "BattleModel.BuffAssignedIntegerGroup") {
@@ -361,7 +361,7 @@ export function groupedIntegerStringify(constant: IGroupedInteger) {
 	if (constant.$type == "BattleModel.SingleIntegerGroup") {
 		const obj = constant as SingleIntegerGroup;
 		return obj.SingleIntegers.map(
-			(singleInteger) => `(${constantStringify(singleInteger)})`
+			(singleInteger) => `(${constantStringify(singleInteger)})`,
 		).join("、");
 	}
 	if (constant.$type == "BattleModel.ConstanctIntegerGroup") {

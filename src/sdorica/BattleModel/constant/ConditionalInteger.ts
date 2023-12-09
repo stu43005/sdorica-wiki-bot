@@ -1,5 +1,5 @@
-import { IConditionOfModel } from "../condition/IConditionOfModel";
-import { ISingleInteger } from "./ISingleInteger";
+import { IConditionOfModel } from "../condition/IConditionOfModel.js";
+import { ISingleInteger } from "./ISingleInteger.js";
 
 export interface ConditionalInteger extends ISingleInteger {
 	Condition: IConditionOfModel;

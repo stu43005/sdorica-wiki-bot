@@ -1,7 +1,7 @@
-import { Vector3 } from "../../lib/Unity/Vector3";
-import { LevelEvent } from "../LevelEvent";
-import { EncounterGroup } from "./EncounterGroup";
-import { EncounterOptionSet } from "./EncounterOptionSet";
+import { Vector3 } from "../../lib/Unity/Vector3.js";
+import { LevelEvent } from "../LevelEvent.js";
+import { EncounterGroup } from "./EncounterGroup.js";
+import { EncounterOptionSet } from "./EncounterOptionSet.js";
 
 export interface EncounterEvent extends LevelEvent {
 	_encounterGroup: EncounterGroup;

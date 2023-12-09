@@ -1,5 +1,5 @@
-import { Vector3 } from "../lib/Unity/Vector3";
-import { LevelActorName } from "./LevelActorName";
+import { Vector3 } from "../lib/Unity/Vector3.js";
+import { LevelActorName } from "./LevelActorName.js";
 
 export interface ActorState {
 	actorName: LevelActorName;

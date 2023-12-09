@@ -1,5 +1,5 @@
-import { ViewerJSHelper } from "../viewerjs-helper";
-import { getImperiumName, getQuestJsonData, ImperiumData } from "./$ViewerInit";
+import { type ViewerJSHelper } from "../viewerjs-helper.js";
+import { getImperiumName, getQuestJsonData, ImperiumData } from "./$ViewerInit.js";
 
 export default async function (helper: ViewerJSHelper) {
 	// load imperium data
@@ -10,7 +10,7 @@ export default async function (helper: ViewerJSHelper) {
 	const out = {
 		"!! Imperium version !!": `\n${await getImperiumName(
 			helper,
-			"localization"
+			"localization",
 		)}\n${await getImperiumName(helper, "gamedata")}`,
 	};
 	Object.assign(out, questJson);

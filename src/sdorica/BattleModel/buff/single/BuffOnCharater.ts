@@ -1,5 +1,5 @@
-import { ISingleCharacter } from "../../target/ISingleCharacter";
-import { ISingleBuff } from "./ISingleBuff";
+import { ISingleCharacter } from "../../target/ISingleCharacter.js";
+import { ISingleBuff } from "./ISingleBuff.js";
 
 export interface BuffOnCharater extends ISingleBuff {
 	character: ISingleCharacter;

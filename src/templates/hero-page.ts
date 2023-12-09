@@ -1,5 +1,5 @@
-import { TemplateFormatter } from "../lib/TemplateFormatter";
-import { wikitemplate } from "../wiki-utils";
+import { TemplateFormatter } from "../lib/TemplateFormatter.js";
+import { wikitemplate } from "../wiki-utils.js";
 
 export interface HeroPageParams {
 	角色名稱: string;
@@ -40,6 +40,6 @@ export function heroPageTemplate(params: HeroPageParams) {
 			Alt: params.Alt?.join(","),
 			Skin: params.Skin?.join(","),
 		},
-		TemplateFormatter.FORMAT.BLOCK
+		TemplateFormatter.FORMAT.BLOCK,
 	);
 }

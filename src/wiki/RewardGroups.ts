@@ -1,12 +1,12 @@
-import _ from "lodash";
-import { ImperiumData } from "../imperium-data";
-import { Chapter } from "../model/chapter";
-import { Item } from "../model/item";
-import { ItemGiveRef } from "../model/item-give-ref";
-import { wikiH1, wikiH2, wikiH3 } from "../templates/wikiheader";
-import { wikiPageLink } from "../templates/wikilink";
-import { wikiul } from "../templates/wikilist";
-import { wikitable, WikiTableStruct } from "../templates/wikitable";
+import * as _ from "lodash-es";
+import { ImperiumData } from "../imperium-data.js";
+import { Chapter } from "../model/chapter.js";
+import { Item } from "../model/item.js";
+import { ItemGiveRef } from "../model/item-give-ref.js";
+import { wikiH1, wikiH2, wikiH3 } from "../templates/wikiheader.js";
+import { wikiPageLink } from "../templates/wikilink.js";
+import { wikiul } from "../templates/wikilist.js";
+import { wikitable, WikiTableStruct } from "../templates/wikitable.js";
 
 const RewardGroupsTable = ImperiumData.fromGamedata().getTable("RewardGroups");
 
@@ -24,7 +24,7 @@ export default function wikiRewardGroups() {
 			(chapters.length == 1 ? `${chapters[0].getWikiFullName()} (${note})` : note) ||
 			rewardGroupId;
 		out += `\n\n${wikiH2(title, rewardGroupId)}\n${wikiul(
-			chapters.map((chapter) => wikiPageLink("Chapter", "", chapter.getWikiFullName()))
+			chapters.map((chapter) => wikiPageLink("Chapter", "", chapter.getWikiFullName())),
 		)}`;
 
 		const targetItems = _.groupBy(group, (r) => r.get("targetItemId"));
@@ -48,7 +48,7 @@ export default function wikiRewardGroups() {
 				const reward = new ItemGiveRef(
 					row.get("giveType"),
 					row.get("giveLinkId"),
-					row.get("giveAmount")
+					row.get("giveAmount"),
 				);
 				table.rows.push([
 					{
@@ -61,7 +61,7 @@ export default function wikiRewardGroups() {
 
 			out += `\n\n${wikiH3(
 				targetItem?.name ?? "",
-				`${rewardGroupId}_${targetItemId}`
+				`${rewardGroupId}_${targetItemId}`,
 			)}\n${wikitable(table)}`;
 		}
 	}

@@ -1,12 +1,12 @@
-import { ImperiumData } from "../imperium-data";
-import { localizationString } from "../localization";
-import { Chapter } from "../model/chapter";
-import { ChapterGroup } from "../model/enums/chapter-group.enum";
-import { TemplateString } from "../model/template-string";
-import { wikiH1, wikiH2, wikiH3 } from "../templates/wikiheader";
-import { wikiSectionLink } from "../templates/wikilink";
-import { wikitable, WikiTableStruct } from "../templates/wikitable";
-import { wikiNextLine } from "../wiki-utils";
+import { ImperiumData } from "../imperium-data.js";
+import { localizationString } from "../localization.js";
+import { Chapter } from "../model/chapter.js";
+import { ChapterGroup } from "../model/enums/chapter-group.enum.js";
+import { TemplateString } from "../model/template-string.js";
+import { wikiH1, wikiH2, wikiH3 } from "../templates/wikiheader.js";
+import { wikiSectionLink } from "../templates/wikilink.js";
+import { wikitable, WikiTableStruct } from "../templates/wikitable.js";
+import { wikiNextLine } from "../wiki-utils.js";
 
 const ScoreRulesTable = ImperiumData.fromGamedata().getTable("ScoreRules");
 
@@ -36,7 +36,7 @@ export default function wikiAdventure() {
 			descs.push(
 				new TemplateString(localizationString("ScoreMessage")("turnRule_info")).apply({
 					score,
-				})
+				}),
 			);
 		}
 		if (row.get("turnBuffer")) {
@@ -48,8 +48,8 @@ export default function wikiAdventure() {
 						score: +score * -1,
 						turnBegin,
 						turnEnd,
-					}
-				)
+					},
+				),
 			);
 		}
 		if (row.get("wave")) {
@@ -62,7 +62,7 @@ export default function wikiAdventure() {
 			descs.push(
 				new TemplateString(localizationString("ScoreMessage")("armorRule_info")).apply({
 					score,
-				})
+				}),
 			);
 		}
 		if (row.get("waveArmorGain")) {
@@ -72,7 +72,7 @@ export default function wikiAdventure() {
 				new TemplateString(localizationString("ScoreMessage")("gainArmorRule_info")).apply({
 					score: 1000 / +pre,
 					limit,
-				})
+				}),
 			);
 		}
 		if (row.get("waveDeathCount")) {
@@ -81,7 +81,7 @@ export default function wikiAdventure() {
 			descs.push(
 				new TemplateString(localizationString("ScoreMessage")("deathRule_info")).apply({
 					score,
-				})
+				}),
 			);
 		}
 		if (row.get("waveHealGain")) {
@@ -91,7 +91,7 @@ export default function wikiAdventure() {
 				new TemplateString(localizationString("ScoreMessage")("healRule_info")).apply({
 					score: 1000 / +pre,
 					limit,
-				})
+				}),
 			);
 		}
 		if (row.get("waveHp")) {
@@ -100,7 +100,7 @@ export default function wikiAdventure() {
 			descs.push(
 				new TemplateString(localizationString("ScoreMessage")("hpRule_info")).apply({
 					score,
-				})
+				}),
 			);
 		}
 		if (row.get("waveKillCount")) {
@@ -110,7 +110,7 @@ export default function wikiAdventure() {
 				new TemplateString(localizationString("ScoreMessage")("killRule_info")).apply({
 					score,
 					limit,
-				})
+				}),
 			);
 		}
 		if (row.get("waveMaxSkillSetDamage")) {
@@ -120,7 +120,7 @@ export default function wikiAdventure() {
 				new TemplateString(localizationString("ScoreMessage")("maxDamageRule_info")).apply({
 					score: 1000 / +pre,
 					limit,
-				})
+				}),
 			);
 		}
 		if (row.get("waveS1Count")) {
@@ -129,7 +129,7 @@ export default function wikiAdventure() {
 			descs.push(
 				new TemplateString(localizationString("ScoreMessage")("s1Rule_info")).apply({
 					score,
-				})
+				}),
 			);
 		}
 		if (row.get("waveS2Count")) {
@@ -138,7 +138,7 @@ export default function wikiAdventure() {
 			descs.push(
 				new TemplateString(localizationString("ScoreMessage")("s2Rule_info")).apply({
 					score,
-				})
+				}),
 			);
 		}
 		if (row.get("waveS4Count")) {
@@ -147,7 +147,7 @@ export default function wikiAdventure() {
 			descs.push(
 				new TemplateString(localizationString("ScoreMessage")("s4Rule_info")).apply({
 					score,
-				})
+				}),
 			);
 		}
 		if (row.get("waveTotalSkillSetDamage")) {
@@ -155,11 +155,11 @@ export default function wikiAdventure() {
 			const [pre, limit] = `${row.get("waveTotalSkillSetDamage")}`.split(";");
 			descs.push(
 				new TemplateString(
-					localizationString("ScoreMessage")("totalDamageRule_info")
+					localizationString("ScoreMessage")("totalDamageRule_info"),
 				).apply({
 					score: 1000 / +pre,
 					limit,
-				})
+				}),
 			);
 		}
 		const id = row.get("id");

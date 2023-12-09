@@ -1,5 +1,5 @@
-import { InterpretedObjectBase } from "../../viewerjs/leveldata-tarns-event";
-import { LevelEventModel } from "../LevelEventModel";
+import { InterpretedObjectBase } from "../../viewerjs/leveldata-tarns-event.js";
+import { LevelEventModel } from "../LevelEventModel.js";
 
 export interface LevelInfo {
 	name: string;

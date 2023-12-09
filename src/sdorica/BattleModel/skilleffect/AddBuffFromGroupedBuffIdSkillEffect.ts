@@ -1,5 +1,5 @@
-import { IGroupedBuffId } from "../buff/buffid/IGroupedBuffId";
-import { BaseSkillEffect } from "./BaseSkillEffect";
+import { IGroupedBuffId } from "../buff/buffid/IGroupedBuffId.js";
+import { BaseSkillEffect } from "./BaseSkillEffect.js";
 
 export interface AddBuffFromGroupedBuffIdSkillEffect extends BaseSkillEffect {
 	BuffGroupIds: IGroupedBuffId;

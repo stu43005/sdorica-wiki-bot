@@ -1,4 +1,4 @@
-import { SummonCharacterArg } from "./SummonCharacterArg";
+import { SummonCharacterArg } from "./SummonCharacterArg.js";
 
 export interface WeightedSummonCharacterArg {
 	CharacterArg: SummonCharacterArg;

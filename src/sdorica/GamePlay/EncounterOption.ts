@@ -1,4 +1,4 @@
-import { EncounterOptionEffect } from "./EncounterOptionEffect";
+import { EncounterOptionEffect } from "./EncounterOptionEffect.js";
 
 export interface EncounterOption {
 	_id: string;

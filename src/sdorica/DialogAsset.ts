@@ -1,5 +1,5 @@
-import { BaseScriptableObject } from "../lib/FullInspector/BaseScriptableObject";
-import { DialogMessage } from "./DialogMessage";
+import { BaseScriptableObject } from "../lib/FullInspector/BaseScriptableObject.js";
+import { DialogMessage } from "./DialogMessage.js";
 
 export interface DialogAsset extends BaseScriptableObject {
 	Model: DialogMessage[];

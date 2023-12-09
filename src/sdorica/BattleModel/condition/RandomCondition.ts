@@ -1,6 +1,6 @@
-import { IConditionOfBuff } from "./IConditionOfBuff";
-import { IConditionOfCharacter } from "./IConditionOfCharacter";
-import { IConditionOfModel } from "./IConditionOfModel";
+import { IConditionOfBuff } from "./IConditionOfBuff.js";
+import { IConditionOfCharacter } from "./IConditionOfCharacter.js";
+import { IConditionOfModel } from "./IConditionOfModel.js";
 
 export interface RandomCondition
 	extends IConditionOfModel,

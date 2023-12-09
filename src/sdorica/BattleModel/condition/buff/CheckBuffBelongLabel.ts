@@ -1,5 +1,5 @@
-import { BuffLabelData } from "../../BuffLabelData";
-import { IConditionOfBuff } from "../IConditionOfBuff";
+import { BuffLabelData } from "../../BuffLabelData.js";
+import { IConditionOfBuff } from "../IConditionOfBuff.js";
 
 export interface CheckBuffBelongLabel extends IConditionOfBuff {
 	BuffLabel: BuffLabelData;

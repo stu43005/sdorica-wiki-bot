@@ -1,16 +1,16 @@
 import * as chardet from "chardet";
 import extract from "extract-zip";
 import * as iconv from "iconv-lite";
-import fetch from "node-fetch";
 import { spawn } from "node:child_process";
 import fsp from "node:fs/promises";
 import path from "node:path";
 import pLimit from "p-limit";
-import { Logger } from "./logger";
-import { rpFile } from "./out";
+import { Logger } from "./logger.js";
+import { rpFile } from "./out.js";
+import { __dirname } from "./utilities/node.js";
 
 const logger = new Logger("asset-studio-cli");
-const CLI_DIR = path.join(__dirname, "../tools/AssetStudioModCLI");
+const CLI_DIR = path.join(__dirname(import.meta), "../tools/AssetStudioModCLI");
 const CLI_VERSION = path.join(CLI_DIR, "VERSION");
 const CLI_DLL = path.join(CLI_DIR, "AssetStudioModCLI.dll");
 
@@ -18,7 +18,7 @@ async function getLatestRelease(
 	user: string,
 	repo: string,
 	filterRelease: (release: any) => boolean,
-	filterAsset: (asset: any) => boolean
+	filterAsset: (asset: any) => boolean,
 ) {
 	const res = await fetch(`https://api.github.com/repos/${user}/${repo}/releases`);
 	const releases = await res.json();
@@ -44,7 +44,7 @@ async function downloadCli(): Promise<boolean> {
 		"AssetStudio",
 		(release) =>
 			release.target_commitish === "AssetStudioMod" && !release.draft && !release.prerelease,
-		(asset) => asset.name === "AssetStudioModCLI_net7_portable.zip"
+		(asset) => asset.name === "AssetStudioModCLI_net7_portable.zip",
 	);
 
 	// check update
@@ -97,12 +97,12 @@ function spawnAsync(
 		verbose?: boolean;
 		printStdout?: boolean;
 		printStderr?: boolean;
-	}
+	},
 ): Promise<number> {
 	return new Promise<number>((resolve, reject) => {
 		const child = spawn(exe, args, {
 			signal,
-			cwd: path.join(__dirname, ".."),
+			cwd: path.join(__dirname(import.meta), ".."),
 		});
 		const logger = new Logger(`childprocess][${child.pid}`);
 		if (verbose) {
@@ -285,7 +285,7 @@ export async function execAssetStudioModCLI(
 	options: CLIOptions & {
 		signal: AbortSignal;
 		verbose?: boolean;
-	}
+	},
 ) {
 	await limit(async () => {
 		if (!cliDownloaded) {
@@ -305,6 +305,6 @@ export async function execAssetStudioModCLI(
 		{
 			signal: options.signal,
 			verbose: options.verbose,
-		}
+		},
 	);
 }

@@ -1,8 +1,8 @@
 import * as fs from "node:fs/promises";
-import * as path from "node:path";
-import { WIKI_PATH } from "../config";
-import { wikiPageLink } from "../templates/wikilink";
-import { wikiul } from "../templates/wikilist";
+import path from "node:path";
+import { WIKI_PATH } from "../config.js";
+import { wikiPageLink } from "../templates/wikilink.js";
+import { wikiul } from "../templates/wikilist.js";
 
 export default async function wikiIndex() {
 	const pages: string[] = [];

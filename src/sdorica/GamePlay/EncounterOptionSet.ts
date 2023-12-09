@@ -1,4 +1,4 @@
-import { EncounterOption } from "./EncounterOption";
+import { EncounterOption } from "./EncounterOption.js";
 
 export interface EncounterOptionSet {
 	_encounterOptionList: EncounterOption[];

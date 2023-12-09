@@ -43,7 +43,7 @@ export namespace BuffEnums {
 				case CharacterIntegerField.CoolDown:
 					return "CD";
 			}
-			return CharacterIntegerField[f] || f;
+			return f.toString();
 		}
 	}
 

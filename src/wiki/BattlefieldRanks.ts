@@ -1,12 +1,12 @@
-import _ from "lodash";
-import { ImperiumData } from "../imperium-data";
-import { LookupTableCategory } from "../model/enums/lookup-table-category.enum";
-import { ItemGiveRef } from "../model/item-give-ref";
-import { wikiH1, wikiH2 } from "../templates/wikiheader";
-import { wikiimage } from "../templates/wikiimage";
-import { WikiTableCeil, WikiTableStruct, wikitable } from "../templates/wikitable";
-import { range } from "../utils";
-import { wikiNextLine } from "../wiki-utils";
+import * as _ from "lodash-es";
+import { ImperiumData } from "../imperium-data.js";
+import { LookupTableCategory } from "../model/enums/custom/lookup-table-category.enum.js";
+import { ItemGiveRef } from "../model/item-give-ref.js";
+import { wikiH1, wikiH2 } from "../templates/wikiheader.js";
+import { wikiimage } from "../templates/wikiimage.js";
+import { WikiTableCeil, WikiTableStruct, wikitable } from "../templates/wikitable.js";
+import { range } from "../utils.js";
+import { wikiNextLine } from "../wiki-utils.js";
 
 const BattlefieldRanksTable = ImperiumData.fromGamedata().getTable("BattlefieldRanks");
 
@@ -37,17 +37,17 @@ export default function wikiBattlefieldRanks() {
 					text: wikiNextLine(
 						`No.${entry.get("maxRanking")}\n｜\n${
 							entry.get("minRanking") == -1 ? "∞" : `No.${entry.get("minRanking")}`
-						}`
+						}`,
 					),
 				},
-				...range(1, 4).map(
+				...range(1, 3).map(
 					(i): WikiTableCeil => ({
 						text: new ItemGiveRef(
 							entry.get(`giveType${i}`),
 							entry.get(`giveLinkId${i}`),
-							entry.get(`giveAmount${i}`)
+							entry.get(`giveAmount${i}`),
 						).toWiki(),
-					})
+					}),
 				),
 			]);
 		}

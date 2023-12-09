@@ -1,6 +1,6 @@
-import { IConditionOfBuff } from "../../condition/IConditionOfBuff";
-import { IOperationToBuff } from "../operateBuff/IOperationToBuff";
-import { IOperationToCharacter } from "./IOperationToCharacter";
+import { IConditionOfBuff } from "../../condition/IConditionOfBuff.js";
+import { IOperationToBuff } from "../operateBuff/IOperationToBuff.js";
+import { IOperationToCharacter } from "./IOperationToCharacter.js";
 
 export interface OperateCharacterAllConditionalBuffs extends IOperationToCharacter {
 	condition: IConditionOfBuff;

@@ -1,4 +1,4 @@
-import { IConditionOfBuff } from "../IConditionOfBuff";
+import { IConditionOfBuff } from "../IConditionOfBuff.js";
 
 export interface AndConditionsB extends IConditionOfBuff {
 	cond1: IConditionOfBuff;

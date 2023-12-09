@@ -1,6 +1,8 @@
-import { Dictionary, fsData } from "./fsData";
+import { Dictionary, fsData } from "./fsData.js";
 
-const fsGlobalConfig = require("./fsGlobalConfig.json");
+const fsGlobalConfig = {
+	InternalFieldPrefix: "$",
+};
 
 // https://github.com/jacobdufault/fullserializer/blob/master/Assets/FullSerializer/Source/fsSerializer.cs
 export class fsSerializer {

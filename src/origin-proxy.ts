@@ -1,17 +1,18 @@
 import config from "config";
-import execSh from "exec-sh";
 import express from "express";
-import http from "http";
 import { createProxyMiddleware } from "http-proxy-middleware";
-import https from "https";
-import { DATA_PATH, ORIGIN_PATH } from "./config";
-import { discordWebhook } from "./discord-webhook";
-import { inputJsonSync } from "./input";
-import { Logger } from "./logger";
-import { fsExists, outJson } from "./out";
-import { jsonBlock } from "./utils";
+import { exec } from "node:child_process";
+import http from "node:http";
+import https from "node:https";
+import { promisify } from "node:util";
+import { DATA_PATH, ORIGIN_PATH } from "./config.js";
+import { discordWebhook } from "./discord-webhook.js";
+import { inputJsonSync } from "./input.js";
+import { Logger } from "./logger.js";
+import { fsExists, outJson } from "./out.js";
+import { jsonBlock } from "./utils.js";
 
-const exec = execSh.promise;
+const execP = promisify(exec);
 
 const logger = new Logger("origin-proxy");
 
@@ -25,7 +26,7 @@ let inProcess = false;
 async function onProxyReq(
 	proxyReq: http.ClientRequest,
 	req: express.Request,
-	res: express.Response
+	res: express.Response,
 ) {
 	logger.info("[onProxyReq]", req.path);
 
@@ -55,7 +56,7 @@ async function onProxyReq(
 			return;
 		}
 
-		let oldJson = {};
+		let oldJson: Record<string, string> = {};
 		if (await fsExists(ORIGIN_PATH)) {
 			oldJson = inputJsonSync(ORIGIN_PATH);
 
@@ -76,14 +77,14 @@ async function onProxyReq(
 		if (inProcess) return;
 		inProcess = true;
 
-		await exec("git reset --hard && git clean -f && git pull", {
+		await execP("git reset --hard && git clean -f && git pull", {
 			cwd: DATA_PATH,
 		});
 
 		await outJson(ORIGIN_PATH, Object.assign({}, oldJson, latestUUID));
 		latestUUID = {};
 
-		await exec("git add origin.json && git commit -m 更新origin.json && git push", {
+		await execP("git add origin.json && git commit -m 更新origin.json && git push", {
 			cwd: DATA_PATH,
 		});
 

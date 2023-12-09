@@ -1,15 +1,15 @@
-import * as fs from "fs-extra";
-import * as path from "path";
-import { DIALOG_PATH } from "./config";
-import { AssetDataRaw } from "./data-raw-type";
-import { assetDownload } from "./imperium-asset-download";
-import { ImperiumData } from "./imperium-data";
-import { fsSerializer } from "./lib/FullSerializer/fsSerializer";
-import { Logger } from "./logger";
-import { outJson, rpFile } from "./out";
-import { DialogAsset } from "./sdorica/DialogAsset";
-import { interpreted as dialogInterpreted } from "./viewerjs/entry/DialogAsset";
-import { siJsonParse } from "./viewerjs/utils";
+import fsp from "node:fs/promises";
+import path from "node:path";
+import { DIALOG_PATH } from "./config.js";
+import { AssetDataRaw } from "./data-raw-type.js";
+import { assetDownload } from "./imperium-asset-download.js";
+import { ImperiumData } from "./imperium-data.js";
+import { fsSerializer } from "./lib/FullSerializer/fsSerializer.js";
+import { Logger } from "./logger.js";
+import { outJson, rpFile } from "./out.js";
+import { DialogAsset } from "./sdorica/DialogAsset.js";
+import { interpreted as dialogInterpreted } from "./viewerjs/entry/DialogAsset.js";
+import { siJsonParse } from "./viewerjs/utils.js";
 
 const logger = new Logger("dialog-downloader");
 const metadataFilePath = path.join(DIALOG_PATH, "metadata.json");
@@ -17,7 +17,7 @@ const metadataFilePath = path.join(DIALOG_PATH, "metadata.json");
 export function dialogDownloader(force = false) {
 	const dialog = ImperiumData.fromDialog();
 	return assetDownload(metadataFilePath, dialog, force, (name, asset) =>
-		downloadDialog(name, asset)
+		downloadDialog(name, asset),
 	);
 }
 
@@ -36,7 +36,7 @@ export async function downloadDialog(name: string, asset: AssetDataRaw) {
 
 	let data: DialogAsset;
 	try {
-		const jsonString = await fs.readFile(dialogFilePath, { encoding: "utf8" });
+		const jsonString = await fsp.readFile(dialogFilePath, { encoding: "utf8" });
 		const json = siJsonParse(jsonString);
 		data = json;
 

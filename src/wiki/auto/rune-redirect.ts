@@ -1,5 +1,5 @@
 import MWBot from "mwbot";
-import { Logger } from "../../logger";
+import { Logger } from "../../logger.js";
 
 const runeNames = [
 	"【未知符文】",

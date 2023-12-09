@@ -1,9 +1,9 @@
 import config from "config";
 import MWBot, { MWRevision, MWRevisionSlot } from "mwbot";
 import url from "url";
-import { discordWebhook } from "./discord-webhook";
-import { Logger } from "./logger";
-import { isDevMode } from "./utils";
+import { discordWebhook } from "./discord-webhook.js";
+import { Logger } from "./logger.js";
+import { isDevMode } from "./utils.js";
 
 const logger = new Logger("mwbot");
 
@@ -20,7 +20,7 @@ export async function getMWBot() {
 	bot.readText = async function (
 		title: string,
 		redirect: boolean,
-		customRequestOptions?: MWBot.RequestOptions
+		customRequestOptions?: MWBot.RequestOptions,
 	): Promise<string> {
 		const res = redirect
 			? await this.read(title, redirect, customRequestOptions)
@@ -31,7 +31,7 @@ export async function getMWBot() {
 						rvprop: "content",
 						titles: title,
 					},
-					customRequestOptions
+					customRequestOptions,
 			  );
 
 		if (res.query) {
@@ -64,7 +64,7 @@ export async function getMWBot() {
 
 	bot.exists = async function (
 		title: string,
-		customRequestOptions?: MWBot.RequestOptions
+		customRequestOptions?: MWBot.RequestOptions,
 	): Promise<boolean> {
 		return (await this.readText(title, false, customRequestOptions)) ? true : false;
 	};
@@ -73,7 +73,7 @@ export async function getMWBot() {
 		title: string,
 		content: string,
 		summary?: string,
-		customRequestOptions?: MWBot.RequestOptions
+		customRequestOptions?: MWBot.RequestOptions,
 	): Promise<void> {
 		const online = await this.readText(title, false, customRequestOptions);
 		content = content.replace(/\r/g, "\n");
@@ -86,7 +86,7 @@ export async function getMWBot() {
 				summary,
 				Object.assign({}, customRequestOptions, {
 					bot: true,
-				})
+				}),
 			);
 			if (
 				config.get("dcWebhook") &&
@@ -125,16 +125,4 @@ export async function getMWBot() {
 	};
 
 	return bot;
-}
-
-function diffStrings(str1: string, str2: string) {
-	const str1a = str1.split("\n");
-	const str2a = str2.split("\n");
-	for (let i = 0; i < Math.max(str1a.length, str2a.length); i++) {
-		const s1 = str1a[i];
-		const s2 = str2a[i];
-		if (s1 !== s2) {
-			console.log(`Line ${i + 1} | ${s1} | ${s2}`);
-		}
-	}
 }

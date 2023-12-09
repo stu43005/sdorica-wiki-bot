@@ -1,6 +1,6 @@
-import { getConstants, localizationString } from "../localization";
-import { wikiH1 } from "../templates/wikiheader";
-import { wikitable, WikiTableStruct } from "../templates/wikitable";
+import { getConstants, localizationString } from "../localization.js";
+import { wikiH1 } from "../templates/wikiheader.js";
+import { wikitable, WikiTableStruct } from "../templates/wikitable.js";
 
 const IntroTip = localizationString("IntroTip");
 
@@ -23,7 +23,7 @@ export default function wikiTipsTemplate() {
 	out.push(
 		`{{#switch:{{#expr:({{#time:y}} * {{#time:n}} * {{#time:j}} + {{{offset|0}}}) mod ${
 			Tip_num - 1
-		}}}`
+		}}}`,
 	);
 	out.push(...getAllTips().map((tip, index) => `|${index} = ${tip}`));
 	out.push(`}}<noinclude>{{Documentation}}</noinclude>`);

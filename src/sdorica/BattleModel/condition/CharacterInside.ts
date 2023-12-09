@@ -1,6 +1,6 @@
-import { IGroupedCharacter } from "../target/IGroupedCharacter";
-import { ISingleCharacter } from "../target/ISingleCharacter";
-import { IConditionOfModel } from "./IConditionOfModel";
+import { IGroupedCharacter } from "../target/IGroupedCharacter.js";
+import { ISingleCharacter } from "../target/ISingleCharacter.js";
+import { IConditionOfModel } from "./IConditionOfModel.js";
 
 export interface CharacterInside extends IConditionOfModel {
 	left: ISingleCharacter;

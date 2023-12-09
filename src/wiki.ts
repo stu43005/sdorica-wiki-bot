@@ -1,53 +1,54 @@
 import MWBot from "mwbot";
 import fs from "node:fs/promises";
 import path from "node:path";
-import { AssetbundleLookupTable } from "./assetbundle-lookup-table";
-import { WIKI_PATH } from "./config";
-import { getConstants } from "./localization";
-import { Logger } from "./logger";
-import { Hero } from "./model/hero";
-import { outJson, outText } from "./out";
-import { objectEach } from "./utils";
-import { getMWBot } from "./wiki-bot";
-import { getHeroJsonData } from "./wiki-hero";
-import { getItemJsonData } from "./wiki-item";
-import { getQuestJsonData } from "./wiki-quest";
-import wikiAdvAchievements from "./wiki/AdvAchievements";
-import wikiAdventure from "./wiki/Adventure";
-import wikiAdventureRank from "./wiki/AdventureRank";
-import wikiAvatars from "./wiki/Avatars";
-import wikiBattlefieldDropItems from "./wiki/BattlefieldDropItems";
-import wikiBattlefieldRanks from "./wiki/BattlefieldRanks";
-import wikiBattlefields from "./wiki/Battlefields";
-import wikiBlessEffects from "./wiki/BlessEffects";
-import wikiBuffs from "./wiki/Buffs";
-import wikiChapter from "./wiki/Chapter";
-import wikiCharVoice from "./wiki/CharVoice";
-import wikiConstantsJson from "./wiki/Constants";
-import wikiDiligents from "./wiki/Diligents";
-import wikiEvaluateAchievements from "./wiki/EvaluateAchievements";
-import wikiEvaluates from "./wiki/Evaluates";
-import wikiExploreBuilding from "./wiki/ExploreBuilding";
-import wikiExploreComposite from "./wiki/ExploreComposite";
-import wikiExploreItems from "./wiki/ExploreItems";
-import wikiFreeHeroes from "./wiki/FreeHeroes";
-import wikiHeroes, { wikiHeroesJson } from "./wiki/Heroes";
-import wikiHomelandBuilding from "./wiki/HomelandBuilding";
-import wikiHomelandMonster from "./wiki/HomelandMonster";
-import wikiLevelUps, { wikiLevelUpsJson } from "./wiki/LevelUps";
-import wikiMissions from "./wiki/Missions";
-import { wikiMonsterTrapJson } from "./wiki/MonsterTrap";
-import wikiQuestAchievements from "./wiki/QuestAchievements";
-import wikiResonance from "./wiki/Resonance";
-import wikiRewardGroups from "./wiki/RewardGroups";
-import wikiSignInReward from "./wiki/SignInReward";
-import wikiTavernMission from "./wiki/TavernMission";
-import wikiTavernMissionCompact from "./wiki/TavernMissionCompact";
-import wikiTavernMissionDrop from "./wiki/TavernMissionDrop";
-import { wikiTips } from "./wiki/Tips";
-import wikiTreasureItems from "./wiki/TreasureItems";
-import { wikiHeroBot } from "./wiki/auto/hero";
-import wikiIndex from "./wiki/index";
+import { AssetbundleLookupTable } from "./assetbundle-lookup-table.js";
+import { WIKI_PATH } from "./config.js";
+import { getConstants } from "./localization.js";
+import { Logger } from "./logger.js";
+import { Hero } from "./model/hero.js";
+import { outJson, outText } from "./out.js";
+import { __dirname } from "./utilities/node.js";
+import { objectEach } from "./utils.js";
+import { getMWBot } from "./wiki-bot.js";
+import { getHeroJsonData } from "./wiki-hero.js";
+import { getItemJsonData } from "./wiki-item.js";
+import { getQuestJsonData } from "./wiki-quest.js";
+import wikiAdvAchievements from "./wiki/AdvAchievements.js";
+import wikiAdventure from "./wiki/Adventure.js";
+import wikiAdventureRank from "./wiki/AdventureRank.js";
+import wikiAvatars from "./wiki/Avatars.js";
+import wikiBattlefieldDropItems from "./wiki/BattlefieldDropItems.js";
+import wikiBattlefieldRanks from "./wiki/BattlefieldRanks.js";
+import wikiBattlefields from "./wiki/Battlefields.js";
+import wikiBlessEffects from "./wiki/BlessEffects.js";
+import wikiBuffs from "./wiki/Buffs.js";
+import wikiChapter from "./wiki/Chapter.js";
+import wikiCharVoice from "./wiki/CharVoice.js";
+import wikiConstantsJson from "./wiki/Constants.js";
+import wikiDiligents from "./wiki/Diligents.js";
+import wikiEvaluateAchievements from "./wiki/EvaluateAchievements.js";
+import wikiEvaluates from "./wiki/Evaluates.js";
+import wikiExploreBuilding from "./wiki/ExploreBuilding.js";
+import wikiExploreComposite from "./wiki/ExploreComposite.js";
+import wikiExploreItems from "./wiki/ExploreItems.js";
+import wikiFreeHeroes from "./wiki/FreeHeroes.js";
+import wikiHeroes, { wikiHeroesJson } from "./wiki/Heroes.js";
+import wikiHomelandBuilding from "./wiki/HomelandBuilding.js";
+import wikiHomelandMonster from "./wiki/HomelandMonster.js";
+import wikiLevelUps, { wikiLevelUpsJson } from "./wiki/LevelUps.js";
+import wikiMissions from "./wiki/Missions.js";
+import { wikiMonsterTrapJson } from "./wiki/MonsterTrap.js";
+import wikiQuestAchievements from "./wiki/QuestAchievements.js";
+import wikiResonance from "./wiki/Resonance.js";
+import wikiRewardGroups from "./wiki/RewardGroups.js";
+import wikiSignInReward from "./wiki/SignInReward.js";
+import wikiTavernMission from "./wiki/TavernMission.js";
+import wikiTavernMissionCompact from "./wiki/TavernMissionCompact.js";
+import wikiTavernMissionDrop from "./wiki/TavernMissionDrop.js";
+import { wikiTips } from "./wiki/Tips.js";
+import wikiTreasureItems from "./wiki/TreasureItems.js";
+import { wikiHeroBot } from "./wiki/auto/hero.js";
+import wikiIndex from "./wiki/index.js";
 
 const logger = new Logger("wiki");
 
@@ -91,9 +92,12 @@ function wrapHiddenDiv(content: string) {
 }
 
 async function applyHtmlTemplate(title: string, body: string) {
-	const template = await fs.readFile(path.join(__dirname, "./wiki/template.html"), {
-		encoding: "utf8",
-	});
+	const template = await fs.readFile(
+		path.join(__dirname(import.meta), "../assets/wiki-template.html"),
+		{
+			encoding: "utf8",
+		},
+	);
 	return template.replace(/<%title%>/g, title).replace(/<%body%>/g, body);
 }
 
@@ -117,7 +121,7 @@ async function outWikiJson(bot: MWBot | undefined, title: string, data: any) {
 	if (bot) {
 		await bot.editOnDifference(
 			`使用者:小飄飄/bot/${title}.json`,
-			JSON.stringify(data, null, 4)
+			JSON.stringify(data, null, 4),
 		);
 	}
 }
@@ -126,7 +130,7 @@ async function outWikiConstant(bot: MWBot | undefined, title: string, value: str
 	if (value && bot) {
 		await bot.editOnDifference(
 			`模板:Constant/${title}`,
-			`${value}<noinclude>{{Documentation}}</noinclude>`
+			`${value}<noinclude>{{Documentation}}</noinclude>`,
 		);
 	}
 }

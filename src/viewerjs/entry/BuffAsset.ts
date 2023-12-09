@@ -1,27 +1,27 @@
 import JSZip from "jszip";
-import { localizationBuffName, localizationString } from "../../localization";
-import { Logger } from "../../logger";
-import { Buff } from "../../sdorica/BattleModel/Buff";
-import { BuffActiveTiming } from "../../sdorica/BattleModel/BuffActiveTiming";
-import { BuffEffect } from "../../sdorica/BattleModel/BuffEffect";
-import { BuffSequence } from "../../sdorica/BattleModel/BuffSequence";
-import { BuffTag } from "../../sdorica/BattleModel/BuffTag";
+import { localizationBuffName, localizationString } from "../../localization.js";
+import { Logger } from "../../logger.js";
+import { Buff } from "../../sdorica/BattleModel/Buff.js";
+import { BuffActiveTiming } from "../../sdorica/BattleModel/BuffActiveTiming.js";
+import { BuffEffect } from "../../sdorica/BattleModel/BuffEffect.js";
+import { BuffSequence } from "../../sdorica/BattleModel/BuffSequence.js";
+import { BuffTag } from "../../sdorica/BattleModel/BuffTag.js";
 import {
 	BuffAsset,
 	InterpretedBuffAsset,
 	InterpretedBuffEffect,
 	InterpretedBuffSequence,
-} from "../../sdorica/BuffAsset";
-import { Dictionary } from "../../sdorica/Dictionary";
-import { sortByCharacterModelNo } from "../../utils";
-import { ViewerJSHelper } from "../viewerjs-helper";
+} from "../../sdorica/BuffAsset.js";
+import { Dictionary } from "../../sdorica/Dictionary.js";
+import { sortByCharacterModelNo } from "../../utils.js";
+import { type ViewerJSHelper } from "../viewerjs-helper.js";
 import {
 	conditionStringify,
 	getCharAsset,
 	getCharAssets,
 	ImperiumData,
 	operationStringify,
-} from "./$ViewerInit";
+} from "./$ViewerInit.js";
 
 const logger = new Logger("BuffAsset");
 
@@ -102,7 +102,7 @@ function buffSequence(seq: BuffSequence): InterpretedBuffSequence {
 }
 
 function buffActions(
-	actionTable: Dictionary<BuffActiveTiming, BuffEffect>
+	actionTable: Dictionary<BuffActiveTiming, BuffEffect>,
 ): Record<string, InterpretedBuffEffect> {
 	const out: Record<string, InterpretedBuffEffect> = {};
 	for (const i in actionTable) {

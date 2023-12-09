@@ -1,4 +1,4 @@
-import { localizationString } from "../localization";
+import { localizationString } from "../localization.js";
 
 export class HeroInfo {
 	info1 = "";

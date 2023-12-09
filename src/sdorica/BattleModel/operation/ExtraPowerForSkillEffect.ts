@@ -1,6 +1,6 @@
-import { ISingleInteger } from "../constant/ISingleInteger";
-import { IBaseOperation } from "./IBaseOperation";
-import { ISkillEffectOperation } from "./ISkillEffectOperation";
+import { ISingleInteger } from "../constant/ISingleInteger.js";
+import { IBaseOperation } from "./IBaseOperation.js";
+import { ISkillEffectOperation } from "./ISkillEffectOperation.js";
 
 export interface ExtraPowerForSkillEffect extends ISkillEffectOperation, IBaseOperation {
 	value: ISingleInteger;

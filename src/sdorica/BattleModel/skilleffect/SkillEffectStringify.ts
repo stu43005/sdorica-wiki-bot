@@ -1,44 +1,44 @@
-import { localizationBuffName } from "../../../localization";
-import { numMultiply } from "../../../utils";
-import { AddBuffData } from "../AddBuffData";
-import { groupedBuffIdStringify } from "../buff/BuffStringify";
-import { CheckBuffMatchBuffId } from "../condition/buff/CheckBuffMatchBuffId";
-import { conditionBuffStringify } from "../condition/ConditionStringify";
-import { constantStringify } from "../constant/ConstantStringify";
-import { NumberOperation } from "../operation/NumberOperation";
-import { BoardModificationStoneAction } from "../StoneSystem/BoardModificationStoneAction";
-import { Constraint } from "../StoneSystem/Constraint";
-import { StoneBuffAction } from "../StoneSystem/StoneBuffAction";
-import { summonStringify } from "../summon/SummonStringify";
-import { singleTargetStringify } from "../target/TargetStringify";
-import { AddBuffFromGroupedBuffIdSkillEffect } from "./AddBuffFromGroupedBuffIdSkillEffect";
-import { AddBuffSkillEffect } from "./AddBuffSkillEffect";
-import { AmrBreakDrainSkillEffect } from "./AmrBreakDrainSkillEffect";
-import { AmrBreakSkillEffect } from "./AmrBreakSkillEffect";
-import { AmrGainSkillEffect } from "./AmrGainSkillEffect";
-import { AmrReduceRatioSkillEffect } from "./AmrReduceRatioSkillEffect";
-import { AmrReduceSkillEffect } from "./AmrReduceSkillEffect";
-import { BaseSkillEffect } from "./BaseSkillEffect";
-import { ChangeCDSkillEffect } from "./ChangeCDSkillEffect";
-import { ChangeExploreFlagSkillEffect } from "./ChangeExploreFlagSkillEffect";
-import { ChangeHungerSkillEffect } from "./ChangeHungerSkillEffect";
-import { ChangeReviveCountSkillEffect } from "./ChangeReviveCountSkillEffect";
-import { ChangeTireSkillEffect } from "./ChangeTireSkillEffect";
-import { CopyBuffFromCharacterSkillEffect } from "./CopyBuffFromCharacterSkillEffect";
-import { HpDamageDrainSkillEffect } from "./HpDamageDrainSkillEffect";
-import { HpDamageRatioCurrentSkillEffect } from "./HpDamageRatioCurrentSkillEffect";
-import { HpDamageRatioMaxSkillEffect } from "./HpDamageRatioMaxSkillEffect";
-import { HpDamageSkillEffect } from "./HpDamageSkillEffect";
-import { HpHealSkillEffect } from "./HpHealSkillEffect";
-import { NumericSkillEffect } from "./NumericSkillEffect";
-import { RemoveBuffFromGroupedBuffIdSkillEffect } from "./RemoveBuffFromGroupedBuffIdSkillEffect";
-import { RemoveBuffSkillEffect } from "./RemoveBuffSkillEffect";
-import { ReviveSkillEffect } from "./ReviveSkillEffect";
-import { SetCDSkillEffect } from "./SetCDSkillEffect";
-import { StoneActionSkillEffect } from "./StoneActionSkillEffect";
-import { StoneBuffSkillEffect } from "./StoneBuffSkillEffect";
-import { SummonEnemySkillEffect } from "./SummonEnemySkillEffect";
-import { TrueDamageSkillEffect } from "./TrueDamageSkillEffect";
+import { localizationBuffName } from "../../../localization.js";
+import { numMultiply } from "../../../utils.js";
+import { AddBuffData } from "../AddBuffData.js";
+import { groupedBuffIdStringify } from "../buff/BuffStringify.js";
+import { CheckBuffMatchBuffId } from "../condition/buff/CheckBuffMatchBuffId.js";
+import { conditionBuffStringify } from "../condition/ConditionStringify.js";
+import { constantStringify } from "../constant/ConstantStringify.js";
+import { NumberOperation } from "../operation/NumberOperation.js";
+import { BoardModificationStoneAction } from "../StoneSystem/BoardModificationStoneAction.js";
+import { Constraint } from "../StoneSystem/Constraint.js";
+import { StoneBuffAction } from "../StoneSystem/StoneBuffAction.js";
+import { summonStringify } from "../summon/SummonStringify.js";
+import { singleTargetStringify } from "../target/TargetStringify.js";
+import { AddBuffFromGroupedBuffIdSkillEffect } from "./AddBuffFromGroupedBuffIdSkillEffect.js";
+import { AddBuffSkillEffect } from "./AddBuffSkillEffect.js";
+import { AmrBreakDrainSkillEffect } from "./AmrBreakDrainSkillEffect.js";
+import { AmrBreakSkillEffect } from "./AmrBreakSkillEffect.js";
+import { AmrGainSkillEffect } from "./AmrGainSkillEffect.js";
+import { AmrReduceRatioSkillEffect } from "./AmrReduceRatioSkillEffect.js";
+import { AmrReduceSkillEffect } from "./AmrReduceSkillEffect.js";
+import { BaseSkillEffect } from "./BaseSkillEffect.js";
+import { ChangeCDSkillEffect } from "./ChangeCDSkillEffect.js";
+import { ChangeExploreFlagSkillEffect } from "./ChangeExploreFlagSkillEffect.js";
+import { ChangeHungerSkillEffect } from "./ChangeHungerSkillEffect.js";
+import { ChangeReviveCountSkillEffect } from "./ChangeReviveCountSkillEffect.js";
+import { ChangeTireSkillEffect } from "./ChangeTireSkillEffect.js";
+import { CopyBuffFromCharacterSkillEffect } from "./CopyBuffFromCharacterSkillEffect.js";
+import { HpDamageDrainSkillEffect } from "./HpDamageDrainSkillEffect.js";
+import { HpDamageRatioCurrentSkillEffect } from "./HpDamageRatioCurrentSkillEffect.js";
+import { HpDamageRatioMaxSkillEffect } from "./HpDamageRatioMaxSkillEffect.js";
+import { HpDamageSkillEffect } from "./HpDamageSkillEffect.js";
+import { HpHealSkillEffect } from "./HpHealSkillEffect.js";
+import { NumericSkillEffect } from "./NumericSkillEffect.js";
+import { RemoveBuffFromGroupedBuffIdSkillEffect } from "./RemoveBuffFromGroupedBuffIdSkillEffect.js";
+import { RemoveBuffSkillEffect } from "./RemoveBuffSkillEffect.js";
+import { ReviveSkillEffect } from "./ReviveSkillEffect.js";
+import { SetCDSkillEffect } from "./SetCDSkillEffect.js";
+import { StoneActionSkillEffect } from "./StoneActionSkillEffect.js";
+import { StoneBuffSkillEffect } from "./StoneBuffSkillEffect.js";
+import { SummonEnemySkillEffect } from "./SummonEnemySkillEffect.js";
+import { TrueDamageSkillEffect } from "./TrueDamageSkillEffect.js";
 
 export function skillEffectStringify(skillEffect: BaseSkillEffect): string {
 	if (!skillEffect) return "";
@@ -56,13 +56,13 @@ export function skillEffectStringify(skillEffect: BaseSkillEffect): string {
 			return `賦予${
 				obj.Forever || obj.OverwriteDuration < 0 ? "永久" : `${obj.OverwriteDuration}回合`
 			}${obj.LevelStack > 0 ? `${obj.LevelStack}層` : ""}${groupedBuffIdStringify(
-				obj.BuffGroupIds
+				obj.BuffGroupIds,
 			)}`;
 		}
 		return `賦予${
 			obj.Forever || obj.OverwriteDuration < 0 ? "永久" : `${obj.OverwriteDuration}回合`
 		}${obj.LevelStack > 0 ? `${obj.LevelStack}層` : ""}在${groupedBuffIdStringify(
-			obj.BuffGroupIds
+			obj.BuffGroupIds,
 		)}中隨機挑選${obj.NotRepeatSameBuffId ? "不重複的" : "的"}${obj.RandomAddCount}個Buff`;
 	}
 	if (skillEffect.$type == "BattleModel.RemoveBuffFromGroupedBuffIdSkillEffect") {
@@ -78,7 +78,7 @@ export function skillEffectStringify(skillEffect: BaseSkillEffect): string {
 		const obj = skillEffect as AmrBreakSkillEffect;
 		return `破甲(${constantStringify(obj._skillModifier._parameter)} x${numMultiply(
 			obj._skillModifier._ratio,
-			NumericSkillEffect.BreakArmorCoefficient
+			NumericSkillEffect.BreakArmorCoefficient,
 		)})`;
 	}
 	if (skillEffect.$type == "BattleModel.AmrReduceSkillEffect") {
@@ -97,14 +97,14 @@ export function skillEffectStringify(skillEffect: BaseSkillEffect): string {
 		const obj = skillEffect as AmrBreakDrainSkillEffect;
 		return `破甲吸血攻擊(${constantStringify(obj._skillModifier._parameter)} x${numMultiply(
 			numMultiply(obj._skillModifier._ratio, NumericSkillEffect.BreakArmorCoefficient),
-			obj._drainRatio
+			obj._drainRatio,
 		)})`;
 	}
 	if (skillEffect.$type == "BattleModel.HpDamageSkillEffect") {
 		const obj = skillEffect as HpDamageSkillEffect;
 		return `攻擊(${constantStringify(obj._skillModifier._parameter)} x${numMultiply(
 			obj._skillModifier._ratio,
-			NumericSkillEffect.DamageCoefficient
+			NumericSkillEffect.DamageCoefficient,
 		)})`;
 	}
 	if (skillEffect.$type == "BattleModel.HpDamageRatioMaxSkillEffect") {
@@ -123,28 +123,28 @@ export function skillEffectStringify(skillEffect: BaseSkillEffect): string {
 		const obj = skillEffect as HpDamageDrainSkillEffect;
 		return `吸血攻擊(${constantStringify(obj._skillModifier._parameter)} x${numMultiply(
 			numMultiply(obj._skillModifier._ratio, NumericSkillEffect.DamageCoefficient),
-			obj._drainRatio
+			obj._drainRatio,
 		)})`;
 	}
 	if (skillEffect.$type == "BattleModel.HpHealSkillEffect") {
 		const obj = skillEffect as HpHealSkillEffect;
 		return `治療(${constantStringify(obj._skillModifier._parameter)} x${numMultiply(
 			obj._skillModifier._ratio,
-			NumericSkillEffect.HealCoefficient
+			NumericSkillEffect.HealCoefficient,
 		)})`;
 	}
 	if (skillEffect.$type == "BattleModel.TrueDamageSkillEffect") {
 		const obj = skillEffect as TrueDamageSkillEffect;
 		return `穿透(${constantStringify(obj._skillModifier._parameter)} x${numMultiply(
 			obj._skillModifier._ratio,
-			NumericSkillEffect.DamageCoefficient
+			NumericSkillEffect.DamageCoefficient,
 		)})`;
 	}
 	if (skillEffect.$type == "BattleModel.AmrGainSkillEffect") {
 		const obj = skillEffect as AmrGainSkillEffect;
 		return `疊盾(${constantStringify(obj._skillModifier._parameter)} x${numMultiply(
 			obj._skillModifier._ratio,
-			NumericSkillEffect.ArmorCoefficient
+			NumericSkillEffect.ArmorCoefficient,
 		)})`;
 	}
 	if (skillEffect.$type == "BattleModel.ChangeCDSkillEffect") {
@@ -162,17 +162,17 @@ export function skillEffectStringify(skillEffect: BaseSkillEffect): string {
 	if (skillEffect.$type == "BattleModel.StoneActionSkillEffect") {
 		const obj = skillEffect as StoneActionSkillEffect;
 		return `將${obj._stoneAction.targetStoneCount}個${Constraint.toString(
-			obj._stoneAction.filter
+			obj._stoneAction.filter,
 		)}${BoardModificationStoneAction.ChangeType.toString(obj._stoneAction.changeTo)}`;
 	}
 	if (skillEffect.$type == "BattleModel.StoneBuffSkillEffect") {
 		const obj = skillEffect as StoneBuffSkillEffect;
 		return `將${obj._stoneBuffAction.targetStoneCount}個${Constraint.toString(
-			obj._stoneBuffAction.filter
+			obj._stoneBuffAction.filter,
 		)}由${StoneBuffAction.Order.toString(
-			obj._stoneBuffAction.order
+			obj._stoneBuffAction.order,
 		)}的順序${StoneBuffAction.BuffChangeType.toString(obj._stoneBuffAction.action)}${addBuff(
-			obj._stoneBuffAction.buff
+			obj._stoneBuffAction.buff,
 		)}`;
 	}
 	if (skillEffect.$type == "BattleModel.ReviveSkillEffect") {
@@ -194,7 +194,7 @@ export function skillEffectStringify(skillEffect: BaseSkillEffect): string {
 	if (skillEffect.$type == "BattleModel.ChangeExploreFlagSkillEffect") {
 		const obj = skillEffect as ChangeExploreFlagSkillEffect;
 		return `將探索flag:${obj._flagId}${NumberOperation.toString(
-			obj._operation
+			obj._operation,
 		)}${constantStringify(obj._value)}`;
 	}
 	if (skillEffect.$type == "BattleModel.SummonEnemySkillEffect") {
@@ -212,11 +212,11 @@ export function skillEffectStringify(skillEffect: BaseSkillEffect): string {
 		) {
 			const condition = obj.FilterCondition as CheckBuffMatchBuffId;
 			return `複製${singleTargetStringify(obj.SingleCharacter)}的${localizationBuffName(true)(
-				condition.subString
+				condition.subString,
 			)}狀態`;
 		}
 		return `複製${singleTargetStringify(obj.SingleCharacter)}符合(${conditionBuffStringify(
-			obj.FilterCondition
+			obj.FilterCondition,
 		)})條件${
 			obj.RandomSelectBuff
 				? `並隨機選擇${obj.RandomCopyCount}個${obj.NotRepeatSameBuffId ? "不重複的" : ""}`
@@ -231,6 +231,6 @@ export function addBuff(buff: AddBuffData): string {
 	return `賦予${
 		buff.Forever || buff.OverwriteDuration < 0 ? "永久" : `${buff.OverwriteDuration}回合`
 	}${buff.LevelStack > 0 ? `${buff.LevelStack}層` : ""}${localizationBuffName(true)(
-		buff.BuffId
+		buff.BuffId,
 	)}`;
 }

@@ -1,10 +1,10 @@
 import MWBot from "mwbot";
-import { ImperiumData } from "../../imperium-data";
-import { setDefaultLanguage } from "../../localization";
-import { Logger } from "../../logger";
-import { ExploreItem } from "../../model/explore-item";
-import { Hero } from "../../model/hero";
-import { questMetadata } from "../../wiki-quest";
+import { ImperiumData } from "../../imperium-data.js";
+import { setDefaultLanguage } from "../../localization.js";
+import { Logger } from "../../logger.js";
+import { ExploreItem } from "../../model/explore-item.js";
+import { Hero } from "../../model/hero.js";
+import { questMetadata } from "../../wiki-quest.js";
 
 const enable = {
 	hero: false,
@@ -74,7 +74,7 @@ export async function wikiScRedirectBot(bot: MWBot) {
 
 			if (row.get("category") == "Challenge") {
 				const quests = QuestsTable.filter(
-					(q) => q.get("chapter") == chID && q.get("enable")
+					(q) => q.get("chapter") == chID && q.get("enable"),
 				);
 				for (let j = 0; j < quests.length; j++) {
 					const quest = quests[j];
@@ -94,7 +94,7 @@ export async function wikiScRedirectBot(bot: MWBot) {
 									await bot.create(
 										scWikilink,
 										`#重新導向 [[${tcWikilink}]]`,
-										"簡中導向"
+										"簡中導向",
 									);
 								} catch (error) {
 									logger.error(error);
@@ -112,7 +112,7 @@ export async function wikiScRedirectBot(bot: MWBot) {
 								await bot.create(
 									questNumber,
 									`#重新導向 [[${tcWikilink}]]`,
-									"關卡編號導向"
+									"關卡編號導向",
 								);
 							} catch (error) {
 								logger.error(error);

@@ -1,11 +1,11 @@
 import numeral from "numeral";
-import { ImperiumData, RowWrapper } from "../imperium-data";
-import { wikiimage } from "../templates/wikiimage";
-import { LookupTableCategory } from "./enums/lookup-table-category.enum";
-import { TavernMissionSkillType } from "./enums/tavern-mission-skill-type.enum";
-import { Mission } from "./mission";
-import { MonsterSkill } from "./monster-skill";
-import { TavernMission } from "./tavern-mission";
+import { ImperiumData, RowWrapper } from "../imperium-data.js";
+import { wikiimage } from "../templates/wikiimage.js";
+import { LookupTableCategory } from "./enums/custom/lookup-table-category.enum.js";
+import { TavernMissionSkillType } from "./enums/tavern-mission-skill-type.enum.js";
+import { Mission } from "./mission.js";
+import { MonsterSkill } from "./monster-skill.js";
+import { TavernMission } from "./tavern-mission.js";
 
 const TavernMissionRequireTable = ImperiumData.fromGamedata().getTable("TavernMissionRequire");
 

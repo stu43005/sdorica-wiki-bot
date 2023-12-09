@@ -1,5 +1,5 @@
-import { BuffSequence } from "./BuffSequence";
-import { IConditionOfModel } from "./condition/IConditionOfModel";
+import { BuffSequence } from "./BuffSequence.js";
+import { IConditionOfModel } from "./condition/IConditionOfModel.js";
 
 export interface BuffEffect {
 	Conditions: IConditionOfModel[];

@@ -1,5 +1,5 @@
-import { WaveSetAsset } from "../../sdorica/WaveSetAsset";
-import { ViewerJSHelper } from "../viewerjs-helper";
+import { WaveSetAsset } from "../../sdorica/WaveSetAsset.js";
+import { type ViewerJSHelper } from "../viewerjs-helper.js";
 
 export default async function (helper: ViewerJSHelper, data: WaveSetAsset) {
 	data.$interpreted = interpreted(data);
@@ -14,7 +14,7 @@ function interpreted(data: WaveSetAsset) {
 		const wave = data.Model.waves[waveKey];
 		wave.weightedEnemySet.forEach((entry) => {
 			out.push(
-				`wave ${waveKey}: ${entry.Key.name} (level: ${entry.Value.level}, weight: ${entry.Value.weight})`
+				`wave ${waveKey}: ${entry.Key.name} (level: ${entry.Value.level}, weight: ${entry.Value.weight})`,
 			);
 		});
 	}

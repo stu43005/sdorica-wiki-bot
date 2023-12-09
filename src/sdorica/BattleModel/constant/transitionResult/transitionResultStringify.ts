@@ -1,29 +1,29 @@
-import { mulitTargetStringify, singleTargetStringify } from "../../target/TargetStringify";
-import { ITransitionResultGroup } from "./group/ITransitionResultGroup";
-import { ThisSkillSetResult } from "./group/ThisSkillSetResult";
-import { ThisTurnResult } from "./group/ThisTurnResult";
-import { ITransitionResultValue } from "./ITransitionResultValue";
-import { TotalResultsValueOfCharacter } from "./TotalResultsValueOfCharacter";
-import { TotalResultsValueOfCharacterGroup } from "./TotalResultsValueOfCharacterGroup";
-import { TransitionCharacterType } from "./TransitionCharacterType";
-import { TransitionValueType } from "./TransitionValueType";
+import { mulitTargetStringify, singleTargetStringify } from "../../target/TargetStringify.js";
+import { ITransitionResultGroup } from "./group/ITransitionResultGroup.js";
+import { ThisSkillSetResult } from "./group/ThisSkillSetResult.js";
+import { ThisTurnResult } from "./group/ThisTurnResult.js";
+import { ITransitionResultValue } from "./ITransitionResultValue.js";
+import { TotalResultsValueOfCharacter } from "./TotalResultsValueOfCharacter.js";
+import { TotalResultsValueOfCharacterGroup } from "./TotalResultsValueOfCharacterGroup.js";
+import { TransitionCharacterType } from "./TransitionCharacterType.js";
+import { TransitionValueType } from "./TransitionValueType.js";
 
 export function transitionResultValueStringify(constant: ITransitionResultValue) {
 	if (!constant) return "";
 	if (constant.$type == "BattleModel.TotalResultsValueOfCharacter") {
 		const obj = constant as TotalResultsValueOfCharacter;
 		return `在${transitionResultGroupStringify(
-			obj.Results
+			obj.Results,
 		)}的${TransitionCharacterType.toString(obj.CharType)}中，${singleTargetStringify(
-			obj.Character
+			obj.Character,
 		)}的${TransitionValueType.toString(obj.ValueType)}`;
 	}
 	if (constant.$type == "BattleModel.TotalResultsValueOfCharacterGroup") {
 		const obj = constant as TotalResultsValueOfCharacterGroup;
 		return `在${transitionResultGroupStringify(
-			obj.Results
+			obj.Results,
 		)}的${TransitionCharacterType.toString(obj.CharType)}中，${mulitTargetStringify(
-			obj.Group
+			obj.Group,
 		)}的${TransitionValueType.toString(obj.ValueType)}`;
 	}
 	console.error(`Unknown ITransitionResultValue type: ${constant.$type}`);

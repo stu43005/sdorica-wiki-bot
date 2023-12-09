@@ -1,10 +1,10 @@
-import { IGroupedInteger } from "../constant/grouped/IGroupedInteger";
-import { ISingleInteger } from "../constant/ISingleInteger";
-import { SkillUnit } from "../SkillUnit";
-import { IGroupedCharacter } from "../target/IGroupedCharacter";
-import { ISingleCharacter } from "../target/ISingleCharacter";
-import { IBaseOperation } from "./IBaseOperation";
-import { ITriggerOperation } from "./ITriggerOperation";
+import { IGroupedInteger } from "../constant/grouped/IGroupedInteger.js";
+import { ISingleInteger } from "../constant/ISingleInteger.js";
+import { SkillUnit } from "../SkillUnit.js";
+import { IGroupedCharacter } from "../target/IGroupedCharacter.js";
+import { ISingleCharacter } from "../target/ISingleCharacter.js";
+import { IBaseOperation } from "./IBaseOperation.js";
+import { ITriggerOperation } from "./ITriggerOperation.js";
 
 export type AssignParameterSkillEffect = UseAssignValueSkillEffect | UseAssignParameterSkillEffect;
 

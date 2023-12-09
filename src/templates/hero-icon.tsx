@@ -1,7 +1,7 @@
 import numeral from "numeral";
 import { h } from "preact";
-import { IHeroSkillSet } from "../model/hero-skillset.interface";
-import { wikiimageElement } from "./wikiimage";
+import { IHeroSkillSet } from "../model/hero-skillset.interface.js";
+import { wikiimageElement } from "./wikiimage.js";
 
 export interface HeroIconParams {
 	/**
@@ -36,7 +36,7 @@ export interface HeroIconParams {
 
 export function heroIconTemplate(
 	skillset: IHeroSkillSet,
-	options: HeroIconParams = {}
+	options: HeroIconParams = {},
 ): h.JSX.Element {
 	if (!options.height) {
 		options.width ??= 25;

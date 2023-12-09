@@ -1,4 +1,4 @@
-import { sumBy } from "lodash";
+import { sumBy } from "lodash-es";
 
 export type TableCeilTextType = string | number;
 

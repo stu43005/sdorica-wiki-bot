@@ -1,5 +1,5 @@
-import _ from "lodash";
-import { ImperiumData } from "../imperium-data";
+import * as _ from "lodash-es";
+import { ImperiumData } from "../imperium-data.js";
 import {
 	call2,
 	distinct,
@@ -7,11 +7,11 @@ import {
 	localizationCharacterNameByHeroId,
 	rank,
 	semicolon,
-} from "../localization";
-import { Hero } from "../model/hero";
-import { HeroSkillSet } from "../model/hero-skillset";
-import { wikiH1 } from "../templates/wikiheader";
-import { wikitable, WikiTableStruct } from "../templates/wikitable";
+} from "../localization.js";
+import { Hero } from "../model/hero.js";
+import { HeroSkillSet } from "../model/hero-skillset.js";
+import { wikiH1 } from "../templates/wikiheader.js";
+import { wikitable, WikiTableStruct } from "../templates/wikitable.js";
 
 const FreeHeroesTable = ImperiumData.fromGamedata().getTable("FreeHeroes");
 
@@ -26,7 +26,7 @@ export default function wikiFreeHeroes() {
 			const skillSets = HeroSkillSet.getList(row.get("skillSetIds"));
 			const chapters = call2(
 				semicolon(localizationChapterName()),
-				distinct()
+				distinct(),
 			)(row.get("chapterIds"));
 			table.push([
 				...(i === 0

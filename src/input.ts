@@ -1,22 +1,23 @@
-import * as fs from "fs-extra";
 import msgpack5 from "msgpack5";
-import * as path from "path";
-import * as readline from "readline";
+import fs from "node:fs";
+import fsp from "node:fs/promises";
+import path from "node:path";
+import readline from "node:readline";
 import streamToPromise from "stream-to-promise";
-import { DataRaw, ImperiumDataRaw, LatestDataRaw } from "./data-raw-type";
-import { fsExists } from "./out";
+import { DataRaw, ImperiumDataRaw, LatestDataRaw } from "./data-raw-type.js";
+import { fsExists } from "./out.js";
 
 export async function* inputDir(
 	dirname: string,
-	includeSubDir = true
+	includeSubDir = true,
 ): AsyncGenerator<{ filepath: string; filename: string; stat: fs.Stats }, void, unknown> {
-	const files: string[] = await fs.readdir(dirname);
+	const files: string[] = await fsp.readdir(dirname);
 	while (files.length > 0) {
 		const file = files.shift();
 		if (file == "." || file == "..") continue;
 		if (file) {
 			const name = path.join(dirname, file);
-			const stat = await fs.stat(name);
+			const stat = await fsp.stat(name);
 			if (includeSubDir && stat.isDirectory()) {
 				yield* inputDir(name, includeSubDir);
 			} else if (stat.isFile()) {
@@ -80,12 +81,15 @@ function processTableData(data: ImperiumDataRaw) {
 	for (const tableName in data.C) {
 		if (data.C.hasOwnProperty(tableName)) {
 			const table = data.C[tableName];
+			if (!table) continue;
 			for (let j = 0; j < table.T.length; j++) {
 				const type = table.T[j];
+				if (!type) continue;
 				if (("" + type).startsWith("enum:") && type in data.E) {
 					const enumm = data.E[type];
 					for (let k = 0; k < table.D.length; k++) {
 						const row = table.D[k];
+						if (!row) continue;
 						if (isNaN(Number(row[j]))) {
 							continue;
 						}
@@ -132,6 +136,7 @@ export function inputMonoBehaviour(filepath: string): Promise<Record<string, any
 			} else if (
 				curKey &&
 				size[curKey] &&
+				raw[curKey] &&
 				curIndex > -1 &&
 				line.indexOf("string data") != -1
 			) {

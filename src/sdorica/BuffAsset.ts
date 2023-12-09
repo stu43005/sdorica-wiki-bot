@@ -1,5 +1,5 @@
-import { BaseBuffAsset } from "./BaseBuffAsset";
-import { Buff } from "./BattleModel/Buff";
+import { BaseBuffAsset } from "./BaseBuffAsset.js";
+import { Buff } from "./BattleModel/Buff.js";
 
 export interface BuffAsset extends BaseBuffAsset {
 	Model: Buff;

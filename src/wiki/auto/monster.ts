@@ -1,15 +1,15 @@
 import MWBot from "mwbot";
-import { ImperiumData } from "../../imperium-data";
-import { TemplateFormatter } from "../../lib/TemplateFormatter";
+import { ImperiumData } from "../../imperium-data.js";
+import { TemplateFormatter } from "../../lib/TemplateFormatter.js";
 import {
 	gbw,
 	localizationCharacterName,
 	localizationMonsterSkillName,
 	localizationMonsterSpecialityName,
 	localizationString,
-} from "../../localization";
-import { arrayUnique } from "../../utils";
-import { wikitemplate } from "../../wiki-utils";
+} from "../../localization.js";
+import { arrayUnique } from "../../utils.js";
+import { wikitemplate } from "../../wiki-utils.js";
 
 const AbilityDropTable = ImperiumData.fromGamedata().getTable("AbilityDrop");
 const HomelandMonsterTable = ImperiumData.fromGamedata().getTable("HomelandMonster");

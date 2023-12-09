@@ -1,10 +1,10 @@
-import _ from "lodash";
-import { Monster } from "../model/monster";
-import { MonsterAbilityDropGroup } from "../model/monster-ability-drop";
-import { wikiH1, wikiHr } from "../templates/wikiheader";
-import { wikiimage } from "../templates/wikiimage";
-import { WikiTableStruct, wikitable } from "../templates/wikitable";
-import { wikiNextLine } from "../wiki-utils";
+import * as _ from "lodash-es";
+import { Monster } from "../model/monster.js";
+import { MonsterAbilityDropGroup } from "../model/monster-ability-drop.js";
+import { wikiH1, wikiHr } from "../templates/wikiheader.js";
+import { wikiimage } from "../templates/wikiimage.js";
+import { WikiTableStruct, wikitable } from "../templates/wikitable.js";
+import { wikiNextLine } from "../wiki-utils.js";
 
 export default function wikiHomelandMonster() {
 	let out = wikiH1("獸廄野獸");

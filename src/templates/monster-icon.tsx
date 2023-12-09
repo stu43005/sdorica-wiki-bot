@@ -1,6 +1,6 @@
 import { h } from "preact";
-import { Monster } from "../model/monster";
-import { wikiimageElement } from "./wikiimage";
+import { Monster } from "../model/monster.js";
+import { wikiimageElement } from "./wikiimage.js";
 import numeral from "numeral";
 
 export interface MonsterIconParams {
@@ -36,7 +36,7 @@ export interface MonsterIconParams {
 
 export function monsterIconTemplate(
 	monster: Monster,
-	options: MonsterIconParams = {}
+	options: MonsterIconParams = {},
 ): h.JSX.Element {
 	if (!options.height) {
 		options.width ??= 25;

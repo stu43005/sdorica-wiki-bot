@@ -1,7 +1,7 @@
 import { h } from "preact";
-import { IMonsterAbility } from "../model/monster-ability.interface";
-import { MonsterSkill } from "../model/monster-skill";
-import { wikiimageElement } from "./wikiimage";
+import { IMonsterAbility } from "../model/monster-ability.interface.js";
+import { MonsterSkill } from "../model/monster-skill.js";
+import { wikiimageElement } from "./wikiimage.js";
 
 export interface MonsterSkillIconParams {
 	/**
@@ -23,7 +23,7 @@ export interface MonsterSkillIconParams {
 
 export function monsterSkillIconTemplate(
 	ability: IMonsterAbility,
-	options: MonsterSkillIconParams = {}
+	options: MonsterSkillIconParams = {},
 ): h.JSX.Element {
 	options.width ??= 25;
 	options.text ??= true;

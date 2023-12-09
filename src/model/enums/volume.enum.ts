@@ -1,4 +1,4 @@
-export enum VolumeEnum {
+export enum Volume {
 	Main = "Main",
 	Region = "Region",
 	Tutorial = "Tutorial",

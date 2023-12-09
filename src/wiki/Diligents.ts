@@ -1,13 +1,13 @@
-import _ from "lodash";
+import * as _ from "lodash-es";
 import numeral from "numeral";
-import { ImperiumData } from "../imperium-data";
-import { localizationItemNameWithType, localizationString } from "../localization";
-import { Chapter } from "../model/chapter";
-import { Item } from "../model/item";
-import { TemplateString } from "../model/template-string";
-import { wikiH1, wikiH2 } from "../templates/wikiheader";
-import { wikiPageLink } from "../templates/wikilink";
-import { WikiTableStruct, wikitable } from "../templates/wikitable";
+import { ImperiumData } from "../imperium-data.js";
+import { localizationItemNameWithType, localizationString } from "../localization.js";
+import { Chapter } from "../model/chapter.js";
+import { Item } from "../model/item.js";
+import { TemplateString } from "../model/template-string.js";
+import { wikiH1, wikiH2 } from "../templates/wikiheader.js";
+import { wikiPageLink } from "../templates/wikilink.js";
+import { WikiTableStruct, wikitable } from "../templates/wikitable.js";
 
 const DiligentGroupsTable = ImperiumData.fromGamedata().getTable("DiligentGroups");
 const DiligentsTable = ImperiumData.fromGamedata().getTable("Diligents");
@@ -22,7 +22,7 @@ export default function wikiDiligents() {
 			.sort((a, b) => a.get("diligentAmount") - b.get("diligentAmount"))
 			.map((level) => {
 				const diligents = DiligentsTable.filter(
-					(row) => level.get("levelGroup") == row.get("levelGroup")
+					(row) => level.get("levelGroup") == row.get("levelGroup"),
 				);
 				return {
 					level,
@@ -32,10 +32,10 @@ export default function wikiDiligents() {
 						diligent,
 						diligentType: diligent.get("diligentType") as string,
 						effect: new TemplateString(
-							localizationString("Diligents")(diligent.get("diligentI2Key"))
+							localizationString("Diligents")(diligent.get("diligentI2Key")),
 						).apply({
 							giveLinkId: localizationItemNameWithType()(
-								`${diligent.get("giveLinkId")}:${diligent.get("giveType")}`
+								`${diligent.get("giveLinkId")}:${diligent.get("giveType")}`,
 							),
 							giveAmount: diligent.get("giveAmount"),
 							abilityIncrease: diligent.get("abilityIncrease"),
@@ -93,7 +93,7 @@ export default function wikiDiligents() {
 		}
 
 		out += `\n\n${wikiH2(
-			chapter ? wikiPageLink("Chapter", chapter.getWikiFullName(), chapterId) : chapterId
+			chapter ? wikiPageLink("Chapter", chapter.getWikiFullName(), chapterId) : chapterId,
 		)}\n${wikitable(table)}`;
 	}
 

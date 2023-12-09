@@ -1,6 +1,6 @@
-import { SiDiffData } from "../types/diff-data";
-import { SiImperium } from "../types/imperium";
-import { ViewerJSHelper } from "../viewerjs-helper";
+import { SiDiffData } from "../types/diff-data.js";
+import { SiImperium } from "../types/imperium.js";
+import { type ViewerJSHelper } from "../viewerjs-helper.js";
 
 export default async function (helper: ViewerJSHelper) {
 	const vue = helper.vue;
@@ -26,7 +26,7 @@ export default async function (helper: ViewerJSHelper) {
 		const typeId = vue.$imperiumType.indexOf(typename);
 		if (typeId < 0) return data;
 		const filteredImperiums = imperiums.filter(
-			(x) => x.type_id === typeId && x.name.indexOf("longyuan") == -1
+			(x) => x.type_id === typeId && x.name.indexOf("longyuan") == -1,
 		);
 		if (filteredImperiums.length < 2) return data;
 		const new_id = filteredImperiums[0].id;
@@ -39,7 +39,7 @@ export default async function (helper: ViewerJSHelper) {
 					old: old_id,
 					new: new_id,
 				},
-			}
+			},
 		);
 
 		for (const abkey in diffData.add) {

@@ -1,15 +1,15 @@
 import { render } from "preact-render-to-string";
-import { ImperiumData, RowWrapper } from "../imperium-data";
-import { HeroIconParams, heroIconTemplate } from "../templates/hero-icon";
-import { range } from "../utils";
-import { SkillId } from "./enums/skill-id.enum";
-import { SkillType } from "./enums/skill-type.enum";
-import { StoneEraseShape } from "./enums/stone-erase-shape.enum";
-import { StoneEraseType } from "./enums/stone-erase-type.enum";
-import { HeroSkill } from "./hero-skill";
-import { HeroSkillSet } from "./hero-skillset";
-import { IHeroSkillSet } from "./hero-skillset.interface";
-import { ItemPayRef } from "./item-pay-ref";
+import { ImperiumData, RowWrapper } from "../imperium-data.js";
+import { HeroIconParams, heroIconTemplate } from "../templates/hero-icon.js";
+import { range } from "../utils.js";
+import { SkillId } from "./enums/custom/skill-id.enum.js";
+import { SkillType } from "./enums/custom/skill-type.enum.js";
+import { StoneEraseShape } from "./enums/custom/stone-erase-shape.enum.js";
+import { StoneEraseType } from "./enums/stone-erase-type.enum.js";
+import { HeroSkill } from "./hero-skill.js";
+import { HeroSkillSet } from "./hero-skillset.js";
+import { IHeroSkillSet } from "./hero-skillset.interface.js";
+import { ItemPayRef } from "./item-pay-ref.js";
 
 const SkillLevelTable = ImperiumData.fromGamedata().getTable("SkillLevel");
 
@@ -49,6 +49,7 @@ export class HeroSkillLevel implements IHeroSkillSet {
 				return item;
 			}
 		}
+		return;
 	}
 
 	public static getAll() {
@@ -163,8 +164,8 @@ export class HeroSkillLevel implements IHeroSkillSet {
 						new ItemPayRef(
 							this.row.get(`pay${i}Type`),
 							this.row.get(`pay${i}LinkId`),
-							this.row.get(`pay${i}Amount`)
-						)
+							this.row.get(`pay${i}Amount`),
+						),
 				)
 				.filter((ref) => !!ref.item);
 		}
@@ -179,15 +180,15 @@ export class HeroSkillLevel implements IHeroSkillSet {
 		this.S3 = HeroSkill.createByEraseType(this, SkillId.S3, this.stoneEraseTypeS3, this.tipsS3);
 	}
 
-	toWiki(options?: HeroIconParams) {
+	toWiki(options?: HeroIconParams): string {
 		return render(heroIconTemplate(this, options));
 	}
 
-	getSdAssetUrl() {
+	getSdAssetUrl(): string | undefined {
 		return this.rootSkillSet?.getSdAssetUrl();
 	}
 
-	toJSON(minify?: boolean) {
+	toJSON(minify?: boolean): any {
 		return HeroSkillSet.prototype.toJSON.apply(this, [minify]);
 	}
 }

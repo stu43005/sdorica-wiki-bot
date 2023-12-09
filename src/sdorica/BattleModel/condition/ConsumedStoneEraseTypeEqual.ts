@@ -1,5 +1,5 @@
-import { StoneEraseType } from "../StoneSystem/StoneEraseType";
-import { IConditionOfModel } from "./IConditionOfModel";
+import { StoneEraseType } from "../StoneSystem/StoneEraseType.js";
+import { IConditionOfModel } from "./IConditionOfModel.js";
 
 export interface ConsumedStoneEraseTypeEqual extends IConditionOfModel {
 	EraseType: StoneEraseType;

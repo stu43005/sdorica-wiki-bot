@@ -1,5 +1,5 @@
-import { IBattleSkill } from "./IBattleSkill";
-import { SkillUnit } from "./SkillUnit";
+import { IBattleSkill } from "./IBattleSkill.js";
+import { SkillUnit } from "./SkillUnit.js";
 
 export interface BattleSkill extends IBattleSkill {
 	_skillIdentifiers: SkillUnit[];

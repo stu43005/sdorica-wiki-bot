@@ -1,6 +1,6 @@
-import { ISingleCharacter } from "../target/ISingleCharacter";
-import { IConditionOfCharacter } from "./IConditionOfCharacter";
-import { IConditionOfModel } from "./IConditionOfModel";
+import { ISingleCharacter } from "../target/ISingleCharacter.js";
+import { IConditionOfCharacter } from "./IConditionOfCharacter.js";
+import { IConditionOfModel } from "./IConditionOfModel.js";
 
 export interface CharacterCondition extends IConditionOfModel {
 	character: ISingleCharacter;

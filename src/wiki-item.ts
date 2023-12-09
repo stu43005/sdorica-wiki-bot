@@ -1,4 +1,4 @@
-import { ImperiumData, RowWrapper } from "./imperium-data";
+import { ImperiumData, RowWrapper } from "./imperium-data.js";
 import {
 	currency2Id,
 	localizationCharacterNameByHeroId,
@@ -6,14 +6,14 @@ import {
 	localizationItemName,
 	localizationString,
 	rank,
-} from "./localization";
-import { Chapter } from "./model/chapter";
-import { ExploreItem } from "./model/explore-item";
-import { Hero } from "./model/hero";
-import { Item } from "./model/item";
-import { Monster } from "./model/monster";
-import { ItemIconParams } from "./templates/item-icon";
-import { arrayUnique } from "./utils";
+} from "./localization.js";
+import { Chapter } from "./model/chapter.js";
+import { ExploreItem } from "./model/explore-item.js";
+import { Hero } from "./model/hero.js";
+import { Item } from "./model/item.js";
+import { Monster } from "./model/monster.js";
+import { ItemIconParams } from "./templates/item-icon.js";
+import { arrayUnique } from "./utils.js";
 
 const ExploreItemsTable = ImperiumData.fromGamedata().getTable("ExploreItems");
 const ExploreBuildingTable = ImperiumData.fromGamedata().getTable("ExploreBuilding");
@@ -48,12 +48,12 @@ export function getItemJsonData() {
 export function exploreCompositeList(id: string) {
 	let str = "";
 	const composites = ExploreCompositeTable.filter(
-		(c) => c.get("itemId") == id && c.get("enable")
+		(c) => c.get("itemId") == id && c.get("enable"),
 	);
 	if (composites.length) {
 		const requireFlags = composites.reduce(
 			(pre, cur) => pre || !!cur.get("requireFlagId"),
-			false
+			false,
 		);
 		str += `\n== 合成方式 ==
 {| class="wikitable"
@@ -63,14 +63,14 @@ export function exploreCompositeList(id: string) {
 		}
 		composites.forEach((composite) => {
 			const building = ExploreBuildingTable.find(
-				(b) => b.get("id") == composite.get("requireBuildingId")
+				(b) => b.get("id") == composite.get("requireBuildingId"),
 			);
 			if (building) {
 				const compositeItems = itemList(composite);
 				str += `\n|-\n| ${compositeItems.join(
-					" "
+					" ",
 				)} || [[${localizationExploreBuildingName()(
-					building.get("type")
+					building.get("type"),
 				)}]] Lv ${building.get("level")}`;
 				if (requireFlags) {
 					str += `\n| ${
@@ -91,22 +91,22 @@ export function exploreUsingList(id: string) {
 	const useComposites = ExploreCompositeTable.filter(
 		(c) =>
 			[c.get("item1Id"), c.get("item2Id"), c.get("item3Id"), c.get("item4Id")].indexOf(id) !=
-				-1 && c.get("enable")
+				-1 && c.get("enable"),
 	);
 	const useBuilding = ExploreBuildingTable.filter(
 		(c) =>
 			[c.get("item1Id"), c.get("item2Id"), c.get("item3Id"), c.get("item4Id")].indexOf(id) !=
-			-1
+			-1,
 	);
 	if (useComposites.length || useBuilding.length) {
 		const CATEGORY_LEVEL_UP = "升級";
 		const compositeGroup = useComposites.reduce(
 			(group, composite) => {
 				const building = ExploreBuildingTable.find(
-					(b) => b.get("id") == composite.get("requireBuildingId")
+					(b) => b.get("id") == composite.get("requireBuildingId"),
 				);
 				const compItem = ExploreItemsTable.find(
-					(i) => i.get("id") == composite.get("itemId")
+					(i) => i.get("id") == composite.get("itemId"),
 				);
 				if (building && compItem) {
 					const buildingName = localizationExploreBuildingName()(building.get("type"));
@@ -115,7 +115,7 @@ export function exploreUsingList(id: string) {
 					group[buildingName][category] = group[buildingName][category] || [];
 					if (
 						!group[buildingName][category].find(
-							(i) => i.get("id") == compItem.get("id")
+							(i) => i.get("id") == compItem.get("id"),
 						)
 					) {
 						group[buildingName][category].push(compItem);
@@ -123,14 +123,17 @@ export function exploreUsingList(id: string) {
 				}
 				return group;
 			},
-			useBuilding.reduce((group, building) => {
-				const buildingName = localizationExploreBuildingName()(building.get("type"));
-				group[buildingName] = group[buildingName] || {};
-				const category = CATEGORY_LEVEL_UP;
-				group[buildingName][category] = group[buildingName][category] || [];
-				group[buildingName][category].push(building);
-				return group;
-			}, {} as Record<string, Record<string, RowWrapper[]>>)
+			useBuilding.reduce(
+				(group, building) => {
+					const buildingName = localizationExploreBuildingName()(building.get("type"));
+					group[buildingName] = group[buildingName] || {};
+					const category = CATEGORY_LEVEL_UP;
+					group[buildingName][category] = group[buildingName][category] || [];
+					group[buildingName][category].push(building);
+					return group;
+				},
+				{} as Record<string, Record<string, RowWrapper[]>>,
+			),
 		);
 
 		str += `\n== 道具用途 ==`;
@@ -201,7 +204,7 @@ export function itemCategoryName(
 	row: RowWrapper,
 	itemName: string,
 	itemDescription: string,
-	isExplore = false
+	isExplore = false,
 ) {
 	const id = row.get("id");
 	const iconKey = row.get("iconKey");
@@ -212,7 +215,7 @@ export function itemCategoryName(
 	if (!itemDescription) {
 		itemDescription =
 			localizationString(isExplore ? "ExpItem" : "Item")(
-				row.get("localizationKeyDescription")
+				row.get("localizationKeyDescription"),
 			) || "";
 	}
 
@@ -313,7 +316,7 @@ export function item2wiki(
 	id: string,
 	count?: number,
 	isExplore = false,
-	options: ItemIconParams = {}
+	options: ItemIconParams = {},
 ) {
 	let item: ExploreItem | Item | undefined;
 	if (isExplore) {
@@ -341,12 +344,13 @@ export function item2wikiWithType(
 	type: string,
 	id: string,
 	count?: number,
-	options?: ItemIconParams
+	options?: ItemIconParams,
 ) {
 	switch (type) {
 		case "coin": // old type
 		case "gem": // old type
 		case "ring": // old type
+		// @ts-ignore FALLTHROUGH
 		case "soul": // old type
 			id = currency2Id()(type);
 		case "Item":
@@ -376,7 +380,7 @@ export function item2wikiWithType(
 				diligentId,
 				count,
 				false,
-				options
+				options,
 			)}`;
 		}
 	}

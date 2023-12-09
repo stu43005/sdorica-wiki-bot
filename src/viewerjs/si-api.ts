@@ -1,7 +1,7 @@
-import { SiContainerMultiSearch, SiContainerSearch } from "./types/container-search";
-import { SiContainer, SiContainers } from "./types/containers";
-import { SiImperium } from "./types/imperium";
-import { ViewerJSHelper } from "./viewerjs-helper";
+import { SiContainerMultiSearch, SiContainerSearch } from "./types/container-search.js";
+import { SiContainer, SiContainers } from "./types/containers.js";
+import { SiImperium } from "./types/imperium.js";
+import { type ViewerJSHelper } from "./viewerjs-helper.js";
 
 export class SdoricaInspectorApi {
 	constructor(private helper: ViewerJSHelper) {}
@@ -18,7 +18,7 @@ export class SdoricaInspectorApi {
 				params: {
 					query,
 				},
-			}
+			},
 		);
 		return response.data;
 	}
@@ -31,21 +31,21 @@ export class SdoricaInspectorApi {
 			},
 			{
 				timeout: 0,
-			}
+			},
 		);
 		return response.data;
 	}
 
 	async assetbundleContainers(md5: string) {
 		const response = await this.helper.vue.$http.get<SiContainers>(
-			`/api/asset_bundle/${md5}/containers/`
+			`/api/asset_bundle/${md5}/containers/`,
 		);
 		return response.data;
 	}
 
 	async assetbundleContainer(md5: string, pathId: string) {
 		const response = await this.helper.vue.$http.get<SiContainer>(
-			`/api/asset_bundle/${md5}/containers/${pathId}/`
+			`/api/asset_bundle/${md5}/containers/${pathId}/`,
 		);
 		return response.data;
 	}
@@ -55,7 +55,7 @@ export class SdoricaInspectorApi {
 			`/api/asset_bundle/${md5}/containers/${pathId}/data/`,
 			{
 				responseType: "stream",
-			}
+			},
 		);
 		return response.data;
 	}
@@ -68,7 +68,7 @@ export class SdoricaInspectorApi {
 			},
 			{
 				timeout: 0,
-			}
+			},
 		);
 		return response.data;
 	}

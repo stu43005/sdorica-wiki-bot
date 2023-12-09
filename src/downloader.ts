@@ -1,11 +1,11 @@
-import * as path from "path";
-import { GAMEDATA_PATH, LATEST_PATH, ORIGIN_PATH } from "./config";
-import { ImperiumDataRaw, LatestDataRaw } from "./data-raw-type";
-import { ImperiumData } from "./imperium-data";
-import { inputFilePack, inputJsonSync, isImperiumData, isLatestData } from "./input";
-import { Logger } from "./logger";
-import { fsExists, outCsv, outJson, outXlsx, rpFile } from "./out";
-import { dataOut } from "./out-data";
+import path from "node:path";
+import { GAMEDATA_PATH, LATEST_PATH, ORIGIN_PATH } from "./config.js";
+import { ImperiumDataRaw, LatestDataRaw } from "./data-raw-type.js";
+import { ImperiumData } from "./imperium-data.js";
+import { inputFilePack, inputJsonSync, isImperiumData, isLatestData } from "./input.js";
+import { Logger } from "./logger.js";
+import { fsExists, outCsv, outJson, outXlsx, rpFile } from "./out.js";
+import { dataOut } from "./out-data.js";
 
 const logger = new Logger("downloader");
 

@@ -1,4 +1,4 @@
-import { SummonCharacterState } from "./SummonCharacterState";
+import { SummonCharacterState } from "./SummonCharacterState.js";
 
 export interface SummonCharacterArg {
 	AssetName: string;

@@ -1,10 +1,10 @@
-import _ from "lodash";
-import { ImperiumData, RowWrapper } from "../imperium-data";
-import { localizationString } from "../localization";
-import { wikiH1, wikiH2, wikiH3 } from "../templates/wikiheader";
-import { wikitable, WikiTableRow, WikiTableStruct } from "../templates/wikitable";
-import { range } from "../utils";
-import { item2wikiWithType } from "../wiki-item";
+import * as _ from "lodash-es";
+import { ImperiumData, RowWrapper } from "../imperium-data.js";
+import { localizationString } from "../localization.js";
+import { wikiH1, wikiH2, wikiH3 } from "../templates/wikiheader.js";
+import { wikitable, WikiTableRow, WikiTableStruct } from "../templates/wikitable.js";
+import { range } from "../utils.js";
+import { item2wikiWithType } from "../wiki-item.js";
 
 const SignInRewardTable = ImperiumData.fromGamedata().getTable("SignInReward");
 
@@ -12,23 +12,23 @@ export default function wikiSignInReward() {
 	let out = wikiH1(localizationString("Metagame")("dailySignInTitle"));
 
 	out += `\n\n${wikiH2(localizationString("Metagame")("signInRule"))}\n<pre>${localizationString(
-		"Metagame"
+		"Metagame",
 	)("signInCardDescription")}</pre>`;
 
 	const groups = _.groupBy(SignInRewardTable.rows, (r) => r.get("groupId"));
 	for (const [groupId, group] of Object.entries(groups)) {
 		const categories = _.groupBy(
 			group.sort((a, b) => a.get("param1") - b.get("param1")),
-			(r) => r.get("category")
+			(r) => r.get("category"),
 		);
 
 		out += `\n\n${wikiH2(groupId)}`;
 
-		if (categories.day) {
-			out += `\n${wikitable(buildWeekTable(categories.day, categories.week))}`;
+		if (categories["day"]) {
+			out += `\n${wikitable(buildWeekTable(categories["day"], categories["week"]))}`;
 		}
-		if (categories.month) {
-			const table: WikiTableStruct = categories.month.map(
+		if (categories["month"]) {
+			const table: WikiTableStruct = categories["month"].map(
 				(row): WikiTableRow => [
 					{
 						header: true,
@@ -37,23 +37,23 @@ export default function wikiSignInReward() {
 					item2wikiWithType(
 						row.get("giveType"),
 						row.get("giveLinkId"),
-						row.get("giveAmount")
+						row.get("giveAmount"),
 					),
-				]
+				],
 			);
 			out += `\n${wikiH3(
 				localizationString("Metagame")("signInMonthReward"),
-				`${groupId}_month`
+				`${groupId}_month`,
 			)}\n${wikitable(table)}`;
 		}
 		const otherCategories = Object.keys(categories).filter(
-			(key) => !["day", "week", "month"].includes(key)
+			(key) => !["day", "week", "month"].includes(key),
 		);
 		for (const category of otherCategories) {
 			const name =
 				category == "special" ? localizationString("Metagame")("signInSpecial") : category;
 			out += `\n${wikiH3(name, `${groupId}_${category}`)}\n${wikitable(
-				buildWeekTable(categories[category])
+				buildWeekTable(categories[category]),
 			)}`;
 		}
 	}
@@ -92,9 +92,9 @@ function buildWeekTable(days: RowWrapper[], weeks?: RowWrapper[]): WikiTableStru
 								days[i + j].get("giveAmount"),
 								{
 									direction: "vertical",
-								}
+								},
 						  )
-						: ""
+						: "",
 				),
 				...(weekRow
 					? [
@@ -104,11 +104,11 @@ function buildWeekTable(days: RowWrapper[], weeks?: RowWrapper[]): WikiTableStru
 								weekRow.get("giveAmount"),
 								{
 									direction: "vertical",
-								}
+								},
 							),
 					  ]
 					: []),
-			]
+			],
 		);
 	}
 	return table;

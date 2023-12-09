@@ -1,10 +1,10 @@
-import _ from "lodash";
-import { Hero } from "../model/hero";
-import { heroSlotIconTemplate } from "../templates/hero-slot-icon";
-import { wikiH1, wikiH2 } from "../templates/wikiheader";
-import { wikiPageLink } from "../templates/wikilink";
-import { wikitable, WikiTableStruct } from "../templates/wikitable";
-import { sortByCharacterModelNo } from "../utils";
+import * as _ from "lodash-es";
+import { Hero } from "../model/hero.js";
+import { heroSlotIconTemplate } from "../templates/hero-slot-icon.js";
+import { wikiH1, wikiH2 } from "../templates/wikiheader.js";
+import { wikiPageLink } from "../templates/wikilink.js";
+import { wikitable, WikiTableStruct } from "../templates/wikitable.js";
+import { sortByCharacterModelNo } from "../utils.js";
 
 function getSortedHeroes() {
 	return Hero.getAll().sort((a, b) => {
@@ -21,7 +21,7 @@ export default function wikiHeroes() {
 
 	const sortedHeroes = getSortedHeroes();
 	const grouppedHeroes = _.groupBy(sortedHeroes, (hero) =>
-		hero.enable ? hero.series : hero.empty ? "環境" : "停用"
+		hero.enable ? hero.series : hero.empty ? "環境" : "停用",
 	);
 
 	for (const [groupId, group] of Object.entries(grouppedHeroes)) {
@@ -49,8 +49,8 @@ export default function wikiHeroes() {
 				attributes: hero.enable
 					? ""
 					: hero.empty
-					? `style="background-color: #90ee90; color: #1e1e1e;" title="環境"`
-					: `style="background-color: #ccc; color: #1e1e1e;" title="停用"`,
+					  ? `style="background-color: #90ee90; color: #1e1e1e;" title="環境"`
+					  : `style="background-color: #ccc; color: #1e1e1e;" title="停用"`,
 				ceils: [
 					hero.id,
 					hero.model,

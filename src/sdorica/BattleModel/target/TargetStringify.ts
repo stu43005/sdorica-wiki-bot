@@ -1,37 +1,37 @@
-import { conditionCharStringify, conditionStringify } from "../condition/ConditionStringify";
-import { constantCharStringify, constantStringify } from "../constant/ConstantStringify";
-import { SkillUnit } from "../SkillUnit";
-import { IGroupedCharacter } from "./IGroupedCharacter";
-import { ISingleCharacter } from "./ISingleCharacter";
-import { BuffAssignedCharacterGroup } from "./multi/BuffAssignedCharacterGroup";
-import { CharGroupWhere } from "./multi/CharGroupWhere";
-import { CharGroupWhereM } from "./multi/CharGroupWhereM";
-import { OppositeTeamChars } from "./multi/OppositeTeamChars";
-import { PVEEnemyTeam } from "./multi/PVEEnemyTeam";
-import { PVEPlayerTeam } from "./multi/PVEPlayerTeam";
-import { SelfTeamChars } from "./multi/SelfTeamChars";
-import { SelfTeamDeadChars } from "./multi/SelfTeamDeadChars";
-import { SelftTeamEmptySlots } from "./multi/SelftTeamEmptySlots";
-import { SlicedCharGroup } from "./multi/SlicedCharGroup";
-import { ThisSkillEffectTargets } from "./multi/ThisSkillEffectTargets";
-import { UnionCharGroup } from "./multi/UnionCharGroup";
-import { BackOfChars } from "./single/BackOfChars";
-import { BuffAssignedCharacter } from "./single/BuffAssignedCharacter";
-import { CurrentOperateTarget } from "./single/CurrentOperateTarget";
-import { DeadOrReviveTarget } from "./single/DeadOrReviveTarget";
-import { EnemyAssignee } from "./single/EnemyAssignee";
-import { FieldMaxChar } from "./single/FieldMaxChar";
-import { FieldMinChar } from "./single/FieldMinChar";
-import { FriendAssignee } from "./single/FriendAssignee";
-import { FrontOfChars } from "./single/FrontOfChars";
-import { IndexOfChars } from "./single/IndexOfChars";
-import { RandomOfChars } from "./single/RandomOfChars";
-import { ThisBuffCaster } from "./single/ThisBuffCaster";
-import { ThisBuffOwner } from "./single/ThisBuffOwner";
-import { ThisSkillCaster } from "./single/ThisSkillCaster";
-import { ThisSpecifiedTarget } from "./single/ThisSpecifiedTarget";
-import { ThisSummonedTarget } from "./single/ThisSummonedTarget";
-import { TargetResolver } from "./TargetResolver";
+import { conditionCharStringify, conditionStringify } from "../condition/ConditionStringify.js";
+import { constantCharStringify, constantStringify } from "../constant/ConstantStringify.js";
+import { SkillUnit } from "../SkillUnit.js";
+import { IGroupedCharacter } from "./IGroupedCharacter.js";
+import { ISingleCharacter } from "./ISingleCharacter.js";
+import { BuffAssignedCharacterGroup } from "./multi/BuffAssignedCharacterGroup.js";
+import { CharGroupWhere } from "./multi/CharGroupWhere.js";
+import { CharGroupWhereM } from "./multi/CharGroupWhereM.js";
+import { OppositeTeamChars } from "./multi/OppositeTeamChars.js";
+import { PVEEnemyTeam } from "./multi/PVEEnemyTeam.js";
+import { PVEPlayerTeam } from "./multi/PVEPlayerTeam.js";
+import { SelfTeamChars } from "./multi/SelfTeamChars.js";
+import { SelfTeamDeadChars } from "./multi/SelfTeamDeadChars.js";
+import { SelftTeamEmptySlots } from "./multi/SelftTeamEmptySlots.js";
+import { SlicedCharGroup } from "./multi/SlicedCharGroup.js";
+import { ThisSkillEffectTargets } from "./multi/ThisSkillEffectTargets.js";
+import { UnionCharGroup } from "./multi/UnionCharGroup.js";
+import { BackOfChars } from "./single/BackOfChars.js";
+import { BuffAssignedCharacter } from "./single/BuffAssignedCharacter.js";
+import { CurrentOperateTarget } from "./single/CurrentOperateTarget.js";
+import { DeadOrReviveTarget } from "./single/DeadOrReviveTarget.js";
+import { EnemyAssignee } from "./single/EnemyAssignee.js";
+import { FieldMaxChar } from "./single/FieldMaxChar.js";
+import { FieldMinChar } from "./single/FieldMinChar.js";
+import { FriendAssignee } from "./single/FriendAssignee.js";
+import { FrontOfChars } from "./single/FrontOfChars.js";
+import { IndexOfChars } from "./single/IndexOfChars.js";
+import { RandomOfChars } from "./single/RandomOfChars.js";
+import { ThisBuffCaster } from "./single/ThisBuffCaster.js";
+import { ThisBuffOwner } from "./single/ThisBuffOwner.js";
+import { ThisSkillCaster } from "./single/ThisSkillCaster.js";
+import { ThisSpecifiedTarget } from "./single/ThisSpecifiedTarget.js";
+import { ThisSummonedTarget } from "./single/ThisSummonedTarget.js";
+import { TargetResolver } from "./TargetResolver.js";
 
 export function targetResolve(unit: SkillUnit | TargetResolver) {
 	if (unit.IsMultiple && unit.multi) {
@@ -151,13 +151,13 @@ export function mulitTargetStringify(target: IGroupedCharacter): string {
 	if (target.$type == "BattleModel.CharGroupWhere") {
 		const obj = target as CharGroupWhere;
 		return `${mulitTargetStringify(obj.group)}中符合(${conditionCharStringify(
-			obj.condition
+			obj.condition,
 		)})的角色`;
 	}
 	if (target.$type == "BattleModel.CharGroupWhereM") {
 		const obj = target as CharGroupWhereM;
 		return `${mulitTargetStringify(obj.group)}中符合(${conditionStringify(
-			obj.condition
+			obj.condition,
 		)})的角色`;
 	}
 	if (target.$type == "BattleModel.UnionCharGroup") {

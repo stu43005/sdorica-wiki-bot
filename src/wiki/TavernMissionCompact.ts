@@ -1,13 +1,13 @@
-import _ from "lodash";
-import { ImperiumData } from "../imperium-data";
-import { localizationHomelandBuildingName } from "../localization";
-import { TavernMission } from "../model/tavern-mission";
-import { TavernMissionRequire } from "../model/tavern-mission-require";
-import { wikiH1, wikiH2, wikiH3 } from "../templates/wikiheader";
-import { wikiimage } from "../templates/wikiimage";
-import { WikiTableStruct, wikitable } from "../templates/wikitable";
-import { range } from "../utils";
-import { wikiNextLine } from "../wiki-utils";
+import * as _ from "lodash-es";
+import { ImperiumData } from "../imperium-data.js";
+import { localizationHomelandBuildingName } from "../localization.js";
+import { TavernMission } from "../model/tavern-mission.js";
+import { TavernMissionRequire } from "../model/tavern-mission-require.js";
+import { wikiH1, wikiH2, wikiH3 } from "../templates/wikiheader.js";
+import { wikiimage } from "../templates/wikiimage.js";
+import { WikiTableStruct, wikitable } from "../templates/wikitable.js";
+import { range } from "../utils.js";
+import { wikiNextLine } from "../wiki-utils.js";
 
 const TavernMissionDropTable = ImperiumData.fromGamedata().getTable("TavernMissionDrop");
 
@@ -27,7 +27,7 @@ export default function wikiTavernMissionCompact() {
 	let out = wikiH1(`篝火 (完整版)`);
 
 	const TavernMissionDropEnabled = TavernMissionDropTable.filter(
-		(r) => TavernMission.get(r.get("missionId"))?.enable ?? false
+		(r) => TavernMission.get(r.get("missionId"))?.enable ?? false,
 	);
 
 	out += `\n\n${wikiH2(`每日任務`)}`;
@@ -40,11 +40,11 @@ export default function wikiTavernMissionCompact() {
 			dailyMissionIds.includes(r.get("missionId")) &&
 			r.get("type") == "Building" &&
 			r.get("param1") == 2 /*篝火*/ &&
-			TavernMission.get(r.get("missionId"))?.questRank == r.get("param2")
+			TavernMission.get(r.get("missionId"))?.questRank == r.get("param2"),
 	);
 	const dropDailyRanks = _.groupBy(
 		dropDaily,
-		(r) => `${r.get("type")},${r.get("param1")},${r.get("param2")}`
+		(r) => `${r.get("type")},${r.get("param1")},${r.get("param2")}`,
 	);
 
 	for (const [rankKey, group1] of Object.entries(dropDailyRanks)) {
@@ -54,11 +54,11 @@ export default function wikiTavernMissionCompact() {
 			...group1.map((r) => {
 				const reqSkill = TavernMissionRequire.get(r.get("missionId"));
 				return reqSkill.length;
-			})
+			}),
 		);
 
 		out += `\n\n${wikiH3(
-			`${localizationHomelandBuildingName()(buildingId)} ${questRank} 級【${questRank} ★】`
+			`${localizationHomelandBuildingName()(buildingId)} ${questRank} 級【${questRank} ★】`,
 		)}`;
 		const table: WikiTableStruct = {
 			attributes: `class="wikitable table-responsive-autowrap"`,
@@ -85,12 +85,12 @@ export default function wikiTavernMissionCompact() {
 			const sameDropItem = missions.every((m1, index) =>
 				missions
 					.slice(index + 1)
-					.every((m2) => m1.displayDropItem.compare(m2.displayDropItem))
+					.every((m2) => m1.displayDropItem.compare(m2.displayDropItem)),
 			);
 			const sameExtraDropItem = missions.every((m1, index) =>
 				missions
 					.slice(index + 1)
-					.every((m2) => m1.displayExtraDropItem.compare(m2.displayExtraDropItem))
+					.every((m2) => m1.displayExtraDropItem.compare(m2.displayExtraDropItem)),
 			);
 
 			for (let k = 0; k < missions.length; k++) {
@@ -104,7 +104,7 @@ export default function wikiTavernMissionCompact() {
 										`${wikiimage({
 											url: mission.getIconAssetUrl(),
 											width: 40,
-										})}\n${mission.getWikiCategoryName()}`
+										})}\n${mission.getWikiCategoryName()}`,
 									),
 								},
 						  ]
@@ -118,7 +118,7 @@ export default function wikiTavernMissionCompact() {
 							: ""
 					}${mission.name}`,
 					...range(1, maxReqSkillCount).map(
-						(value) => mission.reqSkills[value - 1]?.toWiki() ?? ""
+						(value) => mission.reqSkills[value - 1]?.toWiki() ?? "",
 					),
 					...(!sameDropItem || k == 0
 						? [
@@ -151,10 +151,10 @@ export default function wikiTavernMissionCompact() {
 		.filter((r) => r.tab == "achievement" && r.category == "achievement")
 		.map((r) => r.id);
 	const dropAchievement = TavernMissionDropEnabled.filter((r) =>
-		achievementMissionIds.includes(r.get("missionId"))
+		achievementMissionIds.includes(r.get("missionId")),
 	);
 	const dropAchievementTypes = _.groupBy(dropAchievement, (r) =>
-		r.get("type") == "Building" ? `${r.get("type")},${r.get("param1")}` : r.get("type")
+		r.get("type") == "Building" ? `${r.get("type")},${r.get("param1")}` : r.get("type"),
 	);
 
 	for (const [typeKey, group1] of Object.entries(dropAchievementTypes)) {
@@ -164,7 +164,7 @@ export default function wikiTavernMissionCompact() {
 			...group1.map((r) => {
 				const reqSkill = TavernMissionRequire.get(r.get("missionId"));
 				return reqSkill.length;
-			})
+			}),
 		);
 		const typeName = getTavernMissionTypeName(type, buildingId);
 
@@ -205,7 +205,7 @@ export default function wikiTavernMissionCompact() {
 									`${wikiimage({
 										url: mission.getIconAssetUrl(),
 										width: 40,
-									})}\n${mission.getWikiCategoryName()}`
+									})}\n${mission.getWikiCategoryName()}`,
 								),
 							},
 					  ]
@@ -221,7 +221,7 @@ export default function wikiTavernMissionCompact() {
 						: ""
 				}${mission.name}`,
 				...range(1, maxReqSkillCount).map(
-					(value) => mission.reqSkills[value - 1]?.toWiki() ?? ""
+					(value) => mission.reqSkills[value - 1]?.toWiki() ?? "",
 				),
 				mission.displayDropItem.toWiki({ text: "" }),
 				mission.displayExtraDropItem.toWiki({ text: "" }),

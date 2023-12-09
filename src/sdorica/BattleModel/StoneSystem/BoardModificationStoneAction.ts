@@ -1,4 +1,4 @@
-import { StoneAction } from "./StoneAction";
+import { StoneAction } from "./StoneAction.js";
 
 export type BoardModificationStoneAction = StoneAction;
 

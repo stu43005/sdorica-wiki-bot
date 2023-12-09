@@ -1,6 +1,7 @@
-import * as path from "path";
+import path from "node:path";
+import { __dirname } from "./utilities/node.js";
 
-export const DATA_PATH = path.join(__dirname, "../data");
+export const DATA_PATH = path.join(__dirname(import.meta), "../data");
 export const ORIGIN_PATH = path.join(DATA_PATH, "origin.json");
 export const LATEST_PATH = path.join(DATA_PATH, "client_latest");
 export const GAMEDATA_PATH = path.join(DATA_PATH, "client_gamedata");

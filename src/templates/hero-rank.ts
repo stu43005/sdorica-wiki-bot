@@ -1,7 +1,7 @@
-import { TemplateFormatter } from "../lib/TemplateFormatter";
-import { HeroRank } from "../model/enums/hero-rank.enum";
-import { HeroSlot } from "../model/enums/hero-slot.enum";
-import { wikiNextLine, wikitemplate } from "../wiki-utils";
+import { TemplateFormatter } from "../lib/TemplateFormatter.js";
+import { HeroRank } from "../model/enums/custom/hero-rank.enum.js";
+import { HeroSlot } from "../model/enums/custom/hero-slot.enum.js";
+import { wikiNextLine, wikitemplate } from "../wiki-utils.js";
 
 export interface HeroRankParams {
 	角色位置?: HeroSlot;
@@ -39,6 +39,6 @@ export function heroRankTemplate(params: HeroRankParams) {
 			1: "{{{1|}}}",
 			...params,
 		},
-		TemplateFormatter.FORMAT.BLOCK
+		TemplateFormatter.FORMAT.BLOCK,
 	);
 }

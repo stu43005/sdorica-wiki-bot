@@ -1,6 +1,6 @@
-import { BuffEnums } from "../../BuffEnums";
-import { ISingleInteger } from "../../constant/ISingleInteger";
-import { IOperationToBuff } from "./IOperationToBuff";
+import { BuffEnums } from "../../BuffEnums.js";
+import { ISingleInteger } from "../../constant/ISingleInteger.js";
+import { IOperationToBuff } from "./IOperationToBuff.js";
 
 export interface SetBuffField extends IOperationToBuff {
 	targetField: BuffEnums.BuffIntergerField;

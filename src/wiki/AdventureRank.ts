@@ -1,14 +1,14 @@
-import _ from "lodash";
+import * as _ from "lodash-es";
 import numeral from "numeral";
-import { ImperiumData } from "../imperium-data";
-import { localizationString } from "../localization";
-import { LookupTableCategory } from "../model/enums/lookup-table-category.enum";
-import { ItemGiveRef } from "../model/item-give-ref";
-import { wikiH1, wikiH2, wikiH3 } from "../templates/wikiheader";
-import { wikiimage } from "../templates/wikiimage";
-import { WikiTableCeil, WikiTableStruct, wikitable } from "../templates/wikitable";
-import { range } from "../utils";
-import { wikiNextLine } from "../wiki-utils";
+import { ImperiumData } from "../imperium-data.js";
+import { localizationString } from "../localization.js";
+import { LookupTableCategory } from "../model/enums/custom/lookup-table-category.enum.js";
+import { ItemGiveRef } from "../model/item-give-ref.js";
+import { wikiH1, wikiH2, wikiH3 } from "../templates/wikiheader.js";
+import { wikiimage } from "../templates/wikiimage.js";
+import { WikiTableCeil, WikiTableStruct, wikitable } from "../templates/wikitable.js";
+import { range } from "../utils.js";
+import { wikiNextLine } from "../wiki-utils.js";
 
 const AdventureDailyRankTable = ImperiumData.fromGamedata().getTable("AdventureDailyRank");
 const AdventureTierTable = ImperiumData.fromGamedata().getTable("AdventureTier");
@@ -21,7 +21,7 @@ export default function wikiAdventureRank() {
 	out += `\n\n${wikiH2("本日總積分、評價與獎勵")}`;
 	const dailyRankGroups = _.groupBy(
 		AdventureDailyRankTable.filter((r) => r.get("image") !== "rank_daily_no"),
-		(r) => r.get("groupId")
+		(r) => r.get("groupId"),
 	);
 	for (const [groupId, group] of Object.entries(dailyRankGroups)) {
 		const table: WikiTableStruct = {
@@ -41,9 +41,9 @@ export default function wikiAdventureRank() {
 						text: new ItemGiveRef(
 							entry.get(`giveType${i}`),
 							entry.get(`giveLinkId${i}`),
-							entry.get(`giveAmount${i}`)
+							entry.get(`giveAmount${i}`),
 						).toWiki(),
-					})
+					}),
 				),
 			]);
 		}
@@ -53,7 +53,7 @@ export default function wikiAdventureRank() {
 	out += `\n\n${wikiH2("本週總積分、排名與獎勵")}`;
 	const weekRankGroups = _.groupBy(
 		AdventureWeekRankTable.filter((r) => r.get("image") !== "rank_week_no"),
-		(r) => r.get("groupId")
+		(r) => r.get("groupId"),
 	);
 	for (const [groupId, group] of Object.entries(weekRankGroups)) {
 		const table: WikiTableStruct = {
@@ -76,7 +76,7 @@ export default function wikiAdventureRank() {
 					text: wikiNextLine(
 						`No.${entry.get("maxRanking")}\n｜\n${
 							entry.get("minRanking") == -1 ? "∞" : `No.${entry.get("minRanking")}`
-						}`
+						}`,
 					),
 				},
 				...range(1, 4).map(
@@ -84,9 +84,9 @@ export default function wikiAdventureRank() {
 						text: new ItemGiveRef(
 							entry.get(`giveType${i}`),
 							entry.get(`giveLinkId${i}`),
-							entry.get(`giveAmount${i}`)
+							entry.get(`giveAmount${i}`),
 						).toWiki(),
-					})
+					}),
 				),
 			]);
 		}
@@ -96,7 +96,7 @@ export default function wikiAdventureRank() {
 	out += `\n\n${wikiH2("階級排名獎勵")}`;
 	const advTierGroups = _.groupBy(
 		AdventureTierTable.filter((r) => r.get("maxPercentage") != -1),
-		(r) => r.get("groupId")
+		(r) => r.get("groupId"),
 	);
 	for (const [groupId, group] of Object.entries(advTierGroups)) {
 		const table: WikiTableStruct = {
@@ -119,7 +119,7 @@ export default function wikiAdventureRank() {
 											category: LookupTableCategory.TierMedalSprite,
 											key: entry.get("image"),
 											width: 64,
-										})}\n${rankNameCh}`
+										})}\n${rankNameCh}`,
 									),
 								},
 						  ]
@@ -133,9 +133,9 @@ export default function wikiAdventureRank() {
 							text: new ItemGiveRef(
 								entry.get(`giveType${i}`),
 								entry.get(`giveLinkId${i}`),
-								entry.get(`giveAmount${i}`)
+								entry.get(`giveAmount${i}`),
 							).toWiki(),
-						})
+						}),
 					),
 					localizationString("Adventure", "tier_rank")(entry.get("nextRank")),
 				]);
@@ -161,9 +161,9 @@ export default function wikiAdventureRank() {
 						text: new ItemGiveRef(
 							entry.get(`giveType${i}`),
 							entry.get(`giveLinkId${i}`),
-							entry.get(`giveAmount${i}`)
+							entry.get(`giveAmount${i}`),
 						).toWiki(),
-					})
+					}),
 				),
 			]);
 		}

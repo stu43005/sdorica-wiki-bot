@@ -1,14 +1,14 @@
 import { XMLParser } from "fast-xml-parser";
 import JSZip from "jszip";
 import { parse as parseJson } from "lossless-json";
-import * as fsp from "node:fs/promises";
-import * as path from "node:path";
+import fsp from "node:fs/promises";
+import path from "node:path";
 import { promisify } from "node:util";
 import pMap from "p-map";
 import pWaterfall from "p-waterfall";
 import { P, match } from "ts-pattern";
 import { unzip } from "zlib";
-import { execAssetStudioModCLI } from "./asset-studio-cli";
+import { execAssetStudioModCLI } from "./asset-studio-cli.js";
 import {
 	IMAGE_FORMAT,
 	addAsset,
@@ -19,16 +19,20 @@ import {
 	pathIdMappingContainer,
 	prefabMappingSprite,
 	uploadedAssets,
-} from "./assetbundle-asset";
-import { filterAsset, getNeedUploadBundleList, updateNeedUpdateList } from "./assetbundle-filter";
-import { AssetbundleLookupTable } from "./assetbundle-lookup-table";
-import { ASSETBUNDLE_PATH } from "./config";
-import { assetDownload } from "./imperium-asset-download";
-import { ImperiumData } from "./imperium-data";
-import { inputDir } from "./input";
-import { Logger } from "./logger";
-import { mkdir, outJson, rpFile } from "./out";
-import { siJsonParse } from "./viewerjs/utils";
+} from "./assetbundle-asset.js";
+import {
+	filterAsset,
+	getNeedUploadBundleList,
+	updateNeedUpdateList,
+} from "./assetbundle-filter.js";
+import { AssetbundleLookupTable } from "./assetbundle-lookup-table.js";
+import { ASSETBUNDLE_PATH } from "./config.js";
+import { assetDownload } from "./imperium-asset-download.js";
+import { ImperiumData } from "./imperium-data.js";
+import { inputDir } from "./input.js";
+import { Logger } from "./logger.js";
+import { mkdir, outJson, rpFile } from "./out.js";
+import { siJsonParse } from "./viewerjs/utils.js";
 
 const doUnzip = promisify(unzip);
 
@@ -40,13 +44,15 @@ const uploadFolder = path.join(ASSETBUNDLE_PATH, "upload");
 
 export async function assetBundleDownloader(force = false): Promise<boolean> {
 	await mkdir(uploadFolder);
+	let i = 0;
 
-	logger.info("update assetbundle lookup table");
+	logger.info(`[${++i}] update assetbundle lookup table`);
 	await AssetbundleLookupTable.getInstance().updateLookupTable();
+	logger.info(`[${++i}] update need upload list`);
 	updateNeedUpdateList();
 
 	for (const imperiumName of ["android", "androidExp"]) {
-		logger.info(`check '${imperiumName}' update`);
+		logger.info(`[${++i}] check '${imperiumName}' update`);
 		const imperium = ImperiumData.from(imperiumName);
 		await assetDownload(metadataFilePath, imperium, force, async (name, asset) =>
 			processAsset(name, asset.L, (abAsset) => {
@@ -61,12 +67,13 @@ export async function assetBundleDownloader(force = false): Promise<boolean> {
 				logger.error(`${name}:`, error);
 				debugger;
 				process.exit(1);
-			})
+			}),
 		);
 	}
 
-	logger.info("check need upload list");
+	logger.info(`[${++i}] update need upload list`);
 	updateNeedUpdateList();
+	logger.info(`[${++i}] check need upload`);
 	await pMap(
 		getNeedUploadBundleList().values(),
 		async ({ mapping, containerPaths }) => {
@@ -74,7 +81,7 @@ export async function assetBundleDownloader(force = false): Promise<boolean> {
 				await processAsset(
 					path.join(mapping.uuid, mapping.bundleName),
 					mapping.url,
-					(abAsset) => containerPaths.has(abAsset.Container) && filterPrefab(abAsset)
+					(abAsset) => containerPaths.has(abAsset.Container) && filterPrefab(abAsset),
 				);
 			} catch (error) {
 				logger.error(`processing ${mapping.bundleName} error:`, error);
@@ -82,7 +89,7 @@ export async function assetBundleDownloader(force = false): Promise<boolean> {
 		},
 		{
 			concurrency: 10,
-		}
+		},
 	);
 
 	return true;
@@ -91,7 +98,7 @@ export async function assetBundleDownloader(force = false): Promise<boolean> {
 async function processAsset(
 	bundleName: string,
 	assetUrl: string,
-	assetFilter: (abAsset: ABAsset) => boolean
+	assetFilter: (abAsset: ABAsset) => boolean,
 ): Promise<boolean> {
 	switch (true) {
 		case bundleName.endsWith(".ab"): {
@@ -103,7 +110,7 @@ async function processAsset(
 					const assetFilePath = await extractAssetBundleByPathId(
 						bundleName,
 						filePath,
-						abAsset.PathID
+						abAsset.PathID,
 					);
 					if (assetFilePath) {
 						let uploadSuccess = false;
@@ -123,7 +130,7 @@ async function processAsset(
 						}
 					} else {
 						logger.error(
-							`[${bundleName}] extract asset ${abAsset.Container} (${abAsset.PathID}) failed.`
+							`[${bundleName}] extract asset ${abAsset.Container} (${abAsset.PathID}) failed.`,
 						);
 					}
 				} else {
@@ -166,8 +173,8 @@ export async function downloadAsset(name: string, assetUrl: string): Promise<str
 export async function extractAssetBundleByContainerPath(
 	name: string,
 	filePath: string,
-	containerPath: string
-) {
+	containerPath: string,
+): Promise<string | undefined> {
 	containerPath = containerPath.toLowerCase();
 	const assetList = await getAssetList(name, filePath);
 	const abAsset = assetList.find((a) => a.Container === containerPath);
@@ -177,9 +184,14 @@ export async function extractAssetBundleByContainerPath(
 			return assetFilePath;
 		}
 	}
+	return;
 }
 
-async function extractAssetBundleByPathId(name: string, filePath: string, pathId: string) {
+async function extractAssetBundleByPathId(
+	name: string,
+	filePath: string,
+	pathId: string,
+): Promise<string | undefined> {
 	const outDir = path.join(extractFolder, name, pathId);
 	const timeout = AbortSignal.timeout(600_000);
 	await execAssetStudioModCLI(filePath, {
@@ -192,6 +204,7 @@ async function extractAssetBundleByPathId(name: string, filePath: string, pathId
 	for await (const { filepath } of inputDir(outDir)) {
 		return filepath;
 	}
+	return;
 }
 
 async function getAssetList(name: string, filePath: string): Promise<ABAsset[]> {
@@ -260,7 +273,7 @@ async function downloadBundleDependencyTable(name: string, assetUrl: string) {
 
 	const zip = await pWaterfall(
 		[(filePath) => fsp.readFile(filePath), (data) => JSZip.loadAsync(data)],
-		filePath
+		filePath,
 	);
 
 	for (const zipEntry of Object.values(zip.files)) {
@@ -272,7 +285,7 @@ async function downloadBundleDependencyTable(name: string, assetUrl: string) {
 					(buf) => buf.toString("utf8"),
 					(jsonString) => siJsonParse(jsonString),
 				],
-				zipEntry
+				zipEntry,
 			);
 			const jsonFilePath = path.join(outDir, zipEntry.name.replace(/\.[^\.]+$/, ".json"));
 			await outJson(jsonFilePath, data);
@@ -294,7 +307,7 @@ function filterPrefab(abAsset: ABAsset): boolean {
 async function parsePrefab(
 	bundleName: string,
 	assetFilePath: string,
-	abAsset: ABAsset
+	abAsset: ABAsset,
 ): Promise<boolean> {
 	const content = await fsp.readFile(assetFilePath, { encoding: "utf8" });
 	const data = match(parseJson(content))
@@ -308,7 +321,7 @@ async function parsePrefab(
 			({ fileId, pathId }) => ({
 				fileId: Number(fileId),
 				pathId: `${pathId}`,
-			})
+			}),
 		)
 		.otherwise(() => null);
 	if (data) {
@@ -325,7 +338,7 @@ async function parsePrefab(
 		return true;
 	}
 	logger.error(
-		`[parsePrefab][${bundleName}] parse ${abAsset.Container} (${abAsset.PathID}) failed.`
+		`[parsePrefab][${bundleName}] parse ${abAsset.Container} (${abAsset.PathID}) failed.`,
 	);
 	return false;
 }

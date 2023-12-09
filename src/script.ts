@@ -1,7 +1,7 @@
-import { downloader } from "./downloader";
-import { gamedataTranslate } from "./gamedata-translate";
-import { localizationChineseOnly } from "./localization-chinese-only";
-import { isDevMode } from "./utils";
+import { downloader } from "./downloader.js";
+import { gamedataTranslate } from "./gamedata-translate.js";
+import { localizationChineseOnly } from "./localization-chinese-only.js";
+import { isDevMode } from "./utils.js";
 
 export async function scriptMain() {
 	const force = isDevMode();

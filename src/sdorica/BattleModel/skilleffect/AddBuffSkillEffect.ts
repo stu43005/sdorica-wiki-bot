@@ -1,5 +1,5 @@
-import { AddBuffData } from "../AddBuffData";
-import { BaseSkillEffect } from "./BaseSkillEffect";
+import { AddBuffData } from "../AddBuffData.js";
+import { BaseSkillEffect } from "./BaseSkillEffect.js";
 
 export interface AddBuffSkillEffect extends BaseSkillEffect {
 	_buffData: AddBuffData[];

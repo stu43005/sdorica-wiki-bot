@@ -1,3 +1,3 @@
-import { IBattleActionRecordValue } from "./IBattleActionRecordValue";
+import { IBattleActionRecordValue } from "./IBattleActionRecordValue.js";
 
 export type ThisBattleTurnCount = IBattleActionRecordValue;

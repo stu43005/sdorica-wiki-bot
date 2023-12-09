@@ -1,12 +1,12 @@
-import { ImperiumData } from "../imperium-data";
+import { ImperiumData } from "../imperium-data.js";
 import {
 	gamedataString,
 	localizationCharacterName,
 	localizationItemName,
 	localizationMonsterSkillName,
 	localizationMonsterSpecialityName,
-} from "../localization";
-import { arrayUnique } from "../utils";
+} from "../localization.js";
+import { arrayUnique } from "../utils.js";
 
 const AbilityDropTable = ImperiumData.fromGamedata().getTable("AbilityDrop");
 const DropItemsTable = ImperiumData.fromGamedata().getTable("DropItems");
@@ -34,7 +34,7 @@ export function wikiMonsterTrapJson() {
 			const group = MonsterTrapDropItemsTable.filter((r) => r.get("groupId") == groupId);
 			out.items[itemName] = group.map((r) => {
 				const monster = HomelandMonsterTable.find(
-					(mr) => mr.get("id") == r.get("giveLinkId")
+					(mr) => mr.get("id") == r.get("giveLinkId"),
 				);
 				let id = r.get("giveLinkId");
 				if (monster) {

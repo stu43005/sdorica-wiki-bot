@@ -1,14 +1,14 @@
-import _ from "lodash";
+import * as _ from "lodash-es";
 import path from "node:path";
-import { getAssetUrl } from "./assetbundle-asset";
-import { downloadAsset, extractAssetBundleByContainerPath } from "./assetbundle-downloader";
-import { ASSETBUNDLE_PATH } from "./config";
-import { AssetDataRaw } from "./data-raw-type";
-import { ImperiumData } from "./imperium-data";
-import { inputJsonDefault, inputJsonSync } from "./input";
-import { LookupTableCategory } from "./model/enums/lookup-table-category.enum";
-import { outJson } from "./out";
-import { ResourceFile } from "./out-resource-file";
+import { getAssetUrl } from "./assetbundle-asset.js";
+import { downloadAsset, extractAssetBundleByContainerPath } from "./assetbundle-downloader.js";
+import { ASSETBUNDLE_PATH } from "./config.js";
+import { AssetDataRaw } from "./data-raw-type.js";
+import { ImperiumData } from "./imperium-data.js";
+import { inputJsonDefault, inputJsonSync } from "./input.js";
+import { LookupTableCategory } from "./model/enums/custom/lookup-table-category.enum.js";
+import { ResourceFile } from "./out-resource-file.js";
+import { outJson } from "./out.js";
 
 const lookupTablePath = path.join(ASSETBUNDLE_PATH, "assetbundleLookupTable.json");
 
@@ -58,7 +58,7 @@ export class AssetbundleLookupTable extends ResourceFile<LookupTable> {
 				}
 				const table = data[key];
 				data[key] = Object.fromEntries(
-					Object.entries(table).map(([itemKey, item]) => [itemKey.toLowerCase(), item])
+					Object.entries(table).map(([itemKey, item]) => [itemKey.toLowerCase(), item]),
 				);
 			}
 		}
@@ -75,11 +75,11 @@ export class AssetbundleLookupTable extends ResourceFile<LookupTable> {
 			const outLookupTablePath = await extractAssetBundleByContainerPath(
 				name,
 				abFilePath,
-				"assets/assetbundleLookupTable.json"
+				"assets/assetbundleLookupTable.json",
 			);
 			if (outLookupTablePath) {
 				const outLookupTable = this.transformTable(
-					await inputJsonDefault<LookupTable>(outLookupTablePath, {})
+					await inputJsonDefault<LookupTable>(outLookupTablePath, {}),
 				);
 				_.extend(this.data, outLookupTable);
 			}

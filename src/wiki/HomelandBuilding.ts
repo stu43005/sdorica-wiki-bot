@@ -1,10 +1,10 @@
-import _ from "lodash";
-import { ImperiumData } from "../imperium-data";
-import { localizationString } from "../localization";
-import { wikiH1, wikiH2 } from "../templates/wikiheader";
-import { WikiTableStruct, wikitable } from "../templates/wikitable";
-import { range } from "../utils";
-import { item2wikiWithType } from "../wiki-item";
+import * as _ from "lodash-es";
+import { ImperiumData } from "../imperium-data.js";
+import { localizationString } from "../localization.js";
+import { wikiH1, wikiH2 } from "../templates/wikiheader.js";
+import { WikiTableStruct, wikitable } from "../templates/wikitable.js";
+import { range } from "../utils.js";
+import { item2wikiWithType } from "../wiki-item.js";
 
 const HomelandBuildingTable = ImperiumData.fromGamedata().getTable("HomelandBuilding");
 
@@ -32,8 +32,8 @@ export default function wikiHomelandBuilding() {
 								nextLevel.get(`payType${i}`),
 								nextLevel.get(`linkId${i}`),
 								nextLevel.get(`amount${i}`),
-								{ width: "20px" }
-							)
+								{ width: "20px" },
+							),
 						)
 						.filter(Boolean)
 				: [];

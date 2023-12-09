@@ -1,6 +1,6 @@
-import { IGroupedBuff } from "../../buff/grouped/IGroupedBuff";
-import { BuffEnums } from "../../BuffEnums";
-import { IGroupedInteger } from "./IGroupedInteger";
+import { IGroupedBuff } from "../../buff/grouped/IGroupedBuff.js";
+import { BuffEnums } from "../../BuffEnums.js";
+import { IGroupedInteger } from "./IGroupedInteger.js";
 
 export interface IntsOnBuffGroup extends IGroupedInteger {
 	group: IGroupedBuff;

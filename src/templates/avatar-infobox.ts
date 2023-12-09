@@ -1,5 +1,5 @@
-import { TemplateFormatter } from "../lib/TemplateFormatter";
-import { wikiNextLine, wikitemplate } from "../wiki-utils";
+import { TemplateFormatter } from "../lib/TemplateFormatter.js";
+import { wikiNextLine, wikitemplate } from "../wiki-utils.js";
 
 export interface AvatarInfoboxParams {
 	name?: string;

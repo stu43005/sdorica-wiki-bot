@@ -1,10 +1,10 @@
-import path from "path";
-import { DATA_PATH } from "./config";
-import { ImperiumData } from "./imperium-data";
-import { outCsv } from "./out";
-import { dataOut } from "./out-data";
-import { sortKeyByTable } from "./out-sort-key";
-import { flipMatrix } from "./utils";
+import path from "node:path";
+import { DATA_PATH } from "./config.js";
+import { ImperiumData } from "./imperium-data.js";
+import { outCsv } from "./out.js";
+import { dataOut } from "./out-data.js";
+import { sortKeyByTable } from "./out-sort-key.js";
+import { flipMatrix } from "./utils.js";
 
 export async function localizationChineseOnly() {
 	const chineseFilePath = path.join(DATA_PATH, "localization-chinese-only.csv");
@@ -18,7 +18,8 @@ export async function localizationChineseOnly() {
 			table.D.push(table.K);
 			const data = flipMatrix(table.D)
 				.filter(
-					(value: any[]) => ["Key", "Chinese"].indexOf("" + value[value.length - 1]) != -1
+					(value: any[]) =>
+						["Key", "Chinese"].indexOf("" + value[value.length - 1]) != -1,
 				)
 				.sort(sortKeyByTable(tablename));
 			const edited = flipMatrix(data);

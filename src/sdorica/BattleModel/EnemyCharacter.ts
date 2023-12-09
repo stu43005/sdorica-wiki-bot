@@ -1,3 +1,3 @@
-import { BattleCharacter } from "./BattleCharacter";
+import { BattleCharacter } from "./BattleCharacter.js";
 
 export type EnemyCharacter = BattleCharacter;

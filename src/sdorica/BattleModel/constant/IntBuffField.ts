@@ -1,6 +1,6 @@
-import { ISingleBuff } from "../buff/single/ISingleBuff";
-import { BuffEnums } from "../BuffEnums";
-import { ISingleInteger } from "./ISingleInteger";
+import { ISingleBuff } from "../buff/single/ISingleBuff.js";
+import { BuffEnums } from "../BuffEnums.js";
+import { ISingleInteger } from "./ISingleInteger.js";
 
 export interface IntBuffField extends ISingleInteger {
 	buff: ISingleBuff;

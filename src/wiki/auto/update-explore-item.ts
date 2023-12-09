@@ -1,6 +1,6 @@
 import MWBot from "mwbot";
-import { Logger } from "../../logger";
-import { ExploreItem } from "../../model/explore-item";
+import { Logger } from "../../logger.js";
+import { ExploreItem } from "../../model/explore-item.js";
 
 const logger = new Logger("mwbot");
 

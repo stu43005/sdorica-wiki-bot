@@ -1,4 +1,4 @@
-import { SkillProperty } from "../SkillProperty";
+import { SkillProperty } from "../SkillProperty.js";
 
 export interface BaseSkillEffect {
 	$type: string;

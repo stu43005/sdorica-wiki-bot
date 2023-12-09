@@ -1,20 +1,21 @@
-import { ImperiumData, RowWrapper } from "../imperium-data";
-import { itemNameNormalization, localizationString } from "../localization";
-import { wikiH2 } from "../templates/wikiheader";
-import { Avatar } from "./avatar";
-import { DropItemsGroup } from "./drop-items";
-import { ExploreItemsCategory } from "./enums/explore-items-category.enum";
-import { ItemCategory } from "./enums/item-category.enum";
-import { ItemStackable } from "./enums/item-stackable.enum";
-import { ExploreItem } from "./explore-item";
-import { ItemBase } from "./item.base";
-import { ItemGiveList } from "./item-give-list";
-import { ItemGiveRef } from "./item-give-ref";
-import { itemRename } from "./config/item";
-import { HeroSkillSet } from "./hero-skillset";
-import { ItemPayRef } from "./item-pay-ref";
-import { ItemIconParams } from "../templates/item-icon";
-import { ItemType } from "./enums/item-type.enum";
+import { ImperiumData, RowWrapper } from "../imperium-data.js";
+import { itemNameNormalization, localizationString } from "../localization.js";
+import { wikiH2 } from "../templates/wikiheader.js";
+import { Avatar } from "./avatar.js";
+import { DropItemsGroup } from "./drop-items.js";
+import { ExploreItemsCategory } from "./enums/explore-items-category.enum.js";
+import { ItemCategory } from "./enums/item-category.enum.js";
+import { Stackable } from "./enums/stackable.enum.js";
+import { ExploreItem } from "./explore-item.js";
+import { ItemBase } from "./item.base.js";
+import { ItemGiveList } from "./item-give-list.js";
+import { ItemGiveRef } from "./item-give-ref.js";
+import { itemRename } from "./config/item.js";
+import { HeroSkillSet } from "./hero-skillset.js";
+import { ItemPayRef } from "./item-pay-ref.js";
+import { ItemIconParams } from "../templates/item-icon.js";
+import { ItemType } from "./enums/item-type.enum.js";
+import { ItemInfoboxParams } from "../templates/item-infobox.js";
 
 const ExtraProductsTable = ImperiumData.fromGamedata().getTable("ExtraProducts");
 const ItemsTable = ImperiumData.fromGamedata().getTable("Items");
@@ -44,6 +45,7 @@ export class Item extends ItemBase {
 				return item;
 			}
 		}
+		return;
 	}
 
 	public static getAll() {
@@ -57,7 +59,7 @@ export class Item extends ItemBase {
 		}
 	}
 
-	readonly itemType = ItemType.Item;
+	readonly itemType = ItemType.Items;
 
 	get id(): string {
 		return this.row.get("id");
@@ -91,7 +93,7 @@ export class Item extends ItemBase {
 		return (this.#sellItem ??= new ItemGiveRef(
 			this.row.get("sellType"),
 			this.row.get("sellLinkId"),
-			this.row.get("sellAmount")
+			this.row.get("sellAmount"),
 		));
 	}
 
@@ -101,13 +103,13 @@ export class Item extends ItemBase {
 			const row = ExtraProductsTable.find(
 				(r) =>
 					["heroSkill", "Space"].includes(r.get("category")) &&
-					r.get("param1") === this.id
+					r.get("param1") === this.id,
 			);
 			if (row) {
 				this.#buyItem = new ItemPayRef(
 					row.get("payType"),
 					row.get("linkId"),
-					row.get("amount")
+					row.get("amount"),
 				);
 			} else {
 				this.#buyItem = undefined;
@@ -116,7 +118,7 @@ export class Item extends ItemBase {
 		return this.#buyItem;
 	}
 
-	get stackable(): ItemStackable {
+	get stackable(): Stackable {
 		return this.row.get("stackable");
 	}
 	get viewable(): boolean {
@@ -162,9 +164,9 @@ export class Item extends ItemBase {
 							new ItemGiveRef(
 								item.get("giveType"),
 								item.get("giveLinkId"),
-								item.get("giveAmount")
-							)
-					)
+								item.get("giveAmount"),
+							),
+					),
 				);
 			} else {
 				this.#voucherGifts = undefined;
@@ -177,7 +179,7 @@ export class Item extends ItemBase {
 	get transformExploreItems(): ExploreItem[] {
 		if (this.#transformExploreItems === null) {
 			this.#transformExploreItems = ExploreItem.getAll().filter(
-				(item) => item.transformTo == this
+				(item) => item.transformTo == this,
 			);
 		}
 		return this.#transformExploreItems;
@@ -188,7 +190,7 @@ export class Item extends ItemBase {
 		this.name = itemNameNormalization(
 			localizationString("Item")(row.get("localizationKeyName")) ||
 				this.internalName ||
-				this.iconKey
+				this.iconKey,
 		);
 		this.description = localizationString("Item")(row.get("localizationKeyDescription"));
 	}
@@ -200,7 +202,7 @@ export class Item extends ItemBase {
 				ExploreItem.find(
 					(item) =>
 						item.category == ExploreItemsCategory.Transform &&
-						item.effectValue == this.id
+						item.effectValue == this.id,
 				)
 			) {
 				return true;
@@ -213,9 +215,9 @@ export class Item extends ItemBase {
 		return true;
 	}
 
-	toWiki(options?: ItemIconParams) {
+	override toWiki(options?: ItemIconParams): string {
 		if (
-			this.stackable == ItemStackable.Sell &&
+			this.stackable == Stackable.Sell &&
 			this.sellItem?.item &&
 			this.sellItem?.item !== this
 		) {
@@ -227,20 +229,20 @@ export class Item extends ItemBase {
 		return super.toWiki(options);
 	}
 
-	getWikiPageName() {
+	override getWikiPageName(): string {
 		if (itemRename[this.id]) {
 			return itemRename[this.id];
 		}
 		if (this.category == ItemCategory.Avatar) {
 			const sk = HeroSkillSet.getAll().find(
-				(skillset) => skillset.isBook && skillset.name == this.name
+				(skillset) => skillset.isBook && skillset.name == this.name,
 			);
 			if (sk) {
 				return super.getWikiPageName() + " (頭像)";
 			}
 		}
 		if (
-			this.stackable == ItemStackable.Sell &&
+			this.stackable == Stackable.Sell &&
 			this.sellItem?.item &&
 			this.sellItem?.item !== this
 		) {
@@ -249,7 +251,7 @@ export class Item extends ItemBase {
 		return super.getWikiPageName();
 	}
 
-	getItemInfoboxParams() {
+	override getItemInfoboxParams(): ItemInfoboxParams {
 		const params = super.getItemInfoboxParams();
 		const category = params.category;
 
@@ -273,7 +275,7 @@ export class Item extends ItemBase {
 		return params;
 	}
 
-	toWikiTreasureList() {
+	toWikiTreasureList(): string {
 		if (this.category == ItemCategory.Treasure) {
 			return `${wikiH2("開啟寶箱獲得道具")}\n${this.treasureItems?.toWiki()}`;
 		} else if (this.category == ItemCategory.Voucher) {
@@ -282,11 +284,11 @@ export class Item extends ItemBase {
 		return "";
 	}
 
-	toWikiCompositeList() {
+	toWikiCompositeList(): string {
 		return this.transformExploreItems.map((item) => item.toWikiCompositeList()).join("");
 	}
 
-	toWikiPage() {
+	override toWikiPage(): string {
 		return [
 			this.toItemInfobox(),
 			this.avatar?.getAvatarInfobox() ?? "",

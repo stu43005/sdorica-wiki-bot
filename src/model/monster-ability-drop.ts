@@ -1,12 +1,12 @@
-import _ from "lodash";
-import { ImperiumData, RowWrapper } from "../imperium-data";
-import { MonsterSkillIconParams } from "../templates/monster-skill-icon";
-import { wikiul } from "../templates/wikilist";
-import { wikiNextLine } from "../wiki-utils";
-import { AbilityType } from "./enums/ability-type.enum";
-import { IMonsterAbility } from "./monster-ability.interface";
-import { MonsterSkill } from "./monster-skill";
-import { MonsterSpeciality } from "./monster-speciality";
+import * as _ from "lodash-es";
+import { ImperiumData, RowWrapper } from "../imperium-data.js";
+import { MonsterSkillIconParams } from "../templates/monster-skill-icon.js";
+import { wikiul } from "../templates/wikilist.js";
+import { wikiNextLine } from "../wiki-utils.js";
+import { AbilityType } from "./enums/ability-type.enum.js";
+import { IMonsterAbility } from "./monster-ability.interface.js";
+import { MonsterSkill } from "./monster-skill.js";
+import { MonsterSpeciality } from "./monster-speciality.js";
 import numeral from "numeral";
 
 const AbilityDropTable = ImperiumData.fromGamedata().getTable("AbilityDrop");
@@ -45,8 +45,8 @@ export class MonsterAbilityDropGroup {
 					new MonsterAbilityDrop(
 						r.get("type"),
 						r.get("abilityId"),
-						(r.get("weight") / weightSum) * 10000
-					)
+						(r.get("weight") / weightSum) * 10000,
+					),
 			)
 			.sort((a, b) => b.chance - a.chance);
 	}
@@ -55,7 +55,7 @@ export class MonsterAbilityDropGroup {
 		options?: MonsterSkillIconParams & {
 			listType?: "ul" | "br" | "none" | "separator";
 			separator?: string;
-		}
+		},
 	) {
 		const list = this.abilities.map((item) => item.toWiki(options));
 		switch (options?.listType) {
@@ -75,7 +75,11 @@ export class MonsterAbilityDropGroup {
 export class MonsterAbilityDrop {
 	ability: IMonsterAbility | undefined;
 
-	constructor(public type: AbilityType, public abilityId: string, public chance: number) {
+	constructor(
+		public type: AbilityType,
+		public abilityId: string,
+		public chance: number,
+	) {
 		switch (this.type) {
 			case AbilityType.Skill:
 				this.ability = MonsterSkill.getBySkillId(this.abilityId);

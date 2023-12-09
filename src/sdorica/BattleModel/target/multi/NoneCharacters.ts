@@ -1,3 +1,3 @@
-import { IGroupedCharacter } from "../IGroupedCharacter";
+import { IGroupedCharacter } from "../IGroupedCharacter.js";
 
 export type NoneCharacters = IGroupedCharacter;

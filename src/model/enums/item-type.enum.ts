@@ -1,4 +1,4 @@
 export enum ItemType {
-	Item = "Item",
-	ExploreItem = "ExploreItem",
+	Items = "Items",
+	ExploreItems = "ExploreItems",
 }

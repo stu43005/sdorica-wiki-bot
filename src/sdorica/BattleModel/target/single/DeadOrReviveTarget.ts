@@ -1,3 +1,3 @@
-import { ISingleCharacter } from "../ISingleCharacter";
+import { ISingleCharacter } from "../ISingleCharacter.js";
 
 export type DeadOrReviveTarget = ISingleCharacter;

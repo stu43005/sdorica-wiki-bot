@@ -1,8 +1,8 @@
-import _ from "lodash";
-import { Avatar } from "../model/avatar";
-import { wikiH1, wikiH2 } from "../templates/wikiheader";
-import { wikiimage } from "../templates/wikiimage";
-import { WikiTableStruct, wikitable } from "../templates/wikitable";
+import * as _ from "lodash-es";
+import { Avatar } from "../model/avatar.js";
+import { wikiH1, wikiH2 } from "../templates/wikiheader.js";
+import { wikiimage } from "../templates/wikiimage.js";
+import { WikiTableStruct, wikitable } from "../templates/wikitable.js";
 
 export default function wikiAvatars() {
 	let out = wikiH1("頭像");

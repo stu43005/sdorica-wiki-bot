@@ -1,5 +1,5 @@
-import { BoardModificationStoneAction } from "./BoardModificationStoneAction";
-import { Constraint } from "./Constraint";
+import { BoardModificationStoneAction } from "./BoardModificationStoneAction.js";
+import { Constraint } from "./Constraint.js";
 
 export interface PreselectStoneAction extends BoardModificationStoneAction {
 	targetStoneCount: number;

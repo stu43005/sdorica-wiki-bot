@@ -1,7 +1,7 @@
-import { IGroupedCharacter } from "../target/IGroupedCharacter";
-import { IBaseOperation } from "./IBaseOperation";
-import { ITriggerOperation } from "./ITriggerOperation";
-import { IOperationToCharacter } from "./operateCharacter/IOperationToCharacter";
+import { IGroupedCharacter } from "../target/IGroupedCharacter.js";
+import { IBaseOperation } from "./IBaseOperation.js";
+import { ITriggerOperation } from "./ITriggerOperation.js";
+import { IOperationToCharacter } from "./operateCharacter/IOperationToCharacter.js";
 
 export interface OperateCharacterGroup extends ITriggerOperation, IBaseOperation {
 	group: IGroupedCharacter;

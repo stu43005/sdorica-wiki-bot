@@ -1,9 +1,9 @@
-import { ImperiumData, RowWrapper } from "../imperium-data";
-import { range } from "../utils";
-import { ItemPayType } from "./enums/item-pay-type.enum";
-import { ExploreBuilding } from "./explore-building";
-import { ExploreItem } from "./explore-item";
-import { ItemPayRef } from "./item-pay-ref";
+import { ImperiumData, RowWrapper } from "../imperium-data.js";
+import { range } from "../utils.js";
+import { PayType } from "./enums/pay-type.enum.js";
+import { ExploreBuilding } from "./explore-building.js";
+import { ExploreItem } from "./explore-item.js";
+import { ItemPayRef } from "./item-pay-ref.js";
 
 const ExploreCompositeTable = ImperiumData.fromGamedata().getTable("ExploreComposite");
 
@@ -35,7 +35,7 @@ export class ExploreComposite {
 	public static getByBuilding(buildingOrId: ExploreBuilding | string) {
 		const buildingId = buildingOrId instanceof ExploreBuilding ? buildingOrId.id : buildingOrId;
 		return ExploreComposite.getAll().filter(
-			(comp) => comp.requireBuilding?.id === buildingId && comp.enable
+			(comp) => comp.requireBuilding?.id === buildingId && comp.enable,
 		);
 	}
 
@@ -44,13 +44,14 @@ export class ExploreComposite {
 	}
 
 	public static find(
-		predicate: (value: ExploreComposite) => boolean
+		predicate: (value: ExploreComposite) => boolean,
 	): ExploreComposite | undefined {
 		for (const item of this) {
 			if (predicate(item)) {
 				return item;
 			}
 		}
+		return;
 	}
 
 	public static getAll() {
@@ -110,10 +111,10 @@ export class ExploreComposite {
 				.map(
 					(i) =>
 						new ItemPayRef(
-							ItemPayType.ExploreItem,
+							PayType.ExploreItem,
 							this.row.get(`item${i}Id`),
-							this.row.get(`item${i}Count`)
-						)
+							this.row.get(`item${i}Count`),
+						),
 				)
 				.filter((ref) => !!ref.item);
 		}

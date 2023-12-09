@@ -1,13 +1,13 @@
-import _ from "lodash";
-import { ImperiumData } from "../imperium-data";
-import { LookupTableCategory } from "../model/enums/lookup-table-category.enum";
-import { ItemGiveRef } from "../model/item-give-ref";
-import { QuestMode } from "../model/quest-mode";
-import { wikiH1, wikiH2 } from "../templates/wikiheader";
-import { wikiimage } from "../templates/wikiimage";
-import { WikiTableCeil, WikiTableStruct, wikitable } from "../templates/wikitable";
-import { range } from "../utils";
-import { wikiNextLine } from "../wiki-utils";
+import * as _ from "lodash-es";
+import { ImperiumData } from "../imperium-data.js";
+import { LookupTableCategory } from "../model/enums/custom/lookup-table-category.enum.js";
+import { ItemGiveRef } from "../model/item-give-ref.js";
+import { QuestMode } from "../model/quest-mode.js";
+import { wikiH1, wikiH2 } from "../templates/wikiheader.js";
+import { wikiimage } from "../templates/wikiimage.js";
+import { WikiTableCeil, WikiTableStruct, wikitable } from "../templates/wikitable.js";
+import { range } from "../utils.js";
+import { wikiNextLine } from "../wiki-utils.js";
 
 const EvaluatesTable = ImperiumData.fromGamedata().getTable("Evaluates");
 
@@ -37,7 +37,7 @@ export default function wikiEvaluates() {
 												`${wikiimage({
 													url: questMode.getModeImageAssetUrl(),
 													width: 50,
-												})}\n${questMode.name}`
+												})}\n${questMode.name}`,
 										  )
 										: questModeId,
 								},
@@ -54,9 +54,9 @@ export default function wikiEvaluates() {
 							text: new ItemGiveRef(
 								entry.get(`giveType${i}`),
 								entry.get(`giveLinkId${i}`),
-								entry.get(`giveAmount${i}`)
+								entry.get(`giveAmount${i}`),
 							).toWiki(),
-						})
+						}),
 					),
 				]);
 			}

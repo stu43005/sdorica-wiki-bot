@@ -1,10 +1,13 @@
 import { render } from "preact-render-to-string";
-import { AssetbundleLookupTable } from "../assetbundle-lookup-table";
-import { ImperiumData, RowWrapper } from "../imperium-data";
-import { localizationString } from "../localization";
-import { MonsterSkillIconParams, monsterSkillIconTemplate } from "../templates/monster-skill-icon";
-import { LookupTableCategory } from "./enums/lookup-table-category.enum";
-import { IMonsterAbility } from "./monster-ability.interface";
+import { AssetbundleLookupTable } from "../assetbundle-lookup-table.js";
+import { ImperiumData, RowWrapper } from "../imperium-data.js";
+import { localizationString } from "../localization.js";
+import {
+	MonsterSkillIconParams,
+	monsterSkillIconTemplate,
+} from "../templates/monster-skill-icon.js";
+import { LookupTableCategory } from "./enums/custom/lookup-table-category.enum.js";
+import { IMonsterAbility } from "./monster-ability.interface.js";
 
 const MonsterSkillTable = ImperiumData.fromGamedata().getTable("MonsterSkill");
 
@@ -38,6 +41,7 @@ export class MonsterSkill implements IMonsterAbility {
 				return item;
 			}
 		}
+		return;
 	}
 
 	public static getAll() {
@@ -76,14 +80,14 @@ export class MonsterSkill implements IMonsterAbility {
 		this.description = localizationString("MonsterSkill")(row.get("skillKeyDescription"));
 	}
 
-	public getIconAssetUrl() {
+	public getIconAssetUrl(): string | undefined {
 		return AssetbundleLookupTable.getInstance().getAssetUrl(
 			LookupTableCategory.MonsterSkillIcon,
-			this.iconKey
+			this.iconKey,
 		);
 	}
 
-	public toWiki(options?: MonsterSkillIconParams) {
+	public toWiki(options?: MonsterSkillIconParams): string {
 		return render(monsterSkillIconTemplate(this, options));
 	}
 }

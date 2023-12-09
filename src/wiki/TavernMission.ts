@@ -1,10 +1,10 @@
-import _ from "lodash";
-import { localizationString } from "../localization";
-import { TavernMission } from "../model/tavern-mission";
-import { wikiH1, wikiH2, wikiH3 } from "../templates/wikiheader";
-import { WikiTableStruct, wikitable } from "../templates/wikitable";
-import { sortCategory } from "../utils";
-import { wikiNextLine } from "../wiki-utils";
+import * as _ from "lodash-es";
+import { localizationString } from "../localization.js";
+import { TavernMission } from "../model/tavern-mission.js";
+import { wikiH1, wikiH2, wikiH3 } from "../templates/wikiheader.js";
+import { WikiTableStruct, wikitable } from "../templates/wikitable.js";
+import { sortCategory } from "../utils.js";
+import { wikiNextLine } from "../wiki-utils.js";
 
 export default function wikiTavernMission() {
 	let out = wikiH1(localizationString("Homeland")("tavern_title"));
@@ -66,7 +66,7 @@ export default function wikiTavernMission() {
 							? wikiNextLine(
 									mission.reqSkills
 										.map((r) => `${r.toWiki()}${r.getSuccessRateString()}`)
-										.join("\n")
+										.join("\n"),
 							  )
 							: "",
 						mission.spaceNum,

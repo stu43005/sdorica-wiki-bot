@@ -1,13 +1,13 @@
-import { ImperiumData, RowWrapper } from "../imperium-data";
-import { localizationString } from "../localization";
-import { DropItemsGroup } from "./drop-items";
-import { SweepUnlockType } from "./enums/sweep-unlock-type.enum";
-import { Hero } from "./hero";
-import { Item } from "./item";
-import { ItemGiveList } from "./item-give-list";
-import { Quest } from "./quest";
-import { QuestMode } from "./quest-mode";
-import { TemplateString } from "./template-string";
+import { ImperiumData, RowWrapper } from "../imperium-data.js";
+import { localizationString } from "../localization.js";
+import { DropItemsGroup } from "./drop-items.js";
+import { SweepUnlockType } from "./enums/sweep-unlock-type.enum.js";
+import { Hero } from "./hero.js";
+import { Item } from "./item.js";
+import { ItemGiveList } from "./item-give-list.js";
+import { Quest } from "./quest.js";
+import { QuestMode } from "./quest-mode.js";
+import { TemplateString } from "./template-string.js";
 
 const QuestExtraSettingsTable = ImperiumData.fromGamedata().getTable("QuestExtraSettings");
 
@@ -32,13 +32,14 @@ export class QuestExtraSetting {
 	}
 
 	public static find(
-		predicate: (value: QuestExtraSetting) => boolean
+		predicate: (value: QuestExtraSetting) => boolean,
 	): QuestExtraSetting | undefined {
 		for (const item of this) {
 			if (predicate(item)) {
 				return item;
 			}
 		}
+		return;
 	}
 
 	public static getAll() {
@@ -139,7 +140,7 @@ export class QuestExtraSetting {
 	#sweepDisplayDropItem: ItemGiveList | null = null;
 	get sweepDisplayDropItem(): ItemGiveList {
 		return (this.#sweepDisplayDropItem ??= ItemGiveList.parseList(
-			this.row.get("sweepDisplayDropItem")
+			this.row.get("sweepDisplayDropItem"),
 		));
 	}
 	#sweepDropGroupId: DropItemsGroup | undefined | null = null;
@@ -177,7 +178,7 @@ export class QuestExtraSetting {
 
 	constructor(private row: RowWrapper) {
 		const lockMessage = new TemplateString(
-			localizationString("LockMessage")(this.row.get("lockMessage"))
+			localizationString("LockMessage")(this.row.get("lockMessage")),
 		);
 		switch (this.unlockType) {
 			case "playerLevel":
@@ -223,8 +224,8 @@ export class QuestExtraSetting {
 		if (this.sweepUnlockType !== SweepUnlockType.NoSweep) {
 			this.sweepUnlockText = new TemplateString(
 				localizationString("Metagame")(
-					`sweep_${this.sweepUnlockType.toLowerCase()}_insufficient`
-				)
+					`sweep_${this.sweepUnlockType.toLowerCase()}_insufficient`,
+				),
 			).apply({
 				requireCount: this.sweepUnlockValue,
 			});
@@ -234,7 +235,7 @@ export class QuestExtraSetting {
 			this.blessInfo = localizationString("BlessEffects")(this.row.get("blessInfo"));
 			this.blessTitleUp = localizationString("BlessEffects")(this.row.get("blessTitleUp"));
 			this.blessTitleDown = localizationString("BlessEffects")(
-				this.row.get("blessTitleDown")
+				this.row.get("blessTitleDown"),
 			);
 		}
 	}

@@ -1,30 +1,13 @@
-import { localizationCharacterNameWithDefault, localizationString } from "../localization";
-import { ItemPayType } from "../model/enums/item-pay-type.enum";
-import { ItemPayRef } from "../model/item-pay-ref";
-import { BattleEventPoint } from "../sdorica/BattleEventPoint";
-import { conditionStringify } from "../sdorica/BattleModel/condition/ConditionStringify";
-import { AVGEvent } from "../sdorica/GamePlay/AVGEvent";
-import { EncounterEvent } from "../sdorica/GamePlay/EncounterEvent";
-import { LevelEvent } from "../sdorica/LevelEvent";
-import { LevelEventModel } from "../sdorica/LevelEventModel";
-import { SceneSwitchEventPoint } from "../sdorica/SceneSwitchEventPoint";
-
-function OpTrans(opstr: string) {
-	switch (opstr) {
-		case "Equal":
-			return "==";
-		case "NotEqual":
-			return "!=";
-		case "LessThan":
-			return "<";
-		case "GreaterThan":
-			return ">";
-		case "GreaterThanOrEqual":
-			return ">=";
-		case "LessThanOrEqual":
-			return "<=";
-	}
-}
+import { localizationCharacterNameWithDefault, localizationString } from "../localization.js";
+import { PayType } from "../model/enums/pay-type.enum.js";
+import { ItemPayRef } from "../model/item-pay-ref.js";
+import { BattleEventPoint } from "../sdorica/BattleEventPoint.js";
+import { conditionStringify } from "../sdorica/BattleModel/condition/ConditionStringify.js";
+import { AVGEvent } from "../sdorica/GamePlay/AVGEvent.js";
+import { EncounterEvent } from "../sdorica/GamePlay/EncounterEvent.js";
+import { LevelEvent } from "../sdorica/LevelEvent.js";
+import { LevelEventModel } from "../sdorica/LevelEventModel.js";
+import { SceneSwitchEventPoint } from "../sdorica/SceneSwitchEventPoint.js";
 
 const eventFunction: Record<
 	string,
@@ -79,7 +62,7 @@ const eventFunction: Record<
 						const optionOut: InterpretedOption = {
 							圖示: option._optionIconKey,
 							選項: localizationString("EncounterEvent")(
-								option._optionLocalizationKey
+								option._optionLocalizationKey,
 							),
 							效果: [],
 						};
@@ -108,12 +91,12 @@ const eventFunction: Record<
 										const itemId = values[0];
 										const itemCount = Number(values[1]);
 										const item = new ItemPayRef(
-											isExplore ? ItemPayType.ExploreItem : ItemPayType.Item,
+											isExplore ? PayType.ExploreItem : PayType.Item,
 											itemId,
-											itemCount
+											itemCount,
 										);
 										optionOut["效果"].push(
-											`${isLose ? "lose" : "get"} ${item.toWiki()}`
+											`${isLose ? "lose" : "get"} ${item.toWiki()}`,
 										);
 									}
 									break;
@@ -141,14 +124,14 @@ const eventFunction: Record<
 										const itemId = values[0];
 										const itemCount = Number(values[1]);
 										const item = new ItemPayRef(
-											ItemPayType.ExploreItem,
+											PayType.ExploreItem,
 											itemId,
-											itemCount
+											itemCount,
 										);
 										optionOut["效果"].push(`lose ${item.toWiki()}`);
 									} else {
 										optionOut["效果"].push(
-											`${effect.Category}(${effect.EffectValue})`
+											`${effect.Category}(${effect.EffectValue})`,
 										);
 										// console.log(`Unknown effect: ${effect.Category}`);
 									}

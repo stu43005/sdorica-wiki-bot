@@ -1,70 +1,92 @@
-const path = require("path");
-const glob = require("glob");
-const _ = require("lodash");
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+import { CleanWebpackPlugin } from "clean-webpack-plugin";
+import glob from "glob";
+import * as _ from "lodash-es";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
-const entry = _.keyBy(glob.sync(path.resolve(__dirname, './src/viewerjs/entry/*.ts')).map(file => file.includes('$ViewerInit') ? file : ({
-	import: file,
-	dependOn: '$ViewerInit'
-})), (file) => path.basename(typeof file === 'string' ? file : file.import, '.ts'));
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+const entry = _.keyBy(
+	glob.sync(path.resolve(__dirname, "./dist/viewerjs/entry/*.js")).map((file) =>
+		file.includes("$ViewerInit")
+			? file
+			: {
+					import: file,
+					dependOn: "$ViewerInit",
+			  },
+	),
+	(file) => path.basename(typeof file === "string" ? file : file.import, ".js"),
+);
 console.log(entry);
 
-module.exports = {
+export default {
 	entry: entry,
 	devtool: false,
-    plugins: [
-		new CleanWebpackPlugin(),
-	],
+	plugins: [new CleanWebpackPlugin()],
 	output: {
-		filename: '[name].bundle.js',
-		path: path.resolve(__dirname, 'dist/viewerjs'),
-		library: '[name]',
+		filename: "[name].bundle.js",
+		path: path.resolve(__dirname, "dist/viewerjs/dist"),
+		library: "[name]",
 		// libraryExport: 'default',
-		libraryTarget: 'self',
+		libraryTarget: "self",
 	},
 	module: {
 		rules: [
 			{
 				test: /\.tsx?$/,
-				use: 'ts-loader',
+				use: "ts-loader",
 				exclude: /node_modules/,
 			},
 		],
 	},
-	mode: 'development',
+	mode: "development",
 	optimization: {
 		usedExports: true,
 	},
 	resolve: {
-		extensions: ['.tsx', '.ts', '.js', '.json'],
+		extensions: [".tsx", ".ts", ".js", ".json"],
 		fallback: {
-			'assert': false,
-			'constants': false,
-			'crypto': false,
-			'fs': false,
-			'http': false,
-			'https': false,
-			'net': false,
-			'path': false,
-			'querystring': false,
-			'readline': false,
-			'stream': false,
-			'tls': false,
-			'url': false,
-			'zlib': false,
-		}
+			assert: false,
+			buffer: false,
+			constants: false,
+			crypto: false,
+			fs: false,
+			http: false,
+			https: false,
+			net: false,
+			os: false,
+			path: false,
+			querystring: false,
+			readline: false,
+			stream: false,
+			tls: false,
+			url: false,
+			util: false,
+			zlib: false,
+		},
 	},
 	externals: [
-		'config',
-		'csv-stringify',
-		'fs-extra',
-		'msgpack5',
-		'request',
-		'stream-to-promise',
-		'xlsx',
+		"config",
+		"csv-stringify",
+		"msgpack5",
+		"request",
+		"stream-to-promise",
+		"xlsx",
 		{
-			'node-fetch': 'fetch',
+			"node-fetch": "fetch",
+		},
+		{
+			"node:child_process": "commonjs child_process",
+			"node:fs": "commonjs fs",
+			"node:fs/promises": "commonjs fs/promises",
+			"node:module": "commonjs module",
+			"node:path": "commonjs path",
+			"node:process": "commonjs process",
+			"node:readline": "commonjs readline",
+			"node:stream": "commonjs stream",
+			"node:url": "commonjs url",
+			"node:util": "commonjs util",
 		},
 	],
-	externalsType: 'window',
+	externalsType: "window",
 };

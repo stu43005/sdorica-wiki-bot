@@ -225,9 +225,9 @@ export class fsData {
 				var thisDict = this.AsDictionary;
 				var otherDict = other.AsDictionary;
 
-				if (thisDict.Count != otherDict.Count) return false;
+				if (thisDict["Count"] != otherDict["Count"]) return false;
 
-				for (const key in thisDict.Keys) {
+				for (const key in thisDict["Keys"]) {
 					if (!(key in otherDict)) {
 						return false;
 					}

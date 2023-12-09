@@ -1,7 +1,7 @@
 import numeral from "numeral";
-import { ImperiumData } from "../imperium-data";
-import { wikiH1, wikiH2 } from "../templates/wikiheader";
-import { wikitable, WikiTableStruct } from "../templates/wikitable";
+import { ImperiumData } from "../imperium-data.js";
+import { wikiH1, wikiH2 } from "../templates/wikiheader.js";
+import { wikitable, WikiTableStruct } from "../templates/wikitable.js";
 
 const LevelUpsTable = ImperiumData.fromGamedata().getTable("LevelUps");
 

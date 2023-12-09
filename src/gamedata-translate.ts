@@ -1,8 +1,8 @@
-import path from "path";
-import { DATA_PATH } from "./config";
-import { doGamedataTranslation } from "./gamedata-translate-settings";
-import { outCsv, outXlsx } from "./out";
-import { dataOut } from "./out-data";
+import path from "node:path";
+import { DATA_PATH } from "./config.js";
+import { doGamedataTranslation } from "./gamedata-translate-settings.js";
+import { outCsv, outXlsx } from "./out.js";
+import { dataOut } from "./out-data.js";
 
 export async function gamedataTranslate() {
 	const filename = "gamedata-translated";

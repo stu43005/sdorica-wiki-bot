@@ -1,4 +1,4 @@
-import { isDevMode } from "./utils";
+import { isDevMode } from "./utils.js";
 
 export class Logger {
 	constructor(private context: string) {}

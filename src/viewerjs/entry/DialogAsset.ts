@@ -1,5 +1,5 @@
-import { DialogAsset } from "../../sdorica/DialogAsset";
-import { ViewerJSHelper } from "../viewerjs-helper";
+import { DialogAsset } from "../../sdorica/DialogAsset.js";
+import { type ViewerJSHelper } from "../viewerjs-helper.js";
 
 export default async function (helper: ViewerJSHelper, data: DialogAsset) {
 	data.$interpreted = interpreted(data);

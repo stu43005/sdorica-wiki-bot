@@ -1,3 +1,3 @@
-import { HpDamageRatioMaxSkillEffect } from "./HpDamageRatioMaxSkillEffect";
+import { HpDamageRatioMaxSkillEffect } from "./HpDamageRatioMaxSkillEffect.js";
 
 export type HpDamageRatioCurrentSkillEffect = HpDamageRatioMaxSkillEffect;

@@ -1,5 +1,5 @@
-import { SkillProperty } from "../SkillProperty";
-import { IConditionOfModel } from "./IConditionOfModel";
+import { SkillProperty } from "../SkillProperty.js";
+import { IConditionOfModel } from "./IConditionOfModel.js";
 
 export interface ThisSkillEffectTagContains extends IConditionOfModel {
 	containsAll: SkillProperty;

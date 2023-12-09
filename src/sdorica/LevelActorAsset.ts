@@ -1,6 +1,6 @@
-import { BaseScriptableObject } from "../lib/FullInspector/BaseScriptableObject";
-import { ActorCharacterName } from "./ActorCharacterName";
-import { ActorObjectName } from "./ActorObjectName";
+import { BaseScriptableObject } from "../lib/FullInspector/BaseScriptableObject.js";
+import { ActorCharacterName } from "./ActorCharacterName.js";
+import { ActorObjectName } from "./ActorObjectName.js";
 
 export interface LevelActorAsset extends BaseScriptableObject {
 	ActorCharacterTable: Record<string, ActorCharacterName>;

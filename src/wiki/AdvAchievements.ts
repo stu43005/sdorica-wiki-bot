@@ -1,9 +1,9 @@
-import _ from "lodash";
-import { ImperiumData } from "../imperium-data";
-import { localizationString } from "../localization";
-import { ItemGiveRef } from "../model/item-give-ref";
-import { wikiH1, wikiH2, wikiH3 } from "../templates/wikiheader";
-import { WikiTableStruct, wikitable } from "../templates/wikitable";
+import * as _ from "lodash-es";
+import { ImperiumData } from "../imperium-data.js";
+import { localizationString } from "../localization.js";
+import { ItemGiveRef } from "../model/item-give-ref.js";
+import { wikiH1, wikiH2, wikiH3 } from "../templates/wikiheader.js";
+import { WikiTableStruct, wikitable } from "../templates/wikitable.js";
 
 const AdvAchievementsTable = ImperiumData.fromGamedata().getTable("AdvAchievements");
 const AdventureAchievementsTable = ImperiumData.fromGamedata().getTable("AdventureAchievements");
@@ -24,7 +24,7 @@ export default function wikiAdvAchievements() {
 			const content = localizationString("Adventure", "achi_")(ach.get("id"));
 			const rewardRef = ItemGiveRef.createItem(
 				ach.get("rewardItemId"),
-				ach.get("rewardCount")
+				ach.get("rewardCount"),
 			);
 			table.rows.push([content, rewardRef.toWiki()]);
 		}
@@ -33,7 +33,7 @@ export default function wikiAdvAchievements() {
 
 	out += `\n\n${wikiH2("新版幻境成就")}`;
 	const AdventureAchievementGroups = _.groupBy(AdventureAchievementsTable.rows, (r) =>
-		r.get("tab")
+		r.get("tab"),
 	);
 	for (const [groupId, group] of Object.entries(AdventureAchievementGroups)) {
 		const table: WikiTableStruct = {
@@ -47,7 +47,7 @@ export default function wikiAdvAchievements() {
 			const giveRef = new ItemGiveRef(
 				ach.get("giveType"),
 				ach.get("giveLinkId"),
-				ach.get("giveAmount")
+				ach.get("giveAmount"),
 			);
 			table.rows.push([content, giveRef.toWiki()]);
 		}

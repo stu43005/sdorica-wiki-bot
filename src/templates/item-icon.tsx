@@ -1,10 +1,10 @@
 import numeral from "numeral";
 import { h } from "preact";
-import { ExploreItem } from "../model/explore-item";
-import { Item } from "../model/item";
-import { ItemBase } from "../model/item.base";
-import { wikiimageElement } from "./wikiimage";
-import { wikiPageLinkElement } from "./wikilink";
+import { ExploreItem } from "../model/explore-item.js";
+import { Item } from "../model/item.js";
+import { ItemBase } from "../model/item.base.js";
+import { wikiimageElement } from "./wikiimage.js";
+import { wikiPageLinkElement } from "./wikilink.js";
 
 export interface ItemIconParams {
 	/**

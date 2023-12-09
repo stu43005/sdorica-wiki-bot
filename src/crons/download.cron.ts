@@ -1,6 +1,6 @@
 import { CronJob } from "cron";
-import { scriptMain } from "../script";
-import { wikiMain } from "../wiki";
+import { scriptMain } from "../script.js";
+import { wikiMain } from "../wiki.js";
 
 export default function () {
 	// At minute 0.

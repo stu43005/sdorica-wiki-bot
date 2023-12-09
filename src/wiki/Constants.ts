@@ -1,4 +1,4 @@
-import { ImperiumData } from "../imperium-data";
+import { ImperiumData } from "../imperium-data.js";
 
 const ConstantsTable = ImperiumData.fromGamedata().getTable("Constants");
 

@@ -1,7 +1,7 @@
-import { fsSerializer } from "../../lib/FullSerializer/fsSerializer";
-import { Logger } from "../../logger";
-import { siJsonParse } from "../utils";
-import { ViewerJSHelper } from "../viewerjs-helper";
+import { fsSerializer } from "../../lib/FullSerializer/fsSerializer.js";
+import { Logger } from "../../logger.js";
+import { siJsonParse } from "../utils.js";
+import { type ViewerJSHelper } from "../viewerjs-helper.js";
 
 const logger = new Logger("$DataInit");
 

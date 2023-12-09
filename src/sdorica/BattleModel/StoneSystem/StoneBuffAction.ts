@@ -1,6 +1,6 @@
-import { AddBuffData } from "../AddBuffData";
-import { BoardModificationStoneAction } from "./BoardModificationStoneAction";
-import { Constraint } from "./Constraint";
+import { AddBuffData } from "../AddBuffData.js";
+import { BoardModificationStoneAction } from "./BoardModificationStoneAction.js";
+import { Constraint } from "./Constraint.js";
 
 export interface StoneBuffAction extends BoardModificationStoneAction {
 	targetStoneCount: number;

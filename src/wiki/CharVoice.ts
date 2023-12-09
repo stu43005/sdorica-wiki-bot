@@ -1,13 +1,13 @@
-import _ from "lodash";
-import { AssetbundleLookupTable } from "../assetbundle-lookup-table";
-import { ImperiumData } from "../imperium-data";
-import { LookupTableCategory } from "../model/enums/lookup-table-category.enum";
-import { Hero } from "../model/hero";
-import { HeroSkillSet } from "../model/hero-skillset";
-import { IHeroSkillSet } from "../model/hero-skillset.interface";
-import { wikiH1 } from "../templates/wikiheader";
-import { wikitable, WikiTableStruct } from "../templates/wikitable";
-import { wikiNextLine } from "../wiki-utils";
+import * as _ from "lodash-es";
+import { AssetbundleLookupTable } from "../assetbundle-lookup-table.js";
+import { ImperiumData } from "../imperium-data.js";
+import { LookupTableCategory } from "../model/enums/custom/lookup-table-category.enum.js";
+import { Hero } from "../model/hero.js";
+import { HeroSkillSet } from "../model/hero-skillset.js";
+import { IHeroSkillSet } from "../model/hero-skillset.interface.js";
+import { wikiH1 } from "../templates/wikiheader.js";
+import { wikitable, WikiTableStruct } from "../templates/wikitable.js";
+import { wikiNextLine } from "../wiki-utils.js";
 
 const CharaInfoVoiceTable = ImperiumData.fromGamedata().getTable("CharaInfoVoice");
 const CharaSelectVoiceTable = ImperiumData.fromGamedata().getTable("CharaSelectVoice");
@@ -91,12 +91,12 @@ export default function wikiCharVoice() {
 	const voiceGroups = _.groupBy(voiceData, (v) => v.groupKey);
 	for (const [, group] of Object.entries(voiceGroups)) {
 		const heroGroups = _.groupBy(group, (v) =>
-			typeof v.hero === "string" ? v.hero : v.hero.id
+			typeof v.hero === "string" ? v.hero : v.hero.id,
 		);
 		const heroList = Object.values(heroGroups).map((vs) =>
 			vs
 				.map((s) => (typeof s.skillSet === "string" ? s.skillSet : s.skillSet.toWiki()))
-				.join("\n")
+				.join("\n"),
 		);
 
 		table.rows.push([
@@ -119,10 +119,10 @@ function formatVoiceList(voices: string[]) {
 			.map((voice) => {
 				const url = AssetbundleLookupTable.getInstance().getAssetUrl(
 					LookupTableCategory.Audio_SFX,
-					`${voice}_jp`
+					`${voice}_jp`,
 				);
 				return `<a href="${url}">${voice}</a>`;
 			})
-			.join(",\n")
+			.join(",\n"),
 	);
 }

@@ -1,22 +1,26 @@
-import { ImperiumDataRaw, TableDataRaw } from "./data-raw-type";
-import { Logger } from "./logger";
+import { AssetDataRaw, ImperiumDataRaw, TableDataRaw } from "./data-raw-type.js";
+import { Logger } from "./logger.js";
+import { EnumList } from "./model/enums/index.js";
 
 const logger = new Logger("imperium-data");
 
 export class ImperiumData {
-	private static instances: Record<string, ImperiumData> = {};
+	private static instances: Map<string, ImperiumData> = new Map();
 	public static dataLoader: (self: ImperiumData) => void | Promise<void>;
 
-	static has(name: string) {
-		return name in this.instances;
+	static has(name: string): boolean {
+		return this.instances.has(name);
 	}
-	static from(name: string) {
-		if (!this.has(name)) {
-			this.instances[name] = new ImperiumData(name);
-			this.instances[name].loadData();
+	static from(name: string): ImperiumData {
+		let instance = this.instances.get(name);
+		if (!instance) {
+			instance = new ImperiumData(name);
+			instance.loadData();
+			this.instances.set(name, instance);
 		}
-		return this.instances[name];
+		return instance;
 	}
+
 	static fromGamedata() {
 		return this.from("gamedata");
 	}
@@ -40,36 +44,39 @@ export class ImperiumData {
 
 	constructor(public name: string) {}
 
-	async loadData() {
+	async loadData(): Promise<void> {
 		try {
 			await ImperiumData.dataLoader(this);
 		} catch (error) {
+			logger.error(error);
 			this.data = null;
 		}
 	}
 
-	reloadData() {
+	reloadData(): Promise<void> {
 		this.data = null;
 		return this.loadData();
 	}
 
-	private tables: Record<string, TableWrapper> = {};
-	getTable(name: string) {
-		if (!(name in this.tables)) {
-			this.tables[name] = new TableWrapper(this, name);
+	private tables: Map<string, TableWrapper> = new Map();
+	getTable(name: string): TableWrapper {
+		let table = this.tables.get(name);
+		if (!table) {
+			table = new TableWrapper(this, name);
+			this.tables.set(name, table);
 		}
-		return this.tables[name];
+		return table;
 	}
 
-	getEnum(name: string) {
+	getEnum(name: string): string[] | undefined {
 		return this.data?.E[name];
 	}
 
-	getAsset(name: string) {
+	getAsset(name: string): AssetDataRaw | undefined {
 		return this.data?.A[name];
 	}
 
-	setRawData(data: ImperiumDataRaw) {
+	setRawData(data: ImperiumDataRaw): void {
 		this.data = data;
 	}
 
@@ -103,7 +110,8 @@ export class TableWrapper implements Iterable<RowWrapper> {
 				D: [],
 			};
 		}
-		if (!raw.C[this.name]) {
+		const table = raw.C[this.name];
+		if (!table) {
 			logger.error(`table "${this.name}" not exists.`);
 			debugger;
 			// throw `table "${this.name}" not exists.`;
@@ -113,59 +121,73 @@ export class TableWrapper implements Iterable<RowWrapper> {
 				D: [],
 			};
 		}
-		return raw.C[this.name];
+		return table;
 	}
 
-	constructor(public data: ImperiumData, public name: string) {}
+	constructor(
+		public data: ImperiumData,
+		public name: string,
+	) {}
 
-	get length() {
+	get length(): number {
 		return this.table.D.length;
 	}
 
-	get colname() {
+	get colname(): string[] {
 		return this.table.K;
 	}
 
-	get coltype() {
+	get coltype(): string[] {
 		return this.table.T;
 	}
 
-	get rows() {
-		return this.table.D.map((row) => new RowWrapper(row, this));
+	#rows: RowWrapper[] | null = null;
+	get rows(): RowWrapper[] {
+		if (this.#rows === null) {
+			this.#rows = Array.from(this);
+		}
+		return this.#rows;
 	}
 
-	*[Symbol.iterator]() {
+	*[Symbol.iterator](): Generator<RowWrapper, void, undefined> {
 		for (const raw of this.table.D) {
 			yield new RowWrapper(raw, this);
 		}
 	}
 
-	get(index: number) {
+	get(index: number): RowWrapper {
 		if (index >= this.length) {
 			debugger;
 			throw "out of index";
 		}
-		const row = this.table.D[index];
+		const row = this.rows[index];
 		if (!row) {
 			debugger;
 			throw "out of index";
 		}
-		return new RowWrapper(row, this);
+		return row;
 	}
 
-	find(predicate: (value: RowWrapper, index: number, obj: TableWrapper) => boolean) {
+	find(
+		predicate: (value: RowWrapper, index: number, obj: TableWrapper) => boolean,
+	): RowWrapper | undefined {
 		if (typeof predicate !== "function") {
 			debugger;
 			throw new TypeError("predicate must be a function");
 		}
-		const ret = this.table.D.find((row, index) => {
-			const wrap = new RowWrapper(row, this);
-			return predicate.call(this, wrap, index, this);
-		});
-		if (ret) return new RowWrapper(ret, this);
+		let index = 0;
+		for (const row of this) {
+			if (predicate.call(this, row, index, this)) {
+				return row;
+			}
+			index++;
+		}
+		return;
 	}
 
-	filter(predicate: (value: RowWrapper, index: number, array: RowWrapper[]) => boolean) {
+	filter(
+		predicate: (value: RowWrapper, index: number, array: RowWrapper[]) => boolean,
+	): RowWrapper[] {
 		if (typeof predicate !== "function") {
 			debugger;
 			throw new TypeError("predicate must be a function");
@@ -173,15 +195,20 @@ export class TableWrapper implements Iterable<RowWrapper> {
 		return this.rows.filter(predicate);
 	}
 
-	getColumnIndex(name: string) {
-		return this.table.K.findIndex((k) => k == name);
+	getColumnIndex(name: string): number {
+		const index = this.table.K.findIndex((k) => k == name);
+		if (index === -1) {
+			debugger;
+			logger.error(`no such column "${name}" in table "${this.name}"`);
+		}
+		return index;
 	}
 
-	getColumnType(index: string | number) {
+	getColumnType(index: string | number): string | undefined {
 		if (typeof index === "string") {
 			index = this.getColumnIndex(index);
 		}
-		return this.table.T[index].toString();
+		return this.table.T[index]?.toString();
 	}
 }
 
@@ -194,23 +221,28 @@ export class RowWrapper {
 		this.table = table;
 	}
 
-	get data() {
-		return this.table.data;
-	}
-
-	get(index: string | number) {
+	get(index: string | number, expectType?: undefined): any;
+	get<T extends keyof DataType>(index: string | number, expectType: T): DataType[T];
+	get<E extends keyof EnumList>(index: string | number, expectType: E): EnumList[E];
+	get(index: string | number, expectType?: string): any {
 		if (typeof index === "string") {
 			index = this.table.getColumnIndex(index);
-			if (index == -1) {
-				return undefined;
-			}
 		}
 		const type = this.table.getColumnType(index);
+		if (!type) {
+			return;
+		}
 		let value = this.row[index];
 
+		if (expectType && type !== expectType) {
+			debugger;
+			throw new TypeError(
+				`Field type does not match the expected value, type: "${type}", expected: "${expectType}".`,
+			);
+		}
 		if (type.startsWith("enum:")) {
 			if (!isNaN(Number(value))) {
-				const enumData = this.data.getEnum(type);
+				const enumData = this.table.data.getEnum(type);
 				value = (enumData && enumData[value]) || value;
 				if (value == -1) {
 					value = null;
@@ -233,21 +265,22 @@ export class RowWrapper {
 			value = +value;
 		}
 		if (typeof value === "string") {
-			value = value.replace("\b", "");
+			value = value.replace(/\b/g, "");
 		}
 		return value;
 	}
 
-	set(index: string | number, value: any) {
-		if (typeof index === "number") {
-			this.row[index] = value;
-			return;
+	set(index: string | number, value: any): void {
+		if (typeof index === "string") {
+			index = this.table.getColumnIndex(index);
 		}
-		const colindex = this.table.getColumnIndex(index);
-		if (colindex == -1) {
-			debugger;
-			throw new TypeError("no such index");
-		}
-		this.row[colindex] = value;
+		this.row[index] = value;
 	}
 }
+
+type DataType = {
+	String: string;
+	Integer: number;
+	Float: number;
+	Boolean: boolean;
+};

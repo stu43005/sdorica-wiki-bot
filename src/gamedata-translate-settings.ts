@@ -1,5 +1,5 @@
-import { HeroSkillSet } from "./model/hero-skillset";
-import { ImperiumData } from "./imperium-data";
+import { HeroSkillSet } from "./model/hero-skillset.js";
+import { ImperiumData } from "./imperium-data.js";
 import {
 	black,
 	call2,
@@ -29,12 +29,12 @@ import {
 	semicolon,
 	weekday,
 	white,
-} from "./localization";
-import { Logger } from "./logger";
-import { ItemCategory } from "./model/enums/item-category.enum";
-import { Item } from "./model/item";
-import { exploreLabelName } from "./wiki-item";
-import { cloneDeep } from "lodash";
+} from "./localization.js";
+import { Logger } from "./logger.js";
+import { ItemCategory } from "./model/enums/item-category.enum.js";
+import { Item } from "./model/item.js";
+import { exploreLabelName } from "./wiki-item.js";
+import { cloneDeep } from "lodash-es";
 
 const logger = new Logger("gamedata-translate");
 
@@ -251,7 +251,7 @@ export const gamedataTeanslateSettings: GamedataRef[] = [
 		func: (str) => {
 			const ItemsTable = ImperiumData.fromGamedata().getTable("Items");
 			const item = ItemsTable.find(
-				(r) => r.get("category") == "Treasure" && r.get("effectValue") == str
+				(r) => r.get("category") == "Treasure" && r.get("effectValue") == str,
 			);
 			if (item) {
 				return "Item: " + localizationItemName()(item.get("id"));
@@ -259,7 +259,7 @@ export const gamedataTeanslateSettings: GamedataRef[] = [
 
 			const ExploreItemsTable = ImperiumData.fromGamedata().getTable("ExploreItems");
 			const expitem = ExploreItemsTable.find(
-				(r) => r.get("category") == "Treasure" && r.get("effectValue") == str
+				(r) => r.get("category") == "Treasure" && r.get("effectValue") == str,
 			);
 			if (expitem) {
 				return "ExploreItem: " + localizationItemName(true)(expitem.get("id"));
@@ -267,7 +267,7 @@ export const gamedataTeanslateSettings: GamedataRef[] = [
 
 			const TavernMissionTable = ImperiumData.fromGamedata().getTable("TavernMission");
 			const mission = TavernMissionTable.find(
-				(r) => r.get("dropItem") == str || r.get("extraDropItem") == str
+				(r) => r.get("dropItem") == str || r.get("extraDropItem") == str,
 			);
 			if (mission) {
 				return "TavernMission: " + localizationTavernMissionName()(mission.get("id"));
@@ -275,31 +275,31 @@ export const gamedataTeanslateSettings: GamedataRef[] = [
 			return "";
 		},
 	},
-	{
-		table: "Gashapons",
-		column: "itemId",
-		func: localizationItemName(),
-	},
-	{
-		table: "Gashapons",
-		column: "packId",
-		func: call2(gamedataString("GashaponPacks", "id", "name"), localizationStringAuto()),
-	},
-	{
-		table: "GashaponPacks",
-		column: "description,name",
-		func: localizationStringAuto(),
-	},
-	{
-		table: "GashaponPacks",
-		column: "itemId,ticketItemId",
-		func: localizationItemName(),
-	},
-	{
-		table: "GashaponPacks",
-		column: "linkId:giveType",
-		func: localizationItemNameWithType(),
-	},
+	// {
+	// 	table: "Gashapons",
+	// 	column: "itemId",
+	// 	func: localizationItemName(),
+	// },
+	// {
+	// 	table: "Gashapons",
+	// 	column: "packId",
+	// 	func: call2(gamedataString("GashaponPacks", "id", "name"), localizationStringAuto()),
+	// },
+	// {
+	// 	table: "GashaponPacks",
+	// 	column: "description,name",
+	// 	func: localizationStringAuto(),
+	// },
+	// {
+	// 	table: "GashaponPacks",
+	// 	column: "itemId,ticketItemId",
+	// 	func: localizationItemName(),
+	// },
+	// {
+	// 	table: "GashaponPacks",
+	// 	column: "linkId:giveType",
+	// 	func: localizationItemNameWithType(),
+	// },
 	{
 		table: "GuildBuilding",
 		column: "descriptionKey,nameKey",
@@ -310,26 +310,26 @@ export const gamedataTeanslateSettings: GamedataRef[] = [
 		column: "productionItem",
 		func: localizationItemName(),
 	},
-	{
-		table: "HeroRanks",
-		column: "heroId",
-		func: gamedataString("Heroes", "id", "name"),
-	},
-	{
-		table: "HeroRanks",
-		column: "rank",
-		func: rank(),
-	},
-	{
-		table: "HeroRanks",
-		column: "item1Id,item2Id,item3Id,item4Id,item5Id",
-		func: localizationItemName(),
-	},
-	{
-		table: "HeroRanks",
-		column: "ext1LinkId:ext1Type,ext2LinkId:ext2Type,ext3LinkId:ext3Type,ext4LinkId:ext4Type,ext5LinkId:ext5Type",
-		func: localizationItemNameWithType(),
-	},
+	// {
+	// 	table: "HeroRanks",
+	// 	column: "heroId",
+	// 	func: gamedataString("Heroes", "id", "name"),
+	// },
+	// {
+	// 	table: "HeroRanks",
+	// 	column: "rank",
+	// 	func: rank(),
+	// },
+	// {
+	// 	table: "HeroRanks",
+	// 	column: "item1Id,item2Id,item3Id,item4Id,item5Id",
+	// 	func: localizationItemName(),
+	// },
+	// {
+	// 	table: "HeroRanks",
+	// 	column: "ext1LinkId:ext1Type,ext2LinkId:ext2Type,ext3LinkId:ext3Type,ext4LinkId:ext4Type,ext5LinkId:ext5Type",
+	// 	func: localizationItemNameWithType(),
+	// },
 	{
 		table: "HeroSkills",
 		column: "heroId",
@@ -375,11 +375,11 @@ export const gamedataTeanslateSettings: GamedataRef[] = [
 		column: "requireId",
 		func: gamedataString("Missions", "id", "name"),
 	},
-	{
-		table: "QuestExtraSettings",
-		column: "displayBonus2ppl,displayBonus3ppl",
-		func: semicolon(colonFirst(localizationItemName())),
-	},
+	// {
+	// 	table: "QuestExtraSettings",
+	// 	column: "displayBonus2ppl,displayBonus3ppl",
+	// 	func: semicolon(colonFirst(localizationItemName())),
+	// },
 	{
 		table: "QuestExtraSettings",
 		column: "sweepDisplayDropItem",
@@ -405,11 +405,11 @@ export const gamedataTeanslateSettings: GamedataRef[] = [
 		column: "localizationKeyName",
 		func: localizationString("ServerList"),
 	},
-	{
-		table: "StoreItemGroups",
-		column: "giveLinkId:giveType,linkId:payType",
-		func: localizationItemNameWithType(),
-	},
+	// {
+	// 	table: "StoreItemGroups",
+	// 	column: "giveLinkId:giveType,linkId:payType",
+	// 	func: localizationItemNameWithType(),
+	// },
 	{
 		table: "TeamLimits",
 		column: "idW,idB,idG,idSP1,idSP2",
@@ -625,9 +625,9 @@ export const gamedataTeanslateSettings: GamedataRef[] = [
 				gamedataString("HomelandMonster", "skill2", "keyName"),
 				gamedataString("HomelandMonster", "speciality1", "keyName"),
 				gamedataString("HomelandMonster", "speciality2", "keyName"),
-				gamedataString("HomelandMonster", "speciality3", "keyName")
+				gamedataString("HomelandMonster", "speciality3", "keyName"),
 			),
-			localizationCharacterNameWithDefault()
+			localizationCharacterNameWithDefault(),
 		),
 	},
 	{
@@ -735,7 +735,7 @@ export const gamedataTeanslateSettings: GamedataRef[] = [
 		column: "groupId",
 		func: (str) => {
 			const item = Item.find(
-				(item) => item.category == ItemCategory.Voucher && item.effectValue == +str
+				(item) => item.category == ItemCategory.Voucher && item.effectValue == +str,
 			);
 			return item?.name ?? "";
 		},
@@ -817,7 +817,7 @@ export const gamedataTeanslateSettings: GamedataRef[] = [
 	},
 	{
 		table: "BattlefieldRanks",
-		column: "giveLinkId1:giveType1,giveLinkId2:giveType2,giveLinkId3:giveType3,giveLinkId4:giveType4",
+		column: "giveLinkId1:giveType1,giveLinkId2:giveType2,giveLinkId3:giveType3",
 		func: localizationItemNameWithType(),
 	},
 	{
@@ -889,7 +889,7 @@ export const gamedataTeanslateSettings: GamedataRef[] = [
 		column: "conditionGroupId",
 		func: call2(
 			gamedataString("EvaluateAchievements", "conditionGroupId", "descriptionKey"),
-			localizationString("QuestAchievement")
+			localizationString("QuestAchievement"),
 		),
 	},
 	{

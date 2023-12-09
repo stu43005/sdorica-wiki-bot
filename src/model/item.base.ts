@@ -1,13 +1,13 @@
-import render from "preact-render-to-string";
-import { AssetbundleLookupTable } from "../assetbundle-lookup-table";
-import { RowWrapper } from "../imperium-data";
-import { itemDropQuestsTemplate } from "../templates/item-drop-quests";
-import { ItemIconParams, itemIconTemplate } from "../templates/item-icon";
-import { ItemInfoboxParams, itemInfoboxTemplate } from "../templates/item-infobox";
-import { itemCategoryName } from "../wiki-item";
-import { wikiTitleEscape } from "../wiki-utils";
-import { LookupTableCategory } from "./enums/lookup-table-category.enum";
-import { ItemType } from "./enums/item-type.enum";
+import { render } from "preact-render-to-string";
+import { AssetbundleLookupTable } from "../assetbundle-lookup-table.js";
+import { RowWrapper } from "../imperium-data.js";
+import { itemDropQuestsTemplate } from "../templates/item-drop-quests.js";
+import { ItemIconParams, itemIconTemplate } from "../templates/item-icon.js";
+import { ItemInfoboxParams, itemInfoboxTemplate } from "../templates/item-infobox.js";
+import { itemCategoryName } from "../wiki-item.js";
+import { wikiTitleEscape } from "../wiki-utils.js";
+import { LookupTableCategory } from "./enums/custom/lookup-table-category.enum.js";
+import { ItemType } from "./enums/item-type.enum.js";
 
 export abstract class ItemBase {
 	abstract itemType: ItemType;
@@ -18,37 +18,37 @@ export abstract class ItemBase {
 	abstract enable: boolean;
 
 	get isExplore(): boolean {
-		return this.itemType === ItemType.ExploreItem;
+		return this.itemType === ItemType.ExploreItems;
 	}
 
 	constructor(protected row: RowWrapper) {}
 
-	getIconAssetUrl(small = false) {
+	getIconAssetUrl(small = false): string | undefined {
 		if (small && !this.isExplore) {
 			return AssetbundleLookupTable.getInstance().getAssetUrl(
 				LookupTableCategory.ItemIconSmall,
-				this.iconKey
+				this.iconKey,
 			);
 		}
 		return AssetbundleLookupTable.getInstance().getAssetUrl(
 			LookupTableCategory.ItemIconMid,
-			this.iconKey + "_M"
+			this.iconKey + "_M",
 		);
 	}
 
-	toWiki(options?: ItemIconParams) {
+	toWiki(options?: ItemIconParams): string {
 		return render(itemIconTemplate(this, options));
 	}
 
-	getWikiPageName() {
+	getWikiPageName(): string {
 		return wikiTitleEscape(this.name);
 	}
 
-	getWikiCategory() {
+	getWikiCategory(): string[] {
 		return itemCategoryName(this.row, this.name, this.description, this.isExplore);
 	}
 
-	getItemInfoboxParams() {
+	getItemInfoboxParams(): ItemInfoboxParams {
 		const category = this.getWikiCategory();
 
 		const params: ItemInfoboxParams = {
@@ -65,15 +65,15 @@ export abstract class ItemBase {
 		return params;
 	}
 
-	toItemInfobox() {
+	toItemInfobox(): string {
 		return itemInfoboxTemplate(this.getItemInfoboxParams());
 	}
 
-	toWikiDropQuests() {
+	toWikiDropQuests(): string {
 		return itemDropQuestsTemplate(this.getWikiPageName());
 	}
 
-	toWikiPage() {
+	toWikiPage(): string {
 		return this.toItemInfobox();
 	}
 }

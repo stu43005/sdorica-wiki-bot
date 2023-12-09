@@ -1,4 +1,4 @@
-import { ConditionalSkillList } from "./ConditionalSkillList";
+import { ConditionalSkillList } from "./ConditionalSkillList.js";
 
 export interface SkillSet {
 	_isViewSkillSet: boolean;

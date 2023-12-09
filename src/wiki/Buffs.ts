@@ -1,9 +1,9 @@
-import { ImperiumData } from "../imperium-data";
-import { localizationString } from "../localization";
-import { LookupTableCategory } from "../model/enums/lookup-table-category.enum";
-import { wikiH1, wikiH3 } from "../templates/wikiheader";
-import { wikiimage } from "../templates/wikiimage";
-import { WikiTableStruct, wikitable } from "../templates/wikitable";
+import { ImperiumData } from "../imperium-data.js";
+import { localizationString } from "../localization.js";
+import { LookupTableCategory } from "../model/enums/custom/lookup-table-category.enum.js";
+import { wikiH1, wikiH3 } from "../templates/wikiheader.js";
+import { wikiimage } from "../templates/wikiimage.js";
+import { WikiTableStruct, wikitable } from "../templates/wikitable.js";
 
 const BuffInfoTable = ImperiumData.fromGamedata().getTable("BuffInfo");
 
@@ -19,7 +19,7 @@ export default function wikiBuffs() {
 			"BaseBuff",
 			"",
 			"Key",
-			"English"
+			"English",
 		)(row.get("localizationNameKey"));
 		const info = localizationString("BaseBuff")(row.get("localizationInfoKey"));
 		const iconKey = row.get("iconKey");
@@ -38,7 +38,7 @@ export default function wikiBuffs() {
 						  }) + " "
 						: "") + name,
 					id,
-					true
+					true,
 				),
 				enname,
 				info,

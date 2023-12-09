@@ -1,9 +1,9 @@
-import { HeroIconParams } from "../templates/hero-icon";
-import { HeroRank } from "./enums/hero-rank.enum";
-import { HeroSkillType } from "./enums/hero-skill-type.enum";
-import { Hero } from "./hero";
-import { HeroInfo } from "./hero-info";
-import { HeroSkill } from "./hero-skill";
+import { HeroIconParams } from "../templates/hero-icon.js";
+import { HeroRank } from "./enums/custom/hero-rank.enum.js";
+import { HeroSkillType } from "./enums/hero-skill-type.enum.js";
+import { Hero } from "./hero.js";
+import { HeroInfo } from "./hero-info.js";
+import { HeroSkill } from "./hero-skill.js";
 
 export interface IHeroSkillSet {
 	hero?: Hero;

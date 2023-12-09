@@ -1,12 +1,12 @@
-import render from "preact-render-to-string";
-import { AssetbundleLookupTable } from "../assetbundle-lookup-table";
-import { ImperiumData, RowWrapper } from "../imperium-data";
-import { localizationCharacterName, localizationString } from "../localization";
-import { MonsterIconParams, monsterIconTemplate } from "../templates/monster-icon";
-import { range } from "../utils";
-import { LookupTableCategory } from "./enums/lookup-table-category.enum";
-import { ItemPayRef } from "./item-pay-ref";
-import { MonsterAbilityDropGroup } from "./monster-ability-drop";
+import { render } from "preact-render-to-string";
+import { AssetbundleLookupTable } from "../assetbundle-lookup-table.js";
+import { ImperiumData, RowWrapper } from "../imperium-data.js";
+import { localizationCharacterName, localizationString } from "../localization.js";
+import { MonsterIconParams, monsterIconTemplate } from "../templates/monster-icon.js";
+import { range } from "../utils.js";
+import { LookupTableCategory } from "./enums/custom/lookup-table-category.enum.js";
+import { ItemPayRef } from "./item-pay-ref.js";
+import { MonsterAbilityDropGroup } from "./monster-ability-drop.js";
 
 const HomelandMonsterTable = ImperiumData.fromGamedata().getTable("HomelandMonster");
 const MonsterRankTable = ImperiumData.fromGamedata().getTable("MonsterRank");
@@ -43,6 +43,7 @@ export class Monster {
 				return item;
 			}
 		}
+		return;
 	}
 
 	public static getAll() {
@@ -179,8 +180,8 @@ export class Monster {
 						new ItemPayRef(
 							this.row.get(`payType${i}`),
 							this.row.get(`linkId${i}`),
-							this.row.get(`amount${i}`)
-						)
+							this.row.get(`amount${i}`),
+						),
 				)
 				.filter((ref) => !!ref.item);
 		}
@@ -195,7 +196,7 @@ export class Monster {
 					(i): RequireMob => ({
 						mob: Monster.get(this.row.get(`requireMob${i}Id`)),
 						rank: +this.row.get(`requireMob${i}Rank`),
-					})
+					}),
 				)
 				.filter((req) => req.rank > 0);
 		}
@@ -209,7 +210,7 @@ export class Monster {
 				(other) =>
 					other.monsterId === this.monsterId &&
 					other.rank === this.rank + 1 &&
-					other.enable
+					other.enable,
 			);
 		}
 		return this.#rankUpMob;
@@ -226,13 +227,13 @@ export class Monster {
 	getSdAssetUrl() {
 		return AssetbundleLookupTable.getInstance().getAssetUrl(
 			LookupTableCategory.MonsterImage_SD,
-			this.monsterSd
+			this.monsterSd,
 		);
 	}
 	getMonsterTypeAssetUrl() {
 		return AssetbundleLookupTable.getInstance().getAssetUrl(
 			LookupTableCategory.Monster_SpSkillIcon,
-			`expedition_frame_${this.monsterType}`
+			`expedition_frame_${this.monsterType}`,
 		);
 	}
 

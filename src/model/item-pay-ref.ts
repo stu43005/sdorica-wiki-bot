@@ -1,27 +1,31 @@
-import { currency2Id } from "../localization";
-import { ItemIconParams } from "../templates/item-icon";
-import { ItemPayType } from "./enums/item-pay-type.enum";
-import { ExploreItem } from "./explore-item";
-import { Item } from "./item";
-import { ItemBase } from "./item.base";
+import { currency2Id } from "../localization.js";
+import { ItemIconParams } from "../templates/item-icon.js";
+import { PayType } from "./enums/pay-type.enum.js";
+import { ExploreItem } from "./explore-item.js";
+import { Item } from "./item.js";
+import { ItemBase } from "./item.base.js";
 
 export class ItemPayRef {
 	item?: ItemBase;
 
 	public static createItem(id: string, amount = 0) {
-		return new ItemPayRef(ItemPayType.Item, id, amount);
+		return new ItemPayRef(PayType.Item, id, amount);
 	}
 
 	public static parseItem(str: string, separator = ":") {
 		const [id, amount] = str.split(separator);
-		return new ItemPayRef(ItemPayType.Item, id, +amount || 0);
+		return new ItemPayRef(PayType.Item, id, +amount || 0);
 	}
 
-	constructor(public type: ItemPayType, public id: string, public amount: number = 0) {
-		if (this.type == ItemPayType.ExploreItem) {
+	constructor(
+		public type: PayType,
+		public id: string,
+		public amount: number = 0,
+	) {
+		if (this.type == PayType.ExploreItem) {
 			this.item = ExploreItem.get(this.id);
 		} else {
-			if (this.type !== ItemPayType.Item) {
+			if (this.type !== PayType.Item) {
 				this.id = currency2Id()(type);
 			}
 			this.item = Item.get(this.id);

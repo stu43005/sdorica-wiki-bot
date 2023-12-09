@@ -1,6 +1,6 @@
-import { AssetDataRaw, ImperiumDataRaw, TableDataRaw } from "./data-raw-type";
-import { filterKeyByTable, sortKeyByTable } from "./out-sort-key";
-import { flipMatrix } from "./utils";
+import { AssetDataRaw, ImperiumDataRaw, TableDataRaw } from "./data-raw-type.js";
+import { filterKeyByTable, sortKeyByTable } from "./out-sort-key.js";
+import { flipMatrix } from "./utils.js";
 
 export function dataOut(data: ImperiumDataRaw) {
 	const out: any[] = [];
@@ -53,7 +53,7 @@ export function tableOut(out: any[], name: string, table: TableDataRaw) {
 	table.D.push(table.T);
 	table.D.push(table.K);
 	const sorted = flipMatrix(
-		flipMatrix(table.D).filter(filterKeyByTable(name)).sort(sortKeyByTable(name))
+		flipMatrix(table.D).filter(filterKeyByTable(name)).sort(sortKeyByTable(name)),
 	);
 	table.K = sorted.pop() || [];
 	table.T = sorted.pop() || [];

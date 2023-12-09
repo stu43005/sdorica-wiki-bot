@@ -1,3 +1,3 @@
-import { LevelEvent } from "./LevelEvent";
+import { LevelEvent } from "./LevelEvent.js";
 
 export type LevelEndEventPoint = LevelEvent;

@@ -1,8 +1,8 @@
-import { ImperiumData, RowWrapper } from "../imperium-data";
-import { localizationString } from "../localization";
-import { ChapteCountType } from "./enums/chapter-count-type.enum";
-import { ItemPayRef } from "./item-pay-ref";
-import { TemplateString } from "./template-string";
+import { ImperiumData, RowWrapper } from "../imperium-data.js";
+import { localizationString } from "../localization.js";
+import { ChapteCountType } from "./enums/chapter-count-type.enum.js";
+import { ItemPayRef } from "./item-pay-ref.js";
+import { TemplateString } from "./template-string.js";
 
 const ChapterCountTable = ImperiumData.fromGamedata().getTable("ChapterCount");
 
@@ -82,7 +82,7 @@ export class ChapterCount {
 				break;
 		}
 		this.regainString = new TemplateString(
-			localizationString("Metagame")(regainStringKey)
+			localizationString("Metagame")(regainStringKey),
 		).apply({
 			revive: this.regainValue,
 		});

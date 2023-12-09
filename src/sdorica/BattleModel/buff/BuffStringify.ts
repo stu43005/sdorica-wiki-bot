@@ -1,17 +1,17 @@
-import { localizationBuffName } from "../../../localization";
-import { BuffLabelData } from "../BuffLabelData";
-import { conditionBuffStringify } from "../condition/ConditionStringify";
-import { singleTargetStringify } from "../target/TargetStringify";
-import { BuffIdFromLabelList } from "./buffid/BuffIdFromLabelList";
-import { GeneralGroupedBuffId } from "./buffid/GeneralGroupedBuffId";
-import { IGroupedBuffId } from "./buffid/IGroupedBuffId";
-import { AllBuffsOnChar } from "./grouped/AllBuffsOnChar";
-import { BuffGroupWhere } from "./grouped/BuffGroupWhere";
-import { IGroupedBuff } from "./grouped/IGroupedBuff";
-import { BuffOnCharater } from "./single/BuffOnCharater";
-import { ISingleBuff } from "./single/ISingleBuff";
-import { SpecifiedBuff } from "./single/SpecifiedBuff";
-import { ThisBuff } from "./single/ThisBuff";
+import { localizationBuffName } from "../../../localization.js";
+import { BuffLabelData } from "../BuffLabelData.js";
+import { conditionBuffStringify } from "../condition/ConditionStringify.js";
+import { singleTargetStringify } from "../target/TargetStringify.js";
+import { BuffIdFromLabelList } from "./buffid/BuffIdFromLabelList.js";
+import { GeneralGroupedBuffId } from "./buffid/GeneralGroupedBuffId.js";
+import { IGroupedBuffId } from "./buffid/IGroupedBuffId.js";
+import { AllBuffsOnChar } from "./grouped/AllBuffsOnChar.js";
+import { BuffGroupWhere } from "./grouped/BuffGroupWhere.js";
+import { IGroupedBuff } from "./grouped/IGroupedBuff.js";
+import { BuffOnCharater } from "./single/BuffOnCharater.js";
+import { ISingleBuff } from "./single/ISingleBuff.js";
+import { SpecifiedBuff } from "./single/SpecifiedBuff.js";
+import { ThisBuff } from "./single/ThisBuff.js";
 
 export function singleBuffStringify(buff: ISingleBuff) {
 	if (!buff) return "";
@@ -26,7 +26,7 @@ export function singleBuffStringify(buff: ISingleBuff) {
 	if (buff.$type == "BattleModel.BuffOnCharater") {
 		const obj = buff as BuffOnCharater;
 		return `在${singleTargetStringify(obj.character)}的${localizationBuffName(true)(
-			obj.buffId
+			obj.buffId,
 		)}狀態`;
 	}
 	console.error(`Unknown ISingleBuff type: ${buff.$type}`);

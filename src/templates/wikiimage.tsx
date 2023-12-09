@@ -1,8 +1,8 @@
 import { h } from "preact";
-import { getAssetUrl } from "../assetbundle-asset";
-import { AssetbundleLookupTable } from "../assetbundle-lookup-table";
-import { LookupTableCategory } from "../model/enums/lookup-table-category.enum";
-import { wrapRender } from "./preact-wrapper";
+import { getAssetUrl } from "../assetbundle-asset.js";
+import { AssetbundleLookupTable } from "../assetbundle-lookup-table.js";
+import { LookupTableCategory } from "../model/enums/custom/lookup-table-category.enum.js";
+import { wrapRender } from "./preact-wrapper.js";
 
 export function wikiimage_old(
 	filename: string,
@@ -12,7 +12,7 @@ export function wikiimage_old(
 	}: {
 		width?: number;
 		height?: number;
-	} = {}
+	} = {},
 ) {
 	return `[[File:${filename}|${width ? `${width}px` : ""}${height ? `x${height}px` : ""}]]`;
 }
@@ -49,7 +49,7 @@ export function wikiimageElement(options: WikiImageParams): h.JSX.Element {
 	} else if ("category" in options) {
 		const assetUrl = AssetbundleLookupTable.getInstance().getAssetUrl(
 			options.category,
-			options.key
+			options.key,
 		);
 		if (!assetUrl) {
 			return (

@@ -1,4 +1,4 @@
-import { MonsterSkillIconParams } from "../templates/monster-skill-icon";
+import { MonsterSkillIconParams } from "../templates/monster-skill-icon.js";
 
 export interface IMonsterAbility {
 	id: string;

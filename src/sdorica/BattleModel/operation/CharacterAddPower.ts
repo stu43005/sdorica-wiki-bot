@@ -1,7 +1,7 @@
-import { ISingleInteger } from "../constant/ISingleInteger";
-import { ISingleCharacter } from "../target/ISingleCharacter";
-import { IBaseOperation } from "./IBaseOperation";
-import { ICalculatePowerOperation } from "./ICalculatePowerOperation";
+import { ISingleInteger } from "../constant/ISingleInteger.js";
+import { ISingleCharacter } from "../target/ISingleCharacter.js";
+import { IBaseOperation } from "./IBaseOperation.js";
+import { ICalculatePowerOperation } from "./ICalculatePowerOperation.js";
 
 export interface CharacterAddPower extends ICalculatePowerOperation, IBaseOperation {
 	character: ISingleCharacter;

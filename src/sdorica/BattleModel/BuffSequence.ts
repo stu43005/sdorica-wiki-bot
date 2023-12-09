@@ -1,5 +1,5 @@
-import { BuffAction } from "./BuffAction";
-import { IConditionOfModel } from "./condition/IConditionOfModel";
+import { BuffAction } from "./BuffAction.js";
+import { IConditionOfModel } from "./condition/IConditionOfModel.js";
 
 export interface BuffSequence {
 	Conditions: IConditionOfModel[];

@@ -1,6 +1,5 @@
 import config from "config";
-import fetch from "node-fetch";
-import { Logger } from "./logger";
+import { Logger } from "./logger.js";
 
 const logger = new Logger("discord-webhook");
 

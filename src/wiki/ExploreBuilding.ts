@@ -1,9 +1,9 @@
-import _ from "lodash";
-import { localizationExploreBuildingName } from "../localization";
-import { ExploreBuildingType } from "../model/enums/explore-building-type.enum";
-import { ExploreBuilding } from "../model/explore-building";
-import { wikiH1, wikiH2 } from "../templates/wikiheader";
-import { WikiTableStruct, wikitable } from "../templates/wikitable";
+import * as _ from "lodash-es";
+import { localizationExploreBuildingName } from "../localization.js";
+import { ExploreBuildingType } from "../model/enums/explore-building-type.enum.js";
+import { ExploreBuilding } from "../model/explore-building.js";
+import { wikiH1, wikiH2 } from "../templates/wikiheader.js";
+import { WikiTableStruct, wikitable } from "../templates/wikitable.js";
 
 export default function wikiExploreBuilding() {
 	let out = wikiH1("探索建築");

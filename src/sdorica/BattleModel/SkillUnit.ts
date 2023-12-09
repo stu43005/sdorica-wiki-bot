@@ -1,8 +1,8 @@
-import { BaseSkillEffect } from "./skilleffect/BaseSkillEffect";
-import { skillEffectStringify } from "./skilleffect/SkillEffectStringify";
-import { IGroupedCharacter } from "./target/IGroupedCharacter";
-import { ISingleCharacter } from "./target/ISingleCharacter";
-import { targetResolve } from "./target/TargetStringify";
+import { BaseSkillEffect } from "./skilleffect/BaseSkillEffect.js";
+import { skillEffectStringify } from "./skilleffect/SkillEffectStringify.js";
+import { IGroupedCharacter } from "./target/IGroupedCharacter.js";
+import { ISingleCharacter } from "./target/ISingleCharacter.js";
+import { targetResolve } from "./target/TargetStringify.js";
 
 export interface SkillUnit {
 	IsMultiple: boolean;

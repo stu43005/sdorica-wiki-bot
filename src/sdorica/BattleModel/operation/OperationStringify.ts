@@ -1,51 +1,51 @@
-import { localizationBuffName } from "../../../localization";
-import { singleBuffStringify } from "../buff/BuffStringify";
-import { BuffEnums } from "../BuffEnums";
-import { BuffTag } from "../BuffTag";
-import { conditionBuffStringify } from "../condition/ConditionStringify";
-import { AssignedValue } from "../constant/AssignedValue";
-import { BuffAssignedInteger } from "../constant/BuffAssignedInteger";
-import { constantStringify } from "../constant/ConstantStringify";
-import { BuffAssignedIntegerGroup } from "../constant/grouped/BuffAssignedIntegerGroup";
-import { ISingleInteger } from "../constant/ISingleInteger";
-import { addBuff, skillEffectStringify } from "../skilleffect/SkillEffectStringify";
-import { SkillProperty } from "../SkillProperty";
-import { skillUnitStringify } from "../SkillUnit";
-import { BuffAssignedCharacterGroup } from "../target/multi/BuffAssignedCharacterGroup";
-import { BuffAssignedCharacter } from "../target/single/BuffAssignedCharacter";
-import { mulitTargetStringify, singleTargetStringify } from "../target/TargetStringify";
-import { AssignParameter, AssignParameterSkillEffect } from "./AssignParameterSkillEffect";
-import { BonusEffectForSkillProperty } from "./BonusEffectForSkillProperty";
-import { CharacterAddPower } from "./CharacterAddPower";
-import { DirectSkillEffect } from "./DirectSkillEffect";
-import { ExtraPowerForSkillEffect } from "./ExtraPowerForSkillEffect";
-import { IBaseOperation } from "./IBaseOperation";
-import { ImmediatelySkillEffect } from "./ImmediatelySkillEffect";
-import { IOperationToBuff } from "./operateBuff/IOperationToBuff";
-import { ReplaceBuffTag } from "./operateBuff/ReplaceBuffTag";
-import { SetBuffField } from "./operateBuff/SetBuffField";
-import { OperateCharacter } from "./OperateCharacter";
-import { AddBuff } from "./operateCharacter/AddBuff";
-import { CastSkillSet } from "./operateCharacter/CastSkillSet";
-import { IOperationToCharacter } from "./operateCharacter/IOperationToCharacter";
-import { OperateCharacterAllConditionalBuffs } from "./operateCharacter/OperateCharacterAllConditionalBuffs";
-import { RemoveBuff } from "./operateCharacter/RemoveBuff";
-import { OperateCharacterGroup } from "./OperateCharacterGroup";
-import { OperateSingleBuff } from "./OperateSingleBuff";
-import { OperateThisBuff } from "./OperateThisBuff";
+import { localizationBuffName } from "../../../localization.js";
+import { singleBuffStringify } from "../buff/BuffStringify.js";
+import { BuffEnums } from "../BuffEnums.js";
+import { BuffTag } from "../BuffTag.js";
+import { conditionBuffStringify } from "../condition/ConditionStringify.js";
+import { AssignedValue } from "../constant/AssignedValue.js";
+import { BuffAssignedInteger } from "../constant/BuffAssignedInteger.js";
+import { constantStringify } from "../constant/ConstantStringify.js";
+import { BuffAssignedIntegerGroup } from "../constant/grouped/BuffAssignedIntegerGroup.js";
+import { ISingleInteger } from "../constant/ISingleInteger.js";
+import { addBuff, skillEffectStringify } from "../skilleffect/SkillEffectStringify.js";
+import { SkillProperty } from "../SkillProperty.js";
+import { skillUnitStringify } from "../SkillUnit.js";
+import { BuffAssignedCharacterGroup } from "../target/multi/BuffAssignedCharacterGroup.js";
+import { BuffAssignedCharacter } from "../target/single/BuffAssignedCharacter.js";
+import { mulitTargetStringify, singleTargetStringify } from "../target/TargetStringify.js";
+import { AssignParameter, AssignParameterSkillEffect } from "./AssignParameterSkillEffect.js";
+import { BonusEffectForSkillProperty } from "./BonusEffectForSkillProperty.js";
+import { CharacterAddPower } from "./CharacterAddPower.js";
+import { DirectSkillEffect } from "./DirectSkillEffect.js";
+import { ExtraPowerForSkillEffect } from "./ExtraPowerForSkillEffect.js";
+import { IBaseOperation } from "./IBaseOperation.js";
+import { ImmediatelySkillEffect } from "./ImmediatelySkillEffect.js";
+import { IOperationToBuff } from "./operateBuff/IOperationToBuff.js";
+import { ReplaceBuffTag } from "./operateBuff/ReplaceBuffTag.js";
+import { SetBuffField } from "./operateBuff/SetBuffField.js";
+import { OperateCharacter } from "./OperateCharacter.js";
+import { AddBuff } from "./operateCharacter/AddBuff.js";
+import { CastSkillSet } from "./operateCharacter/CastSkillSet.js";
+import { IOperationToCharacter } from "./operateCharacter/IOperationToCharacter.js";
+import { OperateCharacterAllConditionalBuffs } from "./operateCharacter/OperateCharacterAllConditionalBuffs.js";
+import { RemoveBuff } from "./operateCharacter/RemoveBuff.js";
+import { OperateCharacterGroup } from "./OperateCharacterGroup.js";
+import { OperateSingleBuff } from "./OperateSingleBuff.js";
+import { OperateThisBuff } from "./OperateThisBuff.js";
 
 export function operationStringify(operation: IBaseOperation) {
 	if (!operation) return "";
 	if (operation.$type == "BattleModel.OperateCharacter") {
 		const obj = operation as OperateCharacter;
 		return `對${singleTargetStringify(obj.character)}${operateCharacterStringify(
-			obj.operation
+			obj.operation,
 		)}`;
 	}
 	if (operation.$type == "BattleModel.OperateCharacterGroup") {
 		const obj = operation as OperateCharacterGroup;
 		return `對${mulitTargetStringify(obj.group)}所有角色${operateCharacterStringify(
-			obj.operation
+			obj.operation,
 		)}`;
 	}
 	if (operation.$type == "BattleModel.OperateThisBuff") {
@@ -69,7 +69,7 @@ export function operationStringify(operation: IBaseOperation) {
 	if (operation.$type == "BattleModel.CharacterAddPower") {
 		const obj = operation as CharacterAddPower;
 		return `${singleTargetStringify(obj.character)}的攻擊力增加(${constantStringify(
-			obj.value
+			obj.value,
 		)})${obj.isPercent ? "%" : ""}`;
 	}
 	if (operation.$type == "BattleModel.DirectSkillEffect") {
@@ -163,7 +163,7 @@ export function operateCharacterStringify(operation: IOperationToCharacter) {
 	if (operation.$type == "BattleModel.OperateCharacterAllConditionalBuffs") {
 		const obj = operation as OperateCharacterAllConditionalBuffs;
 		return `符合(${conditionBuffStringify(obj.condition)})的狀態${operateBuffStringify(
-			obj.operation
+			obj.operation,
 		)}`;
 	}
 	console.error(`Unknown IOperationToCharacter type: ${operation.$type}`);
@@ -175,7 +175,7 @@ export function operateBuffStringify(operation: IOperationToBuff) {
 	if (operation.$type == "BattleModel.SetBuffField") {
 		const obj = operation as SetBuffField;
 		return `的${BuffEnums.BuffIntergerField.toString(
-			obj.targetField
+			obj.targetField,
 		)}${BuffEnums.SetterOp.toString(obj.setOperator)}${constantStringify(obj.value)}`;
 	}
 	if (operation.$type == "BattleModel.ReplaceBuffTag") {

@@ -1,10 +1,10 @@
-import _ from "lodash";
-import { ImperiumData } from "../imperium-data";
-import { localizationString } from "../localization";
-import { LookupTableCategory } from "../model/enums/lookup-table-category.enum";
-import { wikiH1, wikiH2 } from "../templates/wikiheader";
-import { wikiimage } from "../templates/wikiimage";
-import { WikiTableStruct, wikitable } from "../templates/wikitable";
+import * as _ from "lodash-es";
+import { ImperiumData } from "../imperium-data.js";
+import { localizationString } from "../localization.js";
+import { LookupTableCategory } from "../model/enums/custom/lookup-table-category.enum.js";
+import { wikiH1, wikiH2 } from "../templates/wikiheader.js";
+import { wikiimage } from "../templates/wikiimage.js";
+import { WikiTableStruct, wikitable } from "../templates/wikitable.js";
 
 const BlessEffectsTable = ImperiumData.fromGamedata().getTable("BlessEffects");
 

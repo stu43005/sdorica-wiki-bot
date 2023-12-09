@@ -1,14 +1,14 @@
-import { AssetbundleLookupTable } from "../assetbundle-lookup-table";
-import { ImperiumData, RowWrapper } from "../imperium-data";
-import { localizationString } from "../localization";
-import { DropItemsGroup } from "./drop-items";
-import { HeroRank } from "./enums/hero-rank.enum";
-import { HeroSlot } from "./enums/hero-slot.enum";
-import { LookupTableCategory } from "./enums/lookup-table-category.enum";
-import { Hero } from "./hero";
-import { ItemGiveList } from "./item-give-list";
-import { ItemPayRef } from "./item-pay-ref";
-import { TavernMissionRequire } from "./tavern-mission-require";
+import { AssetbundleLookupTable } from "../assetbundle-lookup-table.js";
+import { ImperiumData, RowWrapper } from "../imperium-data.js";
+import { localizationString } from "../localization.js";
+import { DropItemsGroup } from "./drop-items.js";
+import { HeroRank } from "./enums/custom/hero-rank.enum.js";
+import { HeroSlot } from "./enums/custom/hero-slot.enum.js";
+import { LookupTableCategory } from "./enums/custom/lookup-table-category.enum.js";
+import { Hero } from "./hero.js";
+import { ItemGiveList } from "./item-give-list.js";
+import { ItemPayRef } from "./item-pay-ref.js";
+import { TavernMissionRequire } from "./tavern-mission-require.js";
 
 const TavernMissionTable = ImperiumData.fromGamedata().getTable("TavernMission");
 
@@ -38,6 +38,7 @@ export class TavernMission {
 				return item;
 			}
 		}
+		return;
 	}
 
 	public static getAll() {
@@ -181,7 +182,7 @@ export class TavernMission {
 	#displayExtraDropItem: ItemGiveList | null = null;
 	get displayExtraDropItem(): ItemGiveList {
 		return (this.#displayExtraDropItem ??= ItemGiveList.parseList(
-			this.row.get("displayExtraDropItem")
+			this.row.get("displayExtraDropItem"),
 		));
 	}
 
@@ -269,10 +270,10 @@ export class TavernMission {
 			this.heroSlot === HeroSlot.GOLD
 				? "expedition_frame_gold"
 				: this.heroSlot === HeroSlot.BLACK
-				? "expedition_frame_black"
-				: this.heroSlot === HeroSlot.WHITE
-				? "expedition_frame_white"
-				: ""
+				  ? "expedition_frame_black"
+				  : this.heroSlot === HeroSlot.WHITE
+				    ? "expedition_frame_white"
+				    : "",
 		);
 	}
 
@@ -292,7 +293,7 @@ export class TavernMission {
 	public getIconAssetUrl() {
 		return AssetbundleLookupTable.getInstance().getAssetUrl(
 			LookupTableCategory.Monster_SpSkillIcon,
-			this.iconKey
+			this.iconKey,
 		);
 	}
 

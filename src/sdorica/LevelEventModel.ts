@@ -1,5 +1,5 @@
-import { AudioName } from "./AudioName";
-import { LevelEventPoint } from "./LevelEventPoint";
+import { AudioName } from "./AudioName.js";
+import { LevelEventPoint } from "./LevelEventPoint.js";
 
 export const DEFAULT_BATTLE_AUDIO = "music_common_battle";
 

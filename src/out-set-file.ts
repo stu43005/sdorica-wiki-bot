@@ -1,7 +1,7 @@
 import path from "node:path";
-import { inputJsonSync } from "./input";
-import { outJson } from "./out";
-import { ResourceFile } from "./out-resource-file";
+import { inputJsonSync } from "./input.js";
+import { outJson } from "./out.js";
+import { ResourceFile } from "./out-resource-file.js";
 
 export class SetFile<T> extends ResourceFile<Set<T>> {
 	constructor(private filePath: string) {

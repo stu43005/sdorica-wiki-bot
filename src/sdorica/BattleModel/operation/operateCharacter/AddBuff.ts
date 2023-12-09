@@ -1,5 +1,5 @@
-import { AddBuffData } from "../../AddBuffData";
-import { IOperationToCharacter } from "./IOperationToCharacter";
+import { AddBuffData } from "../../AddBuffData.js";
+import { IOperationToCharacter } from "./IOperationToCharacter.js";
 
 export interface AddBuff extends IOperationToCharacter {
 	buffToAdd: AddBuffData;

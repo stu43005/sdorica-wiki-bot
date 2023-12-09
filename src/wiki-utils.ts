@@ -1,6 +1,5 @@
-import array_slice from "locutus/php/array/array_slice";
-import { TemplateFormatter } from "./lib/TemplateFormatter";
-import { objectEach } from "./utils";
+import { TemplateFormatter } from "./lib/TemplateFormatter.js";
+import { objectEach } from "./utils.js";
 
 const invalidChar = {
 	"#": "＃",
@@ -37,26 +36,11 @@ export function wikiNextLine(text: string) {
 export function wikitemplate(
 	name: string,
 	params: Record<string, any>,
-	format: string = TemplateFormatter.FORMAT.INLINE
+	format: string = TemplateFormatter.FORMAT.INLINE,
 ) {
 	const formatter = new TemplateFormatter();
 	formatter.setTemplateName(name);
 	formatter.setParameters(params);
 	formatter.setFormat(format);
 	return formatter.getTemplate();
-}
-
-export function titleparts(title = "", parts = 0, offset = 0) {
-	title = String(title);
-	const bits = title.split("/");
-	if (bits.length <= 0) {
-		return title;
-	}
-	if (offset > 0) {
-		offset--;
-	}
-	if (parts == 0) {
-		return array_slice(bits, offset).join("/");
-	}
-	return array_slice(bits, offset, parts).join("/");
 }

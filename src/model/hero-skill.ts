@@ -1,17 +1,17 @@
-import { ImperiumData } from "../imperium-data";
-import { applyStringRefer, localizationString, stringReferReplacer } from "../localization";
-import { numMultiply } from "../utils";
-import { HeroRank } from "./enums/hero-rank.enum";
-import { SkillId } from "./enums/skill-id.enum";
-import { SkillType } from "./enums/skill-type.enum";
-import { StoneEraseShape } from "./enums/stone-erase-shape.enum";
-import { StoneEraseType } from "./enums/stone-erase-type.enum";
-import { IHeroSkillSet } from "./hero-skillset.interface";
+import { ImperiumData } from "../imperium-data.js";
+import { applyStringRefer, localizationString, stringReferReplacer } from "../localization.js";
+import { numMultiply } from "../utils.js";
+import { HeroRank } from "./enums/custom/hero-rank.enum.js";
+import { SkillId } from "./enums/custom/skill-id.enum.js";
+import { SkillType } from "./enums/custom/skill-type.enum.js";
+import { StoneEraseShape } from "./enums/custom/stone-erase-shape.enum.js";
+import { StoneEraseType } from "./enums/stone-erase-type.enum.js";
+import { IHeroSkillSet } from "./hero-skillset.interface.js";
 
 const BuffInfoTable = ImperiumData.fromGamedata().getTable("BuffInfo");
 
 export class HeroSkill {
-	public static getSkillType(stoneEraseType: StoneEraseType) {
+	public static getSkillType(stoneEraseType: StoneEraseType): SkillType {
 		switch (stoneEraseType) {
 			case StoneEraseType.O1:
 				return SkillType.O1;
@@ -31,7 +31,7 @@ export class HeroSkill {
 		}
 	}
 
-	public static getStoneEraseShape(stoneEraseType: StoneEraseType) {
+	public static getStoneEraseShape(stoneEraseType: StoneEraseType): StoneEraseShape {
 		switch (stoneEraseType) {
 			case StoneEraseType.O3I:
 			case StoneEraseType.O4I:
@@ -52,8 +52,8 @@ export class HeroSkill {
 		skillSet: IHeroSkillSet,
 		skillId: SkillId,
 		stoneEraseType: StoneEraseType,
-		tips = false
-	) {
+		tips = false,
+	): HeroSkill {
 		const type = HeroSkill.getSkillType(stoneEraseType);
 		const shape = HeroSkill.getStoneEraseShape(stoneEraseType);
 		return new HeroSkill(skillSet, skillId, type, shape, tips);
@@ -71,12 +71,12 @@ export class HeroSkill {
 		public skillId: SkillId,
 		public type: SkillType,
 		public shape: StoneEraseShape = StoneEraseShape.None,
-		public tips: boolean = false
+		public tips: boolean = false,
 	) {
 		this.name = localizationString("MetagameSkillInfo")(`${skillSet.model}_${skillId}_name`);
 		this.info = applyStringRefer(
 			localizationString("MetagameSkillInfo")(`${skillSet.model}_${skillId}_skillinfo`),
-			(...args) => this.infoReplacer(...args)
+			(...args) => this.infoReplacer(...args),
 		);
 
 		const triggerMatch = this.info.match(/(^|\n+)\s*【觸發限制】：([^$\n]*)($|\n)/);
@@ -131,7 +131,7 @@ export class HeroSkill {
 			.replace(/(?:^|\n+)\s*【([^】]*)】：.*/g, (match, name) => {
 				if (name === "觸發限制" || name === "反擊限制") return "";
 				const buff = BuffInfoTable.find(
-					(r) => localizationString("BaseBuff")(r.get("localizationNameKey")) == name
+					(r) => localizationString("BaseBuff")(r.get("localizationNameKey")) == name,
 				);
 				if (buff) return "";
 				return match;
@@ -158,7 +158,7 @@ export class HeroSkill {
 			[`${this.type}反擊限制`]: this.counterAttackLimit,
 		};
 		if (this.unlockRank) {
-			params.解鎖被動階級 = this.unlockRank;
+			params["解鎖被動階級"] = this.unlockRank;
 		}
 		return params;
 	}

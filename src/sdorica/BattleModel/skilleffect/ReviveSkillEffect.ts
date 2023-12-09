@@ -1,4 +1,4 @@
-import { BaseSkillEffect } from "./BaseSkillEffect";
+import { BaseSkillEffect } from "./BaseSkillEffect.js";
 
 export interface ReviveSkillEffect extends BaseSkillEffect {
 	ReviveTargetBlood: number;

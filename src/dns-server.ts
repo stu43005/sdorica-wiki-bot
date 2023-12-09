@@ -1,5 +1,5 @@
-import dns2, { Packet } from "dns2";
-import { Logger } from "./logger";
+import dns2 from "dns2";
+import { Logger } from "./logger.js";
 
 const domains = ["origin-sdorica.rayark.download"];
 const ip = "100.126.216.59";
@@ -15,11 +15,11 @@ export function createDnsProxy() {
 			const { name } = question;
 
 			if (domains.includes(name)) {
-				const response = Packet.createResponseFromRequest(request);
+				const response = dns2.Packet.createResponseFromRequest(request);
 				response.answers.push({
 					name,
-					type: Packet.TYPE.A,
-					class: Packet.CLASS.IN,
+					type: dns2.Packet.TYPE.A,
+					class: dns2.Packet.CLASS.IN,
 					ttl: 300,
 					address: ip,
 				});

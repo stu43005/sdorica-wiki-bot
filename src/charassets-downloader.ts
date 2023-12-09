@@ -1,24 +1,24 @@
 import * as bson from "bson";
-import * as fs from "fs-extra";
 import JSZip from "jszip";
-import * as _ from "lodash";
+import * as _ from "lodash-es";
+import fsp from "node:fs/promises";
+import path from "node:path";
 import { promisify } from "node:util";
 import pWaterfall from "p-waterfall";
-import * as path from "path";
 import { unzip } from "zlib";
-import { CHARASSETS_PATH } from "./config";
-import { AssetDataRaw } from "./data-raw-type";
-import { ImperiumData } from "./imperium-data";
-import { inputJsonSync } from "./input";
-import { fsSerializer } from "./lib/FullSerializer/fsSerializer";
-import { localizationBuffName, localizationCharacterName } from "./localization";
-import { Logger } from "./logger";
-import { fsExists, outJson, rpFile } from "./out";
-import { conditionStringify } from "./sdorica/BattleModel/condition/ConditionStringify";
-import { sortByCharacterModelNo } from "./utils";
-import { interpreted as battleCharacterInterpreted } from "./viewerjs/entry/BattleCharacterAsset";
-import { interpreted as buffInterpreted } from "./viewerjs/entry/BuffAsset";
-import { siJsonParse } from "./viewerjs/utils";
+import { CHARASSETS_PATH } from "./config.js";
+import { AssetDataRaw } from "./data-raw-type.js";
+import { ImperiumData } from "./imperium-data.js";
+import { inputJsonSync } from "./input.js";
+import { fsSerializer } from "./lib/FullSerializer/fsSerializer.js";
+import { localizationBuffName, localizationCharacterName } from "./localization.js";
+import { Logger } from "./logger.js";
+import { fsExists, outJson, rpFile } from "./out.js";
+import { conditionStringify } from "./sdorica/BattleModel/condition/ConditionStringify.js";
+import { sortByCharacterModelNo } from "./utils.js";
+import { interpreted as battleCharacterInterpreted } from "./viewerjs/entry/BattleCharacterAsset.js";
+import { interpreted as buffInterpreted } from "./viewerjs/entry/BuffAsset.js";
+import { siJsonParse } from "./viewerjs/utils.js";
 
 const doUnzip = promisify(unzip);
 
@@ -88,11 +88,11 @@ export async function downloadCharAssetsBson(asset: AssetDataRaw, force?: boolea
 	try {
 		data = await pWaterfall(
 			[
-				(filePath) => fs.readFile(filePath, { encoding: "utf8" }),
+				(filePath) => fsp.readFile(filePath, { encoding: "utf8" }),
 				(b64content) => Buffer.from(b64content, "base64"),
 				(buf) => bson.deserialize(buf),
 			],
-			bsonFilePath
+			bsonFilePath,
 		);
 	} catch (error) {
 		logger.error("opening charAssets.bson error:", error);
@@ -142,8 +142,8 @@ export async function downloadCharAssetsZip(asset: AssetDataRaw, force?: boolean
 
 	try {
 		const zip = await pWaterfall(
-			[(filePath) => fs.readFile(filePath), (data) => JSZip.loadAsync(data)],
-			zipFilePath
+			[(filePath) => fsp.readFile(filePath), (data) => JSZip.loadAsync(data)],
+			zipFilePath,
 		);
 
 		const serializer = new fsSerializer();
@@ -157,7 +157,7 @@ export async function downloadCharAssetsZip(asset: AssetDataRaw, force?: boolean
 						(buf) => buf.toString("utf8"),
 						(jsonString) => siJsonParse(jsonString),
 					],
-					zipEntry
+					zipEntry,
 				);
 				try {
 					data = serializer.TryDeserialize(data);
@@ -189,7 +189,7 @@ export async function downloadCharAssetsZip(asset: AssetDataRaw, force?: boolean
 						const infos = Object.keys(data).map((name) => getCharAssetEntryInfo(name));
 						const battleCharacters = findKeys(
 							infos,
-							CharAssetEntryType.BATTLECHARACTOR
+							CharAssetEntryType.BATTLECHARACTOR,
 						);
 						const buffs = findKeys(infos, CharAssetEntryType.BUFF);
 						const keysJson = {

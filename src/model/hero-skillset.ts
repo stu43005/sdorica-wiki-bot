@@ -1,24 +1,24 @@
 import { render } from "preact-render-to-string";
-import { AssetbundleLookupTable } from "../assetbundle-lookup-table";
-import { ImperiumData, RowWrapper } from "../imperium-data";
-import { localizationString } from "../localization";
-import { HeroIconParams, heroIconTemplate } from "../templates/hero-icon";
-import { HeroRankParams, heroRankTemplate } from "../templates/hero-rank";
-import { heroSkinTemplate } from "../templates/hero-skin";
-import { HeroRank } from "./enums/hero-rank.enum";
-import { HeroSkillType } from "./enums/hero-skill-type.enum";
-import { ItemCategory } from "./enums/item-category.enum";
-import { LookupTableCategory } from "./enums/lookup-table-category.enum";
-import { SkillId } from "./enums/skill-id.enum";
-import { SkillType } from "./enums/skill-type.enum";
-import { StoneEraseShape } from "./enums/stone-erase-shape.enum";
-import { StoneEraseType } from "./enums/stone-erase-type.enum";
-import { Hero } from "./hero";
-import { HeroInfo } from "./hero-info";
-import { HeroSkill } from "./hero-skill";
-import { HeroSkillLevel } from "./hero-skilllevel";
-import { IHeroSkillSet } from "./hero-skillset.interface";
-import { Item } from "./item";
+import { AssetbundleLookupTable } from "../assetbundle-lookup-table.js";
+import { ImperiumData, RowWrapper } from "../imperium-data.js";
+import { localizationString } from "../localization.js";
+import { HeroIconParams, heroIconTemplate } from "../templates/hero-icon.js";
+import { HeroRankParams, heroRankTemplate } from "../templates/hero-rank.js";
+import { heroSkinTemplate } from "../templates/hero-skin.js";
+import { HeroRank } from "./enums/custom/hero-rank.enum.js";
+import { HeroSkillType } from "./enums/hero-skill-type.enum.js";
+import { ItemCategory } from "./enums/item-category.enum.js";
+import { LookupTableCategory } from "./enums/custom/lookup-table-category.enum.js";
+import { SkillId } from "./enums/custom/skill-id.enum.js";
+import { SkillType } from "./enums/custom/skill-type.enum.js";
+import { StoneEraseShape } from "./enums/custom/stone-erase-shape.enum.js";
+import { StoneEraseType } from "./enums/stone-erase-type.enum.js";
+import { Hero } from "./hero.js";
+import { HeroInfo } from "./hero-info.js";
+import { HeroSkill } from "./hero-skill.js";
+import { HeroSkillLevel } from "./hero-skilllevel.js";
+import { IHeroSkillSet } from "./hero-skillset.interface.js";
+import { Item } from "./item.js";
 
 const HeroSkillsTable = ImperiumData.fromGamedata().getTable("HeroSkills");
 
@@ -65,6 +65,7 @@ export class HeroSkillSet implements IHeroSkillSet {
 				return item;
 			}
 		}
+		return;
 	}
 
 	public static getAll() {
@@ -198,7 +199,7 @@ export class HeroSkillSet implements IHeroSkillSet {
 			this.#bookItem = Item.find(
 				(item) =>
 					item.category == ItemCategory.HeroSkill &&
-					item.effectValue.toString() == this.id
+					item.effectValue.toString() == this.id,
 			);
 		}
 		return this.#bookItem;
@@ -247,7 +248,7 @@ export class HeroSkillSet implements IHeroSkillSet {
 	getFigureLargeAssetUrl() {
 		return AssetbundleLookupTable.getInstance().getAssetUrl(
 			LookupTableCategory.CharacterImage_LARGE,
-			this.figure
+			this.figure,
 		);
 	}
 	/**
@@ -256,7 +257,7 @@ export class HeroSkillSet implements IHeroSkillSet {
 	getFigureMidAssetUrl() {
 		return AssetbundleLookupTable.getInstance().getAssetUrl(
 			LookupTableCategory.CharacterImage_MID,
-			this.figureM
+			this.figureM,
 		);
 	}
 	/**
@@ -265,7 +266,7 @@ export class HeroSkillSet implements IHeroSkillSet {
 	getAutographAssetUrl() {
 		return AssetbundleLookupTable.getInstance().getAssetUrl(
 			LookupTableCategory.CharacterAutograph,
-			this.heroAg
+			this.heroAg,
 		);
 	}
 	/**
@@ -274,7 +275,7 @@ export class HeroSkillSet implements IHeroSkillSet {
 	getSdAssetUrl() {
 		return AssetbundleLookupTable.getInstance().getAssetUrl(
 			LookupTableCategory.CharacterImage_SD,
-			this.heroSd
+			this.heroSd,
 		);
 	}
 
@@ -322,7 +323,7 @@ export class HeroSkillSet implements IHeroSkillSet {
 		return render(heroIconTemplate(this, options));
 	}
 
-	toJSON(minify?: boolean) {
+	toJSON(minify?: boolean): any {
 		if (minify) {
 			return {
 				id: this.id,

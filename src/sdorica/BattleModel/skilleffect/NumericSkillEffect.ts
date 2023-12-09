@@ -1,5 +1,5 @@
-import { SkillValue } from "../SkillValue";
-import { BaseSkillEffect } from "./BaseSkillEffect";
+import { SkillValue } from "../SkillValue.js";
+import { BaseSkillEffect } from "./BaseSkillEffect.js";
 
 export interface NumericSkillEffect extends BaseSkillEffect {
 	_skillModifier: SkillValue;

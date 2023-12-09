@@ -1,11 +1,11 @@
-import { ImperiumData, RowWrapper } from "../imperium-data";
-import { localizationCharacterNameByHeroId, localizationString } from "../localization";
-import { wikiPageLink } from "../templates/wikilink";
-import { ChapterGroup } from "./enums/chapter-group.enum";
-import { MissionType } from "./enums/mission-type.enum";
-import { ItemGiveRef } from "./item-give-ref";
-import { Quest } from "./quest";
-import { TemplateString } from "./template-string";
+import { ImperiumData, RowWrapper } from "../imperium-data.js";
+import { localizationCharacterNameByHeroId, localizationString } from "../localization.js";
+import { wikiPageLink } from "../templates/wikilink.js";
+import { ChapterGroup } from "./enums/chapter-group.enum.js";
+import { MissionType } from "./enums/mission-type.enum.js";
+import { ItemGiveRef } from "./item-give-ref.js";
+import { Quest } from "./quest.js";
+import { TemplateString } from "./template-string.js";
 
 const MissionsTable = ImperiumData.fromGamedata().getTable("Missions");
 
@@ -35,6 +35,7 @@ export class Mission {
 				return item;
 			}
 		}
+		return;
 	}
 
 	public static getAll() {
@@ -99,7 +100,7 @@ export class Mission {
 		return (this.#giveItem ??= new ItemGiveRef(
 			this.row.get("giveType"),
 			this.row.get("giveLinkId"),
-			this.row.get("giveAmount")
+			this.row.get("giveAmount"),
 		));
 	}
 
@@ -142,7 +143,7 @@ export class Mission {
 					return localizationString("Mission")("limit_no_casualties");
 				}
 				return new TemplateString(
-					localizationString("Mission")("limit_casualties_count")
+					localizationString("Mission")("limit_casualties_count"),
 				).apply({
 					casualty: count,
 				});
@@ -174,7 +175,7 @@ export class Mission {
 						const block = +skill.substring(1);
 						if (block) {
 							return new TemplateString(
-								localizationString("Mission")("castmore_Skill")
+								localizationString("Mission")("castmore_Skill"),
 							).apply({
 								block,
 								skillCount,
@@ -182,7 +183,7 @@ export class Mission {
 						}
 					}
 					return new TemplateString(
-						localizationString("Mission")(`castmore_${skill}`)
+						localizationString("Mission")(`castmore_${skill}`),
 					).apply({
 						skillCount,
 					});
@@ -200,13 +201,13 @@ export class Mission {
 						if (block) {
 							if (!skillCount) {
 								return new TemplateString(
-									localizationString("Mission")("cast_no_erase_Skill")
+									localizationString("Mission")("cast_no_erase_Skill"),
 								).apply({
 									block,
 								});
 							}
 							return new TemplateString(
-								localizationString("Mission")("castless_Skill")
+								localizationString("Mission")("castless_Skill"),
 							).apply({
 								block,
 								skillCount,
@@ -217,7 +218,7 @@ export class Mission {
 						return localizationString("Mission")(`cast_no_${skill}`);
 					}
 					return new TemplateString(
-						localizationString("Mission")(`castless_${skill}`)
+						localizationString("Mission")(`castless_${skill}`),
 					).apply({
 						skillCount,
 					});
@@ -229,7 +230,7 @@ export class Mission {
 				const match = limit.match(/^limitS(\d+)$/);
 				if (match) {
 					return new TemplateString(
-						localizationString("Mission")("cast_no_erase_Skill")
+						localizationString("Mission")("cast_no_erase_Skill"),
 					).apply({
 						block: match[1],
 					});
@@ -237,6 +238,7 @@ export class Mission {
 				debugger;
 				return limit;
 			}
+			return limit;
 		});
 
 		let clear = `${this.param1}`;
@@ -250,12 +252,12 @@ export class Mission {
 					clear = new TemplateString(localizationString("Mission")("clear_region")).apply(
 						{
 							questname,
-						}
+						},
 					);
 					break;
 				case ChapterGroup.Challenge:
 					clear = new TemplateString(
-						localizationString("Mission")("clear_challenge")
+						localizationString("Mission")("clear_challenge"),
 					).apply({
 						questname,
 					});

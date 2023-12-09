@@ -1,10 +1,10 @@
-import _ from "lodash";
+import * as _ from "lodash-es";
 import numeral from "numeral";
-import { ImperiumData } from "../imperium-data";
-import { localizationHomelandBuildingName } from "../localization";
-import { TavernMission } from "../model/tavern-mission";
-import { wikiH1, wikiH2 } from "../templates/wikiheader";
-import { WikiTableStruct, wikitable } from "../templates/wikitable";
+import { ImperiumData } from "../imperium-data.js";
+import { localizationHomelandBuildingName } from "../localization.js";
+import { TavernMission } from "../model/tavern-mission.js";
+import { wikiH1, wikiH2 } from "../templates/wikiheader.js";
+import { WikiTableStruct, wikitable } from "../templates/wikitable.js";
 
 const TavernMissionDropTable = ImperiumData.fromGamedata().getTable("TavernMissionDrop");
 
@@ -28,11 +28,11 @@ export default function wikiTavernMissionDrop() {
 	let out = wikiH1(`篝火出現任務`);
 
 	const TavernMissionDropEnabled = TavernMissionDropTable.filter(
-		(r) => TavernMission.get(r.get("missionId"))?.enable ?? false
+		(r) => TavernMission.get(r.get("missionId"))?.enable ?? false,
 	);
 	const dropTypes = _.groupBy(
 		TavernMissionDropEnabled,
-		(r) => `${r.get("type")},${r.get("param1")},${r.get("param2")},${r.get("param3")}`
+		(r) => `${r.get("type")},${r.get("param1")},${r.get("param2")},${r.get("param3")}`,
 	);
 	for (const [typeKey, group1] of Object.entries(dropTypes)) {
 		const [type, param1, param2] = typeKey.split(",");

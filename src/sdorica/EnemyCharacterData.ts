@@ -1,4 +1,4 @@
-import { BattleCharacterName } from "./BattleCharacterName";
+import { BattleCharacterName } from "./BattleCharacterName.js";
 
 export interface EnemyCharacterData {
 	character: BattleCharacterName;

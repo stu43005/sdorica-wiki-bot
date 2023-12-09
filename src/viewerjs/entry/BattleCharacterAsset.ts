@@ -2,25 +2,25 @@ import JSZip from "jszip";
 import {
 	localizationCharacterName,
 	localizationCharacterNameWithDefault,
-} from "../../localization";
-import { Logger } from "../../logger";
-import { BattleCharacterAsset } from "../../sdorica/BattleCharacterAsset";
-import { AssistantActiveCastSkill } from "../../sdorica/BattleModel/AssistantActiveCastSkill";
-import { AssistantActiveCastSkillWithPassiveBuff } from "../../sdorica/BattleModel/AssistantActiveCastSkillWithPassiveBuff";
-import { AssistantPassiveBuffSkill } from "../../sdorica/BattleModel/AssistantPassiveBuffSkill";
-import { AssistantSkill } from "../../sdorica/BattleModel/AssistantSkill";
-import { BattleCharacter } from "../../sdorica/BattleModel/BattleCharacter";
-import { BattleSkill } from "../../sdorica/BattleModel/BattleSkill";
-import { EnemyAI } from "../../sdorica/BattleModel/EnemyAI";
-import { IBattleSkill } from "../../sdorica/BattleModel/IBattleSkill";
-import { SequenceEnemyAI } from "../../sdorica/BattleModel/SequenceEnemyAI";
-import { SkillCastInfo } from "../../sdorica/BattleModel/SkillCastInfo";
-import { SkillSet } from "../../sdorica/BattleModel/SkillSet";
-import { StoneEraseType } from "../../sdorica/BattleModel/StoneSystem/StoneEraseType";
-import { StoneType } from "../../sdorica/BattleModel/StoneSystem/StoneType";
-import { Dictionary } from "../../sdorica/Dictionary";
-import { objectEach, sortByCharacterModelNo } from "../../utils";
-import { toLevel } from "../../wiki-hero";
+} from "../../localization.js";
+import { Logger } from "../../logger.js";
+import { BattleCharacterAsset } from "../../sdorica/BattleCharacterAsset.js";
+import { AssistantActiveCastSkill } from "../../sdorica/BattleModel/AssistantActiveCastSkill.js";
+import { AssistantActiveCastSkillWithPassiveBuff } from "../../sdorica/BattleModel/AssistantActiveCastSkillWithPassiveBuff.js";
+import { AssistantPassiveBuffSkill } from "../../sdorica/BattleModel/AssistantPassiveBuffSkill.js";
+import { AssistantSkill } from "../../sdorica/BattleModel/AssistantSkill.js";
+import { BattleCharacter } from "../../sdorica/BattleModel/BattleCharacter.js";
+import { BattleSkill } from "../../sdorica/BattleModel/BattleSkill.js";
+import { EnemyAI } from "../../sdorica/BattleModel/EnemyAI.js";
+import { IBattleSkill } from "../../sdorica/BattleModel/IBattleSkill.js";
+import { SequenceEnemyAI } from "../../sdorica/BattleModel/SequenceEnemyAI.js";
+import { SkillCastInfo } from "../../sdorica/BattleModel/SkillCastInfo.js";
+import { SkillSet } from "../../sdorica/BattleModel/SkillSet.js";
+import { StoneEraseType } from "../../sdorica/BattleModel/StoneSystem/StoneEraseType.js";
+import { StoneType } from "../../sdorica/BattleModel/StoneSystem/StoneType.js";
+import { Dictionary } from "../../sdorica/Dictionary.js";
+import { objectEach, sortByCharacterModelNo } from "../../utils.js";
+import { toLevel } from "../../wiki-hero.js";
 import {
 	InterpretedAssistantActiveCastSkill,
 	InterpretedAssistantActiveCastSkillWithPassiveBuff,
@@ -28,8 +28,8 @@ import {
 	InterpretedAssistantSkill,
 	InterpretedBattleCharacter,
 	InterpretedSkillSet,
-} from "../interpreted-battle-character";
-import { ViewerJSHelper } from "../viewerjs-helper";
+} from "../interpreted-battle-character.js";
+import { type ViewerJSHelper } from "../viewerjs-helper.js";
 import {
 	addBuff,
 	conditionStringify,
@@ -39,7 +39,7 @@ import {
 	singleTargetStringify,
 	skillUnitStringify,
 	targetResolve,
-} from "./$ViewerInit";
+} from "./$ViewerInit.js";
 
 const logger = new Logger("BattleCharacterAsset");
 
@@ -169,7 +169,7 @@ function battleSkills(skills: Record<string, IBattleSkill>) {
 		} else if (skill.$type == "BattleModel.BattleSkill") {
 			const bs = skill as BattleSkill;
 			out[key] = out[key].concat(
-				bs._skillIdentifiers.map((unit) => skillUnitStringify(unit))
+				bs._skillIdentifiers.map((unit) => skillUnitStringify(unit)),
 			);
 		}
 	});
@@ -214,7 +214,7 @@ function assistantSkill(a1: AssistantSkill) {
 			_maxCastStack: a1._maxCastStack,
 			技能組: skillSet(a2.Skill),
 			被動: a2.PassiveBuffDatas.map(
-				(p) => `${targetResolve(p.TargetSelector)}${addBuff(p.BuffData)}`
+				(p) => `${targetResolve(p.TargetSelector)}${addBuff(p.BuffData)}`,
 			),
 		};
 		return out;

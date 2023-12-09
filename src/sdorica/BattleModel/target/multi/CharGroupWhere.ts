@@ -1,5 +1,5 @@
-import { IConditionOfCharacter } from "../../condition/IConditionOfCharacter";
-import { IGroupedCharacter } from "../IGroupedCharacter";
+import { IConditionOfCharacter } from "../../condition/IConditionOfCharacter.js";
+import { IGroupedCharacter } from "../IGroupedCharacter.js";
 
 export interface CharGroupWhere extends IGroupedCharacter {
 	group: IGroupedCharacter;

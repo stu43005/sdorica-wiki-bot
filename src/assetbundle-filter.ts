@@ -1,4 +1,4 @@
-import { minimatch } from "minimatch";
+import picomatch from "picomatch";
 import {
 	AssetbundleMappingItem,
 	addAsset,
@@ -7,9 +7,9 @@ import {
 	pathIdMappingContainer,
 	prefabMappingSprite,
 	uploadedAssets,
-} from "./assetbundle-asset";
-import { AssetbundleLookupTable } from "./assetbundle-lookup-table";
-import { LookupTableCategory } from "./model/enums/lookup-table-category.enum";
+} from "./assetbundle-asset.js";
+import { AssetbundleLookupTable } from "./assetbundle-lookup-table.js";
+import { LookupTableCategory } from "./model/enums/custom/lookup-table-category.enum.js";
 
 const globImageExt = "@(png|jpg|bmp|tga|psd)";
 const uploadGlobs: string[] = [
@@ -55,7 +55,7 @@ export function updateNeedUpdateList() {
 			continue;
 		}
 		for (const glob of uploadGlobs) {
-			if (minimatch(containerPath, glob, { nocase: true })) {
+			if (picomatch.isMatch(containerPath, glob, { nocase: true })) {
 				addAsset(containerPath);
 				break;
 			}
@@ -77,7 +77,7 @@ export function filterAsset(containerPath: string): boolean {
 		return true;
 	}
 	for (const glob of uploadGlobs) {
-		if (minimatch(containerPath, glob, { nocase: true })) {
+		if (picomatch.isMatch(containerPath, glob, { nocase: true })) {
 			return true;
 		}
 	}

@@ -1,5 +1,5 @@
-import { wikitemplate } from "../wiki-utils";
-import { HeroSlot } from "../model/enums/hero-slot.enum";
+import { wikitemplate } from "../wiki-utils.js";
+import { HeroSlot } from "../model/enums/custom/hero-slot.enum.js";
 
 // TODO:
 const asset = {

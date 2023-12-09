@@ -1,4 +1,4 @@
-import { IGroupedCharacter } from "../IGroupedCharacter";
+import { IGroupedCharacter } from "../IGroupedCharacter.js";
 
 export interface PVEEnemyTeam extends IGroupedCharacter {
 	includeDead: boolean;

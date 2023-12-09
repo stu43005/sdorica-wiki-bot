@@ -1,5 +1,5 @@
-import { IGroupedBuff } from "../grouped/IGroupedBuff";
-import { IGroupedBuffId } from "./IGroupedBuffId";
+import { IGroupedBuff } from "../grouped/IGroupedBuff.js";
+import { IGroupedBuffId } from "./IGroupedBuffId.js";
 
 export interface GeneralGroupedBuffId extends IGroupedBuffId {
 	BuffGroup: IGroupedBuff;

@@ -1,9 +1,9 @@
-import _ from "lodash";
-import { ImperiumData } from "../imperium-data";
-import { ItemGiveRef } from "../model/item-give-ref";
-import { wikiH1, wikiH2 } from "../templates/wikiheader";
-import { WikiTableCeil, WikiTableStruct, wikitable } from "../templates/wikitable";
-import { range } from "../utils";
+import * as _ from "lodash-es";
+import { ImperiumData } from "../imperium-data.js";
+import { ItemGiveRef } from "../model/item-give-ref.js";
+import { wikiH1, wikiH2 } from "../templates/wikiheader.js";
+import { WikiTableCeil, WikiTableStruct, wikitable } from "../templates/wikitable.js";
+import { range } from "../utils.js";
 
 const BattlefieldDropItemsTable = ImperiumData.fromGamedata().getTable("BattlefieldDropItems");
 
@@ -28,9 +28,9 @@ export default function wikiBattlefieldDropItems() {
 							entry.get(`giveType${i}`),
 							entry.get(`giveLinkId${i}`),
 							entry.get(`giveAmount${i}`),
-							entry.get(`chance${i}`)
+							entry.get(`chance${i}`),
 						).toWiki(),
-					})
+					}),
 				),
 			]);
 		}

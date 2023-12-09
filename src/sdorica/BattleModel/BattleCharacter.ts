@@ -1,12 +1,12 @@
-import { Dictionary } from "../Dictionary";
-import { AddBuffData } from "./AddBuffData";
-import { AssistantSkill } from "./AssistantSkill";
-import { BattleCharacterPose } from "./BattleCharacterPose";
-import { EnemyAI } from "./EnemyAI";
-import { IBattleSkill } from "./IBattleSkill";
-import { SkillSet } from "./SkillSet";
-import { StoneEraseType } from "./StoneSystem/StoneEraseType";
-import { StoneType } from "./StoneSystem/StoneType";
+import { Dictionary } from "../Dictionary.js";
+import { AddBuffData } from "./AddBuffData.js";
+import { AssistantSkill } from "./AssistantSkill.js";
+import { BattleCharacterPose } from "./BattleCharacterPose.js";
+import { EnemyAI } from "./EnemyAI.js";
+import { IBattleSkill } from "./IBattleSkill.js";
+import { SkillSet } from "./SkillSet.js";
+import { StoneEraseType } from "./StoneSystem/StoneEraseType.js";
+import { StoneType } from "./StoneSystem/StoneType.js";
 
 export interface BattleCharacter {
 	_power: number;

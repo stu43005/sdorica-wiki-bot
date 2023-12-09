@@ -1,5 +1,5 @@
-import { LevelInfo } from "../Quest/LevelInfo";
-import { QuestEntity } from "../QuestEntity";
+import { LevelInfo } from "../Quest/LevelInfo.js";
+import { QuestEntity } from "../QuestEntity.js";
 
 export interface EnterExploreResult {
 	quest: QuestEntity;

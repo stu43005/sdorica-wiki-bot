@@ -1,12 +1,12 @@
-import { localizationString } from "../../localization";
-import { DropItemsGroup } from "../../model/drop-items";
-import { LevelEventAsset } from "../../sdorica/LevelEventAsset";
+import { localizationString } from "../../localization.js";
+import { DropItemsGroup } from "../../model/drop-items.js";
+import { LevelEventAsset } from "../../sdorica/LevelEventAsset.js";
 import {
 	InterpretedEncounterEventObject,
 	InterpretedSceneSwitchEventPointObject,
-} from "../leveldata-tarns-event";
-import { ViewerJSHelper } from "../viewerjs-helper";
-import { containerSearchAuto, getLevelEventPath, ImperiumData } from "./$ViewerInit";
+} from "../leveldata-tarns-event.js";
+import { type ViewerJSHelper } from "../viewerjs-helper.js";
+import { containerSearchAuto, getLevelEventPath, ImperiumData } from "./$ViewerInit.js";
 
 export default async function (helper: ViewerJSHelper) {
 	// load imperium data
@@ -17,14 +17,14 @@ export default async function (helper: ViewerJSHelper) {
 
 	async function findSceneSwitch(
 		level: string,
-		dropItemGroupId?: string
+		dropItemGroupId?: string,
 	): Promise<Record<string, any>> {
 		const out: Record<string, any> = {
 			level: `${level} (${localizationString("QuestName")(level)})`,
 		};
 		if (dropItemGroupId && Number(dropItemGroupId) > 1) {
 			out["dropItemGroupId"] = dropItemGroupId;
-			out["dropItem"] = DropItemsGroup.get(+dropItemGroupId).toWiki();
+			out["dropItem"] = DropItemsGroup.get(+dropItemGroupId)?.toWiki();
 		}
 		if (levelset.has(level)) {
 			out["duplicate"] = "已重複關卡，請用 Ctrl+F 搜尋此關卡。";
@@ -34,7 +34,7 @@ export default async function (helper: ViewerJSHelper) {
 
 		const leveleventData = (await containerSearchAuto(
 			helper,
-			getLevelEventPath(level)
+			getLevelEventPath(level),
 		)) as LevelEventAsset;
 		if (leveleventData.$interpreted) {
 			await Promise.all(
@@ -48,11 +48,11 @@ export default async function (helper: ViewerJSHelper) {
 									optionSet.選項.map(async (option, index2) => {
 										const content = option.選項;
 										const sceneSwitch = option.效果.find(
-											(effect) => effect.indexOf("sceneSwitch") != -1
+											(effect) => effect.indexOf("sceneSwitch") != -1,
 										);
 										if (sceneSwitch) {
 											const match = sceneSwitch.match(
-												/sceneSwitch\(\[SceneName\](\w+);\[LevelName\](\w+);\[DropItemGroupId\](\w+)\)/i
+												/sceneSwitch\(\[SceneName\](\w+);\[LevelName\](\w+);\[DropItemGroupId\](\w+)\)/i,
 											);
 											if (match) {
 												const nextLevelName = match[2];
@@ -64,23 +64,23 @@ export default async function (helper: ViewerJSHelper) {
 													`${index}-${index2}-遭遇事件([title]${title};[option]${content})`
 												] = await findSceneSwitch(
 													nextLevelName,
-													nextDropItemGroupId
+													nextDropItemGroupId,
 												);
 											}
 										}
-									})
+									}),
 								);
-							})
+							}),
 						);
 					} else if (event.類型 == "關卡切換") {
 						const sceneSwitch = event as InterpretedSceneSwitchEventPointObject;
 						out[`${index}-關卡切換`] = "waiting data...";
 						out[`${index}-關卡切換`] = await findSceneSwitch(
 							sceneSwitch.LevelName,
-							sceneSwitch.DropItemGroupId || undefined
+							sceneSwitch.DropItemGroupId || undefined,
 						);
 					}
-				})
+				}),
 			);
 		} else {
 			out["error"] = "沒有$interpreted?";

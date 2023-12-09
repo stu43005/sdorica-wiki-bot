@@ -1,6 +1,6 @@
-import { ImperiumData, RowWrapper } from "../imperium-data";
-import { Chapter } from "./chapter";
-import { Item } from "./item";
+import { ImperiumData, RowWrapper } from "../imperium-data.js";
+import { Chapter } from "./chapter.js";
+import { Item } from "./item.js";
 
 // `Raids`是舊版本，現已拆分為 `Battlefields`及`RaidChapterSettings`
 // const RaidsTable = ImperiumData.fromGamedata().getTable("Raids");
@@ -34,6 +34,7 @@ export class Battlefield {
 				return item;
 			}
 		}
+		return;
 	}
 
 	public static getAll() {

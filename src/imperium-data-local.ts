@@ -1,10 +1,10 @@
-import path from "path";
-import { GAMEDATA_PATH } from "./config";
-import { ImperiumDataRaw } from "./data-raw-type";
-import { ImperiumData } from "./imperium-data";
-import { inputJsonSync } from "./input";
-import { Logger } from "./logger";
-import { fsExists } from "./out";
+import path from "node:path";
+import { GAMEDATA_PATH } from "./config.js";
+import { ImperiumDataRaw } from "./data-raw-type.js";
+import { ImperiumData } from "./imperium-data.js";
+import { inputJsonSync } from "./input.js";
+import { Logger } from "./logger.js";
+import { fsExists } from "./out.js";
 
 const logger = new Logger("imperium-data");
 
@@ -20,3 +20,4 @@ export function registerImperiumLocalLoader() {
 		self.data = raw;
 	};
 }
+registerImperiumLocalLoader();

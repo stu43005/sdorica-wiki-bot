@@ -1,6 +1,6 @@
-import { BaseScriptableObject } from "../lib/FullInspector/BaseScriptableObject";
-import { InterpretedBattleCharacter } from "../viewerjs/interpreted-battle-character";
-import { BattleCharacter } from "./BattleModel/BattleCharacter";
+import { BaseScriptableObject } from "../lib/FullInspector/BaseScriptableObject.js";
+import { InterpretedBattleCharacter } from "../viewerjs/interpreted-battle-character.js";
+import { BattleCharacter } from "./BattleModel/BattleCharacter.js";
 
 export interface BattleCharacterAsset extends BaseScriptableObject {
 	character: BattleCharacter;

@@ -1,6 +1,6 @@
-import { ISingleInteger } from "./ISingleInteger";
-import { ISingleIntegerOfBuff } from "./ISingleIntegerOfBuff";
-import { ISingleIntegerOfCharacter } from "./ISingleIntegerOfCharacter";
+import { ISingleInteger } from "./ISingleInteger.js";
+import { ISingleIntegerOfBuff } from "./ISingleIntegerOfBuff.js";
+import { ISingleIntegerOfCharacter } from "./ISingleIntegerOfCharacter.js";
 
 export interface ConstanctInt
 	extends ISingleInteger,

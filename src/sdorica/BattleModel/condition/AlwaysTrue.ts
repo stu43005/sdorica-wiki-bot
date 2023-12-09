@@ -1,3 +1,3 @@
-import { IConditionOfModel } from "./IConditionOfModel";
+import { IConditionOfModel } from "./IConditionOfModel.js";
 
 export type AlwaysTrue = IConditionOfModel;

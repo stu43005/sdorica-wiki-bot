@@ -1,5 +1,5 @@
-import { ISummonSingleCharacter } from "../summon/ISummonSingleCharacter";
-import { BaseSkillEffect } from "./BaseSkillEffect";
+import { ISummonSingleCharacter } from "../summon/ISummonSingleCharacter.js";
+import { BaseSkillEffect } from "./BaseSkillEffect.js";
 
 export interface SummonEnemySkillEffect extends BaseSkillEffect {
 	Reference: ISummonSingleCharacter;

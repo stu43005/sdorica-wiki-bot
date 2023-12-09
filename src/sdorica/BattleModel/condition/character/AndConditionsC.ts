@@ -1,4 +1,4 @@
-import { IConditionOfCharacter } from "../IConditionOfCharacter";
+import { IConditionOfCharacter } from "../IConditionOfCharacter.js";
 
 export interface AndConditionsC extends IConditionOfCharacter {
 	cond1: IConditionOfCharacter;

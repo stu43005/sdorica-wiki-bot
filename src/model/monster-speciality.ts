@@ -1,13 +1,16 @@
 import { render } from "preact-render-to-string";
-import { AssetbundleLookupTable } from "../assetbundle-lookup-table";
-import { ImperiumData, RowWrapper } from "../imperium-data";
-import { localizationString } from "../localization";
-import { MonsterSkillIconParams, monsterSkillIconTemplate } from "../templates/monster-skill-icon";
-import { range } from "../utils";
-import { ItemGiveType } from "./enums/item-give-type.enum";
-import { LookupTableCategory } from "./enums/lookup-table-category.enum";
-import { SpecialCategory } from "./enums/special-category.enum";
-import { IMonsterAbility } from "./monster-ability.interface";
+import { AssetbundleLookupTable } from "../assetbundle-lookup-table.js";
+import { ImperiumData, RowWrapper } from "../imperium-data.js";
+import { localizationString } from "../localization.js";
+import {
+	MonsterSkillIconParams,
+	monsterSkillIconTemplate,
+} from "../templates/monster-skill-icon.js";
+import { range } from "../utils.js";
+import { GiveType } from "./enums/give-type.enum.js";
+import { LookupTableCategory } from "./enums/custom/lookup-table-category.enum.js";
+import { SpecialCategory } from "./enums/special-category.enum.js";
+import { IMonsterAbility } from "./monster-ability.interface.js";
 
 const MonsterSpecialityTable = ImperiumData.fromGamedata().getTable("MonsterSpeciality");
 
@@ -32,13 +35,14 @@ export class MonsterSpeciality implements IMonsterAbility {
 	}
 
 	public static find(
-		predicate: (value: MonsterSpeciality) => boolean
+		predicate: (value: MonsterSpeciality) => boolean,
 	): MonsterSpeciality | undefined {
 		for (const item of this) {
 			if (predicate(item)) {
 				return item;
 			}
 		}
+		return;
 	}
 
 	public static getAll() {
@@ -75,7 +79,7 @@ export class MonsterSpeciality implements IMonsterAbility {
 	get param3(): string {
 		return this.row.get("param3");
 	}
-	get param4(): ItemGiveType {
+	get param4(): GiveType {
 		return this.row.get("param4");
 	}
 
@@ -101,14 +105,14 @@ export class MonsterSpeciality implements IMonsterAbility {
 		this.description = localizationString("MonsterSkill")(row.get("specialityKeyDescription"));
 	}
 
-	public getIconAssetUrl() {
+	public getIconAssetUrl(): string | undefined {
 		return AssetbundleLookupTable.getInstance().getAssetUrl(
 			LookupTableCategory.Monster_SpSkillIcon,
-			this.iconKey
+			this.iconKey,
 		);
 	}
 
-	public toWiki(options?: MonsterSkillIconParams) {
+	public toWiki(options?: MonsterSkillIconParams): string {
 		return render(monsterSkillIconTemplate(this, options));
 	}
 }

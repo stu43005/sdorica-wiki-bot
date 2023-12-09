@@ -1,9 +1,9 @@
-import { RowWrapper } from "./imperium-data";
-import { characterNameNormalization, localizationString } from "./localization";
-import { Hero } from "./model/hero";
-import { numMultiply } from "./utils";
-import { skillinfoKeywords } from "./wiki-settings";
-import { wikiNextLine } from "./wiki-utils";
+import { RowWrapper } from "./imperium-data.js";
+import { characterNameNormalization, localizationString } from "./localization.js";
+import { Hero } from "./model/hero.js";
+import { numMultiply } from "./utils.js";
+import { skillinfoKeywords } from "./wiki-settings.js";
+import { wikiNextLine } from "./wiki-utils.js";
 
 export function getHeroJsonData() {
 	return Hero.getAll().reduce<Record<string, any>>((p, hero) => {
@@ -29,7 +29,7 @@ export function heroName(hero: RowWrapper) {
 		lastname = nameMatch[2].replace(pointRegexp, point);
 	}
 	firstname = characterNameNormalization(
-		localizationString("CharacterName")(hero.get("model")) || firstname
+		localizationString("CharacterName")(hero.get("model")) || firstname,
 	);
 	if (String(hero.get("name")).endsWith("SP") && !String(firstname).endsWith("SP")) {
 		firstname = `${firstname}SP`;
@@ -43,7 +43,7 @@ export function heroName(hero: RowWrapper) {
 		"CharacterName",
 		"",
 		"Key",
-		"English"
+		"English",
 	)(hero.get("model"));
 	return {
 		fullname,
@@ -64,7 +64,7 @@ export function skillinfo(info: string, skill: string): string {
 	// 移除/消除/獲得
 	info = info.replace(
 		/(移除|消除|獲得)((其|我方指定角色|指定的|玩家操作區(上|中)的)?((一|二|兩|三|四|五|六|七|八|九|十|\d)+(個|顆)|所有)非?(金|黑|白|同顏色的|本角色的)?(色?魂芯|珠)|其同樣數量與顏色的魂芯)/g,
-		"{{$1}}$2"
+		"{{$1}}$2",
 	);
 	info = info.replace(/(將所有(金|黑|白|同顏色的)?(色?魂芯|珠))(移除|消除)/g, "$1{{$2}}");
 	// 免疫合傘

@@ -1,12 +1,12 @@
-import _ from "lodash";
-import { Chapter } from "../model/chapter";
-import { ChapterMainImageType } from "../model/enums/chapter-main-image-type.enum";
-import { RewardGroupType } from "../model/enums/reward-group-type.enum";
-import { wikiH1, wikiH2, wikiH3 } from "../templates/wikiheader";
-import { wikiimage } from "../templates/wikiimage";
-import { wikiPageLink } from "../templates/wikilink";
-import { wikiul } from "../templates/wikilist";
-import { WikiTableStruct, wikitable } from "../templates/wikitable";
+import * as _ from "lodash-es";
+import { Chapter } from "../model/chapter.js";
+import { ChapterMainImageType } from "../model/enums/chapter-main-image-type.enum.js";
+import { RewardGroupType } from "../model/enums/reward-group-type.enum.js";
+import { wikiH1, wikiH2, wikiH3 } from "../templates/wikiheader.js";
+import { wikiimage } from "../templates/wikiimage.js";
+import { wikiPageLink } from "../templates/wikilink.js";
+import { wikiul } from "../templates/wikilist.js";
+import { WikiTableStruct, wikitable } from "../templates/wikitable.js";
 
 export default function wikiChapter() {
 	let out = wikiH1("章節");
@@ -66,7 +66,7 @@ export default function wikiChapter() {
 											`戰鬥成就獎勵：${wikiPageLink(
 												"QuestAchievements",
 												"",
-												quest.extraSetting.achievementId
+												quest.extraSetting.achievementId,
 											)}`,
 									  ]
 									: []),
@@ -76,7 +76,7 @@ export default function wikiChapter() {
 											`計分規則：${wikiPageLink(
 												"Adventure",
 												quest.drop.displayDropText,
-												quest.extraSetting.scoreRule
+												quest.extraSetting.scoreRule,
 											)}`,
 									  ]
 									: []),
@@ -98,7 +98,7 @@ export default function wikiChapter() {
 											`幻境祝福：${wikiPageLink(
 												"BlessEffects",
 												"",
-												quest.extraSetting.blessGroupId
+												quest.extraSetting.blessGroupId,
 											)}`,
 									  ]
 									: []),

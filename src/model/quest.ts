@@ -1,15 +1,15 @@
-import { ImperiumData, RowWrapper } from "../imperium-data";
-import { localizationString, localizationStringAuto } from "../localization";
-import { wikiTitleEscape } from "../wiki-utils";
-import { Chapter } from "./chapter";
-import { questWikiLinkRename } from "./config/quest";
-import { DropItemsGroup } from "./drop-items";
-import { ChapterWikiGroup } from "./enums/chapter-wiki-group.enum";
-import { DropRuleCategory } from "./enums/drop-rule-category.enum";
-import { ItemGiveType } from "./enums/item-give-type.enum";
-import { ItemGiveList } from "./item-give-list";
-import { ItemGiveRef } from "./item-give-ref";
-import { QuestExtraSetting } from "./quest-extra-setting";
+import { ImperiumData, RowWrapper } from "../imperium-data.js";
+import { localizationString, localizationStringAuto } from "../localization.js";
+import { wikiTitleEscape } from "../wiki-utils.js";
+import { Chapter } from "./chapter.js";
+import { questWikiLinkRename } from "./config/quest.js";
+import { DropItemsGroup } from "./drop-items.js";
+import { ChapterWikiGroup } from "./enums/custom/chapter-wiki-group.enum.js";
+import { DropRuleCategory } from "./enums/drop-rule-category.enum.js";
+import { GiveType } from "./enums/give-type.enum.js";
+import { ItemGiveList } from "./item-give-list.js";
+import { ItemGiveRef } from "./item-give-ref.js";
+import { QuestExtraSetting } from "./quest-extra-setting.js";
 
 const QuestsTable = ImperiumData.fromGamedata().getTable("Quests");
 
@@ -43,6 +43,7 @@ export class Quest {
 				return item;
 			}
 		}
+		return;
 	}
 
 	public static getAll() {
@@ -209,7 +210,7 @@ export class QuestDrop {
 	#displayDropItem: ItemGiveList | null = null;
 	get displayDropItem(): ItemGiveList {
 		return (this.#displayDropItem ??= ItemGiveList.parseList(
-			this.row.get(this.getKey("displayDropItem"))
+			this.row.get(this.getKey("displayDropItem")),
 		));
 	}
 
@@ -234,9 +235,9 @@ export class QuestDrop {
 	 */
 	get ring(): ItemGiveRef {
 		return (this.#ring ??= new ItemGiveRef(
-			ItemGiveType.Ring,
+			GiveType.Ring,
 			"",
-			+this.row.get(this.getKey("ring"))
+			+this.row.get(this.getKey("ring")),
 		));
 	}
 
@@ -246,9 +247,9 @@ export class QuestDrop {
 	 */
 	get expPlayer(): ItemGiveRef {
 		return (this.#expPlayer ??= new ItemGiveRef(
-			ItemGiveType.PlayerExp,
+			GiveType.PlayerExp,
 			"",
-			+this.row.get(this.getKey("expPlayer"))
+			+this.row.get(this.getKey("expPlayer")),
 		));
 	}
 
@@ -258,9 +259,9 @@ export class QuestDrop {
 	 */
 	get coin(): ItemGiveRef {
 		return (this.#coin ??= new ItemGiveRef(
-			ItemGiveType.Coin,
+			GiveType.Coin,
 			"",
-			+this.row.get(this.getKey("coin"))
+			+this.row.get(this.getKey("coin")),
 		));
 	}
 
@@ -270,13 +271,16 @@ export class QuestDrop {
 	 */
 	get expTimePiece(): ItemGiveRef {
 		return (this.#expTimePiece ??= new ItemGiveRef(
-			ItemGiveType.Soul,
+			GiveType.Soul,
 			"",
-			+this.row.get(this.getKey("expTimePiece"))
+			+this.row.get(this.getKey("expTimePiece")),
 		));
 	}
 
-	constructor(private row: RowWrapper, private first?: boolean) {
+	constructor(
+		private row: RowWrapper,
+		private first?: boolean,
+	) {
 		const displayDropTextKey = row.get(this.getKey("displayDropText"));
 		this.displayDropText = localizationStringAuto()(displayDropTextKey) || displayDropTextKey;
 	}

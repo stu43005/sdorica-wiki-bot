@@ -1,10 +1,10 @@
-import { ImperiumData, RowWrapper } from "../imperium-data";
-import { localizationExploreBuildingName, localizationString } from "../localization";
-import { range } from "../utils";
-import { ExploreBuildingType } from "./enums/explore-building-type.enum";
-import { ItemPayType } from "./enums/item-pay-type.enum";
-import { ExploreComposite } from "./explore-composite";
-import { ItemPayRef } from "./item-pay-ref";
+import { ImperiumData, RowWrapper } from "../imperium-data.js";
+import { localizationExploreBuildingName, localizationString } from "../localization.js";
+import { range } from "../utils.js";
+import { ExploreBuildingType } from "./enums/explore-building-type.enum.js";
+import { PayType } from "./enums/pay-type.enum.js";
+import { ExploreComposite } from "./explore-composite.js";
+import { ItemPayRef } from "./item-pay-ref.js";
 
 const ExploreBuildingTable = ImperiumData.fromGamedata().getTable("ExploreBuilding");
 
@@ -37,13 +37,14 @@ export class ExploreBuilding {
 	}
 
 	public static find(
-		predicate: (value: ExploreBuilding) => boolean
+		predicate: (value: ExploreBuilding) => boolean,
 	): ExploreBuilding | undefined {
 		for (const item of this) {
 			if (predicate(item)) {
 				return item;
 			}
 		}
+		return;
 	}
 
 	public static getAll() {
@@ -94,10 +95,10 @@ export class ExploreBuilding {
 				.map(
 					(i) =>
 						new ItemPayRef(
-							ItemPayType.ExploreItem,
+							PayType.ExploreItem,
 							this.row.get(`item${i}Id`),
-							this.row.get(`item${i}Count`)
-						)
+							this.row.get(`item${i}Count`),
+						),
 				)
 				.filter((ref) => !!ref.item);
 		}
@@ -108,7 +109,7 @@ export class ExploreBuilding {
 	get levelUpBuilding(): ExploreBuilding | undefined {
 		if (this.#levelUpBuilding === null) {
 			this.#levelUpBuilding = ExploreBuilding.find(
-				(other) => other.type === this.type && other.level === this.level + 1
+				(other) => other.type === this.type && other.level === this.level + 1,
 			);
 		}
 		return this.#levelUpBuilding;
@@ -125,7 +126,7 @@ export class ExploreBuilding {
 	constructor(private row: RowWrapper) {
 		this.name = localizationExploreBuildingName()(this.type);
 		this.description = localizationString("ExploreBuilding")(
-			this.row.get("localizationKeyDescription")
+			this.row.get("localizationKeyDescription"),
 		);
 	}
 }

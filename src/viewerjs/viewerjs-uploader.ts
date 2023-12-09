@@ -1,16 +1,16 @@
 import config from "config";
-import * as fs from "fs-extra";
 import glob from "glob";
-import fetch from "node-fetch";
-import * as path from "path";
-import { Logger } from "../logger";
+import fsp from "node:fs/promises";
+import path from "node:path";
+import { Logger } from "../logger.js";
+import { __dirname } from "../utilities/node.js";
 
 const logger = new Logger("viewerjs-uploader");
 
 export async function putToSI(name: string) {
-	const bundle = await fs.readFile(
-		path.join(__dirname, `../../dist/viewerjs/${name}.bundle.js`),
-		"utf-8"
+	const bundle = await fsp.readFile(
+		path.join(__dirname(import.meta), `../../dist/viewerjs/dist/${name}.bundle.js`),
+		"utf-8",
 	);
 
 	let helperName = "this";
@@ -44,7 +44,7 @@ export async function putToSI(name: string) {
 
 export async function viewerJSUploader() {
 	const entry = glob
-		.sync(path.resolve(__dirname, "./entry/*.ts"))
+		.sync(path.resolve(__dirname(import.meta), "./entry/*.ts"))
 		.map((file) => path.basename(file, ".ts"));
 	for (const name of entry) {
 		await putToSI(name);

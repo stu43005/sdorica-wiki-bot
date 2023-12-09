@@ -1,20 +1,20 @@
-import { ImperiumData, RowWrapper } from "../imperium-data";
-import { characterNameNormalization, localizationString } from "../localization";
-import { heroBaseTemplate } from "../templates/hero-base";
-import { HeroIconParams } from "../templates/hero-icon";
-import { heroPageTemplate } from "../templates/hero-page";
-import { tooltipTemplate } from "../templates/tooltip";
-import { heroName, pointRegexp } from "../wiki-hero";
-import { Avatar } from "./avatar";
-import { Chapter } from "./chapter";
-import { CharacterSeriesType } from "./enums/character-series-type.enum";
-import { GenderType } from "./enums/gender-type.enum";
-import { HeroRank } from "./enums/hero-rank.enum";
-import { HeroSlot } from "./enums/hero-slot.enum";
-import { HeroViewableType } from "./enums/hero-viewable-type.enum";
-import { HeroSkillLevel } from "./hero-skilllevel";
-import { HeroSkillSet } from "./hero-skillset";
-import { ItemPayRef } from "./item-pay-ref";
+import { ImperiumData, RowWrapper } from "../imperium-data.js";
+import { characterNameNormalization, localizationString } from "../localization.js";
+import { heroBaseTemplate } from "../templates/hero-base.js";
+import { HeroIconParams } from "../templates/hero-icon.js";
+import { heroPageTemplate } from "../templates/hero-page.js";
+import { tooltipTemplate } from "../templates/tooltip.js";
+import { heroName, pointRegexp } from "../wiki-hero.js";
+import { Avatar } from "./avatar.js";
+import { Chapter } from "./chapter.js";
+import { CharacterSeriesType } from "./enums/character-series-type.enum.js";
+import { GenderType } from "./enums/gender-type.enum.js";
+import { HeroRank } from "./enums/custom/hero-rank.enum.js";
+import { HeroSlot } from "./enums/custom/hero-slot.enum.js";
+import { HeroViewableType } from "./enums/hero-viewable-type.enum.js";
+import { HeroSkillLevel } from "./hero-skilllevel.js";
+import { HeroSkillSet } from "./hero-skillset.js";
+import { ItemPayRef } from "./item-pay-ref.js";
 
 const HeroesTable = ImperiumData.fromGamedata().getTable("Heroes");
 const RankUpItemRefsTable = ImperiumData.fromGamedata().getTable("RankUpItemRefs");
@@ -48,6 +48,7 @@ export class Hero {
 				return item;
 			}
 		}
+		return;
 	}
 
 	public static getAll() {
@@ -113,8 +114,8 @@ export class Hero {
 		return this.row.get("white")
 			? HeroSlot.WHITE
 			: this.row.get("black")
-			? HeroSlot.BLACK
-			: HeroSlot.GOLD;
+			  ? HeroSlot.BLACK
+			  : HeroSlot.GOLD;
 	}
 
 	#storyChapter: Chapter | undefined | null = null;
@@ -158,13 +159,13 @@ export class Hero {
 				(r) =>
 					r.get("category") == "HeroID" &&
 					r.get("param1") == this.id &&
-					r.get("refId") == "CharItemC"
+					r.get("refId") == "CharItemC",
 			);
 			if (rankUpItem) {
 				this.#resonanceItem = new ItemPayRef(
 					rankUpItem.get("payType"),
 					rankUpItem.get("payLinkId"),
-					rankUpItem.get("payAmount")
+					rankUpItem.get("payAmount"),
 				);
 			} else {
 				this.#resonanceItem = undefined;
@@ -181,7 +182,7 @@ export class Hero {
 	get skillSetWithLevels() {
 		return (this.#skillSetWithLevels ??= this.skillSets.reduce(
 			(p, c) => [...p, c, ...c.skillLevels],
-			[] as (HeroSkillSet | HeroSkillLevel)[]
+			[] as (HeroSkillSet | HeroSkillLevel)[],
 		));
 	}
 	/**
@@ -227,7 +228,7 @@ export class Hero {
 
 		let scName =
 			characterNameNormalization(
-				localizationString("CharacterName", "", "Key", "ChineseSimplified")(this.model)
+				localizationString("CharacterName", "", "Key", "ChineseSimplified")(this.model),
 			) || name.firstname;
 		if (this.internalName.endsWith("SP") && !String(scName).endsWith("SP")) {
 			scName = `${scName}SP`;

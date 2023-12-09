@@ -1,5 +1,5 @@
-import { LevelEvent } from "./LevelEvent";
-import { BattleHeroMask } from "./Quest/BattleHeroMask";
+import { LevelEvent } from "./LevelEvent.js";
+import { BattleHeroMask } from "./Quest/BattleHeroMask.js";
 
 export interface CharacterReplaceEvent extends LevelEvent {
 	GoldMask: BattleHeroMask;

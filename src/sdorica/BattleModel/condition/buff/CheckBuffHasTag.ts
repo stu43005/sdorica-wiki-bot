@@ -1,5 +1,5 @@
-import { BuffTag } from "../../BuffTag";
-import { IConditionOfBuff } from "../IConditionOfBuff";
+import { BuffTag } from "../../BuffTag.js";
+import { IConditionOfBuff } from "../IConditionOfBuff.js";
 
 export interface CheckBuffHasTag extends IConditionOfBuff {
 	tag: BuffTag;

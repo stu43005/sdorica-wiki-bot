@@ -1,7 +1,7 @@
-import { ExploreBuilding } from "../model/explore-building";
-import { ExploreComposite } from "../model/explore-composite";
-import { wikiH1, wikiH2 } from "../templates/wikiheader";
-import { WikiTableStruct, wikitable } from "../templates/wikitable";
+import { ExploreBuilding } from "../model/explore-building.js";
+import { ExploreComposite } from "../model/explore-composite.js";
+import { wikiH1, wikiH2 } from "../templates/wikiheader.js";
+import { WikiTableStruct, wikitable } from "../templates/wikitable.js";
 
 export default function wikiExploreComposite() {
 	let out = wikiH1("探索合成表");

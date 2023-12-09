@@ -1,8 +1,8 @@
-import { ExploreItemPortable } from "../model/enums/explore-item-portable.enum";
-import { ExploreItem } from "../model/explore-item";
-import { wikiH1 } from "../templates/wikiheader";
-import { wikitable, WikiTableStruct } from "../templates/wikitable";
-import { wikiNextLine } from "../wiki-utils";
+import { ExploreItemPortable } from "../model/enums/explore-item-portable.enum.js";
+import { ExploreItem } from "../model/explore-item.js";
+import { wikiH1 } from "../templates/wikiheader.js";
+import { wikitable, WikiTableStruct } from "../templates/wikitable.js";
+import { wikiNextLine } from "../wiki-utils.js";
 
 export default function wikiExploreItems() {
 	let out = wikiH1("探索道具");
@@ -32,8 +32,8 @@ export default function wikiExploreItems() {
 			item.portable == ExploreItemPortable.Keep
 				? "探索失敗後不會消失"
 				: item.portable == ExploreItemPortable.Abandon
-				? "探索結算後會消耗"
-				: "",
+				  ? "探索結算後會消耗"
+				  : "",
 		]);
 	}
 

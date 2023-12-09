@@ -1,6 +1,6 @@
-import { AddBuffData } from "./AddBuffData";
-import { AssistantActiveCastSkill } from "./AssistantActiveCastSkill";
-import { TargetResolver } from "./target/TargetResolver";
+import { AddBuffData } from "./AddBuffData.js";
+import { AssistantActiveCastSkill } from "./AssistantActiveCastSkill.js";
+import { TargetResolver } from "./target/TargetResolver.js";
 
 export interface AssistantActiveCastSkillWithPassiveBuff extends AssistantActiveCastSkill {
 	PassiveBuffDatas: PassiveBuffData[];

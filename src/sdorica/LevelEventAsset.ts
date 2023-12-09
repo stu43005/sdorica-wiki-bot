@@ -1,6 +1,6 @@
-import { InterpretedObjectBase } from "../viewerjs/leveldata-tarns-event";
-import { LevelEventModel } from "./LevelEventModel";
-import { WrapperAsset } from "./WrapperAsset";
+import { InterpretedObjectBase } from "../viewerjs/leveldata-tarns-event.js";
+import { LevelEventModel } from "./LevelEventModel.js";
+import { WrapperAsset } from "./WrapperAsset.js";
 
 export interface LevelEventAsset extends WrapperAsset<LevelEventModel> {
 	$interpreted?: InterpretedObjectBase[];

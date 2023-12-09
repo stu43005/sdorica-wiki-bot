@@ -1,7 +1,7 @@
-import { Dictionary } from "../Dictionary";
-import { BuffActiveTiming } from "./BuffActiveTiming";
-import { BuffEffect } from "./BuffEffect";
-import { BuffTag } from "./BuffTag";
+import { Dictionary } from "../Dictionary.js";
+import { BuffActiveTiming } from "./BuffActiveTiming.js";
+import { BuffEffect } from "./BuffEffect.js";
+import { BuffTag } from "./BuffTag.js";
 
 export interface Buff {
 	_tag: BuffTag;

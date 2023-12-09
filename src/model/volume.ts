@@ -1,8 +1,9 @@
-import { ImperiumData, RowWrapper } from "../imperium-data";
-import { localizationString } from "../localization";
-import { Chapter } from "./chapter";
-import { StateCondition, stateConditionText } from "./enums/state-condition.enum";
-import { VolumeEnum } from "./enums/volume.enum";
+import { ImperiumData, RowWrapper } from "../imperium-data.js";
+import { localizationString } from "../localization.js";
+import { Chapter } from "./chapter.js";
+import { stateConditionText } from "./enums/state-condition-text.js";
+import { StateCondition } from "./enums/state-condition.enum.js";
+import { Volume as VolumeEnum } from "./enums/volume.enum.js";
 
 const VolumeTable = ImperiumData.fromGamedata().getTable("Volume");
 
@@ -32,6 +33,7 @@ export class Volume {
 				return item;
 			}
 		}
+		return;
 	}
 
 	public static getAll() {
@@ -99,11 +101,11 @@ export class Volume {
 
 		this.visibleConditionText = stateConditionText(
 			this.visibleCondition,
-			this.visibleConditionParam
+			this.visibleConditionParam,
 		);
 		this.unlockConditionText = stateConditionText(
 			this.unlockCondition,
-			this.unlockConditionParam
+			this.unlockConditionParam,
 		);
 	}
 }

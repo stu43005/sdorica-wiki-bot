@@ -1,23 +1,17 @@
-import axios from "axios";
-import axiosRetry from "axios-retry";
 import csvStringify from "csv-stringify";
 import jsonStableStringify from "json-stable-stringify";
 import fs from "node:fs";
 import fsp from "node:fs/promises";
-import * as path from "path";
-import * as xlsx from "xlsx";
-import { ImperiumDataRaw, TableDataRaw } from "./data-raw-type";
-import { Logger } from "./logger";
-import { tableOut } from "./out-data";
-import { sortKeyByTable } from "./out-sort-key";
-import { flipMatrix } from "./utils";
+import path from "node:path";
+import { ImperiumDataRaw, TableDataRaw } from "./data-raw-type.js";
+import { Logger } from "./logger.js";
+import { tableOut } from "./out-data.js";
+import { sortKeyByTable } from "./out-sort-key.js";
+import { axios } from "./utilities/axios.js";
+import { XLSX } from "./utilities/xlsx.js";
+import { flipMatrix } from "./utils.js";
 
 const logger = new Logger("out");
-
-axiosRetry(axios, {
-	retries: 5,
-	retryDelay: axiosRetry.exponentialDelay,
-});
 
 export function outCsv(filename: string, out: any[]) {
 	logger.debug(`saving csv to ${filename}`);
@@ -41,7 +35,7 @@ export function outCsv(filename: string, out: any[]) {
 				} catch (error) {
 					reject(error);
 				}
-			}
+			},
 		);
 	});
 }
@@ -84,7 +78,7 @@ export async function outText(filename: string, text: string) {
 
 export async function outXlsx(filename: string, data: ImperiumDataRaw) {
 	logger.debug(`saving xlsx to ${filename}`);
-	const wb = xlsx.utils.book_new();
+	const wb = XLSX.utils.book_new();
 	for (const [name, table] of Object.entries(data.C).sort((a, b) => a[0].localeCompare(b[0]))) {
 		const out: any[] = [];
 		tableOut(out, name, table);
@@ -95,12 +89,12 @@ export async function outXlsx(filename: string, data: ImperiumDataRaw) {
 		const keyWithType = keys.map((key, index) => `${key} (${types[index]})`);
 		out.unshift(keyWithType);
 
-		const ws = xlsx.utils.aoa_to_sheet(out);
-		ws["!autofilter"] = { ref: `A1:${xlsx.utils.encode_col(keyWithType.length - 1)}1` };
-		xlsx.utils.book_append_sheet(wb, ws, name);
+		const ws = XLSX.utils.aoa_to_sheet(out);
+		ws["!autofilter"] = { ref: `A1:${XLSX.utils.encode_col(keyWithType.length - 1)}1` };
+		XLSX.utils.book_append_sheet(wb, ws, name);
 	}
 	await mkdir(path.dirname(filename));
-	xlsx.writeFile(wb, filename);
+	XLSX.writeFile(wb, filename);
 }
 
 export async function mkdir(dirname: string) {

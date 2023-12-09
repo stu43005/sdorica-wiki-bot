@@ -1,5 +1,5 @@
-import { HeroMaskArg } from "./HeroMaskArg";
-import { HeroMaskType } from "./HeroMaskType";
+import { HeroMaskArg } from "./HeroMaskArg.js";
+import { HeroMaskType } from "./HeroMaskType.js";
 
 export interface BattleHeroMask {
 	MaskType: HeroMaskType;

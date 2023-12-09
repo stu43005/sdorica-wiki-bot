@@ -1,53 +1,53 @@
-import { localizationBuffName } from "../../../localization";
-import { buffLabelStringify, singleBuffStringify } from "../buff/BuffStringify";
-import { BuffTag } from "../BuffTag";
+import { localizationBuffName } from "../../../localization.js";
+import { buffLabelStringify, singleBuffStringify } from "../buff/BuffStringify.js";
+import { BuffTag } from "../BuffTag.js";
 import {
 	constantBuffStringify,
 	constantCharStringify,
 	constantStringify,
-} from "../constant/ConstantStringify";
-import { SkillProperty } from "../SkillProperty";
-import { StoneEraseType } from "../StoneSystem/StoneEraseType";
-import { StoneType } from "../StoneSystem/StoneType";
-import { mulitTargetStringify, singleTargetStringify } from "../target/TargetStringify";
-import { AndConditions } from "./AndConditions";
-import { AndConditionsB } from "./buff/AndConditionsB";
-import { CheckBuffBelongLabel } from "./buff/CheckBuffBelongLabel";
-import { CheckBuffHasTag } from "./buff/CheckBuffHasTag";
-import { CheckBuffMatchBuffId } from "./buff/CheckBuffMatchBuffId";
-import { IntCompareB } from "./buff/IntCompareB";
-import { InverseB } from "./buff/InverseB";
-import { OrConditionsB } from "./buff/OrConditionsB";
-import { BuffCondition } from "./BuffCondition";
-import { BuffEqual } from "./BuffEqual";
-import { AndConditionsC } from "./character/AndConditionsC";
-import { AssetIdHasSubString } from "./character/AssetIdHasSubString";
-import { HasAnyConditionalBuff } from "./character/HasAnyConditionalBuff";
-import { HasBuff } from "./character/HasBuff";
-import { HasConditionalBuff } from "./character/HasConditionalBuff";
-import { IntCompareC } from "./character/IntCompareC";
-import { InverseC } from "./character/InverseC";
-import { IsCharacterDead } from "./character/IsCharacterDead";
-import { OrConditionsC } from "./character/OrConditionsC";
-import { StoneTypeIs } from "./character/StoneTypeIs";
-import { CharacterCondition } from "./CharacterCondition";
-import { CharacterEqual } from "./CharacterEqual";
-import { CharacterHasBuff } from "./CharacterHasBuff";
-import { CharacterInside } from "./CharacterInside";
-import { CharGroupCondition } from "./CharGroupCondition";
-import { ConsumedStoneEraseTypeEqual } from "./ConsumedStoneEraseTypeEqual";
-import { ConsumedStoneTypeEqual } from "./ConsumedStoneTypeEqual";
-import { CurrentTurnBelongsTo } from "./CurrentTurnBelongsTo";
-import { IConditionOfBuff } from "./IConditionOfBuff";
-import { IConditionOfCharacter } from "./IConditionOfCharacter";
-import { IConditionOfModel } from "./IConditionOfModel";
-import { IntCompare } from "./IntCompare";
-import { Inverse } from "./Inverse";
-import { NumericCompareOperator } from "./NumericCompareOperator";
-import { OrConditions } from "./OrConditions";
-import { RandomCondition } from "./RandomCondition";
-import { ThisSkillEffectTagContains } from "./ThisSkillEffectTagContains";
-import { ThisSkillSetIdEqual } from "./ThisSkillSetIdEqual";
+} from "../constant/ConstantStringify.js";
+import { SkillProperty } from "../SkillProperty.js";
+import { StoneEraseType } from "../StoneSystem/StoneEraseType.js";
+import { StoneType } from "../StoneSystem/StoneType.js";
+import { mulitTargetStringify, singleTargetStringify } from "../target/TargetStringify.js";
+import { AndConditions } from "./AndConditions.js";
+import { AndConditionsB } from "./buff/AndConditionsB.js";
+import { CheckBuffBelongLabel } from "./buff/CheckBuffBelongLabel.js";
+import { CheckBuffHasTag } from "./buff/CheckBuffHasTag.js";
+import { CheckBuffMatchBuffId } from "./buff/CheckBuffMatchBuffId.js";
+import { IntCompareB } from "./buff/IntCompareB.js";
+import { InverseB } from "./buff/InverseB.js";
+import { OrConditionsB } from "./buff/OrConditionsB.js";
+import { BuffCondition } from "./BuffCondition.js";
+import { BuffEqual } from "./BuffEqual.js";
+import { AndConditionsC } from "./character/AndConditionsC.js";
+import { AssetIdHasSubString } from "./character/AssetIdHasSubString.js";
+import { HasAnyConditionalBuff } from "./character/HasAnyConditionalBuff.js";
+import { HasBuff } from "./character/HasBuff.js";
+import { HasConditionalBuff } from "./character/HasConditionalBuff.js";
+import { IntCompareC } from "./character/IntCompareC.js";
+import { InverseC } from "./character/InverseC.js";
+import { IsCharacterDead } from "./character/IsCharacterDead.js";
+import { OrConditionsC } from "./character/OrConditionsC.js";
+import { StoneTypeIs } from "./character/StoneTypeIs.js";
+import { CharacterCondition } from "./CharacterCondition.js";
+import { CharacterEqual } from "./CharacterEqual.js";
+import { CharacterHasBuff } from "./CharacterHasBuff.js";
+import { CharacterInside } from "./CharacterInside.js";
+import { CharGroupCondition } from "./CharGroupCondition.js";
+import { ConsumedStoneEraseTypeEqual } from "./ConsumedStoneEraseTypeEqual.js";
+import { ConsumedStoneTypeEqual } from "./ConsumedStoneTypeEqual.js";
+import { CurrentTurnBelongsTo } from "./CurrentTurnBelongsTo.js";
+import { IConditionOfBuff } from "./IConditionOfBuff.js";
+import { IConditionOfCharacter } from "./IConditionOfCharacter.js";
+import { IConditionOfModel } from "./IConditionOfModel.js";
+import { IntCompare } from "./IntCompare.js";
+import { Inverse } from "./Inverse.js";
+import { NumericCompareOperator } from "./NumericCompareOperator.js";
+import { OrConditions } from "./OrConditions.js";
+import { RandomCondition } from "./RandomCondition.js";
+import { ThisSkillEffectTagContains } from "./ThisSkillEffectTagContains.js";
+import { ThisSkillSetIdEqual } from "./ThisSkillSetIdEqual.js";
 
 function supportedInverse(condition: IConditionOfModel) {
 	switch (condition.$type) {
@@ -84,7 +84,7 @@ export function conditionStringify(condition: IConditionOfModel, isInverse = fal
 		const obj = condition as IntCompare;
 		const op = isInverse ? NumericCompareOperator.inverse(obj.op) : obj.op;
 		return `${constantStringify(obj.left)} ${NumericCompareOperator.toString(
-			op
+			op,
 		)} ${constantStringify(obj.right)}`;
 	}
 	if (condition.$type == "BattleModel.AndConditions") {
@@ -108,19 +108,19 @@ export function conditionStringify(condition: IConditionOfModel, isInverse = fal
 	if (condition.$type == "BattleModel.ThisSkillEffectTagContains") {
 		const obj = condition as ThisSkillEffectTagContains;
 		return `施展的技能效果中${isInverse ? "不" : ""}包含(${SkillProperty.toString(
-			obj.containsAll
+			obj.containsAll,
 		)})屬性`;
 	}
 	if (condition.$type == "BattleModel.CharacterEqual") {
 		const obj = condition as CharacterEqual;
 		return `${singleTargetStringify(obj.left)}${isInverse ? "不" : ""}是${singleTargetStringify(
-			obj.right
+			obj.right,
 		)}`;
 	}
 	if (condition.$type == "BattleModel.CharacterInside") {
 		const obj = condition as CharacterInside;
 		return `${singleTargetStringify(obj.left)}${isInverse ? "不" : ""}是${mulitTargetStringify(
-			obj.group
+			obj.group,
 		)}的一員`;
 	}
 	if (condition.$type == "BattleModel.CharacterCondition") {
@@ -128,12 +128,12 @@ export function conditionStringify(condition: IConditionOfModel, isInverse = fal
 		if (supportedInverseChar(obj.condition)) {
 			return `${singleTargetStringify(obj.character)} ${conditionCharStringify(
 				obj.condition,
-				isInverse
+				isInverse,
 			)}`;
 		}
 		if (isInverse) {
 			return `${singleTargetStringify(obj.character)} 相反(${conditionCharStringify(
-				obj.condition
+				obj.condition,
 			)})`;
 		}
 		return `${singleTargetStringify(obj.character)} ${conditionCharStringify(obj.condition)}`;
@@ -157,7 +157,7 @@ export function conditionStringify(condition: IConditionOfModel, isInverse = fal
 	if (condition.$type == "BattleModel.BuffEqual") {
 		const obj = condition as BuffEqual;
 		return `${singleBuffStringify(obj.left)}${isInverse ? "不" : ""}是${singleBuffStringify(
-			obj.right
+			obj.right,
 		)}`;
 	}
 	if (condition.$type == "BattleModel.BuffCondition") {
@@ -165,12 +165,12 @@ export function conditionStringify(condition: IConditionOfModel, isInverse = fal
 		if (supportedInverseBuff(obj.condition)) {
 			return `${singleBuffStringify(obj.buff)} ${conditionBuffStringify(
 				obj.condition,
-				isInverse
+				isInverse,
 			)}`;
 		}
 		if (isInverse) {
 			return `${singleBuffStringify(obj.buff)} 相反(${conditionBuffStringify(
-				obj.condition
+				obj.condition,
 			)})`;
 		}
 		return `${singleBuffStringify(obj.buff)} ${conditionBuffStringify(obj.condition)}`;
@@ -217,7 +217,7 @@ function supportedInverseChar(condition: IConditionOfCharacter) {
 
 export function conditionCharStringify(
 	condition: IConditionOfCharacter,
-	isInverse = false
+	isInverse = false,
 ): string {
 	if (!condition) return "";
 	if (condition.$type == "BattleModel.InverseC") {
@@ -230,7 +230,7 @@ export function conditionCharStringify(
 	if (condition.$type == "BattleModel.IntCompareC") {
 		const obj = condition as IntCompareC;
 		return `${isInverse ? "不" : ""}符合條件 ${constantCharStringify(
-			obj.left
+			obj.left,
 		)} ${NumericCompareOperator.toString(obj.op)} ${constantCharStringify(obj.right)}`;
 	}
 	if (condition.$type == "BattleModel.AndConditionsC") {
@@ -252,14 +252,14 @@ export function conditionCharStringify(
 	if (condition.$type == "BattleModel.HasAnyConditionalBuff") {
 		const obj = condition as HasAnyConditionalBuff;
 		return `${isInverse ? "沒" : "擁"}有任何一個 ${conditionBuffStringify(
-			obj.buffCondition
+			obj.buffCondition,
 		)} 的狀態`;
 	}
 	if (condition.$type == "BattleModel.HasConditionalBuff") {
 		const obj = condition as HasConditionalBuff;
 		return `狀態${localizationBuffName(true)(obj.buffId)} ${conditionBuffStringify(
 			obj.buffCondition,
-			isInverse
+			isInverse,
 		)}`;
 	}
 	if (condition.$type == "BattleModel.HasBuff") {
@@ -296,7 +296,7 @@ export function conditionBuffStringify(condition: IConditionOfBuff, isInverse = 
 	if (condition.$type == "BattleModel.IntCompareB") {
 		const obj = condition as IntCompareB;
 		return `${isInverse ? "不" : ""}符合條件 ${constantBuffStringify(
-			obj.left
+			obj.left,
 		)} ${NumericCompareOperator.toString(obj.op)} ${constantBuffStringify(obj.right)}`;
 	}
 	if (condition.$type == "BattleModel.AndConditionsB") {

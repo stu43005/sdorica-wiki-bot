@@ -1,6 +1,6 @@
-import { ImperiumData } from "./imperium-data";
-import { TemplateString } from "./model/template-string";
-import { wikiTitleEscape } from "./wiki-utils";
+import { ImperiumData } from "./imperium-data.js";
+import { TemplateString } from "./model/template-string.js";
+import { wikiTitleEscape } from "./wiki-utils.js";
 
 const EMPTY = "";
 
@@ -65,7 +65,7 @@ export function gamedataString(
 	tablename: string,
 	key: string | number,
 	value: string | number,
-	keyPrefix: string | ((key: string) => string) = ""
+	keyPrefix: string | ((key: string) => string) = "",
 ): Func1 {
 	return (str) => {
 		if (str) {
@@ -73,7 +73,7 @@ export function gamedataString(
 			const row = table.find(
 				(r) =>
 					r.get(key) ==
-					(typeof keyPrefix == "function" ? keyPrefix(str) : keyPrefix + str)
+					(typeof keyPrefix == "function" ? keyPrefix(str) : keyPrefix + str),
 			);
 			if (row) {
 				if (typeof value == "string") {
@@ -97,7 +97,7 @@ export function localizationString(
 	tablename: string,
 	keyPrefix: string | ((key: string) => string) = "",
 	key = "Key",
-	value = defaultLanguage
+	value = defaultLanguage,
 ): Func1 {
 	return (str) => {
 		if (str) {
@@ -105,7 +105,7 @@ export function localizationString(
 			const row = table.find(
 				(r) =>
 					r.get(key) ==
-					(typeof keyPrefix == "function" ? keyPrefix(str) : keyPrefix + str)
+					(typeof keyPrefix == "function" ? keyPrefix(str) : keyPrefix + str),
 			);
 			if (row) return row.get(value);
 		}
@@ -119,7 +119,7 @@ export function applyStringRefer(str: string, replacer = stringReferReplacer): s
 		(substring: string, type: string, key: string, arg: string) => {
 			const result = replacer(substring, type, key, arg);
 			return applyStringRefer(result, replacer);
-		}
+		},
 	);
 }
 
@@ -133,7 +133,7 @@ export function stringReferReplacer(substring: string, type: string, key: string
 					return args[index - 1];
 				}
 				return substring;
-			}
+			},
 		);
 	}
 	if (type === "BUFF") {
@@ -183,7 +183,7 @@ export function localizationItemNameWithType(withCurrencyType = false): Func1 {
 				return `${localizationMonsterNameById()(strings[0])}:${gamedataString(
 					"HomelandMonster",
 					"id",
-					"rank"
+					"rank",
 				)(strings[0])}`;
 			case "Hero": {
 				const [heroId, rankId] = strings[0].split("_");
@@ -203,11 +203,11 @@ export function localizationItemName(isExplore = false): Func1 {
 				localizationString("ExpItem", "exp_item_name_"),
 				call2(
 					gamedataString("ExploreItems", "id", "localizationKeyName"),
-					localizationString("ExpItem")
+					localizationString("ExpItem"),
 				),
-				gamedataString("ExploreItems", "id", "iconKey")
+				gamedataString("ExploreItems", "id", "iconKey"),
 			),
-			(str) => itemNameNormalization(str)
+			(str) => itemNameNormalization(str),
 		);
 	}
 	return call2(
@@ -215,9 +215,9 @@ export function localizationItemName(isExplore = false): Func1 {
 			localizationString("Item", "item_name_"),
 			call2(gamedataString("Items", "id", "localizationKeyName"), localizationString("Item")),
 			gamedataString("Items", "id", "name"),
-			gamedataString("Items", "id", "iconKey")
+			gamedataString("Items", "id", "iconKey"),
 		),
-		(str) => itemNameNormalization(str)
+		(str) => itemNameNormalization(str),
 	);
 }
 
@@ -282,20 +282,20 @@ export function localizationCharacterName(includeSkillset = true, includeNoteNam
 				? call2(
 						gamedataString("HeroSkills", "skillSet", "heroId"),
 						gamedataString("Heroes", "id", "model"),
-						localizationCharacterName(false, false)
+						localizationCharacterName(false, false),
 				  )
 				: nothing(),
 			localizationString("CharacterName"),
 			localizationString("Default"),
-			includeNoteName ? gamedataString("Heroes", "model", "name") : nothing()
+			includeNoteName ? gamedataString("Heroes", "model", "name") : nothing(),
 		),
-		(str) => characterNameNormalization(str)
+		(str) => characterNameNormalization(str),
 	);
 }
 
 export function characterNameNormalization(name: string) {
 	return wikiTitleEscape(
-		name.replace(/\sSP$/, "SP").replace(/\sMZ$/, "MZ").replace(/\sOS$/, "OS")
+		name.replace(/\sSP$/, "SP").replace(/\sMZ$/, "MZ").replace(/\sOS$/, "OS"),
 	);
 }
 
@@ -310,7 +310,7 @@ export function localizationExploreBuildingName(): Func1 {
 export function localizationHomelandBuildingName(): Func1 {
 	return call2(
 		gamedataString("HomelandBuilding", "buildingId", "nameKey"),
-		localizationString("Homeland")
+		localizationString("Homeland"),
 	);
 }
 
@@ -331,10 +331,10 @@ export function localizationTavernMissionName(withRank = false): Func1 {
 	const namer = ifor(
 		call2(
 			gamedataString("TavernMission", "id", "questKeyName"),
-			localizationString("TavernMission")
+			localizationString("TavernMission"),
 		),
 		gamedataString("TavernMission", "id", "questKeyDescription"),
-		gamedataString("TavernMission", "id", "questKeyName")
+		gamedataString("TavernMission", "id", "questKeyName"),
 	);
 	return (str) => {
 		if (withRank) {
@@ -349,14 +349,14 @@ export function localizationMonsterNameById(): Func1 {
 	return ifor(
 		call2(gamedataString("HomelandMonster", "id", "keyName"), localizationCharacterName()),
 		gamedataString("HomelandMonster", "id", "keyName"),
-		something()
+		something(),
 	);
 }
 
 export function localizationMonsterName(): Func1 {
 	return call2(
 		gamedataString("HomelandMonster", "monsterId", "keyName"),
-		localizationCharacterName()
+		localizationCharacterName(),
 	);
 }
 
@@ -364,16 +364,16 @@ export function localizationMonsterSkillName(): Func1 {
 	return ifor(
 		call2(
 			gamedataString("MonsterSkill", "skillId", "skillKeyName"),
-			localizationString("MonsterSkill")
+			localizationString("MonsterSkill"),
 		),
-		gamedataString("MonsterSkill", "skillId", "iconKey")
+		gamedataString("MonsterSkill", "skillId", "iconKey"),
 	);
 }
 
 export function localizationMonsterSpecialityName(): Func1 {
 	return call2(
 		gamedataString("MonsterSpeciality", "id", "specialityKeyName"),
-		localizationString("MonsterSkill")
+		localizationString("MonsterSkill"),
 	);
 }
 
@@ -460,7 +460,7 @@ export function white(): Func1 {
 export function localizationVolumeNameById(): Func1 {
 	return ifor(
 		call2(gamedataString("Volume", "order", "name"), localizationString("Metagame")),
-		gamedataString("Volume", "order", "title")
+		gamedataString("Volume", "order", "title"),
 	);
 }
 
@@ -477,7 +477,7 @@ export function localizationQuestName(): Func1 {
 
 export function localizationQuestModeName(): Func1 {
 	return call2(gamedataString("QuestMode", "id", "modeI2"), localizationStringAuto(), (str) =>
-		str.trim()
+		str.trim(),
 	);
 }
 

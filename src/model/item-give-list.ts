@@ -1,7 +1,7 @@
-import { ItemIconParams } from "../templates/item-icon";
-import { wikiul } from "../templates/wikilist";
-import { wikiNextLine } from "../wiki-utils";
-import { ItemGiveRef } from "./item-give-ref";
+import { ItemIconParams } from "../templates/item-icon.js";
+import { wikiul } from "../templates/wikilist.js";
+import { wikiNextLine } from "../wiki-utils.js";
+import { ItemGiveRef } from "./item-give-ref.js";
 
 export class ItemGiveList {
 	public static parseList(str: string, separator = ";") {
@@ -22,7 +22,7 @@ export class ItemGiveList {
 		options?: ItemIconParams & {
 			listType?: "ul" | "br" | "none" | "separator";
 			separator?: string;
-		}
+		},
 	) {
 		const list = this.items.map((item) => item.toWiki(options));
 		switch (options?.listType) {

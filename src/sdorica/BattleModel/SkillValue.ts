@@ -1,4 +1,4 @@
-import { ISingleInteger } from "./constant/ISingleInteger";
+import { ISingleInteger } from "./constant/ISingleInteger.js";
 
 export interface SkillValue {
 	_ratio: number;

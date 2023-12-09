@@ -1,15 +1,15 @@
 import numeral from "numeral";
-import { ImperiumData } from "../imperium-data";
+import { ImperiumData } from "../imperium-data.js";
 import {
 	call2,
 	gamedataString,
 	localizationCharacterName,
 	localizationItemName,
 	localizationStringAuto,
-} from "../localization";
-import { Hero } from "../model/hero";
-import { Item } from "../model/item";
-import { arrayGroupBy, arraySum, arrayUnique, objectMap } from "../utils";
+} from "../localization.js";
+import { Hero } from "../model/hero.js";
+import { Item } from "../model/item.js";
+import { arrayGroupBy, arraySum, arrayUnique, objectMap } from "../utils.js";
 
 const GashaponsTable = ImperiumData.fromGamedata().getTable("Gashapons");
 
@@ -37,11 +37,11 @@ export default function wikiGashapons() {
 			const entries = GashaponsGroup[packId];
 			let str = `== ${call2(
 				gamedataString("GashaponPacks", "id", "name"),
-				localizationStringAuto()
+				localizationStringAuto(),
 			)(packId)} ==
 <blockquote>${call2(
 				gamedataString("GashaponPacks", "id", "description"),
-				localizationStringAuto()
+				localizationStringAuto(),
 			)(packId).replace(/\n/g, "<br/>")}</blockquote>
 {| class="wikitable" width=100%
 |-
@@ -65,18 +65,19 @@ export default function wikiGashapons() {
 									if (heroId) {
 										return Hero.get(heroId.toString());
 									}
+									return;
 								})
-								.filter((r) => !!r) as Hero[],
-							(r) => r.slot
-						)
+								.filter((r): r is Hero => !!r),
+							(r) => r.slot,
+						),
 				);
 				str += `\n| align="center" rowspan=${
 					arraySum(
 						Object.values(probabilityGroup).map((v) => Object.values(v).length),
-						(v) => v
+						(v) => v,
 					) + 1
 				} | {{階級圖標|${gashaponItemCount2Rank(tier)}|100px}}<br>${gashaponItemCount2Rank(
-					tier
+					tier,
 				)}`;
 				let weightSum = 0;
 				const weightKeys = Object.keys(probabilityGroup)
@@ -86,12 +87,12 @@ export default function wikiGashapons() {
 					if (probabilityGroup.hasOwnProperty(weight)) {
 						const positions = Object.keys(probabilityGroup[weight]).sort(
 							(a, b) =>
-								GashaponPositionKeys.indexOf(a) - GashaponPositionKeys.indexOf(b)
+								GashaponPositionKeys.indexOf(a) - GashaponPositionKeys.indexOf(b),
 						);
 						for (const position of positions) {
 							if (probabilityGroup[weight].hasOwnProperty(position)) {
 								const heroes = probabilityGroup[weight][position].sort(
-									(a, b) => Number(a.id) - Number(b.id)
+									(a, b) => Number(a.id) - Number(b.id),
 								);
 								weightSum += heroes.length * Number(weight);
 								str += `
@@ -107,9 +108,9 @@ export default function wikiGashapons() {
 					}
 				}
 				str += `\n! colspan=3 | ${gashaponItemCount2Rank(
-					tier
+					tier,
 				)}總機率：{{Color|#0000ff|${numeral(Number(weightSum) / 10000).format(
-					"0.0"
+					"0.0",
 				)}%}}\n|-`;
 			}
 			str += `\n|}`;
@@ -127,7 +128,7 @@ export function wikiGashaponsJson() {
 		const gashaponId = EnabledGashaponIds[i];
 		let gashaponName = call2(
 			gamedataString("GashaponPacks", "id", "name"),
-			localizationStringAuto()
+			localizationStringAuto(),
 		)(gashaponId);
 		gashaponName = String(gashaponName).replace(/\s/g, "");
 		const dropTable = GashaponsTable.filter((r) => r.get("packId") == gashaponId);

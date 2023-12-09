@@ -1,12 +1,12 @@
-import { AssetbundleLookupTable } from "../assetbundle-lookup-table";
-import { ImperiumData, RowWrapper } from "../imperium-data";
-import { localizationString } from "../localization";
-import { AvatarInfoboxParams, avatarInfoboxTemplate } from "../templates/avatar-infobox";
-import { AvatarType } from "./enums/avatar-type.enum";
-import { ItemCategory } from "./enums/item-category.enum";
-import { LookupTableCategory } from "./enums/lookup-table-category.enum";
-import { Hero } from "./hero";
-import { Item } from "./item";
+import { AssetbundleLookupTable } from "../assetbundle-lookup-table.js";
+import { ImperiumData, RowWrapper } from "../imperium-data.js";
+import { localizationString } from "../localization.js";
+import { AvatarInfoboxParams, avatarInfoboxTemplate } from "../templates/avatar-infobox.js";
+import { AvatarType } from "./enums/avatar-type.enum.js";
+import { ItemCategory } from "./enums/item-category.enum.js";
+import { LookupTableCategory } from "./enums/custom/lookup-table-category.enum.js";
+import { Hero } from "./hero.js";
+import { Item } from "./item.js";
 
 const AvatarsTable = ImperiumData.fromGamedata().getTable("Avatars");
 
@@ -62,7 +62,7 @@ export class Avatar {
 		if (this.#item === null) {
 			this.#item = Item.find(
 				(item) =>
-					item.category == ItemCategory.Avatar && item.effectValue.toString() == this.id
+					item.category == ItemCategory.Avatar && item.effectValue.toString() == this.id,
 			);
 		}
 		return this.#item;
@@ -96,12 +96,12 @@ export class Avatar {
 		if (small) {
 			return AssetbundleLookupTable.getInstance().getAssetUrl(
 				LookupTableCategory.CharacterPortrait,
-				this.asset + "_icon"
+				this.asset + "_icon",
 			);
 		}
 		return AssetbundleLookupTable.getInstance().getAssetUrl(
 			LookupTableCategory.CharacterPortrait_LARGE,
-			this.asset + "_iconL"
+			this.asset + "_iconL",
 		);
 	}
 }

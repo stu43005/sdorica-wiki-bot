@@ -1,8 +1,8 @@
-import { localizationCharacterName } from "../../../localization";
-import { ISummonSingleCharacter } from "./ISummonSingleCharacter";
-import { SummonCharacter } from "./SummonCharacter";
-import { SummonCharacterArg } from "./SummonCharacterArg";
-import { SummonCharacterInPreset } from "./SummonCharacterInPreset";
+import { localizationCharacterName } from "../../../localization.js";
+import { ISummonSingleCharacter } from "./ISummonSingleCharacter.js";
+import { SummonCharacter } from "./SummonCharacter.js";
+import { SummonCharacterArg } from "./SummonCharacterArg.js";
+import { SummonCharacterInPreset } from "./SummonCharacterInPreset.js";
 
 export function summonStringify(summonSingleCharacter: ISummonSingleCharacter): string {
 	if (!summonSingleCharacter) return "";
@@ -15,7 +15,7 @@ export function summonStringify(summonSingleCharacter: ISummonSingleCharacter): 
 		const sum = obj.WeightedCharacterArgs.reduce<number>((prev, cur) => prev + cur.Weight, 0);
 		return `\n${obj.WeightedCharacterArgs.map(
 			(warg) =>
-				`\t* ${characterArgStringify(warg.CharacterArg)} : ${(warg.Weight / sum) * 100}%`
+				`\t* ${characterArgStringify(warg.CharacterArg)} : ${(warg.Weight / sum) * 100}%`,
 		).join("\n")}\n`;
 	}
 	console.error(`Unknown skill effect type: ${summonSingleCharacter.$type}`);

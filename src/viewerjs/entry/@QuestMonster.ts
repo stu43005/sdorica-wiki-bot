@@ -1,10 +1,10 @@
-import { localizationCharacterName, localizationString } from "../../localization";
-import { BattleCharacterAsset } from "../../sdorica/BattleCharacterAsset";
-import { EnemySetAsset } from "../../sdorica/EnemySetAsset";
-import { LevelActorAsset } from "../../sdorica/LevelActorAsset";
-import { WaveSetAsset } from "../../sdorica/WaveSetAsset";
-import { ViewerJSHelper } from "../viewerjs-helper";
-import { containerSearch, containerSearchMultiSplit, ImperiumData } from "./$ViewerInit";
+import { localizationCharacterName, localizationString } from "../../localization.js";
+import { BattleCharacterAsset } from "../../sdorica/BattleCharacterAsset.js";
+import { EnemySetAsset } from "../../sdorica/EnemySetAsset.js";
+import { LevelActorAsset } from "../../sdorica/LevelActorAsset.js";
+import { WaveSetAsset } from "../../sdorica/WaveSetAsset.js";
+import { type ViewerJSHelper } from "../viewerjs-helper.js";
+import { containerSearch, containerSearchMultiSplit, ImperiumData } from "./$ViewerInit.js";
 
 export default async function (helper: ViewerJSHelper) {
 	// load imperium data
@@ -22,7 +22,7 @@ export default async function (helper: ViewerJSHelper) {
 		const wavesetPath = `assets/game/leveldata/wavesetdata/${questNameKey}_waveset.asset`;
 		const wavesetData = (await containerSearch(helper, wavesetPath)) as WaveSetAsset;
 		const wavesets = Object.values(wavesetData.Model.waves).map(
-			(wave) => wave.weightedEnemySet
+			(wave) => wave.weightedEnemySet,
 		);
 
 		const levelactorPath = `assets/game/leveldata/levelactordata/${questNameKey}_levelactor.asset`;
@@ -35,14 +35,14 @@ export default async function (helper: ViewerJSHelper) {
 
 		const enemysetKeys = wavesets.reduce(
 			(prev, curr) => prev.concat(curr.map((c) => c.Key.name)),
-			[] as string[]
+			[] as string[],
 		);
 		const enemysetPath = enemysetKeys.map(
-			(enemySetKey) => `assets/game/leveldata/enemysetdata/${enemySetKey}.asset`
+			(enemySetKey) => `assets/game/leveldata/enemysetdata/${enemySetKey}.asset`,
 		);
 		const enemysetDatas = (await containerSearchMultiSplit(
 			helper,
-			enemysetPath
+			enemysetPath,
 		)) as EnemySetAsset[];
 
 		let allEnemiesData: BattleCharacterAsset[] = [];
@@ -64,11 +64,11 @@ export default async function (helper: ViewerJSHelper) {
 				})
 				.reduce((prev, arr) => prev.concat(arr), []);
 			const allEnemiesPath = allEnemies.map(
-				(enemy) => `assets/game/character/battlecharacter/charactermodel/${enemy}.asset`
+				(enemy) => `assets/game/character/battlecharacter/charactermodel/${enemy}.asset`,
 			);
 			allEnemiesData = (await containerSearchMultiSplit(
 				helper,
-				allEnemiesPath
+				allEnemiesPath,
 			)) as BattleCharacterAsset[];
 		}
 

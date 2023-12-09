@@ -1,6 +1,6 @@
-import { ISingleBuff } from "../buff/single/ISingleBuff";
-import { IConditionOfBuff } from "./IConditionOfBuff";
-import { IConditionOfModel } from "./IConditionOfModel";
+import { ISingleBuff } from "../buff/single/ISingleBuff.js";
+import { IConditionOfBuff } from "./IConditionOfBuff.js";
+import { IConditionOfModel } from "./IConditionOfModel.js";
 
 export interface BuffCondition extends IConditionOfModel {
 	buff: ISingleBuff;

@@ -1,27 +1,28 @@
-import { AssetbundleLookupTable } from "../assetbundle-lookup-table";
-import { ImperiumData, RowWrapper } from "../imperium-data";
-import { localizationString } from "../localization";
-import { wikiTitleEscape } from "../wiki-utils";
-import { Battlefield } from "./battlefield";
-import { ChapterCount } from "./chapter-count";
-import { chapterTitleRename } from "./config/chapter";
-import { DropItemsGroup } from "./drop-items";
-import { ChapterCategory } from "./enums/chapter-category.enum";
-import { ChapterGroup } from "./enums/chapter-group.enum";
-import { ChapterMainImageType } from "./enums/chapter-main-image-type.enum";
-import { TimeDisplayType } from "./enums/chapter-time-display-type.enum";
-import { TitleViewType } from "./enums/chapter-title-view-type.enum";
-import { ChapterWikiGroup } from "./enums/chapter-wiki-group.enum";
-import { ItemPayType } from "./enums/item-pay-type.enum";
-import { LookupTableCategory } from "./enums/lookup-table-category.enum";
-import { RewardGroupType } from "./enums/reward-group-type.enum";
-import { StateCondition, stateConditionText } from "./enums/state-condition.enum";
-import { VolumeEnum } from "./enums/volume.enum";
-import { Hero } from "./hero";
-import { Item } from "./item";
-import { ItemPayRef } from "./item-pay-ref";
-import { Quest } from "./quest";
-import { Volume } from "./volume";
+import { AssetbundleLookupTable } from "../assetbundle-lookup-table.js";
+import { ImperiumData, RowWrapper } from "../imperium-data.js";
+import { localizationString } from "../localization.js";
+import { wikiTitleEscape } from "../wiki-utils.js";
+import { Battlefield } from "./battlefield.js";
+import { ChapterCount } from "./chapter-count.js";
+import { chapterTitleRename } from "./config/chapter.js";
+import { DropItemsGroup } from "./drop-items.js";
+import { ChapterCategory } from "./enums/chapter-category.enum.js";
+import { ChapterGroup } from "./enums/chapter-group.enum.js";
+import { ChapterMainImageType } from "./enums/chapter-main-image-type.enum.js";
+import { ChapterWikiGroup } from "./enums/custom/chapter-wiki-group.enum.js";
+import { LookupTableCategory } from "./enums/custom/lookup-table-category.enum.js";
+import { PayType } from "./enums/pay-type.enum.js";
+import { RewardGroupType } from "./enums/reward-group-type.enum.js";
+import { stateConditionText } from "./enums/state-condition-text.js";
+import { StateCondition } from "./enums/state-condition.enum.js";
+import { TimeDisplayType } from "./enums/time-display-type.enum.js";
+import { TitleViewType } from "./enums/title-view-type.enum.js";
+import { Volume as VolumeEnum } from "./enums/volume.enum.js";
+import { Hero } from "./hero.js";
+import { ItemPayRef } from "./item-pay-ref.js";
+import { Item } from "./item.js";
+import { Quest } from "./quest.js";
+import { Volume } from "./volume.js";
 
 const ChaptersTable = ImperiumData.fromGamedata().getTable("Chapters");
 const DiligentGroupsTable = ImperiumData.fromGamedata().getTable("DiligentGroups");
@@ -77,6 +78,7 @@ export class Chapter {
 				return item;
 			}
 		}
+		return;
 	}
 
 	public static getAll() {
@@ -278,7 +280,7 @@ export class Chapter {
 	get sideStoryHero(): Hero | undefined {
 		if (
 			![ChapterWikiGroup.SideStory, ChapterWikiGroup.SideStoryEvent].includes(
-				this.getWikiGroup()
+				this.getWikiGroup(),
 			)
 		) {
 			return undefined;
@@ -296,39 +298,39 @@ export class Chapter {
 
 		this.visibleConditionText = stateConditionText(
 			this.visibleCondition,
-			this.visibleConditionParam
+			this.visibleConditionParam,
 		);
 		this.unlockConditionText = stateConditionText(
 			this.unlockCondition,
-			this.unlockConditionParam
+			this.unlockConditionParam,
 		);
 
 		this.extraCountItem = [];
 		if (row.get("extraCountItem"))
 			this.extraCountItem.push(
 				new ItemPayRef(
-					ItemPayType.Item,
+					PayType.Item,
 					row.get("extraCountItem"),
-					row.get("extraCountItemCount")
-				)
+					row.get("extraCountItemCount"),
+				),
 			);
 		if (row.get("extraCountCurrency"))
 			this.extraCountItem.push(
-				new ItemPayRef(row.get("extraCountCurrency"), "", row.get("extraCountPrice"))
+				new ItemPayRef(row.get("extraCountCurrency"), "", row.get("extraCountPrice")),
 			);
 	}
 
 	public getMainImageAssetUrl() {
 		return AssetbundleLookupTable.getInstance().getAssetUrl(
 			LookupTableCategory.MainPageImage,
-			this.mainImage
+			this.mainImage,
 		);
 	}
 
 	public getMainImageIconsAssetUrl() {
 		return AssetbundleLookupTable.getInstance().getAssetUrl(
 			LookupTableCategory.BattleField_SD,
-			this.mainImageIcons
+			this.mainImageIcons,
 		);
 	}
 
@@ -418,7 +420,7 @@ export class Chapter {
 		switch (this.getWikiGroup()) {
 			case ChapterWikiGroup.SideStoryEvent:
 				const ssChapter = Chapter.getByVolume(VolumeEnum.SideStory).find(
-					(c) => c.title == this.title
+					(c) => c.title == this.title,
 				);
 				if (ssChapter) {
 					return ssChapter.getWikiTitle();

@@ -1,8 +1,8 @@
-import { doGamedataTranslation } from "../../gamedata-translate-settings";
-import { tableOut } from "../../out-data";
-import { objectEach } from "../../utils";
-import { ViewerJSHelper } from "../viewerjs-helper";
-import { getImperiumName, ImperiumData } from "./$ViewerInit";
+import { doGamedataTranslation } from "../../gamedata-translate-settings.js";
+import { tableOut } from "../../out-data.js";
+import { objectEach } from "../../utils.js";
+import { type ViewerJSHelper } from "../viewerjs-helper.js";
+import { getImperiumName, ImperiumData } from "./$ViewerInit.js";
 
 export default async function (helper: ViewerJSHelper) {
 	// load imperium data
@@ -12,7 +12,7 @@ export default async function (helper: ViewerJSHelper) {
 	const out: Record<string, any> = {
 		"!! Imperium version !!": `\n${await getImperiumName(
 			helper,
-			"localization"
+			"localization",
 		)}\n${await getImperiumName(helper, "gamedata")}`,
 	};
 

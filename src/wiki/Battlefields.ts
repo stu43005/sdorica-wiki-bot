@@ -1,7 +1,7 @@
-import { Battlefield } from "../model/battlefield";
-import { wikiH1, wikiH2 } from "../templates/wikiheader";
-import { wikiPageLink } from "../templates/wikilink";
-import { wikiul } from "../templates/wikilist";
+import { Battlefield } from "../model/battlefield.js";
+import { wikiH1, wikiH2 } from "../templates/wikiheader.js";
+import { wikiPageLink } from "../templates/wikilink.js";
+import { wikiul } from "../templates/wikilist.js";
 
 export default function wikiBattlefields() {
 	let out = wikiH1("戰場");
@@ -15,7 +15,7 @@ export default function wikiBattlefields() {
 						`排名獎勵：${wikiPageLink(
 							"BattlefieldRanks",
 							"",
-							battlefield.rankGroupId
+							battlefield.rankGroupId,
 						)}`,
 						`排名蒐集品：${battlefield.targetItem?.toWiki() ?? ""}`,
 				  ]
@@ -26,7 +26,7 @@ export default function wikiBattlefields() {
 						`評價成就：${wikiPageLink(
 							"EvaluateAchievements",
 							"",
-							battlefield.evaluateAchievementGroupId
+							battlefield.evaluateAchievementGroupId,
 						)}`,
 				  ]
 				: []),
@@ -35,14 +35,14 @@ export default function wikiBattlefields() {
 						`積分獎勵：${wikiPageLink(
 							"AdventureRank",
 							"",
-							`積分獎勵 ${battlefield.pointGroupId}`
+							`積分獎勵 ${battlefield.pointGroupId}`,
 						)}`,
 				  ]
 				: []),
 			`章節：${wikiul(
 				battlefield.chapters.map((chapter) =>
-					wikiPageLink("Chapter", chapter.getWikiFullName(), chapter.id)
-				)
+					wikiPageLink("Chapter", chapter.getWikiFullName(), chapter.id),
+				),
 			)}`,
 		];
 

@@ -1,4 +1,4 @@
-import { ISingleIntegerOfBuff } from "./ISingleIntegerOfBuff";
+import { ISingleIntegerOfBuff } from "./ISingleIntegerOfBuff.js";
 
 export interface PlusIntB extends ISingleIntegerOfBuff {
 	left: ISingleIntegerOfBuff;

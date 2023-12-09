@@ -1,6 +1,6 @@
 import MWBot from "mwbot";
-import { Logger } from "../../logger";
-import { getHeroJsonData } from "../../wiki-hero";
+import { Logger } from "../../logger.js";
+import { getHeroJsonData } from "../../wiki-hero.js";
 
 const logger = new Logger("mwbot");
 

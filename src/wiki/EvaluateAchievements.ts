@@ -1,12 +1,12 @@
-import _ from "lodash";
-import { ImperiumData } from "../imperium-data";
-import { achReplacer, localizationString } from "../localization";
-import { QuestMode } from "../model/quest-mode";
-import { wikiH1, wikiH2, wikiH3 } from "../templates/wikiheader";
-import { WikiTableStruct, wikitable } from "../templates/wikitable";
-import { arraySortBy } from "../utils";
-import { wikiNextLine } from "../wiki-utils";
-import { wikiimage } from "../templates/wikiimage";
+import * as _ from "lodash-es";
+import { ImperiumData } from "../imperium-data.js";
+import { achReplacer, localizationString } from "../localization.js";
+import { QuestMode } from "../model/quest-mode.js";
+import { wikiH1, wikiH2, wikiH3 } from "../templates/wikiheader.js";
+import { WikiTableStruct, wikitable } from "../templates/wikitable.js";
+import { arraySortBy } from "../utils.js";
+import { wikiNextLine } from "../wiki-utils.js";
+import { wikiimage } from "../templates/wikiimage.js";
 
 const EvaluateAchievementsTable = ImperiumData.fromGamedata().getTable("EvaluateAchievements");
 const AchievementConditionsTable = ImperiumData.fromGamedata().getTable("AchievementConditions");
@@ -47,7 +47,7 @@ export default function wikiEvaluateAchievements() {
 							: []),
 						entry.get("evaluatePoint"),
 						achReplacer(
-							localizationString("QuestAchievement")(entry.get("descriptionKey"))
+							localizationString("QuestAchievement")(entry.get("descriptionKey")),
 						),
 						wikiNextLine(conditions.join("\n")),
 					]);
@@ -61,7 +61,7 @@ export default function wikiEvaluateAchievements() {
 							height: 25,
 					  })} ${questMode.name}`
 					: questModeId,
-				`${groupId}_${questModeId}`
+				`${groupId}_${questModeId}`,
 			)}\n${wikitable(table)}`;
 		}
 	}
@@ -72,7 +72,7 @@ export default function wikiEvaluateAchievements() {
 export function getAchievementConditions(conditionGroupId: string): string[] {
 	const descs: string[] = [];
 	const conditions = AchievementConditionsTable.filter(
-		(row) => row.get("conditionGroupId") === conditionGroupId
+		(row) => row.get("conditionGroupId") === conditionGroupId,
 	);
 	for (const condition of conditions) {
 		const type: string = condition.get("type");
@@ -127,17 +127,17 @@ export function getAchievementConditions(conditionGroupId: string): string[] {
 				break;
 			case "GoldTriggerCount":
 				descs.push(
-					`金位角色不使用魂芯施展${eraseToString(param1)}技能 ${param2} ${param3}次`
+					`金位角色不使用魂芯施展${eraseToString(param1)}技能 ${param2} ${param3}次`,
 				);
 				break;
 			case "BlackTriggerCount":
 				descs.push(
-					`黑位角色不使用魂芯施展${eraseToString(param1)}技能 ${param2} ${param3}次`
+					`黑位角色不使用魂芯施展${eraseToString(param1)}技能 ${param2} ${param3}次`,
 				);
 				break;
 			case "WhiteTriggerCount":
 				descs.push(
-					`白位角色不使用魂芯施展${eraseToString(param1)}技能 ${param2} ${param3}次`
+					`白位角色不使用魂芯施展${eraseToString(param1)}技能 ${param2} ${param3}次`,
 				);
 				break;
 			case "TriggerCount":
@@ -149,15 +149,15 @@ export function getAchievementConditions(conditionGroupId: string): string[] {
 			case "FriendBuffCount":
 				descs.push(
 					`我方角色獲得${localizationString("BaseBuff")(
-						param1
-					)}總計 ${param2} ${param3}次`
+						param1,
+					)}總計 ${param2} ${param3}次`,
 				);
 				break;
 			case "EnemyBuffCount":
 				descs.push(
 					`敵方角色獲得${localizationString("BaseBuff")(
-						param1
-					)}總計 ${param2} ${param3}次`
+						param1,
+					)}總計 ${param2} ${param3}次`,
 				);
 				break;
 			case "KillCount":

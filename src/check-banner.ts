@@ -1,12 +1,12 @@
-import axios from "axios";
 import config from "config";
 import path from "node:path";
-import { API_CONFIG_PATH, ApiConfig, BANNERS_PATH, LATEST_PATH } from "./config";
-import { LatestDataRaw } from "./data-raw-type";
-import { discordWebhook } from "./discord-webhook";
-import { inputJsonDefault, inputJsonSync } from "./input";
-import { Logger } from "./logger";
-import { outJson, rpFile } from "./out";
+import { API_CONFIG_PATH, ApiConfig, BANNERS_PATH, LATEST_PATH } from "./config.js";
+import { LatestDataRaw } from "./data-raw-type.js";
+import { discordWebhook } from "./discord-webhook.js";
+import { inputJsonDefault, inputJsonSync } from "./input.js";
+import { Logger } from "./logger.js";
+import { outJson, rpFile } from "./out.js";
+import { axios } from "./utilities/axios.js";
 
 const logger = new Logger("check-banner");
 const bannerUrlsPath = path.join(BANNERS_PATH, "banner_urls.json");
@@ -24,7 +24,7 @@ async function loginToGame() {
 	});
 	let res = await axiosInstance.post(
 		"https://2x0x0-api-phoebe.rayark.net/service/email/authenticate",
-		gameAuthenticate
+		gameAuthenticate,
 	);
 	logger.debug("rayark pass authenticate:", res.data);
 	const { auth_code: serviceToken } = res.data;
@@ -55,7 +55,7 @@ async function loginToGame() {
 			headers: {
 				Zone: apiConfig.zone,
 			},
-		}
+		},
 	);
 	logger.debug("game login:", res.data);
 	return gameInstance;

@@ -10,4 +10,5 @@ export enum ChapterGroup {
 	Explore = "Explore",
 	Multiplayer = "Multiplayer",
 	Raid = "Raid",
+	Lore = "Lore",
 }

@@ -1,4 +1,4 @@
-import { ISingleCharacter } from "./target/ISingleCharacter";
+import { ISingleCharacter } from "./target/ISingleCharacter.js";
 
 export interface SkillCastInfo {
 	/* assignTarget */

@@ -1,5 +1,5 @@
-import { BaseScriptableObject } from "../lib/FullInspector/BaseScriptableObject";
-import { EnemyCharacterData } from "./EnemyCharacterData";
+import { BaseScriptableObject } from "../lib/FullInspector/BaseScriptableObject.js";
+import { EnemyCharacterData } from "./EnemyCharacterData.js";
 
 export interface EnemySetAsset extends BaseScriptableObject {
 	enemyList: EnemyCharacterData[];

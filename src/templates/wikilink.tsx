@@ -1,6 +1,6 @@
 import { h } from "preact";
-import { wrapRender } from "./preact-wrapper";
-import { normalizationHeaderId } from "./wikiheader";
+import { wrapRender } from "./preact-wrapper.js";
+import { normalizationHeaderId } from "./wikiheader.js";
 
 export function wikiSectionLink(section: string, text?: string) {
 	return `<a href="#${normalizationHeaderId(section)}">${text ?? section}</a>`;

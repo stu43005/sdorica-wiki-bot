@@ -1,8 +1,8 @@
-import { AssetbundleLookupTable } from "../assetbundle-lookup-table";
-import { ImperiumData, RowWrapper } from "../imperium-data";
-import { localizationStringAuto } from "../localization";
-import { LookupTableCategory } from "./enums/lookup-table-category.enum";
-import { QuestModeBonusType } from "./enums/quest-mode-bonus-type.enum";
+import { AssetbundleLookupTable } from "../assetbundle-lookup-table.js";
+import { ImperiumData, RowWrapper } from "../imperium-data.js";
+import { localizationStringAuto } from "../localization.js";
+import { LookupTableCategory } from "./enums/custom/lookup-table-category.enum.js";
+import { QuestModeBonusType } from "./enums/quest-mode-bonus-type.enum.js";
 
 const QuestModeTable = ImperiumData.fromGamedata().getTable("QuestMode");
 
@@ -32,6 +32,7 @@ export class QuestMode {
 				return item;
 			}
 		}
+		return;
 	}
 
 	public static getAll() {
@@ -80,7 +81,7 @@ export class QuestMode {
 	getModeImageAssetUrl() {
 		return AssetbundleLookupTable.getInstance().getAssetUrl(
 			LookupTableCategory.TierMedalSprite,
-			this.modeImage
+			this.modeImage,
 		);
 	}
 

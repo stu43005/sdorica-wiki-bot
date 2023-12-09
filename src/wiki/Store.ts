@@ -1,7 +1,7 @@
-import { ImperiumData } from "../imperium-data";
-import { localizationString } from "../localization";
-import { arrayGroupBy, objectMap } from "../utils";
-import { item2wikiWithType } from "../wiki-item";
+import { ImperiumData } from "../imperium-data.js";
+import { localizationString } from "../localization.js";
+import { arrayGroupBy, objectMap } from "../utils.js";
+import { item2wikiWithType } from "../wiki-item.js";
 
 const StoreConfigsTable = ImperiumData.fromGamedata().getTable("StoreConfigs");
 const StoreItemGroupsTable = ImperiumData.fromGamedata().getTable("StoreItemGroups");
@@ -19,9 +19,9 @@ export default function wikiStore() {
 				slot: Number(row.get("slot")),
 				order: Number(row.get("order")),
 			})),
-			(r) => r.store
+			(r) => r.store,
 		),
-		(key, value) => arrayGroupBy(value, (r) => r.slot, true)
+		(key, value) => arrayGroupBy(value, (r) => r.slot, true),
 	);
 
 	const out: string[] = [];
@@ -43,7 +43,7 @@ export default function wikiStore() {
 					}
 
 					const itemGroup = StoreItemGroupsTable.filter(
-						(g) => g.get("group") == config.itemGroup && g.get("enable")
+						(g) => g.get("group") == config.itemGroup && g.get("enable"),
 					);
 					let weightCount = 0;
 					itemGroup.forEach((ig) => {
@@ -54,11 +54,11 @@ export default function wikiStore() {
 						str += `\n${indent} ${item2wikiWithType(
 							item.get("giveType"),
 							item.get("giveLinkId"),
-							item.get("itemCount")
+							item.get("itemCount"),
 						)}：${item2wikiWithType(
 							item.get("payType"),
 							item.get("linkId"),
-							item.get("amount")
+							item.get("amount"),
 						)}`;
 						if (itemGroup.length > 1) {
 							str += ` (${

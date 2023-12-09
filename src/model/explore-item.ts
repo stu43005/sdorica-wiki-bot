@@ -1,17 +1,18 @@
-import { ImperiumData, RowWrapper } from "../imperium-data";
-import { itemNameNormalization, localizationString } from "../localization";
-import { ItemIconParams } from "../templates/item-icon";
-import { wikiH2 } from "../templates/wikiheader";
-import { exploreCompositeList, exploreUsingList } from "../wiki-item";
-import { exploreItemRename } from "./config/item";
-import { DropItemsGroup } from "./drop-items";
-import { ExploreItemPortable } from "./enums/explore-item-portable.enum";
-import { ExploreItemsCategory } from "./enums/explore-items-category.enum";
-import { ItemType } from "./enums/item-type.enum";
-import { ExploreComposite } from "./explore-composite";
-import { Hero } from "./hero";
-import { Item } from "./item";
-import { ItemBase } from "./item.base";
+import { ImperiumData, RowWrapper } from "../imperium-data.js";
+import { itemNameNormalization, localizationString } from "../localization.js";
+import { ItemIconParams } from "../templates/item-icon.js";
+import { wikiH2 } from "../templates/wikiheader.js";
+import { exploreCompositeList, exploreUsingList } from "../wiki-item.js";
+import { exploreItemRename } from "./config/item.js";
+import { DropItemsGroup } from "./drop-items.js";
+import { ExploreItemPortable } from "./enums/explore-item-portable.enum.js";
+import { ExploreItemsCategory } from "./enums/explore-items-category.enum.js";
+import { ItemType } from "./enums/item-type.enum.js";
+import { ExploreComposite } from "./explore-composite.js";
+import { Hero } from "./hero.js";
+import { Item } from "./item.js";
+import { ItemBase } from "./item.base.js";
+import { ItemInfoboxParams } from "../templates/item-infobox.js";
 
 const ExploreItemsTable = ImperiumData.fromGamedata().getTable("ExploreItems");
 
@@ -41,6 +42,7 @@ export class ExploreItem extends ItemBase {
 				return item;
 			}
 		}
+		return;
 	}
 
 	public static getAll() {
@@ -54,7 +56,7 @@ export class ExploreItem extends ItemBase {
 		}
 	}
 
-	readonly itemType = ItemType.ExploreItem;
+	readonly itemType = ItemType.ExploreItems;
 
 	get id(): string {
 		return this.row.get("id");
@@ -142,20 +144,20 @@ export class ExploreItem extends ItemBase {
 	constructor(row: RowWrapper) {
 		super(row);
 		this.name = itemNameNormalization(
-			localizationString("ExpItem")(row.get("localizationKeyName")) || this.iconKey
+			localizationString("ExpItem")(row.get("localizationKeyName")) || this.iconKey,
 		);
 		this.scName = itemNameNormalization(
 			localizationString(
 				"ExpItem",
 				"",
 				"Key",
-				"ChineseSimplified"
-			)(row.get("localizationKeyName")) || this.iconKey
+				"ChineseSimplified",
+			)(row.get("localizationKeyName")) || this.iconKey,
 		);
 		this.description = localizationString("ExpItem")(row.get("localizationKeyDescription"));
 	}
 
-	toWiki(options?: ItemIconParams) {
+	override toWiki(options?: ItemIconParams): string {
 		if (this.transformTo) {
 			return this.transformTo.toWiki({
 				iconUrl: this.getIconAssetUrl(options?.smallIcon),
@@ -165,7 +167,7 @@ export class ExploreItem extends ItemBase {
 		return super.toWiki(options);
 	}
 
-	getWikiPageName() {
+	override getWikiPageName(): string {
 		if (exploreItemRename[this.id]) {
 			return exploreItemRename[this.id];
 		}
@@ -175,12 +177,12 @@ export class ExploreItem extends ItemBase {
 		return super.getWikiPageName();
 	}
 
-	getItemInfoboxParams() {
+	override getItemInfoboxParams(): ItemInfoboxParams {
 		const params = super.getItemInfoboxParams();
 
 		params.description = params.description.replace(
 			/(精神值|飽食度)\s?([x\+\-]\d+)/g,
-			"{{$1|$2}}"
+			"{{$1|$2}}",
 		);
 		params.stack = this.stackingNum;
 		if (this.portable != ExploreItemPortable.Normal) params.portable = this.portable;
@@ -188,22 +190,22 @@ export class ExploreItem extends ItemBase {
 		return params;
 	}
 
-	toWikiTreasureList() {
+	toWikiTreasureList(): string {
 		if (this.category == ExploreItemsCategory.Treasure) {
 			return `${wikiH2("開啟寶箱獲得道具")}\n${this.treasureItems?.toWiki()}`;
 		}
 		return "";
 	}
 
-	toWikiCompositeList() {
+	toWikiCompositeList(): string {
 		return exploreCompositeList(this.id);
 	}
 
-	toWikiUsingList() {
+	toWikiUsingList(): string {
 		return exploreUsingList(this.id);
 	}
 
-	toWikiPage() {
+	override toWikiPage(): string {
 		return [
 			this.toItemInfobox(),
 			this.toWikiDropQuests(),

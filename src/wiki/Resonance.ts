@@ -1,18 +1,18 @@
-import { ImperiumData } from "../imperium-data";
-import { rank } from "../localization";
-import { ItemPayType } from "../model/enums/item-pay-type.enum";
-import { ItemPayRef } from "../model/item-pay-ref";
-import { ItemIconParams } from "../templates/item-icon";
-import { wikiH1, wikiH2 } from "../templates/wikiheader";
-import { WikiTableCeil, WikiTableStruct, wikitable } from "../templates/wikitable";
-import { wikiNextLine } from "../wiki-utils";
+import { ImperiumData } from "../imperium-data.js";
+import { rank } from "../localization.js";
+import { PayType } from "../model/enums/pay-type.enum.js";
+import { ItemPayRef } from "../model/item-pay-ref.js";
+import { ItemIconParams } from "../templates/item-icon.js";
+import { wikiH1, wikiH2 } from "../templates/wikiheader.js";
+import { WikiTableCeil, WikiTableStruct, wikitable } from "../templates/wikitable.js";
+import { wikiNextLine } from "../wiki-utils.js";
 
 const RankUpItemRefsTable = ImperiumData.fromGamedata().getTable("RankUpItemRefs");
 const RankUpItemsTable = ImperiumData.fromGamedata().getTable("RankUpItems");
 
 export default function wikiResonance() {
 	let out = `${wikiH1("共鳴")}\n\n${wikiH2(
-		"共鳴所需道具數量"
+		"共鳴所需道具數量",
 	)}\n角色提升至共鳴階級或突破所需消耗的道具數量如下表：`;
 
 	const table: WikiTableStruct = {
@@ -49,11 +49,11 @@ export default function wikiResonance() {
 			ResonanceItems[refId] = new ItemPayRef(
 				row.get("payType"),
 				row.get("payLinkId"),
-				row.get("payAmount")
+				row.get("payAmount"),
 			);
 		}
 	}
-	ResonanceItems["coin"] = new ItemPayRef(ItemPayType.Coin, "", 1);
+	ResonanceItems["coin"] = new ItemPayRef(PayType.Coin, "", 1);
 	let SubRankUpItemCount: Record<string, number> = {};
 	let SubRankUpExtCount: Record<string, number> = {};
 	const ResonanceItemOptions: ItemIconParams = {
@@ -244,13 +244,13 @@ export default function wikiResonance() {
 						index === 4 && category === "Sublimation"
 							? wikiNextLine(`➡️\n➡️\n➡️`)
 							: item.payRef
-							? item.payRef.toWiki({
-									...ResonanceItemOptions,
-									count: item.count,
-							  })
-							: "-",
-				})
-			)
+							  ? item.payRef.toWiki({
+										...ResonanceItemOptions,
+										count: item.count,
+							    })
+							  : "-",
+				}),
+			),
 		);
 		table.rows.push(ceil);
 
@@ -378,7 +378,7 @@ export default function wikiResonance() {
 	}
 
 	out += `\n${wikitable(
-		table
+		table,
 	)}\n\n''註：本表以[[安潔莉亞]]共鳴道具為例，不同角色可能需要不同的道具。''`;
 	return out;
 }

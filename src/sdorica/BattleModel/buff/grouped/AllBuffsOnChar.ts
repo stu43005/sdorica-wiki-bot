@@ -1,5 +1,5 @@
-import { ISingleCharacter } from "../../target/ISingleCharacter";
-import { IGroupedBuff } from "./IGroupedBuff";
+import { ISingleCharacter } from "../../target/ISingleCharacter.js";
+import { IGroupedBuff } from "./IGroupedBuff.js";
 
 export interface AllBuffsOnChar extends IGroupedBuff {
 	character: ISingleCharacter;

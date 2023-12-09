@@ -1,8 +1,8 @@
-import { IGroupedCharacter } from "../../target/IGroupedCharacter";
-import { ITransitionResultGroup } from "./group/ITransitionResultGroup";
-import { ITransitionResultValue } from "./ITransitionResultValue";
-import { TransitionCharacterType } from "./TransitionCharacterType";
-import { TransitionValueType } from "./TransitionValueType";
+import { IGroupedCharacter } from "../../target/IGroupedCharacter.js";
+import { ITransitionResultGroup } from "./group/ITransitionResultGroup.js";
+import { ITransitionResultValue } from "./ITransitionResultValue.js";
+import { TransitionCharacterType } from "./TransitionCharacterType.js";
+import { TransitionValueType } from "./TransitionValueType.js";
 
 export interface TotalResultsValueOfCharacterGroup extends ITransitionResultValue {
 	Results: ITransitionResultGroup;

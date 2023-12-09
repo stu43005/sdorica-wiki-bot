@@ -1,20 +1,20 @@
-import { ExploreItemsCategory } from "../model/enums/explore-items-category.enum";
-import { ItemCategory } from "../model/enums/item-category.enum";
-import { ExploreItem } from "../model/explore-item";
-import { Item } from "../model/item";
-import { wikiH1, wikiH2, wikiH3 } from "../templates/wikiheader";
-import { WikiTableStruct, wikitable } from "../templates/wikitable";
-import { wikiNextLine } from "../wiki-utils";
+import { ExploreItemsCategory } from "../model/enums/explore-items-category.enum.js";
+import { ItemCategory } from "../model/enums/item-category.enum.js";
+import { ExploreItem } from "../model/explore-item.js";
+import { Item } from "../model/item.js";
+import { wikiH1, wikiH2, wikiH3 } from "../templates/wikiheader.js";
+import { WikiTableStruct, wikitable } from "../templates/wikitable.js";
+import { wikiNextLine } from "../wiki-utils.js";
 
 export default function wikiTreasureItems() {
 	let out = wikiH1(`寶箱`);
 
 	const groups = {
 		道具: Item.getAll().filter((item) =>
-			[ItemCategory.Treasure, ItemCategory.Voucher].includes(item.category)
+			[ItemCategory.Treasure, ItemCategory.Voucher].includes(item.category),
 		),
 		探索道具: ExploreItem.getAll().filter(
-			(item) => item.category == ExploreItemsCategory.Treasure
+			(item) => item.category == ExploreItemsCategory.Treasure,
 		),
 	};
 
@@ -38,8 +38,8 @@ export default function wikiTreasureItems() {
 				"treasureItems" in item && item.treasureItems
 					? item.treasureItems.toWiki()
 					: "voucherGifts" in item && item.voucherGifts
-					? item.voucherGifts.toWiki()
-					: "",
+					  ? item.voucherGifts.toWiki()
+					  : "",
 			]);
 		}
 

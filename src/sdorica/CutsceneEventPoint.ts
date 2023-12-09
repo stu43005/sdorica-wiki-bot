@@ -1,6 +1,6 @@
-import { ActorState } from "./ActorState";
-import { CutsceneName } from "./CutsceneName";
-import { LevelEvent } from "./LevelEvent";
+import { ActorState } from "./ActorState.js";
+import { CutsceneName } from "./CutsceneName.js";
+import { LevelEvent } from "./LevelEvent.js";
 
 export interface CutsceneEventPoint extends LevelEvent {
 	SequenceKey: CutsceneName;

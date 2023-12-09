@@ -1,8 +1,8 @@
-import _ from "lodash";
-import { Mission } from "../model/mission";
-import { wikiH1, wikiH2, wikiH3 } from "../templates/wikiheader";
-import { wikitable, WikiTableStruct } from "../templates/wikitable";
-import { sortCategory } from "../utils";
+import * as _ from "lodash-es";
+import { Mission } from "../model/mission.js";
+import { wikiH1, wikiH2, wikiH3 } from "../templates/wikiheader.js";
+import { wikitable, WikiTableStruct } from "../templates/wikitable.js";
+import { sortCategory } from "../utils.js";
 
 export default function wikiMissions() {
 	let out = wikiH1("任務");
@@ -33,8 +33,8 @@ export default function wikiMissions() {
 									text: `-`,
 							  }
 							: mission.maxLv == 99
-							? `${mission.minLv} ↑`
-							: `${mission.minLv} ~ ${mission.maxLv}`,
+							  ? `${mission.minLv} ↑`
+							  : `${mission.minLv} ~ ${mission.maxLv}`,
 						mission.getMissionName(true),
 						mission.giveItem.toWiki(),
 					],

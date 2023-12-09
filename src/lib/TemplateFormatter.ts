@@ -1,4 +1,4 @@
-import { isEmptyObject, isNumber, objectEach } from "../utils";
+import { isEmptyObject, isNumber, objectEach } from "../utils.js";
 
 export class TemplateFormatter {
 	static FORMATSTRING_REGEXP = /^(\n)?(\{\{ *_+)(\n? *\|\n? *_+ *= *)(_+)(\n? *\}\})(\n)?$/;

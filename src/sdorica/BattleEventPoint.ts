@@ -1,6 +1,6 @@
-import { IConditionOfModel } from "./BattleModel/condition/IConditionOfModel";
-import { LevelEvent } from "./LevelEvent";
-import { WaveName } from "./WaveName";
+import { IConditionOfModel } from "./BattleModel/condition/IConditionOfModel.js";
+import { LevelEvent } from "./LevelEvent.js";
+import { WaveName } from "./WaveName.js";
 
 export interface BattleEventPoint extends LevelEvent {
 	useBattleAudio: boolean;

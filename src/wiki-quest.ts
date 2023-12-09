@@ -1,14 +1,14 @@
-import { ImperiumData, RowWrapper } from "./imperium-data";
-import { TemplateFormatter } from "./lib/TemplateFormatter";
+import { ImperiumData, RowWrapper } from "./imperium-data.js";
+import { TemplateFormatter } from "./lib/TemplateFormatter.js";
 import {
 	localizationCharacterName,
 	localizationItemName,
 	localizationString,
 	rank,
-} from "./localization";
-import { questWikiLinkRename } from "./model/config/quest";
-import { applyAtk, calcStatistics, heroName, skillinfo } from "./wiki-hero";
-import { wikitemplate } from "./wiki-utils";
+} from "./localization.js";
+import { questWikiLinkRename } from "./model/config/quest.js";
+import { applyAtk, calcStatistics, heroName, skillinfo } from "./wiki-hero.js";
+import { wikitemplate } from "./wiki-utils.js";
 
 const ChaptersTable = ImperiumData.fromGamedata().getTable("Chapters");
 const DropItemsTable = ImperiumData.fromGamedata().getTable("DropItems");
@@ -42,7 +42,7 @@ export function getQuestJsonData() {
 				.filter((s) => s != "")
 				.map((item) => item.split(":"));
 			const dropGroup = DropItemsTable.filter(
-				(ditem) => ditem.get("groupId") == quest.get("dropGroupIdFirst")
+				(ditem) => ditem.get("groupId") == quest.get("dropGroupIdFirst"),
 			);
 			for (let k = 0; k < dropitemsList.length; k++) {
 				const item = dropitemsList[k];
@@ -272,11 +272,11 @@ export function getQuestJsonData() {
 			out[chKey][`${fullname} (${quest.get("levelId")})`] = `${wikitemplate(
 				"關卡資訊",
 				questArgs,
-				TemplateFormatter.FORMAT.BLOCK
+				TemplateFormatter.FORMAT.BLOCK,
 			)}\n${sideStoryLimit[0]}\n${wikitemplate(
 				"角色限制",
 				teamlimitArgs,
-				TemplateFormatter.FORMAT.BLOCK
+				TemplateFormatter.FORMAT.BLOCK,
 			)}\n${sideStoryLimit[1]}`;
 		}
 	}
@@ -370,7 +370,7 @@ export function questMetadata(quest: RowWrapper, chapter?: RowWrapper): QuestMet
 					(c) =>
 						c.get("group") == "SideStory" &&
 						c.get("category") == "SideStory" &&
-						c.get("title") == chapterTitle
+						c.get("title") == chapterTitle,
 				);
 				if (ssChapter) {
 					return questMetadata(quest, ssChapter);
@@ -378,11 +378,11 @@ export function questMetadata(quest: RowWrapper, chapter?: RowWrapper): QuestMet
 				const questCharU01 = QuestsTable.find(
 					(r) =>
 						r.get("chapter") == chapterId &&
-						!!(r.get("levelId") + "").match(/char_(.*)_u01/)
+						!!(r.get("levelId") + "").match(/char_(.*)_u01/),
 				);
 				if (questCharU01 && quest) {
 					const questCharU01Name = localizationString("QuestName")(
-						questCharU01.get("levelId")
+						questCharU01.get("levelId"),
 					);
 					const heroName = questCharU01Name.replace("的旅程初級", "");
 					ch = `${heroName}《${localizationString("RegionName")(chapterTitle)}》`;
@@ -465,7 +465,7 @@ function teamlimitHero(data: TeamLimitData): string {
 	}
 	if (!data.hero.get("enable")) {
 		const skills = HeroSkillsTable.find(
-			(s) => s.get("heroId") == data.hero?.get("id") && s.get("rank") == data.rank
+			(s) => s.get("heroId") == data.hero?.get("id") && s.get("rank") == data.rank,
 		);
 		let skillSet = `${data.hero.get("model")}s${data.rank}`;
 		if (skills) {
@@ -496,33 +496,33 @@ function teamlimitHero(data: TeamLimitData): string {
 					case "O1":
 						data.S1 = skillinfo(
 							localizationString("SkillInfo")(`${skillSet}_S1_1`),
-							"S1"
+							"S1",
 						);
 						break;
 					case "O2":
 						data.S2 = skillinfo(
 							localizationString("SkillInfo")(`${skillSet}_S2_1`),
-							"S2"
+							"S2",
 						);
 						break;
 					case "O3":
 						data.E3 = skillinfo(
 							localizationString("SkillInfo")(`${skillSet}_E3_1`),
-							"E3"
+							"E3",
 						);
 						data.E3type = skilltype;
 						break;
 					case "O4":
 						data.S3 = skillinfo(
 							localizationString("SkillInfo")(`${skillSet}_S3_1`),
-							"S3"
+							"S3",
 						);
 						data.S3type = skilltype;
 						break;
 					case "O6":
 						data.E6 = skillinfo(
 							localizationString("SkillInfo")(`${skillSet}_E6_1`),
-							"E6"
+							"E6",
 						);
 						break;
 				}
@@ -543,7 +543,7 @@ function teamlimitHero(data: TeamLimitData): string {
 			const atk = calcStatistics(
 				data.hero.get("atk"),
 				Number(data.lv),
-				lvData.get("rankAtk")
+				lvData.get("rankAtk"),
 			);
 			if (data.S1) data.S1 = applyAtk(data.S1, atk);
 			if (data.S2) data.S2 = applyAtk(data.S2, atk);
@@ -582,7 +582,7 @@ function teamlimitHeroRank(data: TeamLimitData): string {
 	} else if (data.hero) {
 		const heroId = data.hero.get("id");
 		const skillset = HeroSkillsTable.find(
-			(r) => r.get("heroId") == heroId && r.get("rank") == data.rank
+			(r) => r.get("heroId") == heroId && r.get("rank") == data.rank,
 		);
 		if (skillset) {
 			const skill = localizationString("HeroSkills", "skill_set_")(skillset.get("id"));
@@ -660,7 +660,7 @@ export function questSideStoryLimit(quest: RowWrapper, chapter: RowWrapper): [st
 	if (chapter.get("category") == "SideStory") {
 		const hero = HeroesTable.find((h) => h.get("storyChapter") == chapter.get("id"));
 		const extraSetting = QuestExtraSettingsTable.find(
-			(s) => s.get("id") == quest.get("extraSettingId")
+			(s) => s.get("id") == quest.get("extraSettingId"),
 		);
 		if (hero && extraSetting) {
 			const { firstname } = heroName(hero);
@@ -669,13 +669,13 @@ export function questSideStoryLimit(quest: RowWrapper, chapter: RowWrapper): [st
 				case "heroRank":
 					if (extraSetting.get("param2") > hero.get("initRank")) {
 						str2 = `{{角色故事限制 | 角色 = ${firstname} | 內容 = 共鳴限制 | 共鳴階級 = ${rank(
-							""
+							"",
 						)(extraSetting.get("param2"))}}}`;
 					}
 					break;
 				case "QuestComplete":
 					const compQuest = QuestsTable.find(
-						(q) => q.get("id") == extraSetting.get("param1")
+						(q) => q.get("id") == extraSetting.get("param1"),
 					);
 					if (compQuest) {
 						const {

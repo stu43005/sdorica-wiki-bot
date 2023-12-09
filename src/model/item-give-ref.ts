@@ -1,17 +1,17 @@
 import numeral from "numeral";
-import { currency2Id } from "../localization";
-import { HeroIconParams } from "../templates/hero-icon";
-import { ItemIconParams } from "../templates/item-icon";
-import { MonsterIconParams } from "../templates/monster-icon";
-import { item2wikiWithType } from "../wiki-item";
-import { Chapter } from "./chapter";
-import { ItemGiveType } from "./enums/item-give-type.enum";
-import { ExploreItem } from "./explore-item";
-import { Hero } from "./hero";
-import { HeroSkillSet } from "./hero-skillset";
-import { Item } from "./item";
-import { ItemBase } from "./item.base";
-import { Monster } from "./monster";
+import { currency2Id } from "../localization.js";
+import { HeroIconParams } from "../templates/hero-icon.js";
+import { ItemIconParams } from "../templates/item-icon.js";
+import { MonsterIconParams } from "../templates/monster-icon.js";
+import { item2wikiWithType } from "../wiki-item.js";
+import { Chapter } from "./chapter.js";
+import { GiveType } from "./enums/give-type.enum.js";
+import { ExploreItem } from "./explore-item.js";
+import { Hero } from "./hero.js";
+import { HeroSkillSet } from "./hero-skillset.js";
+import { Item } from "./item.js";
+import { ItemBase } from "./item.base.js";
+import { Monster } from "./monster.js";
 
 type ToWikiParam = ItemIconParams & HeroIconParams & MonsterIconParams;
 
@@ -22,27 +22,27 @@ export class ItemGiveRef {
 	diligentChapter?: Chapter;
 
 	public static createItem(id: string, amount = 0) {
-		return new ItemGiveRef(ItemGiveType.Item, id, amount);
+		return new ItemGiveRef(GiveType.Item, id, amount);
 	}
 
 	public static parseItem(str: string, separator = ":") {
 		const [id, amount] = str.split(separator);
-		return new ItemGiveRef(ItemGiveType.Item, id, +amount || 0);
+		return new ItemGiveRef(GiveType.Item, id, +amount || 0);
 	}
 
 	constructor(
-		public type: ItemGiveType,
+		public type: GiveType,
 		public id: string,
 		public amount: number = 0,
-		public chance: number = 10000
+		public chance: number = 10000,
 	) {
 		switch (this.type) {
-			case ItemGiveType.ExploreItem:
+			case GiveType.ExploreItem:
 				this.item = ExploreItem.get(this.id);
 				break;
-			case ItemGiveType.Item:
+			case GiveType.Item:
 			default:
-				if (this.type !== ItemGiveType.Item) {
+				if (this.type !== GiveType.Item) {
 					const currencyId = currency2Id()(this.type);
 					if (!currencyId) {
 						break;
@@ -51,15 +51,15 @@ export class ItemGiveRef {
 				}
 				this.item = Item.get(this.id);
 				break;
-			case ItemGiveType.Monster:
+			case GiveType.Monster:
 				this.monster = Monster.get(this.id);
 				break;
-			case ItemGiveType.Hero: {
+			case GiveType.Hero: {
 				const [heroId, rankId] = this.id.split("_");
 				this.heroSkillSet = Hero.get(heroId)?.getSkillSet(+rankId);
 				break;
 			}
-			case ItemGiveType.Diligent:
+			case GiveType.Diligent:
 				this.diligentChapter = Chapter.get(this.id);
 				break;
 		}
@@ -97,7 +97,7 @@ export class ItemGiveRef {
 		}
 		if (this.diligentChapter) {
 			return `${this.diligentChapter.getWikiTitle()}${this.diligentChapter.diligentItem?.toWiki(
-				options
+				options,
 			)}`;
 		}
 		return item2wikiWithType(this.type, this.id, count, options);

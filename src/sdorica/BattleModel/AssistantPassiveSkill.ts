@@ -1,3 +1,3 @@
-import { AssistantSkill } from "./AssistantSkill";
+import { AssistantSkill } from "./AssistantSkill.js";
 
 export type AssistantPassiveSkill = AssistantSkill;

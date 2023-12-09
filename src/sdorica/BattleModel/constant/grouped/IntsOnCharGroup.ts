@@ -1,6 +1,6 @@
-import { BuffEnums } from "../../BuffEnums";
-import { IGroupedCharacter } from "../../target/IGroupedCharacter";
-import { IGroupedInteger } from "./IGroupedInteger";
+import { BuffEnums } from "../../BuffEnums.js";
+import { IGroupedCharacter } from "../../target/IGroupedCharacter.js";
+import { IGroupedInteger } from "./IGroupedInteger.js";
 
 export interface IntsOnCharGroup extends IGroupedInteger {
 	group: IGroupedCharacter;

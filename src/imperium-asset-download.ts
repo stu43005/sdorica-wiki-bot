@@ -1,9 +1,9 @@
 import pMap from "p-map";
-import { AssetDataRaw } from "./data-raw-type";
-import { ImperiumData } from "./imperium-data";
-import { inputJsonDefault } from "./input";
-import { Logger } from "./logger";
-import { outJson } from "./out";
+import { AssetDataRaw } from "./data-raw-type.js";
+import { ImperiumData } from "./imperium-data.js";
+import { inputJsonDefault } from "./input.js";
+import { Logger } from "./logger.js";
+import { outJson } from "./out.js";
 
 const logger = new Logger("imperium-asset-download");
 
@@ -13,7 +13,7 @@ export async function assetDownload(
 	metadataFilePath: string,
 	data: ImperiumData,
 	force = false,
-	downloadCallback: (name: string, asset: AssetDataRaw) => Promise<boolean>
+	downloadCallback: (name: string, asset: AssetDataRaw) => Promise<boolean>,
 ) {
 	const meta = await inputJsonDefault<Metadata>(metadataFilePath, {});
 
@@ -36,7 +36,7 @@ export async function assetDownload(
 		},
 		{
 			concurrency: 10,
-		}
+		},
 	);
 
 	try {

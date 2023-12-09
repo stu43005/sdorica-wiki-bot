@@ -2,13 +2,13 @@ import { decode as base64ToArrayBuffer, encode as arrayBufferToBase64 } from "ba
 import { unzip } from "gzip-js";
 import * as idb from "idb";
 import JSZip from "jszip";
-import { ImperiumData } from "../imperium-data";
-import { fsSerializer } from "../lib/FullSerializer/fsSerializer";
-import { Logger } from "../logger";
-import { objectEach } from "../utils";
-import { SdoricaInspectorApi } from "./si-api";
-import { SiContainer } from "./types/containers";
-import { ViewerJSHelper } from "./viewerjs-helper";
+import { ImperiumData } from "../imperium-data.js";
+import { fsSerializer } from "../lib/FullSerializer/fsSerializer.js";
+import { Logger } from "../logger.js";
+import { objectEach } from "../utils.js";
+import { SdoricaInspectorApi } from "./si-api.js";
+import { SiContainer } from "./types/containers.js";
+import { type ViewerJSHelper } from "./viewerjs-helper.js";
 
 const logger = new Logger("viewerjs/utils");
 
@@ -55,7 +55,7 @@ export async function containerSearchAuto(helper: ViewerJSHelper, path: string) 
 					try {
 						const results = await containerSearchMultiSplit(
 							helper,
-							queue2.map((q) => q.path)
+							queue2.map((q) => q.path),
 						);
 						queue2.forEach((entry, index) => {
 							entry.resolve(results[index]);
@@ -103,9 +103,9 @@ export async function containerSearch(helper: ViewerJSHelper, path: string) {
 	// step 4: Run ViewerJS code
 	const interpretedData: SiContainer = helper.getCode(containers[pathId].type)
 		? await new Promise((resolve) => {
-				container.__skip_prompt = true;
+				container["__skip_prompt"] = true;
 				helper.runCode(containers[pathId].type, container, null, (reuslt) => {
-					delete reuslt.__skip_prompt;
+					delete reuslt["__skip_prompt"];
 					resolve(reuslt);
 				});
 		  })
@@ -204,15 +204,15 @@ export async function containerSearchMulti(helper: ViewerJSHelper, ql: string[])
 			const container = containerResults[index];
 			if (helper.getCode(qltype[index])) {
 				return new Promise<Record<string, any>>((resolve) => {
-					container.__skip_prompt = true;
+					container["__skip_prompt"] = true;
 					helper.runCode(qltype[index], container, null, (reuslt) => {
-						delete reuslt.__skip_prompt;
+						delete reuslt["__skip_prompt"];
 						resolve(reuslt);
 					});
 				});
 			}
 			return container;
-		})
+		}),
 	);
 	return interpretedDatas;
 }
