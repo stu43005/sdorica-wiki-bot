@@ -1,5 +1,5 @@
 import * as _ from "lodash-es";
-import { AssetbundleLookupTable } from "../assetbundle-lookup-table.js";
+import { AssetbundleLookupTable } from "../assetbundle/assetbundle-lookup-table.js";
 import { ImperiumData } from "../imperium-data.js";
 import { LookupTableCategory } from "../model/enums/custom/lookup-table-category.enum.js";
 import { Hero } from "../model/hero.js";

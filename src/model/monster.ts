@@ -1,5 +1,5 @@
 import { render } from "preact-render-to-string";
-import { AssetbundleLookupTable } from "../assetbundle-lookup-table.js";
+import { AssetbundleLookupTable } from "../assetbundle/assetbundle-lookup-table.js";
 import { ImperiumData, RowWrapper } from "../imperium-data.js";
 import { localizationCharacterName, localizationString } from "../localization.js";
 import { MonsterIconParams, monsterIconTemplate } from "../templates/monster-icon.js";

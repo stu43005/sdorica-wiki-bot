@@ -1,7 +1,7 @@
 import MWBot from "mwbot";
 import fs from "node:fs/promises";
 import path from "node:path";
-import { AssetbundleLookupTable } from "./assetbundle-lookup-table.js";
+import { AssetbundleLookupTable } from "./assetbundle/assetbundle-lookup-table.js";
 import { WIKI_PATH } from "./config.js";
 import { getConstants } from "./localization.js";
 import { Logger } from "./logger.js";

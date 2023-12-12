@@ -1,6 +1,17 @@
 import "../imperium-data-local.js";
 //
-import { assetBundleDownloader } from "../assetbundle-downloader.js";
-import { isDevMode } from "../utils.js";
+import { parseArgs } from "node:util";
+import { assetBundleDownloader } from "../assetbundle/downloader.js";
 
-await assetBundleDownloader(isDevMode());
+const { values } = parseArgs({
+	args: process.argv.slice(2),
+	options: {
+		force: {
+			type: "boolean",
+			short: "f",
+			default: false,
+		},
+	},
+});
+
+await assetBundleDownloader(values.force);

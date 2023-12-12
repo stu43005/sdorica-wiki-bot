@@ -31,6 +31,7 @@ export async function assetDownload(
 					}
 				} catch (error) {
 					logger.error(`processing ${name} error:`, error);
+					debugger;
 				}
 			}
 		},

@@ -1,5 +1,5 @@
 import { render } from "preact-render-to-string";
-import { AssetbundleLookupTable } from "../assetbundle-lookup-table.js";
+import { AssetbundleLookupTable } from "../assetbundle/assetbundle-lookup-table.js";
 import { RowWrapper } from "../imperium-data.js";
 import { itemDropQuestsTemplate } from "../templates/item-drop-quests.js";
 import { ItemIconParams, itemIconTemplate } from "../templates/item-icon.js";

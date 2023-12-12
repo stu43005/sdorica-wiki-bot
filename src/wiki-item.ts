@@ -53,7 +53,7 @@ export const exploreLabelName: Record<string, string[]> = {
 	"20": ["探索食物【增益效果】", "探索食物"], // 食物：增益效果
 	"21": ["野獸道具"], // 其他：野獸
 	"22": ["探索劇情文本道具"], // 其他：劇情文本
-	"23": ["探索道具"],
+	"23": ["探索道具"], // 其他
 };
 
 function exploreCategoryName(label: string) {

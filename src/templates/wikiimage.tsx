@@ -1,6 +1,6 @@
 import { h } from "preact";
-import { getAssetUrl } from "../assetbundle-asset.js";
-import { AssetbundleLookupTable } from "../assetbundle-lookup-table.js";
+import { getAssetUrl } from "../assetbundle/asset.js";
+import { AssetbundleLookupTable } from "../assetbundle/assetbundle-lookup-table.js";
 import { LookupTableCategory } from "../model/enums/custom/lookup-table-category.enum.js";
 import { wrapRender } from "./preact-wrapper.js";
 

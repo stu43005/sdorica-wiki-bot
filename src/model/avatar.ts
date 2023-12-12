@@ -1,4 +1,4 @@
-import { AssetbundleLookupTable } from "../assetbundle-lookup-table.js";
+import { AssetbundleLookupTable } from "../assetbundle/assetbundle-lookup-table.js";
 import { ImperiumData, RowWrapper } from "../imperium-data.js";
 import { localizationString } from "../localization.js";
 import { AvatarInfoboxParams, avatarInfoboxTemplate } from "../templates/avatar-infobox.js";

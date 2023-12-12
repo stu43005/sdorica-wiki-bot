@@ -1,4 +1,4 @@
-import { AssetbundleLookupTable } from "../assetbundle-lookup-table.js";
+import { AssetbundleLookupTable } from "../assetbundle/assetbundle-lookup-table.js";
 import { ImperiumData, RowWrapper } from "../imperium-data.js";
 import { localizationStringAuto } from "../localization.js";
 import { LookupTableCategory } from "./enums/custom/lookup-table-category.enum.js";

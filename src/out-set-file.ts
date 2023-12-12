@@ -20,6 +20,10 @@ export class SetFile<T> extends ResourceFile<Set<T>> {
 		await outJson(this.filePath, Array.from(data).sort());
 	}
 
+	public get size(): number {
+		return this.data.size;
+	}
+
 	public has(str: T): boolean {
 		return this.data.has(str);
 	}

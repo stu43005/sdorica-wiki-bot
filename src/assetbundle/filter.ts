@@ -1,4 +1,5 @@
 import picomatch from "picomatch";
+import { LookupTableCategory } from "../model/enums/custom/lookup-table-category.enum.js";
 import {
 	AssetbundleMappingItem,
 	addAsset,
@@ -7,14 +8,13 @@ import {
 	pathIdMappingContainer,
 	prefabMappingSprite,
 	uploadedAssets,
-} from "./assetbundle-asset.js";
+} from "./asset.js";
 import { AssetbundleLookupTable } from "./assetbundle-lookup-table.js";
-import { LookupTableCategory } from "./model/enums/custom/lookup-table-category.enum.js";
+import { isSpineAsset } from "./spine.js";
 
 const globImageExt = "@(png|jpg|bmp|tga|psd)";
 const uploadGlobs: string[] = [
 	`assets/game/character/character_image/**/*.${globImageExt}`,
-	`assets/game/character/spinedata/**/*.@(png|atlas.txt|skel.bytes)`,
 	`assets/game/ui/common/itemicon/**/*.${globImageExt}`,
 	`assets/game/ui/metagame/mainpagepanel/covertexture/**/*.${globImageExt}`,
 	// `assets/game/ui/levelscene/stonepanel/texture/**/*.${globImageExt}`,
@@ -52,6 +52,10 @@ export function updateNeedUpdateList() {
 	}
 	for (const containerPath of assetbundleMapping.keys()) {
 		if (uploadedAssets.has(containerPath) || needUploadAssets.has(containerPath)) {
+			continue;
+		}
+		if (isSpineAsset(containerPath)) {
+			addAsset(containerPath);
 			continue;
 		}
 		for (const glob of uploadGlobs) {

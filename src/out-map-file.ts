@@ -20,6 +20,10 @@ export class MapFile<T> extends ResourceFile<Map<string, T>> {
 		await outJson(this.filePath, Object.fromEntries(data.entries()));
 	}
 
+	public get size(): number {
+		return this.data.size;
+	}
+
 	public has(key: string): boolean {
 		return this.data.has(key.toString());
 	}
@@ -40,6 +44,10 @@ export class MapFile<T> extends ResourceFile<Map<string, T>> {
 			return true;
 		}
 		return false;
+	}
+
+	public entries() {
+		return this.data.entries();
 	}
 
 	public keys() {

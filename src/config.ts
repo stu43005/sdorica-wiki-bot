@@ -7,10 +7,15 @@ export const LATEST_PATH = path.join(DATA_PATH, "client_latest");
 export const GAMEDATA_PATH = path.join(DATA_PATH, "client_gamedata");
 export const CHARASSETS_PATH = path.join(DATA_PATH, "charassets");
 export const DIALOG_PATH = path.join(DATA_PATH, "dialog");
-export const ASSETBUNDLE_PATH = path.join(DATA_PATH, "assetbundle");
 export const WIKI_PATH = path.join(DATA_PATH, "wiki");
+
 export const IMAGES_PATH = path.join(DATA_PATH, "images");
 export const BANNERS_PATH = path.join(IMAGES_PATH, "banners");
+
+export const ASSETBUNDLE_PATH = path.join(DATA_PATH, "assetbundle");
+export const BUNDLE_DOWNLOAD_PATH = path.join(ASSETBUNDLE_PATH, "download");
+export const BUNDLE_EXTRACT_PATH = path.join(ASSETBUNDLE_PATH, "extract");
+export const BUNDLE_UPLOAD_PATH = path.join(ASSETBUNDLE_PATH, "upload");
 
 export const API_CONFIG_PATH = path.join(DATA_PATH, "api.json");
 export interface ApiConfig {

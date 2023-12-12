@@ -1,5 +1,5 @@
 import { render } from "preact-render-to-string";
-import { AssetbundleLookupTable } from "../assetbundle-lookup-table.js";
+import { AssetbundleLookupTable } from "../assetbundle/assetbundle-lookup-table.js";
 import { ImperiumData, RowWrapper } from "../imperium-data.js";
 import { localizationString } from "../localization.js";
 import {

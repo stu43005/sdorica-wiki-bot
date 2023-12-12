@@ -5,9 +5,9 @@ import { spawn } from "node:child_process";
 import fsp from "node:fs/promises";
 import path from "node:path";
 import pLimit from "p-limit";
-import { Logger } from "./logger.js";
-import { rpFile } from "./out.js";
-import { __dirname } from "./utilities/node.js";
+import { Logger } from "../logger.js";
+import { rpFile } from "../out.js";
+import { __dirname } from "../utilities/node.js";
 
 const logger = new Logger("asset-studio-cli");
 const CLI_DIR = path.join(__dirname(import.meta), "../tools/AssetStudioModCLI");
