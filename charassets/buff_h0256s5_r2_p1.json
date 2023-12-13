@@ -57,19 +57,11 @@
         "效果": [
           {
             "效果": [
-              "對本角色的隊伍所有角色賦予永久h0256s5_P2"
-            ],
-            "條件": [
-              "(目前戰鬥回合數 == 0) 且 (目前回合輪到敵人首位)"
-            ]
-          },
-          {
-            "效果": [
+              "對本角色的隊伍所有角色賦予永久h0256s5_P2",
               "對本角色觸發S2"
             ],
             "條件": [
-              "目前戰鬥回合數 == 0",
-              "目前回合輪到本角色"
+              "(目前戰鬥回合數 == 0) 且 (目前回合輪到敵人首位)"
             ]
           },
           {
@@ -142,41 +134,7 @@
                     }
                   }
                 }
-              }
-            ],
-            "Conditions": [
-              {
-                "$type": "BattleModel.AndConditions",
-                "cond1": {
-                  "$type": "BattleModel.IntCompare",
-                  "left": {
-                    "$type": "BattleModel.BattleActionRecordValue",
-                    "RecordValue": {
-                      "$type": "BattleModel.ThisBattleTurnCount"
-                    }
-                  },
-                  "op": 0,
-                  "right": {
-                    "$type": "BattleModel.ConstanctInt",
-                    "constant": 0
-                  }
-                },
-                "cond2": {
-                  "$type": "BattleModel.CurrentTurnBelongsTo",
-                  "character": {
-                    "$type": "BattleModel.FrontOfChars",
-                    "group": {
-                      "$type": "BattleModel.PVEEnemyTeam",
-                      "includeDead": true,
-                      "includeEmpty": true
-                    }
-                  }
-                }
-              }
-            ]
-          },
-          {
-            "Actions": [
+              },
               {
                 "TargetField": {
                   "$type": "BattleModel.OperateCharacter",
@@ -211,23 +169,31 @@
             ],
             "Conditions": [
               {
-                "$type": "BattleModel.IntCompare",
-                "left": {
-                  "$type": "BattleModel.BattleActionRecordValue",
-                  "RecordValue": {
-                    "$type": "BattleModel.ThisBattleTurnCount"
+                "$type": "BattleModel.AndConditions",
+                "cond1": {
+                  "$type": "BattleModel.IntCompare",
+                  "left": {
+                    "$type": "BattleModel.BattleActionRecordValue",
+                    "RecordValue": {
+                      "$type": "BattleModel.ThisBattleTurnCount"
+                    }
+                  },
+                  "op": 0,
+                  "right": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 0
                   }
                 },
-                "op": 0,
-                "right": {
-                  "$type": "BattleModel.ConstanctInt",
-                  "constant": 0
-                }
-              },
-              {
-                "$type": "BattleModel.CurrentTurnBelongsTo",
-                "character": {
-                  "$type": "BattleModel.ThisBuffOwner"
+                "cond2": {
+                  "$type": "BattleModel.CurrentTurnBelongsTo",
+                  "character": {
+                    "$type": "BattleModel.FrontOfChars",
+                    "group": {
+                      "$type": "BattleModel.PVEEnemyTeam",
+                      "includeDead": true,
+                      "includeEmpty": true
+                    }
+                  }
                 }
               }
             ]
