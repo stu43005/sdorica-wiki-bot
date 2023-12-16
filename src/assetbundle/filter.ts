@@ -18,6 +18,7 @@ const uploadGlobs: string[] = [
 	`assets/game/ui/common/itemicon/**/*.${globImageExt}`,
 	`assets/game/ui/metagame/mainpagepanel/covertexture/**/*.${globImageExt}`,
 	// `assets/game/ui/levelscene/stonepanel/texture/**/*.${globImageExt}`,
+	// `assets/game/ui/common/commonui/texture/**/*.${globImageExt}`,
 	`assets/game/ui/loadingscene/loadingbg/**/*.${globImageExt}`,
 ];
 const uploadCategories: LookupTableCategory[] = [

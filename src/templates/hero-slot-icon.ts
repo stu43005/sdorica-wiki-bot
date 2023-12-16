@@ -1,7 +1,6 @@
-import { wikitemplate } from "../wiki-utils.js";
 import { HeroSlot } from "../model/enums/custom/hero-slot.enum.js";
+import { WikiImageParams, wikiimageElement } from "./wikiimage.js";
 
-// TODO:
 const asset = {
 	[HeroSlot.WHITE]:
 		"assets/game/ui/common/commonui/texture/heroes_frame_position_white_withicon.png",
@@ -11,25 +10,13 @@ const asset = {
 		"assets/game/ui/common/commonui/texture/heroes_frame_position_black_withicon.png",
 };
 
-export interface HeroSlotIconParams {
-	/**
-	 * 圖示大小
-	 *
-	 * 預設: "x16px"
-	 */
-	size?: string;
-	/**
-	 * 圖示連結
-	 */
-	link?: string;
-}
-
 /**
  * 取得`{{站位圖標}}`模板
  */
-export function heroSlotIconTemplate(name: HeroSlot, params: HeroSlotIconParams = {}) {
-	return wikitemplate("站位圖標", {
-		1: name,
+export function heroSlotIconTemplate(name: HeroSlot, params: WikiImageParams = {}) {
+	return wikiimageElement({
+		width: 25,
 		...params,
+		containerPath: asset[name],
 	});
 }

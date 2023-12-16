@@ -32,15 +32,16 @@ type ImageElementProps = h.JSX.DetailedHTMLProps<
 	h.JSX.HTMLAttributes<HTMLImageElement>,
 	HTMLImageElement
 >;
-export type WikiImageParams = WikiImageSource & {
+export type WikiImageParams = {
 	width?: number | string;
 	height?: number | string;
 	props?: ImageElementProps;
 };
+export type WikiImageOptions = WikiImageSource & WikiImageParams;
 
 export const wikiimage = wrapRender(wikiimageElement);
 
-export function wikiimageElement(options: WikiImageParams): h.JSX.Element {
+export function wikiimageElement(options: WikiImageOptions): h.JSX.Element {
 	let src = "";
 	if ("url" in options && options.url) {
 		src = options.url;

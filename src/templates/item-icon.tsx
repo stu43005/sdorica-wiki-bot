@@ -57,7 +57,9 @@ export function itemIconTemplate(item: ItemBase, options: ItemIconParams = {}): 
 	);
 	const text = options.text === true ? item.name : options.text;
 	const count =
-		typeof options.count === "number" ? `x${numeral(options.count).format("0,0")}` : "";
+		typeof options.count === "number" && !isNaN(options.count)
+			? `x${numeral(options.count).format("0,0")}`
+			: "";
 	let suffix = <></>;
 	const avatar = (
 		item instanceof ExploreItem ? item.transformTo : item instanceof Item ? item : null

@@ -1,3 +1,4 @@
+import { render } from "preact-render-to-string";
 import { ImperiumData, RowWrapper } from "../imperium-data.js";
 import { characterNameNormalization, localizationString } from "../localization.js";
 import { heroBaseTemplate } from "../templates/hero-base.js";
@@ -8,9 +9,9 @@ import { heroName, pointRegexp } from "../wiki-hero.js";
 import { Avatar } from "./avatar.js";
 import { Chapter } from "./chapter.js";
 import { CharacterSeriesType } from "./enums/character-series-type.enum.js";
-import { GenderType } from "./enums/gender-type.enum.js";
 import { HeroRank } from "./enums/custom/hero-rank.enum.js";
 import { HeroSlot } from "./enums/custom/hero-slot.enum.js";
+import { GenderType } from "./enums/gender-type.enum.js";
 import { HeroViewableType } from "./enums/hero-viewable-type.enum.js";
 import { HeroSkillLevel } from "./hero-skilllevel.js";
 import { HeroSkillSet } from "./hero-skillset.js";
@@ -258,7 +259,7 @@ export class Hero {
 	toWiki(options?: HeroIconParams): string {
 		if (!this.enable) {
 			if (this.firstname != this.internalName) {
-				return tooltipTemplate(this.firstname, this.internalName);
+				return render(tooltipTemplate(this.firstname, this.internalName));
 			}
 			return this.firstname;
 		}

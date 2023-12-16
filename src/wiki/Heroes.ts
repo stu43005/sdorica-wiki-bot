@@ -1,9 +1,10 @@
 import * as _ from "lodash-es";
+import { render } from "preact-render-to-string";
 import { Hero } from "../model/hero.js";
 import { heroSlotIconTemplate } from "../templates/hero-slot-icon.js";
 import { wikiH1, wikiH2 } from "../templates/wikiheader.js";
 import { wikiPageLink } from "../templates/wikilink.js";
-import { wikitable, WikiTableStruct } from "../templates/wikitable.js";
+import { WikiTableStruct, wikitable } from "../templates/wikitable.js";
 import { sortByCharacterModelNo } from "../utils.js";
 
 function getSortedHeroes() {
@@ -54,7 +55,7 @@ export default function wikiHeroes() {
 				ceils: [
 					hero.id,
 					hero.model,
-					hero.empty ? "環境" : heroSlotIconTemplate(hero.slot),
+					render(heroSlotIconTemplate(hero.slot)),
 					hero.toWiki(),
 					skillbooks.join(""),
 					hero.atk,
@@ -64,8 +65,7 @@ export default function wikiHeroes() {
 						? wikiPageLink("Chapter", hero.storyChapter.title, hero.storyChapter.id)
 						: "",
 					hero.resonanceItem?.toWiki({
-						text: "",
-						count: undefined,
+						count: NaN,
 					}) ?? "",
 				],
 			});
