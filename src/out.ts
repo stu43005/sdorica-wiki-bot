@@ -29,7 +29,9 @@ export function outCsv(filename: string, out: any[]) {
 					return;
 				}
 				try {
-					await mkdir(path.dirname(filename));
+					await fsp.mkdir(path.dirname(filename), {
+						recursive: true,
+					});
 					await fsp.writeFile(filename, data, { encoding: "utf8" });
 					resolve();
 				} catch (error) {
@@ -66,13 +68,17 @@ export function jsonStringify(data: any) {
 
 export async function outJson(filename: string, data: any) {
 	logger.debug(`saving json to ${filename}`);
-	await mkdir(path.dirname(filename));
+	await fsp.mkdir(path.dirname(filename), {
+		recursive: true,
+	});
 	await fsp.writeFile(filename, jsonStringify(data), { encoding: "utf8" });
 }
 
 export async function outText(filename: string, text: string) {
 	logger.debug(`saving text to ${filename}`);
-	await mkdir(path.dirname(filename));
+	await fsp.mkdir(path.dirname(filename), {
+		recursive: true,
+	});
 	await fsp.writeFile(filename, text, { encoding: "utf8" });
 }
 
@@ -93,19 +99,17 @@ export async function outXlsx(filename: string, data: ImperiumDataRaw) {
 		ws["!autofilter"] = { ref: `A1:${XLSX.utils.encode_col(keyWithType.length - 1)}1` };
 		XLSX.utils.book_append_sheet(wb, ws, name);
 	}
-	await mkdir(path.dirname(filename));
-	XLSX.writeFile(wb, filename);
-}
-
-export async function mkdir(dirname: string) {
-	await fsp.mkdir(dirname, {
+	await fsp.mkdir(path.dirname(filename), {
 		recursive: true,
 	});
+	XLSX.writeFile(wb, filename);
 }
 
 export async function rpFile(url: string, filePath: string) {
 	logger.debug(`downloading ${url} to ${filePath}`);
-	await mkdir(path.dirname(filePath));
+	await fsp.mkdir(path.dirname(filePath), {
+		recursive: true,
+	});
 	const res = await axios({
 		method: "GET",
 		url: url,

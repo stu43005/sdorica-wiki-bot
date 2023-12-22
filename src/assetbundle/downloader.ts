@@ -14,7 +14,7 @@ import {
 import { assetDownload } from "../imperium-asset-download.js";
 import { ImperiumData } from "../imperium-data.js";
 import { Logger } from "../logger.js";
-import { mkdir, outJson, rpFile } from "../out.js";
+import { outJson, rpFile } from "../out.js";
 import { siJsonParse } from "../viewerjs/utils.js";
 import { ABAsset, getAssetList } from "./asset-list.js";
 import {
@@ -38,7 +38,9 @@ const logger = new Logger("downloader");
 const metadataFilePath = path.join(ASSETBUNDLE_PATH, "metadata.json");
 
 export async function assetBundleDownloader(force = false): Promise<boolean> {
-	await mkdir(BUNDLE_UPLOAD_PATH);
+	await fsp.mkdir(BUNDLE_UPLOAD_PATH, {
+		recursive: true,
+	});
 	let i = 0;
 
 	logger.info(`[${++i}] update assetbundle lookup table`);
@@ -140,7 +142,9 @@ async function processAssetBundle(
 		case bundleName.endsWith(".mp4"): {
 			const filePath = await downloadAssetBundle(bundleName, assetUrl);
 			const dist = path.join(BUNDLE_UPLOAD_PATH, "resources", path.basename(bundleName));
-			await mkdir(path.dirname(dist));
+			await fsp.mkdir(path.dirname(dist), {
+				recursive: true,
+			});
 			await fsp.cp(filePath, dist);
 			await fsp.unlink(filePath);
 			logger.info(`upload ${bundleName}`);
@@ -221,7 +225,9 @@ async function processAsset(
 async function uploadAsset(abAsset: ABAsset, assetFilePath: string): Promise<void> {
 	const assetPath = getAssetPath(abAsset.Container);
 	const dist = path.join(BUNDLE_UPLOAD_PATH, assetPath);
-	await mkdir(path.dirname(dist));
+	await fsp.mkdir(path.dirname(dist), {
+		recursive: true,
+	});
 	await fsp.cp(assetFilePath, dist);
 	logger.info(`upload ${abAsset.Container}`);
 }
