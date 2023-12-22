@@ -132,6 +132,10 @@ export async function fsExists(filepath: string) {
 	return true;
 }
 
+export function fileBasename(filename: string): string {
+	return path.basename(filename, path.extname(filename));
+}
+
 export async function cleanEmptyFoldersRecursively(folder: string) {
 	const stat = await fsp.stat(folder);
 	const isDir = stat.isDirectory();

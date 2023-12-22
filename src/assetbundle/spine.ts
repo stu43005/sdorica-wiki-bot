@@ -3,12 +3,13 @@ import path from "node:path";
 import picomatch from "picomatch";
 import sharp from "sharp";
 import { ASSETBUNDLE_PATH } from "../config.js";
+import { localizationCharacterName } from "../localization.js";
 import { Logger } from "../logger.js";
 import { MapFile } from "../out-map-file.js";
+import { fileBasename } from "../out.js";
 import type { ABAsset } from "./asset-list.js";
 import { getAssetPath, needUploadAssets } from "./asset.js";
 import { SkeletonBinary } from "./skeleton-binary.js";
-import { localizationCharacterName } from "../localization.js";
 
 const logger = new Logger("spine");
 
@@ -72,7 +73,7 @@ export async function parseAtlas(
 		logger.info(`[parseAtlas] parsed ${spineKey}: ${JSON.stringify(atlas)}`);
 		const characterName = [
 			spineKey,
-			path.basename(atlas.filename, path.extname(atlas.filename)),
+			fileBasename(atlas.filename),
 			...spineKey.split("/").reverse(),
 		]
 			.map(localizationCharacterName(true))

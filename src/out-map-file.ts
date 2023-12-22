@@ -1,11 +1,10 @@
-import path from "node:path";
 import { inputJsonSync } from "./input.js";
-import { outJson } from "./out.js";
 import { ResourceFile } from "./out-resource-file.js";
+import { fileBasename, outJson } from "./out.js";
 
 export class MapFile<T> extends ResourceFile<Map<string, T>> {
 	constructor(private filePath: string) {
-		super(path.basename(filePath));
+		super(fileBasename(filePath));
 	}
 
 	protected loadData(): Map<string, T> {
