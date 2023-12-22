@@ -97,6 +97,9 @@ async function processAssetBundle(
 	assetFilter: (abAsset: ABAsset) => boolean,
 ): Promise<boolean> {
 	switch (true) {
+		case ignoredAssets.has(bundleName): {
+			break;
+		}
 		case bundleName.endsWith(".ab"): {
 			const bundleFilePath = await downloadAssetBundle(bundleName, assetUrl);
 			const assetList = await getAssetList(bundleName, bundleFilePath);
@@ -161,7 +164,7 @@ async function processAsset(
 	bundleFilePath: string,
 	abAsset: ABAsset,
 ): Promise<boolean | null> {
-	if (!filterPrefab(abAsset)) {
+	if (ignoredAssets.has(abAsset.Container) || !filterPrefab(abAsset)) {
 		return null;
 	}
 	logger.debug(
