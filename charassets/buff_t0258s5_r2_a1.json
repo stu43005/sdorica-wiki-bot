@@ -1,0 +1,281 @@
+{
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "OnEachSkillSetStart | OnEverySecond": {
+        "效果": [
+          {
+            "效果": [
+              "對玩家後排觸發S2"
+            ],
+            "條件": [
+              "{\"AssistantSkill\":{\"$type\":\"BattleModel.OnGetReadyAssistantSkill\"},\"Condition\":{\"CharacterCondition\":{\"Target\":{\"$type\":\"BattleModel.ThisBuffCaster\"},\"$type\":\"BattleModel.CharacterEqualC\"},\"$type\":\"BattleModel.AssistantOwnerCondition\"},\"$type\":\"BattleModel.AssistanSkillCondition\"}"
+            ]
+          },
+          {
+            "效果": [
+              "對玩家後排觸發S2"
+            ],
+            "條件": [
+              "{\"AssistantSkill\":{\"$type\":\"BattleModel.OnGetReadyAssistantSkill\"},\"Condition\":{\"CharacterCondition\":{\"Target\":{\"$type\":\"BattleModel.ThisBuffCaster\"},\"$type\":\"BattleModel.CharacterEqualC\"},\"$type\":\"BattleModel.AssistantOwnerCondition\"},\"$type\":\"BattleModel.AssistanSkillCondition\"}",
+              "({\"group\":{\"includeDead\":false,\"includeEmpty\":false,\"$type\":\"BattleModel.PVEPlayerTeam\"},\"$type\":\"BattleModel.AllBuffsOnCharGroup\"}中是＂leader(領袖)＂的Buff中的層數)的總和 >= 3"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnTurnBegin | OnTurnEnd | OnEverySecond": {
+        "效果": [
+          {
+            "效果": [
+              "對玩家後排賦予2回合1層leader(領袖)"
+            ],
+            "條件": [
+              "{\"AssistantSkill\":{\"$type\":\"BattleModel.ModifiedAssistantSkill\"},\"Condition\":{\"CharacterCondition\":{\"Target\":{\"$type\":\"BattleModel.ThisBuffCaster\"},\"$type\":\"BattleModel.CharacterEqualC\"},\"$type\":\"BattleModel.AssistantOwnerCondition\"},\"$type\":\"BattleModel.AssistanSkillCondition\"}",
+              "{\"AssistantSkill\":{\"$type\":\"BattleModel.ModifiedAssistantSkill\"},\"Condition\":{\"op\":5,\"right\":{\"constant\":0,\"$type\":\"BattleModel.ConstanctInt\"},\"$type\":\"BattleModel.AssistantSkillCdIntCompare\"},\"$type\":\"BattleModel.AssistanSkillCondition\"}"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 0,
+    "標籤": "Hidden | Forever"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+    "leader",
+    "follower"
+  ],
+  "_actionTable": [
+    {
+      "Key": 2051,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.BackOfChars",
+                    "group": {
+                      "$type": "BattleModel.PVEPlayerTeam",
+                      "includeDead": false,
+                      "includeEmpty": false
+                    }
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "leader",
+                      "Forever": false,
+                      "LevelStack": 1,
+                      "OverwriteDuration": 2,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.AssistanSkillCondition",
+                "AssistantSkill": {
+                  "$type": "BattleModel.ModifiedAssistantSkill"
+                },
+                "Condition": {
+                  "$type": "BattleModel.AssistantOwnerCondition",
+                  "CharacterCondition": {
+                    "$type": "BattleModel.CharacterEqualC",
+                    "Target": {
+                      "$type": "BattleModel.ThisBuffCaster"
+                    }
+                  }
+                }
+              },
+              {
+                "$type": "BattleModel.AssistanSkillCondition",
+                "AssistantSkill": {
+                  "$type": "BattleModel.ModifiedAssistantSkill"
+                },
+                "Condition": {
+                  "$type": "BattleModel.AssistantSkillCdIntCompare",
+                  "op": 5,
+                  "right": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 0
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 2052,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.BackOfChars",
+                    "group": {
+                      "$type": "BattleModel.PVEPlayerTeam",
+                      "includeDead": false,
+                      "includeEmpty": false
+                    }
+                  },
+                  "operation": {
+                    "$type": "BattleModel.CastSkillSet",
+                    "AssignParameter": {
+                      "AssignCharacter": {
+                        "$type": "BattleModel.NoneCharacter"
+                      },
+                      "AssignCharacterGroup": {
+                        "$type": "BattleModel.NoneCharacters"
+                      },
+                      "AssignInteger": {
+                        "$type": "BattleModel.ConstanctInt",
+                        "constant": 0
+                      },
+                      "AssignIntegerGroup": {
+                        "$type": "BattleModel.ConstanctIntegerGroup",
+                        "Group": [
+                        ]
+                      }
+                    },
+                    "UseAssignParameter": false,
+                    "resetCasterCD": false,
+                    "skillsetId": "S2"
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.AssistanSkillCondition",
+                "AssistantSkill": {
+                  "$type": "BattleModel.OnGetReadyAssistantSkill"
+                },
+                "Condition": {
+                  "$type": "BattleModel.AssistantOwnerCondition",
+                  "CharacterCondition": {
+                    "$type": "BattleModel.CharacterEqualC",
+                    "Target": {
+                      "$type": "BattleModel.ThisBuffCaster"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.BackOfChars",
+                    "group": {
+                      "$type": "BattleModel.PVEPlayerTeam",
+                      "includeDead": false,
+                      "includeEmpty": false
+                    }
+                  },
+                  "operation": {
+                    "$type": "BattleModel.CastSkillSet",
+                    "AssignParameter": {
+                      "AssignCharacter": {
+                        "$type": "BattleModel.NoneCharacter"
+                      },
+                      "AssignCharacterGroup": {
+                        "$type": "BattleModel.NoneCharacters"
+                      },
+                      "AssignInteger": {
+                        "$type": "BattleModel.ConstanctInt",
+                        "constant": 0
+                      },
+                      "AssignIntegerGroup": {
+                        "$type": "BattleModel.ConstanctIntegerGroup",
+                        "Group": [
+                        ]
+                      }
+                    },
+                    "UseAssignParameter": false,
+                    "resetCasterCD": false,
+                    "skillsetId": "S2"
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.AssistanSkillCondition",
+                "AssistantSkill": {
+                  "$type": "BattleModel.OnGetReadyAssistantSkill"
+                },
+                "Condition": {
+                  "$type": "BattleModel.AssistantOwnerCondition",
+                  "CharacterCondition": {
+                    "$type": "BattleModel.CharacterEqualC",
+                    "Target": {
+                      "$type": "BattleModel.ThisBuffCaster"
+                    }
+                  }
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.SumOfInts",
+                  "group": {
+                    "$type": "BattleModel.IntsOnBuffGroup",
+                    "group": {
+                      "$type": "BattleModel.BuffGroupWhere",
+                      "condition": {
+                        "$type": "BattleModel.CheckBuffMatchBuffId",
+                        "subString": "leader"
+                      },
+                      "group": {
+                        "$type": "BattleModel.AllBuffsOnCharGroup",
+                        "group": {
+                          "$type": "BattleModel.PVEPlayerTeam",
+                          "includeDead": false,
+                          "includeEmpty": false
+                        }
+                      }
+                    },
+                    "targetField": 1
+                  }
+                },
+                "op": 4,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 3
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 0,
+  "_orderTable": {
+  },
+  "_tag": 65
+}

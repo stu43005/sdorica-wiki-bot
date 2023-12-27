@@ -1,0 +1,400 @@
+{
+  "$interpreted": {
+    "Localization": "b3432c5_star_1",
+    "復活魂芯數": 0,
+    "技能": {
+      "Arrive1": [
+        "對施術者冷卻時間加1"
+      ],
+      "DesperateAttack": [
+        "對施術者的目標攻擊(({\"$type\":\"BattleModel.BuffAssignedInteger\"} * 攻擊力) x1)"
+      ],
+      "Retreat1": [
+        "對施術者{\"Tag\":65540,\"_keyString\":\"1\",\"$type\":\"BattleModel.DirectKillSkillEffect\"}"
+      ],
+      "S1": [
+        "對施術者的目標攻擊(攻擊力 x1)",
+        "對施術者賦予永久1層DesperateAttack(瀕死一擊)"
+      ],
+      "S2": [
+        "對施術者賦予永久1層rage(怒氣)"
+      ]
+    },
+    "技能組": {
+      "DesperateAttack": [
+        {
+          "CoolDown": 3,
+          "技能列表": [
+            "施展S2",
+            "施展DesperateAttack"
+          ],
+          "條件": [
+          ],
+          "目標": "施術者的對方首位"
+        }
+      ],
+      "S1": [
+        {
+          "CoolDown": 3,
+          "技能列表": [
+            "施展S1"
+          ],
+          "條件": [
+          ],
+          "目標": "玩家首位"
+        }
+      ]
+    },
+    "攻擊力": 1000,
+    "攻擊力等級調整後": 943,
+    "敵人AI": "S1",
+    "消魂設置": {
+      "Type1": "S1",
+      "Type2": "S2",
+      "Type4": "S3"
+    },
+    "疊盾": 2400,
+    "疊盾等級調整後": 2264,
+    "站位": "無",
+    "血量": 2400,
+    "血量等級調整後": 2264,
+    "被動Buff": [
+      "賦予永久1層DesperateAttack(瀕死一擊)"
+    ],
+    "起始CD": 1,
+    "預設CD": 6
+  },
+  "$type": "BattleModel.EnemyCharacter",
+  "ReferenceBuffKeys": [
+    "bonusAttackPower",
+    "nerf_damage_small"
+  ],
+  "ReferenceCharacterKeys": [
+  ],
+  "ReferenceEffectKeys": [
+    "Common_SmokeDash02_A",
+    "Common_SmokeDown02_A",
+    "b3432c5_s01_Hit01",
+    "Common_SmokeRun02_A",
+    "Common_HitSlash01_A",
+    "b3432c5_s01_Floor01",
+    "b3432c5_s02_Roaring01",
+    "b0085c4_Idle_Smoke"
+  ],
+  "ReferenceEmoIconKeys": [
+  ],
+  "ReferenceMusicKeys": [
+  ],
+  "ReferenceSFXKeys": [
+    "Creature_monster_037set_01_beast_roar_growl_bass",
+    "Hit_bladed_029_stab_bite_metal_medium",
+    "Hit_smash_029_large_scrap",
+    "explode_013",
+    "bite_metal_giant_01",
+    "Effect_fire_003_tiny_discharge",
+    "step_rock_012",
+    "step_rock_011",
+    "Hit_smash_039_rock_movement_slide_large",
+    "Creature_monster_037set_02_beast_roar_growl_bass_large"
+  ],
+  "ReferenceVoiceSFXKeys": [
+  ],
+  "_armorCapacity": 2400,
+  "_assistantSkill": null,
+  "_bloodCapacity": 2400,
+  "_characterAI": {
+    "$type": "BattleModel.SequenceEnemyAI",
+    "OrderList": [
+      "S1"
+    ]
+  },
+  "_defaultCoolDown": 6,
+  "_initialCoolDown": 1,
+  "_levelStartBuff": [
+  ],
+  "_mass": 3,
+  "_masterRank": 1,
+  "_passiveBuff": [
+    {
+      "BuffId": "DesperateAttack",
+      "Forever": true,
+      "LevelStack": 1,
+      "OverwriteDuration": -1,
+      "UserDefineVariable": {
+      }
+    }
+  ],
+  "_pose": "Prone",
+  "_power": 1000,
+  "_reviveCount": 0,
+  "_skills": {
+    "Arrive1": {
+      "$type": "BattleModel.BattleSkill",
+      "_isFallBackIfEmptyTarget": false,
+      "_isResolveTargetEachUnit": false,
+      "_skillIdentifiers": [
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": false,
+          "multi": null,
+          "single": {
+            "$type": "BattleModel.ThisSkillCaster"
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.ChangeCDSkillEffect",
+              "Tag": 1028,
+              "_keyString": "",
+              "_value": 1
+            }
+          ]
+        }
+      ]
+    },
+    "DesperateAttack": {
+      "$type": "BattleModel.BattleSkill",
+      "_isFallBackIfEmptyTarget": false,
+      "_isResolveTargetEachUnit": false,
+      "_skillIdentifiers": [
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": false,
+          "multi": null,
+          "single": {
+            "$type": "BattleModel.EnemyAssignee",
+            "reference": {
+              "$type": "BattleModel.ThisSkillCaster"
+            }
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.HpDamageSkillEffect",
+              "Tag": 9,
+              "_keyString": "",
+              "_skillModifier": {
+                "_constant": 0,
+                "_parameter": {
+                  "$type": "BattleModel.MultiplyInt",
+                  "left": {
+                    "$type": "BattleModel.BuffAssignedInteger"
+                  },
+                  "right": {
+                    "$type": "BattleModel.SkillCasterPower",
+                    "basePower": false
+                  }
+                },
+                "_ratio": 1
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "Retreat1": {
+      "$type": "BattleModel.BattleSkill",
+      "_isFallBackIfEmptyTarget": false,
+      "_isResolveTargetEachUnit": false,
+      "_skillIdentifiers": [
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": false,
+          "multi": null,
+          "single": {
+            "$type": "BattleModel.ThisSkillCaster"
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.DirectKillSkillEffect",
+              "Tag": 65540,
+              "_keyString": "1"
+            }
+          ]
+        }
+      ]
+    },
+    "S1": {
+      "$type": "BattleModel.BattleSkill",
+      "_isFallBackIfEmptyTarget": false,
+      "_isResolveTargetEachUnit": false,
+      "_skillIdentifiers": [
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": false,
+          "multi": null,
+          "single": {
+            "$type": "BattleModel.EnemyAssignee",
+            "reference": {
+              "$type": "BattleModel.ThisSkillCaster"
+            }
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.HpDamageSkillEffect",
+              "Tag": 9,
+              "_keyString": "",
+              "_skillModifier": {
+                "_constant": 0,
+                "_parameter": {
+                  "$type": "BattleModel.SkillCasterPower",
+                  "basePower": false
+                },
+                "_ratio": 1
+              }
+            }
+          ]
+        },
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": false,
+          "multi": null,
+          "single": {
+            "$type": "BattleModel.ThisSkillCaster"
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.AddBuffSkillEffect",
+              "Tag": 132,
+              "_buffData": [
+                {
+                  "BuffId": "DesperateAttack",
+                  "Forever": true,
+                  "LevelStack": 1,
+                  "OverwriteDuration": 3,
+                  "UserDefineVariable": {
+                  }
+                }
+              ],
+              "_keyString": "1"
+            }
+          ]
+        }
+      ]
+    },
+    "S2": {
+      "$type": "BattleModel.BattleSkill",
+      "_isFallBackIfEmptyTarget": false,
+      "_isResolveTargetEachUnit": false,
+      "_skillIdentifiers": [
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": false,
+          "multi": null,
+          "single": {
+            "$type": "BattleModel.ThisSkillCaster"
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.AddBuffSkillEffect",
+              "Tag": 132,
+              "_buffData": [
+                {
+                  "BuffId": "rage",
+                  "Forever": true,
+                  "LevelStack": 1,
+                  "OverwriteDuration": -1,
+                  "UserDefineVariable": {
+                  }
+                }
+              ],
+              "_keyString": "1"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "_skillsetTable": {
+    "DesperateAttack": {
+      "ComboList": [
+        {
+          "ConditionList": [
+          ],
+          "SkillList": [
+            {
+              "ConditionList": [
+              ],
+              "SkillID": "S2",
+              "_conditionalSequences": [
+              ],
+              "seq": "",
+              "t": null
+            },
+            {
+              "ConditionList": [
+              ],
+              "SkillID": "DesperateAttack",
+              "_conditionalSequences": [
+                {
+                  "ConditionList": [
+                  ],
+                  "_sequenceId": "S1"
+                }
+              ],
+              "seq": "",
+              "t": null
+            }
+          ],
+          "_characterCoolDown": 3,
+          "assignTarget": {
+            "$type": "BattleModel.FrontOfChars",
+            "group": {
+              "$type": "BattleModel.OppositeTeamChars",
+              "includeDead": false,
+              "includeEmpty": false,
+              "reference": {
+                "$type": "BattleModel.ThisSkillCaster"
+              }
+            }
+          },
+          "icon": 0
+        }
+      ],
+      "_isViewSkillSet": false
+    },
+    "S1": {
+      "ComboList": [
+        {
+          "ConditionList": [
+          ],
+          "SkillList": [
+            {
+              "ConditionList": [
+              ],
+              "SkillID": "S1",
+              "_conditionalSequences": [
+              ],
+              "seq": "",
+              "t": null
+            }
+          ],
+          "_characterCoolDown": 3,
+          "assignTarget": {
+            "$type": "BattleModel.FrontOfChars",
+            "group": {
+              "$type": "BattleModel.PVEPlayerTeam",
+              "includeDead": false,
+              "includeEmpty": false
+            }
+          },
+          "icon": 0
+        }
+      ],
+      "_isViewSkillSet": false
+    }
+  },
+  "_stoneEraseSetting": [
+    {
+      "Key": 0,
+      "Value": "S1"
+    },
+    {
+      "Key": 1,
+      "Value": "S2"
+    },
+    {
+      "Key": 2,
+      "Value": "S3"
+    }
+  ],
+  "_stoneType": 0
+}
