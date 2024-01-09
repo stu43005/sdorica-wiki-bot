@@ -211,7 +211,7 @@ export default function wikiResonance() {
 			case "Sublimation":
 				ceil.push({
 					header: true,
-					text: `[[轉化系統|轉化]]`,
+					text: `轉化`,
 				});
 				items[5] = {
 					payRef: ResonanceItems["CommonE"],
@@ -290,7 +290,7 @@ export default function wikiResonance() {
 						attributes: `style="background-color: #00ffff; color: #1e1e1e;"`,
 						text: ResonanceItems["CommonE"].toWiki({
 							...ResonanceItemOptions,
-							count: SubRankUpItemCount["CommonE"],
+							count: SubRankUpExtCount["CommonE"],
 						}),
 					},
 					{
@@ -350,14 +350,14 @@ export default function wikiResonance() {
 						attributes: `style="background-color: #00ffff; color: #1e1e1e;"`,
 						text: ResonanceItems["CommonE"].toWiki({
 							...ResonanceItemOptions,
-							count: SubRankUpItemCount["CommonE"],
+							count: SubRankUpExtCount["CommonE"],
 						}),
 					},
 					{
 						attributes: `style="background-color: #00ffff; color: #1e1e1e;"`,
 						text: ResonanceItems["CommonF"].toWiki({
 							...ResonanceItemOptions,
-							count: SubRankUpItemCount["CommonF"],
+							count: SubRankUpExtCount["CommonF"],
 						}),
 					},
 					{
@@ -374,6 +374,8 @@ export default function wikiResonance() {
 					},
 				],
 			});
+			SubRankUpItemCount = {};
+			SubRankUpExtCount = {};
 		}
 	}
 
