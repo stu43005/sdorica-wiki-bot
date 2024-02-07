@@ -1,0 +1,83 @@
+{
+  "$interpreted": {
+    "Localization": "【永生祝福】：最多10層，戰鬥結束後或死亡後不會移除。我方回合開始時，若本角色已死亡，每層永生祝福使本角色復活魂芯-1。",
+    "動作": {
+      "OnTurnBegin": {
+        "效果": [
+          {
+            "效果": [
+              "對本角色{\"value\":{\"buff\":{\"$type\":\"BattleModel.ThisBuff\"},\"targetField\":1,\"$type\":\"BattleModel.IntBuffField\"},\"$type\":\"BattleModel.ChangeCharacterReviveCount\"}"
+            ],
+            "條件": [
+            ]
+          }
+        ],
+        "條件": [
+          "目前回合輪到本角色",
+          "本角色 已經死亡"
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 10,
+    "標籤": "NotRemoveAfterBattle | NotRemoveWhenDie | Forever"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+  ],
+  "_actionTable": [
+    {
+      "Key": 1,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.ChangeCharacterReviveCount",
+                    "value": {
+                      "$type": "BattleModel.IntBuffField",
+                      "buff": {
+                        "$type": "BattleModel.ThisBuff"
+                      },
+                      "targetField": 1
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+            ]
+          }
+        ],
+        "Conditions": [
+          {
+            "$type": "BattleModel.CurrentTurnBelongsTo",
+            "character": {
+              "$type": "BattleModel.ThisBuffOwner"
+            }
+          },
+          {
+            "$type": "BattleModel.CharacterCondition",
+            "character": {
+              "$type": "BattleModel.ThisBuffOwner"
+            },
+            "condition": {
+              "$type": "BattleModel.IsCharacterDead"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 10,
+  "_orderTable": {
+  },
+  "_tag": 70
+}
