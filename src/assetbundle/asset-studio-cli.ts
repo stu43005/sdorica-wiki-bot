@@ -1,18 +1,18 @@
 import * as chardet from "chardet";
 import extract from "extract-zip";
-import * as iconv from "iconv-lite";
+import iconv from "iconv-lite";
 import { spawn } from "node:child_process";
 import fsp from "node:fs/promises";
 import path from "node:path";
 import pLimit from "p-limit";
+import { ASSET_STUDIO_CLI_DIR } from "../config.js";
 import { Logger } from "../logger.js";
 import { rpFile } from "../out.js";
 import { __dirname } from "../utilities/node.js";
 
 const logger = new Logger("asset-studio-cli");
-const CLI_DIR = path.join(__dirname(import.meta), "../tools/AssetStudioModCLI");
-const CLI_VERSION = path.join(CLI_DIR, "VERSION");
-const CLI_DLL = path.join(CLI_DIR, "AssetStudioModCLI.dll");
+const CLI_VERSION = path.join(ASSET_STUDIO_CLI_DIR, "VERSION");
+const CLI_DLL = path.join(ASSET_STUDIO_CLI_DIR, "AssetStudioModCLI.dll");
 
 async function getLatestRelease(
 	user: string,
@@ -57,7 +57,7 @@ async function downloadCli(): Promise<boolean> {
 	const assetUrl: string | undefined = asset?.browser_download_url;
 	if (assetUrl) {
 		logger.info(`Downloading ${assetUrl}`);
-		const destf = path.join(CLI_DIR, asset.name);
+		const destf = path.join(ASSET_STUDIO_CLI_DIR, asset.name);
 		try {
 			await rpFile(assetUrl, destf);
 		} catch (error) {
@@ -66,7 +66,7 @@ async function downloadCli(): Promise<boolean> {
 		}
 		try {
 			await extract(destf, {
-				dir: CLI_DIR,
+				dir: ASSET_STUDIO_CLI_DIR,
 			});
 			await fsp.unlink(destf);
 		} catch (error) {
@@ -82,6 +82,13 @@ async function downloadCli(): Promise<boolean> {
 		logger.error("[DownloadCli] release not found.");
 		return false;
 	}
+}
+
+function isMissingRuntimeMsg(msg: string) {
+	return (
+		msg.includes("You must install or update .NET to run this application.") &&
+		msg.includes("app-launch-failed")
+	);
 }
 
 function spawnAsync(
@@ -100,9 +107,10 @@ function spawnAsync(
 	},
 ): Promise<number> {
 	return new Promise<number>((resolve, reject) => {
+		let missingRuntime = false;
 		const child = spawn(exe, args, {
 			signal,
-			cwd: path.join(__dirname(import.meta), ".."),
+			cwd: ASSET_STUDIO_CLI_DIR,
 		});
 		const logger = new Logger(`childprocess][${child.pid}`);
 		if (verbose) {
@@ -125,15 +133,21 @@ function spawnAsync(
 			return msgs;
 		}
 		child.stdout.on("data", (data) => {
-			if (verbose || printStdout) {
-				for (const msg of formatOutput(data)) {
+			for (const msg of formatOutput(data)) {
+				if (isMissingRuntimeMsg(msg)) {
+					missingRuntime = true;
+				}
+				if (verbose || printStdout || missingRuntime) {
 					logger.info(msg);
 				}
 			}
 		});
 		child.stderr.on("data", (data) => {
-			if (verbose || printStderr) {
-				for (const msg of formatOutput(data)) {
+			for (const msg of formatOutput(data)) {
+				if (isMissingRuntimeMsg(msg)) {
+					missingRuntime = true;
+				}
+				if (verbose || printStderr || missingRuntime) {
 					logger.error(msg);
 				}
 			}
@@ -145,6 +159,10 @@ function spawnAsync(
 		child.on("close", (code) => {
 			if (verbose) {
 				logger.info(`# Exit with code: ${code}`);
+			}
+			if (code === 2147516566 || missingRuntime) {
+				reject(new Error("You must install or update .NET to run this application."));
+				return;
 			}
 			resolve(code ?? 0);
 		});

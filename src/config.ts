@@ -17,6 +17,8 @@ export const BUNDLE_DOWNLOAD_PATH = path.join(ASSETBUNDLE_PATH, "download");
 export const BUNDLE_EXTRACT_PATH = path.join(ASSETBUNDLE_PATH, "extract");
 export const BUNDLE_UPLOAD_PATH = path.join(ASSETBUNDLE_PATH, "upload");
 
+export const ASSET_STUDIO_CLI_DIR = path.join(__dirname(import.meta), "../tools/AssetStudioModCLI");
+
 export const API_CONFIG_PATH = path.join(DATA_PATH, "api.json");
 export interface ApiConfig {
 	host: string;
