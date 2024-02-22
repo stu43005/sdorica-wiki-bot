@@ -192,8 +192,17 @@ async function processAsset(
 				return result;
 			}
 			case spineAsset && abAsset.Container.includes(".skel"): {
-				const jsonFilePath = await parseSkel(bundleName, abAsset, assetFilePath);
-				await uploadAsset(abAsset, jsonFilePath);
+				await uploadAsset(abAsset, assetFilePath);
+				const { jsonFilePath, jsonContainerPath } = await parseSkel(
+					bundleName,
+					abAsset,
+					assetFilePath,
+				);
+				const jsonAsset: ABAsset = {
+					...abAsset,
+					Container: jsonContainerPath,
+				};
+				await uploadAsset(jsonAsset, jsonFilePath);
 				return true;
 			}
 			case spineAsset && abAsset.Container.includes(".png"): {

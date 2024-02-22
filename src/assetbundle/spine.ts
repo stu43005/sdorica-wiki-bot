@@ -8,7 +8,7 @@ import { Logger } from "../logger.js";
 import { MapFile } from "../out-map-file.js";
 import { fileBasename } from "../out.js";
 import type { ABAsset } from "./asset-list.js";
-import { getAssetPath, needUploadAssets } from "./asset.js";
+import { getAssetPath, needUploadAssets, replaceExtname } from "./asset.js";
 import { SkeletonBinary } from "./skeleton-binary.js";
 
 const logger = new Logger("spine");
@@ -23,6 +23,7 @@ type SpineInfo = {
 	atlas?: AtlasInfo;
 	atlasPath?: string;
 	skelPath?: string;
+	skelBytesPath?: string;
 };
 const spineInfos = new MapFile<SpineInfo>(path.join(ASSETBUNDLE_PATH, "spine_infos.json"));
 
@@ -100,19 +101,27 @@ export async function parseSkel(
 	bundleName: string,
 	abAsset: ABAsset,
 	assetFilePath: string,
-): Promise<string> {
+): Promise<{
+	jsonFilePath: string;
+	jsonContainerPath: string;
+}> {
 	const spineKey = getSpineKey(abAsset.Container);
 	const buf = await fsp.readFile(assetFilePath);
 	const skel = new SkeletonBinary(3.7);
 	const json = skel.readSkeletonJson(buf);
 	const jsonFilePath = path.join(path.dirname(assetFilePath), "skel.json");
+	const jsonContainerPath = getAssetPath(replaceExtname(abAsset.Container, ".json"));
 	await fsp.writeFile(jsonFilePath, JSON.stringify(json), { encoding: "utf8" });
 	logger.info(`[parseSkel] parsed ${spineKey}`);
 	spineInfos.set(spineKey, {
 		...spineInfos.get(spineKey),
-		skelPath: getAssetPath(abAsset.Container),
+		skelPath: jsonContainerPath,
+		skelBytesPath: getAssetPath(abAsset.Container),
 	});
-	return jsonFilePath;
+	return {
+		jsonFilePath,
+		jsonContainerPath,
+	};
 }
 
 export async function resizeSpineTexture(

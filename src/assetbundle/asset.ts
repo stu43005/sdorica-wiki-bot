@@ -33,19 +33,18 @@ export const pathIdMappingContainer = new MapFile<string>(
 	path.join(ASSETBUNDLE_PATH, "pathid_mapping_container.json"),
 );
 
+export function replaceExtname(filename: string, newExtname: string) {
+	return filename.replace(new RegExp(`\\${path.extname(filename)}$`), newExtname);
+}
+
 export function getAssetPath(containerPath: string): string {
 	const extname = path.extname(containerPath);
-	function replaceExtname(newExtname: string) {
-		return containerPath.replace(new RegExp(`\\${extname}$`), newExtname);
-	}
 	const spineAsset = isSpineAsset(containerPath);
 	switch (true) {
-		case spineAsset && containerPath.includes(".skel"):
-			return replaceExtname(".json");
 		case spineAsset:
 			break;
 		case imageExtensions.includes(extname):
-			return replaceExtname(`.${IMAGE_FORMAT}`);
+			return replaceExtname(containerPath, `.${IMAGE_FORMAT}`);
 		case containerPath.endsWith(".prefab"): {
 			const spritePtr = prefabMappingSprite.get(containerPath);
 			if (spritePtr) {
