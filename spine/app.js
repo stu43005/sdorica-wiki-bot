@@ -73,6 +73,7 @@ function getSpineUrls(info) {
 	const atlasUrl = new URL(info.atlasPath, baseUrl).toString();
 	return {
 		skelUrl: new URL(info.skelPath, baseUrl).toString(),
+		skelBytesUrl: new URL(info.skelBytesPath, baseUrl).toString(),
 		atlasUrl: atlasUrl,
 		imageUrl: new URL(info.atlas.filename, atlasUrl).toString(),
 	};
@@ -181,11 +182,12 @@ recordGifButton.addEventListener("click", async () => {
 downloadSpineButton.addEventListener("click", async () => {
 	const info = spineInfos[currentKey];
 	if (!info) return;
-	const { skelUrl, atlasUrl, imageUrl } = getSpineUrls(info);
+	const { skelUrl, skelBytesUrl, atlasUrl, imageUrl } = getSpineUrls(info);
 
 	const zipWriter = new ZipWriter(new BlobWriter("application/zip"));
 	await Promise.all([
 		zipWriter.add(basename(skelUrl), new HttpReader(skelUrl)),
+		zipWriter.add(basename(skelBytesUrl), new HttpReader(skelBytesUrl)),
 		zipWriter.add(basename(atlasUrl), new HttpReader(atlasUrl)),
 		zipWriter.add(basename(imageUrl), new HttpReader(imageUrl)),
 	]);
