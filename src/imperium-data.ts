@@ -196,7 +196,7 @@ export class TableWrapper implements Iterable<RowWrapper> {
 	}
 
 	getColumnIndex(name: string): number {
-		const index = this.table.K.findIndex((k) => k == name);
+		const index = this.colname.findIndex((k) => k == name);
 		if (index === -1) {
 			debugger;
 			logger.error(`no such column "${name}" in table "${this.name}"`);
@@ -208,7 +208,13 @@ export class TableWrapper implements Iterable<RowWrapper> {
 		if (typeof index === "string") {
 			index = this.getColumnIndex(index);
 		}
-		return this.table.T[index]?.toString();
+		return this.coltype[index]?.toString();
+	}
+
+	toJSON(): object[];
+	toJSON<T extends TableSchema>(schema?: T): TableType<T>[];
+	toJSON(schema?: TableSchema): object[] {
+		return this.rows.map((row) => row.toJSON(schema));
 	}
 }
 
@@ -222,8 +228,10 @@ export class RowWrapper {
 	}
 
 	get(index: string | number, expectType?: undefined): any;
-	get<T extends keyof DataType>(index: string | number, expectType: T): DataType[T];
-	get<E extends keyof EnumList>(index: string | number, expectType: E): EnumList[E];
+	get<T extends keyof DataType | keyof EnumList>(
+		index: string | number,
+		expectType?: T,
+	): TableColumnType<T>;
 	get(index: string | number, expectType?: string): any {
 		if (typeof index === "string") {
 			index = this.table.getColumnIndex(index);
@@ -248,6 +256,8 @@ export class RowWrapper {
 					value = null;
 				}
 			}
+		} else if (type === "Asset") {
+			value = this.table.data.getAsset(value);
 		} else if (type === "Boolean") {
 			switch (value) {
 				case true:
@@ -276,11 +286,44 @@ export class RowWrapper {
 		}
 		this.row[index] = value;
 	}
+
+	toJSON(): object;
+	toJSON<T extends TableSchema>(schema?: T): TableType<T>;
+	toJSON(schema?: TableSchema): object {
+		const result = {};
+		for (const column of this.table.colname) {
+			Object.defineProperty(result, column, {
+				value: this.get(column, schema?.[column]),
+				writable: true,
+				enumerable: true,
+				configurable: true,
+			});
+		}
+		if (schema) {
+			for (const key of Object.keys(schema)) {
+				if (!this.table.colname.includes(key)) {
+					throw new TypeError(`The table missing column "${key}".`);
+				}
+			}
+		}
+		return result;
+	}
 }
+
+export type TableSchema = Record<string, keyof DataType | keyof EnumList>;
+export type TableType<T extends TableSchema> = {
+	[K in keyof T]: TableColumnType<T[K]>;
+};
+type TableColumnType<T extends keyof DataType | keyof EnumList> = T extends keyof DataType
+	? DataType[T]
+	: T extends keyof EnumList
+	  ? EnumList[T]
+	  : undefined;
 
 type DataType = {
 	String: string;
 	Integer: number;
 	Float: number;
 	Boolean: boolean;
+	Asset: AssetDataRaw | undefined;
 };

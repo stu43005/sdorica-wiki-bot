@@ -1,13 +1,24 @@
 import pMap from "p-map";
 import { AssetDataRaw } from "./data-raw-type.js";
-import { ImperiumData } from "./imperium-data.js";
+import { ImperiumData, type TableSchema, type TableType } from "./imperium-data.js";
 import { inputJsonDefault } from "./input.js";
 import { Logger } from "./logger.js";
 import { outJson } from "./out.js";
 
 const logger = new Logger("imperium-asset-download");
 
-type Metadata = Record<string, AssetDataRaw>;
+const AssetTableSchema = {
+	BundleName: "String",
+	Ref: "Asset",
+	Size: "Integer",
+	Tag: "String",
+	UpdatePolicy: "Integer",
+	VersionHash: "String",
+} satisfies TableSchema;
+
+type AssetTableDataType = TableType<typeof AssetTableSchema>;
+
+type Metadata = Record<string, AssetTableDataType>;
 
 export async function assetDownload(
 	metadataFilePath: string,
@@ -21,16 +32,15 @@ export async function assetDownload(
 	await pMap(
 		assets,
 		async (row) => {
-			const name: string = row.get("BundleName");
-			const asset = data.getAsset(row.get("Ref"));
+			const json: AssetTableDataType = row.toJSON(AssetTableSchema);
 
-			if (asset && checkNeedDownload(meta, name, asset, force)) {
+			if (json.Ref && checkNeedDownload(meta[json.BundleName], json, force)) {
 				try {
-					if (await downloadCallback(name, asset)) {
-						meta[name] = asset;
+					if (await downloadCallback(json.BundleName, json.Ref)) {
+						meta[json.BundleName] = json;
 					}
 				} catch (error) {
-					logger.error(`processing ${name} error:`, error);
+					logger.error(`processing ${json.BundleName} error:`, error);
 					debugger;
 				}
 			}
@@ -50,14 +60,25 @@ export async function assetDownload(
 	return true;
 }
 
-function checkNeedDownload(meta: Metadata, name: string, asset: AssetDataRaw, force?: boolean) {
+function checkNeedDownload(
+	oldMeta: AssetTableDataType | undefined,
+	newMeta: AssetTableDataType,
+	force?: boolean,
+) {
 	if (force) {
 		return true;
 	}
-	const metaAsset = meta[name];
-	if (metaAsset?.H === asset.H) {
-		logger.debug(`${name} not changed. skip`);
+	if (oldMeta?.VersionHash === newMeta.VersionHash) {
+		logger.debug(`${newMeta.BundleName} not changed. skip`);
 		return false;
 	}
+
+	// migration
+	const oldVersionMeta = oldMeta as any as AssetDataRaw;
+	if (oldVersionMeta && oldVersionMeta.H === newMeta.Ref?.H) {
+		logger.debug(`${newMeta.BundleName} not changed. skip`);
+		return false;
+	}
+
 	return true;
 }
