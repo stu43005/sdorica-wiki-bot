@@ -2,12 +2,75 @@
   "$interpreted": {
     "Localization": "",
     "動作": {
+      "OnBuffAdd": {
+        "效果": [
+          {
+            "效果": [
+              "對本角色移除狀態h0194s5_P2_white(命運)",
+              "對本角色移除狀態h0194s5_P2_black(機會)"
+            ],
+            "條件": [
+            ]
+          },
+          {
+            "效果": [
+              "對本角色賦予1回合h0194s5_P2_black(機會)"
+            ],
+            "條件": [
+              "本狀態 符合條件 層數 == 1"
+            ]
+          },
+          {
+            "效果": [
+              "對本角色賦予1回合h0194s5_P2_white(命運)"
+            ],
+            "條件": [
+              "本狀態 符合條件 層數 == 2"
+            ]
+          }
+        ],
+        "條件": [
+          "當前事件的狀態 是＂encore(安可)＂"
+        ]
+      },
+      "OnBuffStack": {
+        "效果": [
+          {
+            "效果": [
+              "對本角色移除狀態h0194s5_P2_white(命運)",
+              "對本角色移除狀態h0194s5_P2_black(機會)"
+            ],
+            "條件": [
+            ]
+          },
+          {
+            "效果": [
+              "對本角色賦予1回合h0194s5_P2_black(機會)"
+            ],
+            "條件": [
+              "本狀態 符合條件 層數 == 1"
+            ]
+          },
+          {
+            "效果": [
+              "對本角色賦予1回合h0194s5_P2_white(命運)"
+            ],
+            "條件": [
+              "本狀態 符合條件 層數 == 2"
+            ]
+          }
+        ],
+        "條件": [
+          "當前事件的狀態 是＂encore(安可)＂"
+        ]
+      },
       "OnTurnBegin": {
         "效果": [
           {
             "效果": [
-              "對本角色賦予1回合taunt(嘲諷)",
+              "對本角色移除狀態h0194s5_P2_white(命運)",
               "對本角色賦予1回合h0194s5_P2_black(機會)",
+              "對本角色賦予1回合taunt(嘲諷)",
               "立即施展技能：對玩家首位將1個魂芯由隨機的順序加入賦予1回合1層encore(安可)"
             ],
             "條件": [
@@ -17,36 +80,13 @@
           },
           {
             "效果": [
+              "對本角色移除狀態h0194s5_P2_black(機會)",
               "對本角色賦予1回合h0194s5_P2_white(命運)",
               "立即施展技能：對玩家首位將1個魂芯由隨機的順序加入賦予1回合1層ArmorToBlood(盾轉)"
             ],
             "條件": [
               "目前回合輪到本角色",
               "本狀態 符合條件 層數 == 2"
-            ]
-          }
-        ],
-        "條件": [
-        ]
-      },
-      "OnTurnEnd": {
-        "效果": [
-          {
-            "效果": [
-              "對本角色移除狀態h0194s5_P2_white(命運)"
-            ],
-            "條件": [
-              "本狀態 符合條件 層數 == 1",
-              "本角色擁有h0194s5_P2_white(命運)狀態"
-            ]
-          },
-          {
-            "效果": [
-              "對本角色移除狀態h0194s5_P2_black(機會)"
-            ],
-            "條件": [
-              "本狀態 符合條件 層數 == 2",
-              "本角色擁有h0194s5_P2_black(機會)狀態"
             ]
           }
         ],
@@ -60,14 +100,284 @@
   },
   "$type": "BattleModel.Buff",
   "ReferenceBuffKeys": [
-    "taunt",
     "h0194s5_P2_black",
-    "encore",
     "h0194s5_P2_white",
+    "taunt",
+    "encore",
     "ArmorToBlood",
     "ArmorToBlood_trigger"
   ],
   "_actionTable": [
+    {
+      "Key": 16384,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.RemoveBuff",
+                    "buffId": "h0194s5_P2_white"
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.RemoveBuff",
+                    "buffId": "h0194s5_P2_black"
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "h0194s5_P2_black",
+                      "Forever": false,
+                      "LevelStack": 0,
+                      "OverwriteDuration": 1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.BuffCondition",
+                "buff": {
+                  "$type": "BattleModel.ThisBuff"
+                },
+                "condition": {
+                  "$type": "BattleModel.IntCompareB",
+                  "left": {
+                    "$type": "BattleModel.IntFieldB",
+                    "targetField": 1
+                  },
+                  "op": 0,
+                  "right": {
+                    "$type": "BattleModel.ConstantIntB",
+                    "constant": 1
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "h0194s5_P2_white",
+                      "Forever": false,
+                      "LevelStack": 0,
+                      "OverwriteDuration": 1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.BuffCondition",
+                "buff": {
+                  "$type": "BattleModel.ThisBuff"
+                },
+                "condition": {
+                  "$type": "BattleModel.IntCompareB",
+                  "left": {
+                    "$type": "BattleModel.IntFieldB",
+                    "targetField": 1
+                  },
+                  "op": 0,
+                  "right": {
+                    "$type": "BattleModel.ConstantIntB",
+                    "constant": 2
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+          {
+            "$type": "BattleModel.BuffCondition",
+            "buff": {
+              "$type": "BattleModel.SpecifiedBuff"
+            },
+            "condition": {
+              "$type": "BattleModel.CheckBuffMatchBuffId",
+              "subString": "encore"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "Key": 8192,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.RemoveBuff",
+                    "buffId": "h0194s5_P2_white"
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.RemoveBuff",
+                    "buffId": "h0194s5_P2_black"
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "h0194s5_P2_black",
+                      "Forever": false,
+                      "LevelStack": 0,
+                      "OverwriteDuration": 1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.BuffCondition",
+                "buff": {
+                  "$type": "BattleModel.ThisBuff"
+                },
+                "condition": {
+                  "$type": "BattleModel.IntCompareB",
+                  "left": {
+                    "$type": "BattleModel.IntFieldB",
+                    "targetField": 1
+                  },
+                  "op": 0,
+                  "right": {
+                    "$type": "BattleModel.ConstantIntB",
+                    "constant": 1
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "h0194s5_P2_white",
+                      "Forever": false,
+                      "LevelStack": 0,
+                      "OverwriteDuration": 1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.BuffCondition",
+                "buff": {
+                  "$type": "BattleModel.ThisBuff"
+                },
+                "condition": {
+                  "$type": "BattleModel.IntCompareB",
+                  "left": {
+                    "$type": "BattleModel.IntFieldB",
+                    "targetField": 1
+                  },
+                  "op": 0,
+                  "right": {
+                    "$type": "BattleModel.ConstantIntB",
+                    "constant": 2
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+          {
+            "$type": "BattleModel.BuffCondition",
+            "buff": {
+              "$type": "BattleModel.SpecifiedBuff"
+            },
+            "condition": {
+              "$type": "BattleModel.CheckBuffMatchBuffId",
+              "subString": "encore"
+            }
+          }
+        ]
+      }
+    },
     {
       "Key": 1,
       "Value": {
@@ -81,9 +391,21 @@
                     "$type": "BattleModel.ThisBuffOwner"
                   },
                   "operation": {
+                    "$type": "BattleModel.RemoveBuff",
+                    "buffId": "h0194s5_P2_white"
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
                     "$type": "BattleModel.AddBuff",
                     "buffToAdd": {
-                      "BuffId": "taunt",
+                      "BuffId": "h0194s5_P2_black",
                       "Forever": false,
                       "LevelStack": 0,
                       "OverwriteDuration": 1,
@@ -102,7 +424,7 @@
                   "operation": {
                     "$type": "BattleModel.AddBuff",
                     "buffToAdd": {
-                      "BuffId": "h0194s5_P2_black",
+                      "BuffId": "taunt",
                       "Forever": false,
                       "LevelStack": 0,
                       "OverwriteDuration": 1,
@@ -190,6 +512,18 @@
           },
           {
             "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.RemoveBuff",
+                    "buffId": "h0194s5_P2_black"
+                  }
+                }
+              },
               {
                 "TargetField": {
                   "$type": "BattleModel.OperateCharacter",
@@ -289,106 +623,23 @@
         "Conditions": [
         ]
       }
-    },
-    {
-      "Key": 2,
-      "Value": {
-        "Actions": [
-          {
-            "Actions": [
-              {
-                "TargetField": {
-                  "$type": "BattleModel.OperateCharacter",
-                  "character": {
-                    "$type": "BattleModel.ThisBuffOwner"
-                  },
-                  "operation": {
-                    "$type": "BattleModel.RemoveBuff",
-                    "buffId": "h0194s5_P2_white"
-                  }
-                }
-              }
-            ],
-            "Conditions": [
-              {
-                "$type": "BattleModel.BuffCondition",
-                "buff": {
-                  "$type": "BattleModel.ThisBuff"
-                },
-                "condition": {
-                  "$type": "BattleModel.IntCompareB",
-                  "left": {
-                    "$type": "BattleModel.IntFieldB",
-                    "targetField": 1
-                  },
-                  "op": 0,
-                  "right": {
-                    "$type": "BattleModel.ConstantIntB",
-                    "constant": 1
-                  }
-                }
-              },
-              {
-                "$type": "BattleModel.CharacterHasBuff",
-                "buffId": "h0194s5_P2_white",
-                "character": {
-                  "$type": "BattleModel.ThisBuffOwner"
-                }
-              }
-            ]
-          },
-          {
-            "Actions": [
-              {
-                "TargetField": {
-                  "$type": "BattleModel.OperateCharacter",
-                  "character": {
-                    "$type": "BattleModel.ThisBuffOwner"
-                  },
-                  "operation": {
-                    "$type": "BattleModel.RemoveBuff",
-                    "buffId": "h0194s5_P2_black"
-                  }
-                }
-              }
-            ],
-            "Conditions": [
-              {
-                "$type": "BattleModel.BuffCondition",
-                "buff": {
-                  "$type": "BattleModel.ThisBuff"
-                },
-                "condition": {
-                  "$type": "BattleModel.IntCompareB",
-                  "left": {
-                    "$type": "BattleModel.IntFieldB",
-                    "targetField": 1
-                  },
-                  "op": 0,
-                  "right": {
-                    "$type": "BattleModel.ConstantIntB",
-                    "constant": 2
-                  }
-                }
-              },
-              {
-                "$type": "BattleModel.CharacterHasBuff",
-                "buffId": "h0194s5_P2_black",
-                "character": {
-                  "$type": "BattleModel.ThisBuffOwner"
-                }
-              }
-            ]
-          }
-        ],
-        "Conditions": [
-        ]
-      }
     }
   ],
   "_duration": 0,
   "_maxLevel": 2,
-  "_orderTable": {
-  },
+  "_orderTable": [
+    {
+      "Key": 16384,
+      "Value": {
+        "Order": 10
+      }
+    },
+    {
+      "Key": 8192,
+      "Value": {
+        "Order": 10
+      }
+    }
+  ],
   "_tag": 32833
 }
