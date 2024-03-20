@@ -1,0 +1,730 @@
+{
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "OnBuffRemoveFromAnyone": {
+        "效果": [
+          {
+            "效果": [
+              "立即施展技能：對{\"Buff\":{\"$type\":\"BattleModel.SpecifiedBuff\"},\"$type\":\"BattleModel.OwnerOfSingleBuff\"}賦予1回合1層nerf_damage_small(弱化)"
+            ],
+            "條件": [
+              "當前事件的狀態 是＂nerf_damage_small(弱化)＂"
+            ]
+          },
+          {
+            "效果": [
+              "立即施展技能：對{\"Buff\":{\"$type\":\"BattleModel.SpecifiedBuff\"},\"$type\":\"BattleModel.OwnerOfSingleBuff\"}賦予1回合1層weak(易傷)"
+            ],
+            "條件": [
+              "當前事件的狀態 是＂weak(易傷)＂"
+            ]
+          },
+          {
+            "效果": [
+              "立即施展技能：對{\"Buff\":{\"$type\":\"BattleModel.SpecifiedBuff\"},\"$type\":\"BattleModel.OwnerOfSingleBuff\"}賦予1回合1層poison(中毒)"
+            ],
+            "條件": [
+              "當前事件的狀態 是＂poison(中毒)＂"
+            ]
+          },
+          {
+            "效果": [
+              "立即施展技能：對{\"Buff\":{\"$type\":\"BattleModel.SpecifiedBuff\"},\"$type\":\"BattleModel.OwnerOfSingleBuff\"}賦予1回合1層tearing(撕裂)"
+            ],
+            "條件": [
+              "當前事件的狀態 是＂tearing(撕裂)＂"
+            ]
+          }
+        ],
+        "條件": [
+          "{\"Buff\":{\"$type\":\"BattleModel.SpecifiedBuff\"},\"$type\":\"BattleModel.OwnerOfSingleBuff\"}是本角色的隊伍的一員"
+        ]
+      },
+      "OnTurnBegin": {
+        "效果": [
+          {
+            "效果": [
+              "立即施展技能：對賦予者的友方指定對象將1個魂芯由上右至下右的順序加入賦予永久1層poison(中毒)、將1個魂芯undefined"
+            ],
+            "條件": [
+            ]
+          },
+          {
+            "效果": [
+              "對賦予者觸發A1"
+            ],
+            "條件": [
+              "賦予者的隊伍中的任意角色 {\"left\":{\"Condition\":{\"BuffLabel\":{\"BuffLabel\":\"generalSickNoStun\",\"BuffIdList\":[\"nerf_damage_small\",\"weak\",\"tearing\",\"poison\"]},\"$type\":\"BattleModel.CheckBuffBelongLabel\"},\"$type\":\"BattleModel.CountOfConditionalBuff\"},\"op\":4,\"right\":{\"constant\":3,\"$type\":\"BattleModel.ConstanctInt\"},\"$type\":\"BattleModel.IntCompareC_Other\"}"
+            ]
+          },
+          {
+            "效果": [
+              "對賦予者觸發A2"
+            ],
+            "條件": [
+              "賦予者的隊伍中的任意角色 {\"left\":{\"Condition\":{\"BuffLabel\":{\"BuffLabel\":\"generalSickNoStun\",\"BuffIdList\":[\"nerf_damage_small\",\"weak\",\"tearing\",\"poison\"]},\"$type\":\"BattleModel.CheckBuffBelongLabel\"},\"$type\":\"BattleModel.CountOfConditionalBuff\"},\"op\":4,\"right\":{\"constant\":4,\"$type\":\"BattleModel.ConstanctInt\"},\"$type\":\"BattleModel.IntCompareC_Other\"}"
+            ]
+          }
+        ],
+        "條件": [
+          "目前回合輪到玩家首位"
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 0,
+    "標籤": "Forever"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+    "poison",
+    "nerf_damage_small",
+    "weak",
+    "tearing",
+    "poison_trigger",
+    "tearing_trigger",
+    "tearing_trigger_alert"
+  ],
+  "_actionTable": [
+    {
+      "Key": 1,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": {
+                      "$type": "BattleModel.PVEPlayerTeam",
+                      "includeDead": false,
+                      "includeEmpty": false
+                    },
+                    "single": {
+                      "$type": "BattleModel.FriendAssignee",
+                      "reference": {
+                        "$type": "BattleModel.ThisBuffCaster"
+                      }
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.StoneBuffSkillEffect",
+                        "Tag": 262148,
+                        "_keyString": "1",
+                        "_stoneBuffAction": {
+                          "BuffFilter": "Normal",
+                          "BuffId": "",
+                          "BuffLabel": null,
+                          "EffectFilter": "Normal",
+                          "StonePositionList": [
+                          ],
+                          "UsePositionSettings": false,
+                          "action": "Add",
+                          "buff": {
+                            "BuffId": "poison",
+                            "Forever": false,
+                            "LevelStack": 1,
+                            "OverwriteDuration": -1,
+                            "UserDefineVariable": {
+                            }
+                          },
+                          "filter": "IsNotTargetColor",
+                          "isInitStoneFilter": "None",
+                          "order": "UpperRightToLowerRight",
+                          "targetStoneCount": 1
+                        }
+                      },
+                      {
+                        "$type": "BattleModel.StoneActionSkillEffect",
+                        "Tag": 516,
+                        "_keyString": "1",
+                        "_stoneAction": {
+                          "BuffFilter": "SpecifiedBuffId",
+                          "BuffId": "poison",
+                          "BuffLabel": null,
+                          "EffectFilter": "Normal",
+                          "StonePositionList": [
+                          ],
+                          "UsePositionSettings": false,
+                          "changeTo": "ToTargetStoneType",
+                          "filter": "IsNotTargetColor",
+                          "isInitStoneFilter": "None",
+                          "order": "UpperRightToLowerRight",
+                          "targetStoneCount": 1
+                        }
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": true
+                }
+              }
+            ],
+            "Conditions": [
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffCaster"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.CastSkillSet",
+                    "AssignParameter": {
+                      "AssignCharacter": {
+                        "$type": "BattleModel.FrontOfChars",
+                        "group": {
+                          "$type": "BattleModel.CharGroupWhere",
+                          "condition": {
+                            "$type": "BattleModel.IntCompareC_Other",
+                            "left": {
+                              "$type": "BattleModel.CountOfConditionalBuff",
+                              "Condition": {
+                                "$type": "BattleModel.CheckBuffBelongLabel",
+                                "BuffLabel": {
+                                  "BuffIdList": [
+                                    "nerf_damage_small",
+                                    "weak",
+                                    "tearing",
+                                    "poison"
+                                  ],
+                                  "BuffLabel": "generalSickNoStun"
+                                }
+                              }
+                            },
+                            "op": 4,
+                            "right": {
+                              "$type": "BattleModel.ConstanctInt",
+                              "constant": 3
+                            }
+                          },
+                          "group": {
+                            "$type": "BattleModel.SelfTeamChars",
+                            "excludeSelf": false,
+                            "includeDead": false,
+                            "includeEmpty": false,
+                            "reference": {
+                              "$type": "BattleModel.ThisBuffOwner"
+                            }
+                          }
+                        }
+                      },
+                      "AssignCharacterGroup": {
+                        "$type": "BattleModel.NoneCharacters"
+                      },
+                      "AssignInteger": {
+                        "$type": "BattleModel.ConstanctInt",
+                        "constant": 0
+                      },
+                      "AssignIntegerGroup": {
+                        "$type": "BattleModel.ConstanctIntegerGroup",
+                        "Group": [
+                        ]
+                      }
+                    },
+                    "UseAssignParameter": true,
+                    "resetCasterCD": false,
+                    "skillsetId": "A1"
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharGroupCondition",
+                "condition": {
+                  "$type": "BattleModel.IntCompareC_Other",
+                  "left": {
+                    "$type": "BattleModel.CountOfConditionalBuff",
+                    "Condition": {
+                      "$type": "BattleModel.CheckBuffBelongLabel",
+                      "BuffLabel": {
+                        "BuffIdList": [
+                          "nerf_damage_small",
+                          "weak",
+                          "tearing",
+                          "poison"
+                        ],
+                        "BuffLabel": "generalSickNoStun"
+                      }
+                    }
+                  },
+                  "op": 4,
+                  "right": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 3
+                  }
+                },
+                "everybody": false,
+                "group": {
+                  "$type": "BattleModel.SelfTeamChars",
+                  "excludeSelf": false,
+                  "includeDead": false,
+                  "includeEmpty": false,
+                  "reference": {
+                    "$type": "BattleModel.ThisBuffCaster"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffCaster"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.CastSkillSet",
+                    "AssignParameter": {
+                      "AssignCharacter": {
+                        "$type": "BattleModel.FrontOfChars",
+                        "group": {
+                          "$type": "BattleModel.CharGroupWhere",
+                          "condition": {
+                            "$type": "BattleModel.IntCompareC_Other",
+                            "left": {
+                              "$type": "BattleModel.CountOfConditionalBuff",
+                              "Condition": {
+                                "$type": "BattleModel.CheckBuffBelongLabel",
+                                "BuffLabel": {
+                                  "BuffIdList": [
+                                    "nerf_damage_small",
+                                    "weak",
+                                    "tearing",
+                                    "poison"
+                                  ],
+                                  "BuffLabel": "generalSickNoStun"
+                                }
+                              }
+                            },
+                            "op": 4,
+                            "right": {
+                              "$type": "BattleModel.ConstanctInt",
+                              "constant": 4
+                            }
+                          },
+                          "group": {
+                            "$type": "BattleModel.SelfTeamChars",
+                            "excludeSelf": false,
+                            "includeDead": false,
+                            "includeEmpty": false,
+                            "reference": {
+                              "$type": "BattleModel.ThisBuffOwner"
+                            }
+                          }
+                        }
+                      },
+                      "AssignCharacterGroup": {
+                        "$type": "BattleModel.NoneCharacters"
+                      },
+                      "AssignInteger": {
+                        "$type": "BattleModel.ConstanctInt",
+                        "constant": 0
+                      },
+                      "AssignIntegerGroup": {
+                        "$type": "BattleModel.ConstanctIntegerGroup",
+                        "Group": [
+                        ]
+                      }
+                    },
+                    "UseAssignParameter": true,
+                    "resetCasterCD": false,
+                    "skillsetId": "A2"
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharGroupCondition",
+                "condition": {
+                  "$type": "BattleModel.IntCompareC_Other",
+                  "left": {
+                    "$type": "BattleModel.CountOfConditionalBuff",
+                    "Condition": {
+                      "$type": "BattleModel.CheckBuffBelongLabel",
+                      "BuffLabel": {
+                        "BuffIdList": [
+                          "nerf_damage_small",
+                          "weak",
+                          "tearing",
+                          "poison"
+                        ],
+                        "BuffLabel": "generalSickNoStun"
+                      }
+                    }
+                  },
+                  "op": 4,
+                  "right": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 4
+                  }
+                },
+                "everybody": false,
+                "group": {
+                  "$type": "BattleModel.SelfTeamChars",
+                  "excludeSelf": false,
+                  "includeDead": false,
+                  "includeEmpty": false,
+                  "reference": {
+                    "$type": "BattleModel.ThisBuffCaster"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+          {
+            "$type": "BattleModel.CurrentTurnBelongsTo",
+            "character": {
+              "$type": "BattleModel.FrontOfChars",
+              "group": {
+                "$type": "BattleModel.PVEPlayerTeam",
+                "includeDead": false,
+                "includeEmpty": false
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "Key": 16777216,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.AssignParameterSkillEffect",
+                  "AssignParameter": {
+                    "AssignCharacter": {
+                      "$type": "BattleModel.OwnerOfSingleBuff",
+                      "Buff": {
+                        "$type": "BattleModel.SpecifiedBuff"
+                      }
+                    },
+                    "AssignCharacterGroup": {
+                      "$type": "BattleModel.NoneCharacters"
+                    },
+                    "AssignInteger": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 0
+                    },
+                    "AssignIntegerGroup": {
+                      "$type": "BattleModel.ConstanctIntegerGroup",
+                      "Group": [
+                      ]
+                    }
+                  },
+                  "SkillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": null,
+                    "single": {
+                      "$type": "BattleModel.BuffAssignedCharacter",
+                      "_value": {
+                        "$type": "BattleModel.OwnerOfSingleBuff",
+                        "Buff": {
+                          "$type": "BattleModel.SpecifiedBuff"
+                        }
+                      }
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.AddBuffSkillEffect",
+                        "Tag": 132,
+                        "_buffData": [
+                          {
+                            "BuffId": "nerf_damage_small",
+                            "Forever": false,
+                            "LevelStack": 1,
+                            "OverwriteDuration": 1,
+                            "UserDefineVariable": {
+                            }
+                          }
+                        ],
+                        "_keyString": "1"
+                      }
+                    ]
+                  },
+                  "UseAssignParameter": true,
+                  "WillTriggerBuff": false
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.BuffCondition",
+                "buff": {
+                  "$type": "BattleModel.SpecifiedBuff"
+                },
+                "condition": {
+                  "$type": "BattleModel.CheckBuffMatchBuffId",
+                  "subString": "nerf_damage_small"
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.AssignParameterSkillEffect",
+                  "AssignParameter": {
+                    "AssignCharacter": {
+                      "$type": "BattleModel.OwnerOfSingleBuff",
+                      "Buff": {
+                        "$type": "BattleModel.SpecifiedBuff"
+                      }
+                    },
+                    "AssignCharacterGroup": {
+                      "$type": "BattleModel.NoneCharacters"
+                    },
+                    "AssignInteger": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 0
+                    },
+                    "AssignIntegerGroup": {
+                      "$type": "BattleModel.ConstanctIntegerGroup",
+                      "Group": [
+                      ]
+                    }
+                  },
+                  "SkillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": null,
+                    "single": {
+                      "$type": "BattleModel.BuffAssignedCharacter",
+                      "_value": {
+                        "$type": "BattleModel.OwnerOfSingleBuff",
+                        "Buff": {
+                          "$type": "BattleModel.SpecifiedBuff"
+                        }
+                      }
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.AddBuffSkillEffect",
+                        "Tag": 132,
+                        "_buffData": [
+                          {
+                            "BuffId": "weak",
+                            "Forever": false,
+                            "LevelStack": 1,
+                            "OverwriteDuration": 1,
+                            "UserDefineVariable": {
+                            }
+                          }
+                        ],
+                        "_keyString": "1"
+                      }
+                    ]
+                  },
+                  "UseAssignParameter": true,
+                  "WillTriggerBuff": false
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.BuffCondition",
+                "buff": {
+                  "$type": "BattleModel.SpecifiedBuff"
+                },
+                "condition": {
+                  "$type": "BattleModel.CheckBuffMatchBuffId",
+                  "subString": "weak"
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.AssignParameterSkillEffect",
+                  "AssignParameter": {
+                    "AssignCharacter": {
+                      "$type": "BattleModel.OwnerOfSingleBuff",
+                      "Buff": {
+                        "$type": "BattleModel.SpecifiedBuff"
+                      }
+                    },
+                    "AssignCharacterGroup": {
+                      "$type": "BattleModel.NoneCharacters"
+                    },
+                    "AssignInteger": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 0
+                    },
+                    "AssignIntegerGroup": {
+                      "$type": "BattleModel.ConstanctIntegerGroup",
+                      "Group": [
+                      ]
+                    }
+                  },
+                  "SkillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": null,
+                    "single": {
+                      "$type": "BattleModel.BuffAssignedCharacter",
+                      "_value": {
+                        "$type": "BattleModel.OwnerOfSingleBuff",
+                        "Buff": {
+                          "$type": "BattleModel.SpecifiedBuff"
+                        }
+                      }
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.AddBuffSkillEffect",
+                        "Tag": 132,
+                        "_buffData": [
+                          {
+                            "BuffId": "poison",
+                            "Forever": false,
+                            "LevelStack": 1,
+                            "OverwriteDuration": 1,
+                            "UserDefineVariable": {
+                            }
+                          }
+                        ],
+                        "_keyString": "1"
+                      }
+                    ]
+                  },
+                  "UseAssignParameter": true,
+                  "WillTriggerBuff": false
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.BuffCondition",
+                "buff": {
+                  "$type": "BattleModel.SpecifiedBuff"
+                },
+                "condition": {
+                  "$type": "BattleModel.CheckBuffMatchBuffId",
+                  "subString": "poison"
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.AssignParameterSkillEffect",
+                  "AssignParameter": {
+                    "AssignCharacter": {
+                      "$type": "BattleModel.OwnerOfSingleBuff",
+                      "Buff": {
+                        "$type": "BattleModel.SpecifiedBuff"
+                      }
+                    },
+                    "AssignCharacterGroup": {
+                      "$type": "BattleModel.NoneCharacters"
+                    },
+                    "AssignInteger": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 0
+                    },
+                    "AssignIntegerGroup": {
+                      "$type": "BattleModel.ConstanctIntegerGroup",
+                      "Group": [
+                      ]
+                    }
+                  },
+                  "SkillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": null,
+                    "single": {
+                      "$type": "BattleModel.BuffAssignedCharacter",
+                      "_value": {
+                        "$type": "BattleModel.OwnerOfSingleBuff",
+                        "Buff": {
+                          "$type": "BattleModel.SpecifiedBuff"
+                        }
+                      }
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.AddBuffSkillEffect",
+                        "Tag": 132,
+                        "_buffData": [
+                          {
+                            "BuffId": "tearing",
+                            "Forever": false,
+                            "LevelStack": 1,
+                            "OverwriteDuration": 1,
+                            "UserDefineVariable": {
+                            }
+                          }
+                        ],
+                        "_keyString": "1"
+                      }
+                    ]
+                  },
+                  "UseAssignParameter": true,
+                  "WillTriggerBuff": false
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.BuffCondition",
+                "buff": {
+                  "$type": "BattleModel.SpecifiedBuff"
+                },
+                "condition": {
+                  "$type": "BattleModel.CheckBuffMatchBuffId",
+                  "subString": "tearing"
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+          {
+            "$type": "BattleModel.CharacterInside",
+            "group": {
+              "$type": "BattleModel.SelfTeamChars",
+              "excludeSelf": false,
+              "includeDead": false,
+              "includeEmpty": false,
+              "reference": {
+                "$type": "BattleModel.ThisBuffOwner"
+              }
+            },
+            "left": {
+              "$type": "BattleModel.OwnerOfSingleBuff",
+              "Buff": {
+                "$type": "BattleModel.SpecifiedBuff"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 0,
+  "_orderTable": {
+  },
+  "_tag": 64
+}

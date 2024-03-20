@@ -1,6 +1,6 @@
 {
   "$interpreted": {
-    "Localization": "豹族女性",
+    "Localization": "b3340c4_star_1",
     "復活魂芯數": 0,
     "技能": {
       "Arrive1": [
@@ -9,92 +9,90 @@
       "Retreat1": [
         "對施術者{\"Tag\":65540,\"_keyString\":\"1\",\"$type\":\"BattleModel.DirectKillSkillEffect\"}"
       ],
-      "S1": [
-        "對施術者的目標攻擊(攻擊力 x1)"
-      ],
       "S2": [
-        "對施術者的目標攻擊(攻擊力 x1)、賦予1回合1層poison(中毒)"
+        "對施術者賦予永久1層sharp(銳利)"
+      ],
+      "S3": [
+        "對施術者的對方全體攻擊(攻擊力 x1)"
       ]
     },
     "技能組": {
       "S1": [
         {
-          "CoolDown": 2,
+          "CoolDown": 5,
           "技能列表": [
-            "施展S2"
+            "施展S2",
+            "施展S3"
           ],
           "條件": [
           ],
-          "目標": "玩家後排"
+          "目標": ""
         }
       ]
     },
-    "攻擊力": 40,
-    "攻擊力等級調整後": 37,
+    "攻擊力": 300,
+    "攻擊力等級調整後": 283,
     "敵人AI": "S1",
     "消魂設置": {
       "Type1": "S1",
       "Type2": "S2",
       "Type4": "S3"
     },
-    "疊盾": 300,
-    "疊盾等級調整後": 283,
+    "疊盾": 2000,
+    "疊盾等級調整後": 1886,
     "站位": "無",
-    "血量": 300,
-    "血量等級調整後": 283,
+    "血量": 2000,
+    "血量等級調整後": 1886,
     "被動Buff": [
+      "賦予永久StayInhibitUntilAttack(潛伏)"
     ],
-    "起始CD": 0,
-    "預設CD": 2
+    "起始CD": 5,
+    "預設CD": 6
   },
   "$type": "BattleModel.EnemyCharacter",
   "ReferenceBuffKeys": [
-    "poison",
-    "poison_trigger"
   ],
   "ReferenceCharacterKeys": [
   ],
   "ReferenceEffectKeys": [
-    "t0026s4_s02_UP",
-    "Common_Slash01_A",
-    "Common_Smoke10",
-    "Common_Smoke10R",
-    "Common_SmokeDown01_A",
-    "b0037s4_A1_ring"
   ],
   "ReferenceEmoIconKeys": [
   ],
   "ReferenceMusicKeys": [
   ],
   "ReferenceSFXKeys": [
-    "step_soles_001",
-    "swoosh_006",
-    "magic_dark_013",
-    "knife_005",
-    "swoosh_007",
-    "step_soles_002"
+    "Creature_monster_027set_03_wolf_dog_grunt_modify",
+    "Creature_monster_027set_02_wolf_dog_grunt_modify"
   ],
   "ReferenceVoiceSFXKeys": [
   ],
-  "_armorCapacity": 300,
+  "_armorCapacity": 2000,
   "_assistantSkill": null,
-  "_bloodCapacity": 300,
+  "_bloodCapacity": 2000,
   "_characterAI": {
     "$type": "BattleModel.SequenceEnemyAI",
     "OrderList": [
       "S1"
     ]
   },
-  "_defaultCoolDown": 2,
-  "_initialCoolDown": 0,
+  "_defaultCoolDown": 6,
+  "_initialCoolDown": 5,
   "_levelStartBuff": [
   ],
-  "_mass": 1,
+  "_mass": 3,
   "_masterRank": 0,
   "_passiveBuff": [
+    {
+      "BuffId": "StayInhibitUntilAttack",
+      "Forever": true,
+      "LevelStack": 0,
+      "OverwriteDuration": -1,
+      "UserDefineVariable": {
+      }
+    }
   ],
-  "_pose": "Stand",
-  "_power": 40,
+  "_pose": "Prone",
+  "_power": 300,
   "_reviveCount": 0,
   "_skills": {
     "Arrive1": {
@@ -142,39 +140,6 @@
         }
       ]
     },
-    "S1": {
-      "$type": "BattleModel.BattleSkill",
-      "_isFallBackIfEmptyTarget": false,
-      "_isResolveTargetEachUnit": false,
-      "_skillIdentifiers": [
-        {
-          "CanBeEmpty": false,
-          "IsMultiple": false,
-          "multi": null,
-          "single": {
-            "$type": "BattleModel.EnemyAssignee",
-            "reference": {
-              "$type": "BattleModel.ThisSkillCaster"
-            }
-          },
-          "skillEffects": [
-            {
-              "$type": "BattleModel.HpDamageSkillEffect",
-              "Tag": 9,
-              "_keyString": "1",
-              "_skillModifier": {
-                "_constant": 0,
-                "_parameter": {
-                  "$type": "BattleModel.SkillCasterPower",
-                  "basePower": false
-                },
-                "_ratio": 1
-              }
-            }
-          ]
-        }
-      ]
-    },
     "S2": {
       "$type": "BattleModel.BattleSkill",
       "_isFallBackIfEmptyTarget": false,
@@ -185,10 +150,46 @@
           "IsMultiple": false,
           "multi": null,
           "single": {
-            "$type": "BattleModel.EnemyAssignee",
+            "$type": "BattleModel.ThisSkillCaster"
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.AddBuffSkillEffect",
+              "Tag": 132,
+              "_buffData": [
+                {
+                  "BuffId": "sharp",
+                  "Forever": true,
+                  "LevelStack": 1,
+                  "OverwriteDuration": -1,
+                  "UserDefineVariable": {
+                  }
+                }
+              ],
+              "_keyString": "1"
+            }
+          ]
+        }
+      ]
+    },
+    "S3": {
+      "$type": "BattleModel.BattleSkill",
+      "_isFallBackIfEmptyTarget": false,
+      "_isResolveTargetEachUnit": false,
+      "_skillIdentifiers": [
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": true,
+          "multi": {
+            "$type": "BattleModel.OppositeTeamChars",
+            "includeDead": false,
+            "includeEmpty": false,
             "reference": {
               "$type": "BattleModel.ThisSkillCaster"
             }
+          },
+          "single": {
+            "$type": "BattleModel.ThisSkillCaster"
           },
           "skillEffects": [
             {
@@ -203,21 +204,6 @@
                 },
                 "_ratio": 1
               }
-            },
-            {
-              "$type": "BattleModel.AddBuffSkillEffect",
-              "Tag": 132,
-              "_buffData": [
-                {
-                  "BuffId": "poison",
-                  "Forever": false,
-                  "LevelStack": 1,
-                  "OverwriteDuration": 1,
-                  "UserDefineVariable": {
-                  }
-                }
-              ],
-              "_keyString": "1"
             }
           ]
         }
@@ -239,17 +225,19 @@
               ],
               "seq": "",
               "t": null
+            },
+            {
+              "ConditionList": [
+              ],
+              "SkillID": "S3",
+              "_conditionalSequences": [
+              ],
+              "seq": "",
+              "t": null
             }
           ],
-          "_characterCoolDown": 2,
-          "assignTarget": {
-            "$type": "BattleModel.BackOfChars",
-            "group": {
-              "$type": "BattleModel.PVEPlayerTeam",
-              "includeDead": false,
-              "includeEmpty": false
-            }
-          },
+          "_characterCoolDown": 5,
+          "assignTarget": null,
           "icon": 0
         }
       ],

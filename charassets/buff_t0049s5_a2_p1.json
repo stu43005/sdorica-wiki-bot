@@ -2,20 +2,6 @@
   "$interpreted": {
     "Localization": "",
     "動作": {
-      "AfterAnyoneDie": {
-        "效果": [
-          {
-            "效果": [
-              "對本角色移除狀態blessed"
-            ],
-            "條件": [
-              "死亡或復活的角色是本角色"
-            ]
-          }
-        ],
-        "條件": [
-        ]
-      },
       "AfterAnyoneRevive": {
         "效果": [
           {
@@ -24,14 +10,6 @@
             ],
             "條件": [
               "本角色是死亡或復活的角色"
-            ]
-          },
-          {
-            "效果": [
-              "對本角色賦予永久blessed"
-            ],
-            "條件": [
-              "死亡或復活的角色是本角色"
             ]
           }
         ],
@@ -87,17 +65,7 @@
               "對本角色觸發S4"
             ],
             "條件": [
-              "目前戰鬥回合數 == 0",
-              "目前回合輪到本角色"
-            ]
-          },
-          {
-            "效果": [
-              "對本角色賦予永久blessed"
-            ],
-            "條件": [
-              "本角色 {\"$type\":\"BattleModel.IsCharacterAlive\"}",
-              "本角色沒有blessed狀態"
+              "(目前戰鬥回合數 == 0) 且 (目前回合輪到敵人首位)"
             ]
           }
         ],
@@ -111,7 +79,6 @@
   },
   "$type": "BattleModel.Buff",
   "ReferenceBuffKeys": [
-    "blessed",
     "changeIdle_notRemoveWhenDie"
   ],
   "_actionTable": [
@@ -155,66 +122,30 @@
             ],
             "Conditions": [
               {
-                "$type": "BattleModel.IntCompare",
-                "left": {
-                  "$type": "BattleModel.BattleActionRecordValue",
-                  "RecordValue": {
-                    "$type": "BattleModel.ThisBattleTurnCount"
-                  }
-                },
-                "op": 0,
-                "right": {
-                  "$type": "BattleModel.ConstanctInt",
-                  "constant": 0
-                }
-              },
-              {
-                "$type": "BattleModel.CurrentTurnBelongsTo",
-                "character": {
-                  "$type": "BattleModel.ThisBuffOwner"
-                }
-              }
-            ]
-          },
-          {
-            "Actions": [
-              {
-                "TargetField": {
-                  "$type": "BattleModel.OperateCharacter",
-                  "character": {
-                    "$type": "BattleModel.ThisBuffOwner"
-                  },
-                  "operation": {
-                    "$type": "BattleModel.AddBuff",
-                    "buffToAdd": {
-                      "BuffId": "blessed",
-                      "Forever": true,
-                      "LevelStack": 0,
-                      "OverwriteDuration": -1,
-                      "UserDefineVariable": {
-                      }
+                "$type": "BattleModel.AndConditions",
+                "cond1": {
+                  "$type": "BattleModel.IntCompare",
+                  "left": {
+                    "$type": "BattleModel.BattleActionRecordValue",
+                    "RecordValue": {
+                      "$type": "BattleModel.ThisBattleTurnCount"
                     }
+                  },
+                  "op": 0,
+                  "right": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 0
                   }
-                }
-              }
-            ],
-            "Conditions": [
-              {
-                "$type": "BattleModel.CharacterCondition",
-                "character": {
-                  "$type": "BattleModel.ThisBuffOwner"
                 },
-                "condition": {
-                  "$type": "BattleModel.IsCharacterAlive"
-                }
-              },
-              {
-                "$type": "BattleModel.Inverse",
-                "condition": {
-                  "$type": "BattleModel.CharacterHasBuff",
-                  "buffId": "blessed",
+                "cond2": {
+                  "$type": "BattleModel.CurrentTurnBelongsTo",
                   "character": {
-                    "$type": "BattleModel.ThisBuffOwner"
+                    "$type": "BattleModel.FrontOfChars",
+                    "group": {
+                      "$type": "BattleModel.PVEEnemyTeam",
+                      "includeDead": true,
+                      "includeEmpty": true
+                    }
                   }
                 }
               }
@@ -259,40 +190,6 @@
                 },
                 "right": {
                   "$type": "BattleModel.DeadOrReviveTarget"
-                }
-              }
-            ]
-          },
-          {
-            "Actions": [
-              {
-                "TargetField": {
-                  "$type": "BattleModel.OperateCharacter",
-                  "character": {
-                    "$type": "BattleModel.ThisBuffOwner"
-                  },
-                  "operation": {
-                    "$type": "BattleModel.AddBuff",
-                    "buffToAdd": {
-                      "BuffId": "blessed",
-                      "Forever": true,
-                      "LevelStack": 0,
-                      "OverwriteDuration": -1,
-                      "UserDefineVariable": {
-                      }
-                    }
-                  }
-                }
-              }
-            ],
-            "Conditions": [
-              {
-                "$type": "BattleModel.CharacterEqual",
-                "left": {
-                  "$type": "BattleModel.DeadOrReviveTarget"
-                },
-                "right": {
-                  "$type": "BattleModel.ThisBuffOwner"
                 }
               }
             ]
@@ -434,42 +331,6 @@
                 "buffId": "nerf_damage_small",
                 "character": {
                   "$type": "BattleModel.ThisSkillCaster"
-                }
-              }
-            ]
-          }
-        ],
-        "Conditions": [
-        ]
-      }
-    },
-    {
-      "Key": 1048576,
-      "Value": {
-        "Actions": [
-          {
-            "Actions": [
-              {
-                "TargetField": {
-                  "$type": "BattleModel.OperateCharacter",
-                  "character": {
-                    "$type": "BattleModel.ThisBuffOwner"
-                  },
-                  "operation": {
-                    "$type": "BattleModel.RemoveBuff",
-                    "buffId": "blessed"
-                  }
-                }
-              }
-            ],
-            "Conditions": [
-              {
-                "$type": "BattleModel.CharacterEqual",
-                "left": {
-                  "$type": "BattleModel.DeadOrReviveTarget"
-                },
-                "right": {
-                  "$type": "BattleModel.ThisBuffOwner"
                 }
               }
             ]

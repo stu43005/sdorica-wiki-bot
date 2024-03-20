@@ -1,6 +1,6 @@
 {
   "$interpreted": {
-    "Localization": "豹族女性",
+    "Localization": "h3222c3_star_1",
     "復活魂芯數": 0,
     "技能": {
       "Arrive1": [
@@ -10,14 +10,14 @@
         "對施術者{\"Tag\":65540,\"_keyString\":\"1\",\"$type\":\"BattleModel.DirectKillSkillEffect\"}"
       ],
       "S1": [
-        "對施術者的目標攻擊(攻擊力 x1)"
+        "對施術者的目標"
       ],
       "S2": [
-        "對施術者的目標攻擊(攻擊力 x1)、賦予1回合1層poison(中毒)"
+        "對施術者的對方中HP%最高的角色穿透(攻擊力 x1)、賦予永久2層CursePoisonUntilLowHp(詛咒．劇毒)"
       ]
     },
     "技能組": {
-      "S1": [
+      "S2": [
         {
           "CoolDown": 2,
           "技能列表": [
@@ -25,67 +25,85 @@
           ],
           "條件": [
           ],
-          "目標": "玩家後排"
+          "目標": ""
         }
       ]
     },
-    "攻擊力": 40,
-    "攻擊力等級調整後": 37,
-    "敵人AI": "S1",
+    "攻擊力": 100,
+    "攻擊力等級調整後": 94,
+    "敵人AI": "S2",
     "消魂設置": {
       "Type1": "S1",
       "Type2": "S2",
       "Type4": "S3"
     },
-    "疊盾": 300,
-    "疊盾等級調整後": 283,
+    "疊盾": 1600,
+    "疊盾等級調整後": 1509,
     "站位": "無",
-    "血量": 300,
-    "血量等級調整後": 283,
+    "血量": 1600,
+    "血量等級調整後": 1509,
     "被動Buff": [
     ],
     "起始CD": 0,
-    "預設CD": 2
+    "預設CD": 0
   },
   "$type": "BattleModel.EnemyCharacter",
   "ReferenceBuffKeys": [
+    "sensitive_new",
     "poison",
     "poison_trigger"
   ],
   "ReferenceCharacterKeys": [
   ],
   "ReferenceEffectKeys": [
-    "t0026s4_s02_UP",
-    "Common_Slash01_A",
-    "Common_Smoke10",
-    "Common_Smoke10R",
-    "Common_SmokeDown01_A",
-    "b0037s4_A1_ring"
+    "h3222c3_s02_Trail",
+    "Common_Smoke04",
+    "h3222c3_s01_Trail",
+    "h3222c3_c3_s02_SmokeDown",
+    "h3222c3_s02_Stinger",
+    "b0146c3_s1_i2_HitDash01_A",
+    "t3427c4_s01_floorsmoke01",
+    "Common_Slash01_G",
+    "t3427c4_s01_hitDash01",
+    "h3222c3_s01_trail",
+    "Common_HitGun01_E",
+    "Common_SmokeJump01_A",
+    "h0006s5_S1_blood",
+    "Common_SmokeDown03_D"
   ],
   "ReferenceEmoIconKeys": [
   ],
   "ReferenceMusicKeys": [
   ],
   "ReferenceSFXKeys": [
-    "step_soles_001",
-    "swoosh_006",
-    "magic_dark_013",
+    "Effect_ice_004set_02_crunch_creak_break_bone_movement",
+    "Hit_bladed_027set_01_katana_slash_swing_short",
+    "impact_body_stab_02",
+    "Creature_misc_005set_03_eat_splash",
+    "scene_earthquake",
+    "Hit_bladed_017_slash_blood",
+    "Effect_splash_025set_04_blood_liquid_sticky",
+    "Whoosh_physical_045",
     "knife_005",
-    "swoosh_007",
-    "step_soles_002"
+    "Hit_bladed_028set_02_slash_metal_large",
+    "Whoosh_physical_048_steam_sizzle_air",
+    "Effect_splash_022set_03_blood_hit_spill",
+    "Footsteps_006set_01_bodyfall_landing_pour",
+    "Hit_bladed_023_metal_stab_thin_large",
+    "Hit_bladed_019_slash_smash_giant_short_bass"
   ],
   "ReferenceVoiceSFXKeys": [
   ],
-  "_armorCapacity": 300,
+  "_armorCapacity": 1600,
   "_assistantSkill": null,
-  "_bloodCapacity": 300,
+  "_bloodCapacity": 1600,
   "_characterAI": {
     "$type": "BattleModel.SequenceEnemyAI",
     "OrderList": [
-      "S1"
+      "S2"
     ]
   },
-  "_defaultCoolDown": 2,
+  "_defaultCoolDown": 0,
   "_initialCoolDown": 0,
   "_levelStartBuff": [
   ],
@@ -94,7 +112,7 @@
   "_passiveBuff": [
   ],
   "_pose": "Stand",
-  "_power": 40,
+  "_power": 100,
   "_reviveCount": 0,
   "_skills": {
     "Arrive1": {
@@ -158,19 +176,6 @@
             }
           },
           "skillEffects": [
-            {
-              "$type": "BattleModel.HpDamageSkillEffect",
-              "Tag": 9,
-              "_keyString": "1",
-              "_skillModifier": {
-                "_constant": 0,
-                "_parameter": {
-                  "$type": "BattleModel.SkillCasterPower",
-                  "basePower": false
-                },
-                "_ratio": 1
-              }
-            }
           ]
         }
       ]
@@ -185,15 +190,24 @@
           "IsMultiple": false,
           "multi": null,
           "single": {
-            "$type": "BattleModel.EnemyAssignee",
-            "reference": {
-              "$type": "BattleModel.ThisSkillCaster"
+            "$type": "BattleModel.FieldMaxChar",
+            "field": {
+              "$type": "BattleModel.IntFieldC",
+              "targetField": 2
+            },
+            "group": {
+              "$type": "BattleModel.OppositeTeamChars",
+              "includeDead": false,
+              "includeEmpty": false,
+              "reference": {
+                "$type": "BattleModel.ThisSkillCaster"
+              }
             }
           },
           "skillEffects": [
             {
-              "$type": "BattleModel.HpDamageSkillEffect",
-              "Tag": 9,
+              "$type": "BattleModel.TrueDamageSkillEffect",
+              "Tag": 8193,
               "_keyString": "1",
               "_skillModifier": {
                 "_constant": 0,
@@ -209,10 +223,10 @@
               "Tag": 132,
               "_buffData": [
                 {
-                  "BuffId": "poison",
-                  "Forever": false,
-                  "LevelStack": 1,
-                  "OverwriteDuration": 1,
+                  "BuffId": "CursePoisonUntilLowHp",
+                  "Forever": true,
+                  "LevelStack": 2,
+                  "OverwriteDuration": -1,
                   "UserDefineVariable": {
                   }
                 }
@@ -225,7 +239,7 @@
     }
   },
   "_skillsetTable": {
-    "S1": {
+    "S2": {
       "ComboList": [
         {
           "ConditionList": [
@@ -242,14 +256,7 @@
             }
           ],
           "_characterCoolDown": 2,
-          "assignTarget": {
-            "$type": "BattleModel.BackOfChars",
-            "group": {
-              "$type": "BattleModel.PVEPlayerTeam",
-              "includeDead": false,
-              "includeEmpty": false
-            }
-          },
+          "assignTarget": null,
           "icon": 0
         }
       ],

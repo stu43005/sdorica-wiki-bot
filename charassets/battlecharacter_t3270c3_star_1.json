@@ -1,6 +1,6 @@
 {
   "$interpreted": {
-    "Localization": "豹族女性",
+    "Localization": "t3270c3_star_1",
     "復活魂芯數": 0,
     "技能": {
       "Arrive1": [
@@ -13,72 +13,90 @@
         "對施術者的目標攻擊(攻擊力 x1)"
       ],
       "S2": [
-        "對施術者的目標攻擊(攻擊力 x1)、賦予1回合1層poison(中毒)"
+        "對施術者賦予永久1層defense_wall(堅盾)"
       ]
     },
     "技能組": {
       "S1": [
         {
-          "CoolDown": 2,
+          "CoolDown": 3,
+          "技能列表": [
+            "施展S1"
+          ],
+          "條件": [
+            "施術者 狀態defense_wall(堅盾) 符合條件 層數 >= 20"
+          ],
+          "目標": "玩家首位"
+        },
+        {
+          "CoolDown": 1,
           "技能列表": [
             "施展S2"
           ],
           "條件": [
           ],
-          "目標": "玩家後排"
+          "目標": ""
         }
       ]
     },
-    "攻擊力": 40,
-    "攻擊力等級調整後": 37,
+    "攻擊力": 50,
+    "攻擊力等級調整後": 47,
     "敵人AI": "S1",
     "消魂設置": {
-      "Type1": "S1",
-      "Type2": "S2",
-      "Type4": "S3"
     },
-    "疊盾": 300,
-    "疊盾等級調整後": 283,
+    "疊盾": 2000,
+    "疊盾等級調整後": 1886,
     "站位": "無",
-    "血量": 300,
-    "血量等級調整後": 283,
+    "血量": 2000,
+    "血量等級調整後": 1886,
     "被動Buff": [
+      "賦予永久1層defense_up_small(減傷)",
+      "賦予永久10層defense_wall(堅盾)"
     ],
     "起始CD": 0,
     "預設CD": 2
   },
   "$type": "BattleModel.EnemyCharacter",
   "ReferenceBuffKeys": [
-    "poison",
-    "poison_trigger"
+    "nerf_damage_small"
   ],
   "ReferenceCharacterKeys": [
+    "t3208c3"
   ],
   "ReferenceEffectKeys": [
-    "t0026s4_s02_UP",
-    "Common_Slash01_A",
-    "Common_Smoke10",
-    "Common_Smoke10R",
-    "Common_SmokeDown01_A",
-    "b0037s4_A1_ring"
+    "Common_SmokeRun02_C",
+    "t3270c3_s01_trail01",
+    "t3270c3_s01_trail02",
+    "t3270c3_s01_hit02",
+    "t3270c3_s01_hit01",
+    "t3270c3_s01_smoke01",
+    "t3270c3_s01_slash01",
+    "t3270c3_s02_knock01",
+    "t3270c3_s02_line01",
+    "t3270c3_s02_shield01"
   ],
   "ReferenceEmoIconKeys": [
   ],
   "ReferenceMusicKeys": [
   ],
   "ReferenceSFXKeys": [
-    "step_soles_001",
-    "swoosh_006",
-    "magic_dark_013",
-    "knife_005",
-    "swoosh_007",
-    "step_soles_002"
+    "Movement_misc_049_wood_hit_smash_break_scrap",
+    "Hit_explosion_017_large_fire_resonate",
+    "Hit_smash_036_general_large_bass",
+    "Hit_smash_007_large",
+    "Movement_misc_066set_01_bone_wood_break_crunch_bite_bass",
+    "Hit_smash_047set_03_metal_bass_large_arms",
+    "Hit_bladed_023_metal_stab_thin_large",
+    "Hit_smash_047set_02_metal_bass_large_arms",
+    "Movement_misc_038_candy_rustle_scrap",
+    "Hit_smash_029_large_scrap",
+    "Movement_misc_039set_02_paper_rustle"
   ],
   "ReferenceVoiceSFXKeys": [
   ],
-  "_armorCapacity": 300,
+  "_armorCapacity": 2000,
   "_assistantSkill": null,
-  "_bloodCapacity": 300,
+  "_bloodCapacity": 2000,
   "_characterAI": {
     "$type": "BattleModel.SequenceEnemyAI",
     "OrderList": [
@@ -92,9 +110,25 @@
   "_mass": 1,
   "_masterRank": 0,
   "_passiveBuff": [
+    {
+      "BuffId": "defense_up_small",
+      "Forever": true,
+      "LevelStack": 1,
+      "OverwriteDuration": -1,
+      "UserDefineVariable": {
+      }
+    },
+    {
+      "BuffId": "defense_wall",
+      "Forever": true,
+      "LevelStack": 10,
+      "OverwriteDuration": -1,
+      "UserDefineVariable": {
+      }
+    }
   ],
   "_pose": "Stand",
-  "_power": 40,
+  "_power": 50,
   "_reviveCount": 0,
   "_skills": {
     "Arrive1": {
@@ -185,34 +219,18 @@
           "IsMultiple": false,
           "multi": null,
           "single": {
-            "$type": "BattleModel.EnemyAssignee",
-            "reference": {
-              "$type": "BattleModel.ThisSkillCaster"
-            }
+            "$type": "BattleModel.ThisSkillCaster"
           },
           "skillEffects": [
-            {
-              "$type": "BattleModel.HpDamageSkillEffect",
-              "Tag": 9,
-              "_keyString": "1",
-              "_skillModifier": {
-                "_constant": 0,
-                "_parameter": {
-                  "$type": "BattleModel.SkillCasterPower",
-                  "basePower": false
-                },
-                "_ratio": 1
-              }
-            },
             {
               "$type": "BattleModel.AddBuffSkillEffect",
               "Tag": 132,
               "_buffData": [
                 {
-                  "BuffId": "poison",
-                  "Forever": false,
+                  "BuffId": "defense_wall",
+                  "Forever": true,
                   "LevelStack": 1,
-                  "OverwriteDuration": 1,
+                  "OverwriteDuration": 5,
                   "UserDefineVariable": {
                   }
                 }
@@ -229,6 +247,53 @@
       "ComboList": [
         {
           "ConditionList": [
+            {
+              "$type": "BattleModel.CharacterCondition",
+              "character": {
+                "$type": "BattleModel.ThisSkillCaster"
+              },
+              "condition": {
+                "$type": "BattleModel.HasConditionalBuff",
+                "buffCondition": {
+                  "$type": "BattleModel.IntCompareB",
+                  "left": {
+                    "$type": "BattleModel.IntFieldB",
+                    "targetField": 1
+                  },
+                  "op": 4,
+                  "right": {
+                    "$type": "BattleModel.ConstantIntB",
+                    "constant": 20
+                  }
+                },
+                "buffId": "defense_wall"
+              }
+            }
+          ],
+          "SkillList": [
+            {
+              "ConditionList": [
+              ],
+              "SkillID": "S1",
+              "_conditionalSequences": [
+              ],
+              "seq": "",
+              "t": null
+            }
+          ],
+          "_characterCoolDown": 3,
+          "assignTarget": {
+            "$type": "BattleModel.FrontOfChars",
+            "group": {
+              "$type": "BattleModel.PVEPlayerTeam",
+              "includeDead": false,
+              "includeEmpty": false
+            }
+          },
+          "icon": 0
+        },
+        {
+          "ConditionList": [
           ],
           "SkillList": [
             {
@@ -241,34 +306,15 @@
               "t": null
             }
           ],
-          "_characterCoolDown": 2,
-          "assignTarget": {
-            "$type": "BattleModel.BackOfChars",
-            "group": {
-              "$type": "BattleModel.PVEPlayerTeam",
-              "includeDead": false,
-              "includeEmpty": false
-            }
-          },
+          "_characterCoolDown": 1,
+          "assignTarget": null,
           "icon": 0
         }
       ],
       "_isViewSkillSet": false
     }
   },
-  "_stoneEraseSetting": [
-    {
-      "Key": 0,
-      "Value": "S1"
-    },
-    {
-      "Key": 1,
-      "Value": "S2"
-    },
-    {
-      "Key": 2,
-      "Value": "S3"
-    }
-  ],
+  "_stoneEraseSetting": {
+  },
   "_stoneType": 0
 }
