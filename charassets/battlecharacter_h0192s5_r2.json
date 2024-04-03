@@ -278,8 +278,49 @@
                   "$type": "BattleModel.SkillCasterPower",
                   "basePower": false
                 },
-                "_ratio": 1.6
+                "_ratio": 10
               }
+            }
+          ]
+        },
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": false,
+          "multi": null,
+          "single": {
+            "$type": "BattleModel.FriendAssignee",
+            "reference": {
+              "$type": "BattleModel.ThisSkillCaster"
+            }
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.CastSkillSetSkillEffect",
+              "AssignParameter": {
+                "AssignCharacter": {
+                  "$type": "BattleModel.NoneCharacter"
+                },
+                "AssignCharacterGroup": {
+                  "$type": "BattleModel.NoneCharacters"
+                },
+                "AssignInteger": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 0
+                },
+                "AssignIntegerGroup": {
+                  "$type": "BattleModel.ConstanctIntegerGroup",
+                  "Group": [
+                  ]
+                }
+              },
+              "CastLimitPerTurn": true,
+              "CounterKey": "Var1",
+              "Limit": 1,
+              "Tag": 1048580,
+              "UseAssignParameter": false,
+              "_keyString": "",
+              "resetCasterCD": false,
+              "skillsetId": "S1"
             }
           ]
         }
@@ -311,8 +352,49 @@
                   "$type": "BattleModel.SkillCasterPower",
                   "basePower": false
                 },
-                "_ratio": 8
+                "_ratio": 20
               }
+            }
+          ]
+        },
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": false,
+          "multi": null,
+          "single": {
+            "$type": "BattleModel.FriendAssignee",
+            "reference": {
+              "$type": "BattleModel.ThisSkillCaster"
+            }
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.CastSkillSetSkillEffect",
+              "AssignParameter": {
+                "AssignCharacter": {
+                  "$type": "BattleModel.NoneCharacter"
+                },
+                "AssignCharacterGroup": {
+                  "$type": "BattleModel.NoneCharacters"
+                },
+                "AssignInteger": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 0
+                },
+                "AssignIntegerGroup": {
+                  "$type": "BattleModel.ConstanctIntegerGroup",
+                  "Group": [
+                  ]
+                }
+              },
+              "CastLimitPerTurn": true,
+              "CounterKey": "Var1",
+              "Limit": 1,
+              "Tag": 1048580,
+              "UseAssignParameter": false,
+              "_keyString": "1",
+              "resetCasterCD": false,
+              "skillsetId": "S3"
             }
           ]
         }
@@ -658,22 +740,45 @@
         {
           "ConditionList": [
             {
-              "$type": "BattleModel.IntCompare",
-              "left": {
-                "$type": "BattleModel.ConstanctInt",
-                "constant": 150
-              },
-              "op": 4,
-              "right": {
-                "$type": "BattleModel.SumOfInts",
-                "group": {
-                  "$type": "BattleModel.IntsOnCharGroup",
+              "$type": "BattleModel.OrConditions",
+              "cond1": {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.SumOfInts",
                   "group": {
-                    "$type": "BattleModel.PVEPlayerTeam",
-                    "includeDead": false,
-                    "includeEmpty": false
+                    "$type": "BattleModel.IntsOnCharGroup",
+                    "group": {
+                      "$type": "BattleModel.PVEPlayerTeam",
+                      "includeDead": false,
+                      "includeEmpty": false
+                    },
+                    "targetField": 2
+                  }
+                },
+                "op": 3,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 150
+                }
+              },
+              "cond2": {
+                "$type": "BattleModel.CharGroupCondition",
+                "condition": {
+                  "$type": "BattleModel.AndConditionsC",
+                  "cond1": {
+                    "$type": "BattleModel.HasBuff",
+                    "buffId": "damage_absorption"
                   },
-                  "targetField": 2
+                  "cond2": {
+                    "$type": "BattleModel.HasBuff",
+                    "buffId": "ArmorToBlood"
+                  }
+                },
+                "everybody": true,
+                "group": {
+                  "$type": "BattleModel.PVEPlayerTeam",
+                  "includeDead": false,
+                  "includeEmpty": false
                 }
               }
             }

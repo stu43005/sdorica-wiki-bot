@@ -2,16 +2,64 @@
   "$interpreted": {
     "Localization": "",
     "動作": {
+      "OnEachSkillSetEnd": {
+        "效果": [
+          {
+            "效果": [
+              "對本狀態的變數一改為0",
+              "對本狀態的變數二改為1",
+              "立即施展技能：對本角色的友方指定對象{\"_stoneBuffActionBoardAction\":{\"changeTo\":\"ToTargetStoneType\",\"addBuffData\":{\"BuffId\":\"leader\",\"OverwriteDuration\":1,\"Forever\":false,\"LevelStack\":1,\"UserDefineVariable\":{}},\"UsePositionSettings\":false,\"targetStoneCount\":1,\"filter\":\"IsNotTargetColor\",\"isInitStoneFilter\":\"None\",\"BuffFilter\":\"Normal\",\"BuffId\":\"\",\"BuffLabel\":null,\"EffectFilter\":\"Normal\",\"order\":\"UpperRightToLowerRight\",\"StonePositionList\":[]},\"Tag\":262660,\"_keyString\":\"\",\"$type\":\"BattleModel.StoneBuffActionSkillEffect\"}"
+            ],
+            "條件": [
+              "施術者是玩家的一員",
+              "本狀態的變數一 == 1",
+              "本狀態的變數二 == 0"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
       "OnEachSkillTargetEffect": {
         "效果": [
           {
             "效果": [
-              "技能的(Attack)屬性效果增加(45)%"
+              "技能的(Attack)屬性效果增加(50)%",
+              "對本狀態的變數一改為1"
             ],
             "條件": [
-              "指定目標是本角色的對方的一員",
-              "指定目標的HP% <= 50",
-              "本角色是施術者"
+              "指定目標是敵人的一員",
+              "施術者是玩家的一員",
+              "指定目標的HP < 指定目標的最大HP",
+              "施展的技能效果中包含(Attack)屬性"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnTurnBegin": {
+        "效果": [
+          {
+            "效果": [
+              "對本狀態的變數一改為0",
+              "對本狀態的變數二改為0"
+            ],
+            "條件": [
+              "目前回合輪到本角色"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnTurnEnd | OnEverySecond": {
+        "效果": [
+          {
+            "效果": [
+              "對本角色的隊伍所有角色{\"BuffGroupIds\":{\"GroupString\":{\"IsNeedBelongBuffLabel\":true,\"BuffLabelData\":{\"BuffLabel\":\"WarfareAndLeader\",\"BuffIdList\":[\"warfare\",\"leader\"]},\"IsDistinct\":false,\"$type\":\"BattleModel.AddStoneBuffIdStringList\"},\"$type\":\"BattleModel.BuffIdFromStringGroup\"},\"AddAllBuff\":true,\"RandomAddCount\":0,\"NotRepeatSameBuffId\":false,\"Forever\":false,\"OverwriteDuration\":3,\"LevelStack\":1,\"$type\":\"BattleModel.AddBuffFromGroupedBffId\"}"
+            ],
+            "條件": [
             ]
           }
         ],
@@ -20,11 +68,14 @@
       }
     },
     "持續時間": 0,
-    "最高層數": 99,
+    "最高層數": 0,
     "標籤": "Hidden | NotRemoveWhenDie | Forever"
   },
   "$type": "BattleModel.Buff",
   "ReferenceBuffKeys": [
+    "leader",
+    "warfare",
+    "follower"
   ],
   "_actionTable": [
     {
@@ -40,7 +91,22 @@
                   "property": 1,
                   "value": {
                     "$type": "BattleModel.ConstanctInt",
-                    "constant": 45
+                    "constant": 50
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 1
+                    }
                   }
                 }
               }
@@ -49,15 +115,23 @@
               {
                 "$type": "BattleModel.CharacterInside",
                 "group": {
-                  "$type": "BattleModel.OppositeTeamChars",
+                  "$type": "BattleModel.PVEEnemyTeam",
                   "includeDead": false,
-                  "includeEmpty": false,
-                  "reference": {
-                    "$type": "BattleModel.ThisBuffOwner"
-                  }
+                  "includeEmpty": false
                 },
                 "left": {
                   "$type": "BattleModel.ThisSpecifiedTarget"
+                }
+              },
+              {
+                "$type": "BattleModel.CharacterInside",
+                "group": {
+                  "$type": "BattleModel.PVEPlayerTeam",
+                  "includeDead": false,
+                  "includeEmpty": false
+                },
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
                 }
               },
               {
@@ -67,23 +141,257 @@
                   "character": {
                     "$type": "BattleModel.ThisSpecifiedTarget"
                   },
-                  "targetField": 2
+                  "targetField": 0
                 },
-                "op": 3,
+                "op": 1,
                 "right": {
-                  "$type": "BattleModel.ConstanctInt",
-                  "constant": 50
+                  "$type": "BattleModel.IntCharaterField",
+                  "character": {
+                    "$type": "BattleModel.ThisSpecifiedTarget"
+                  },
+                  "targetField": 1
                 }
               },
               {
-                "$type": "BattleModel.CharacterEqual",
-                "left": {
-                  "$type": "BattleModel.ThisBuffOwner"
-                },
-                "right": {
-                  "$type": "BattleModel.ThisSkillCaster"
+                "$type": "BattleModel.ThisSkillEffectTagContains",
+                "containsAll": 1
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 1,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 0
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 8,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 0
+                    }
+                  }
                 }
               }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CurrentTurnBelongsTo",
+                "character": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 8,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 0
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 8,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 1
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": null,
+                    "single": {
+                      "$type": "BattleModel.FriendAssignee",
+                      "reference": {
+                        "$type": "BattleModel.ThisBuffOwner"
+                      }
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.StoneBuffActionSkillEffect",
+                        "Tag": 262660,
+                        "_keyString": "",
+                        "_stoneBuffActionBoardAction": {
+                          "BuffFilter": "Normal",
+                          "BuffId": "",
+                          "BuffLabel": null,
+                          "EffectFilter": "Normal",
+                          "StonePositionList": [
+                          ],
+                          "UsePositionSettings": false,
+                          "addBuffData": {
+                            "BuffId": "leader",
+                            "Forever": false,
+                            "LevelStack": 1,
+                            "OverwriteDuration": 1,
+                            "UserDefineVariable": {
+                            }
+                          },
+                          "changeTo": "ToTargetStoneType",
+                          "filter": "IsNotTargetColor",
+                          "isInitStoneFilter": "None",
+                          "order": "UpperRightToLowerRight",
+                          "targetStoneCount": 1
+                        }
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": false
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterInside",
+                "group": {
+                  "$type": "BattleModel.PVEPlayerTeam",
+                  "includeDead": false,
+                  "includeEmpty": false
+                },
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.ThisBuff"
+                  },
+                  "targetField": 4
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 1
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.ThisBuff"
+                  },
+                  "targetField": 8
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 0
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 2050,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacterGroup",
+                  "group": {
+                    "$type": "BattleModel.SelfTeamChars",
+                    "excludeSelf": false,
+                    "includeDead": false,
+                    "includeEmpty": false,
+                    "reference": {
+                      "$type": "BattleModel.ThisBuffOwner"
+                    }
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuffFromGroupedBffId",
+                    "AddAllBuff": true,
+                    "BuffGroupIds": {
+                      "$type": "BattleModel.BuffIdFromStringGroup",
+                      "GroupString": {
+                        "$type": "BattleModel.AddStoneBuffIdStringList",
+                        "BuffLabelData": {
+                          "BuffIdList": [
+                            "warfare",
+                            "leader"
+                          ],
+                          "BuffLabel": "WarfareAndLeader"
+                        },
+                        "IsDistinct": false,
+                        "IsNeedBelongBuffLabel": true
+                      }
+                    },
+                    "Forever": false,
+                    "LevelStack": 1,
+                    "NotRepeatSameBuffId": false,
+                    "OverwriteDuration": 3,
+                    "RandomAddCount": 0
+                  }
+                }
+              }
+            ],
+            "Conditions": [
             ]
           }
         ],
@@ -93,7 +401,7 @@
     }
   ],
   "_duration": 0,
-  "_maxLevel": 99,
+  "_maxLevel": 0,
   "_orderTable": [
     {
       "Key": 1024,

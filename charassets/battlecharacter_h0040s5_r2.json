@@ -109,7 +109,7 @@
   "_assistantSkill": {
     "$type": "BattleModel.AssistantActiveCastSkill",
     "_maxCastStack": 1,
-    "_skillCD": 3,
+    "_skillCD": 2,
     "_startCD": 0,
     "_startCastStack": 0
   },
@@ -162,29 +162,64 @@
           },
           "skillEffects": [
             {
-              "$type": "BattleModel.HpHealSkillEffect",
-              "Tag": 34,
-              "_keyString": "1",
-              "_skillModifier": {
-                "_constant": 0,
-                "_parameter": {
-                  "$type": "BattleModel.IntCharaterField",
-                  "character": {
-                    "$type": "BattleModel.FieldMinChar",
-                    "field": {
-                      "$type": "BattleModel.IntFieldC",
-                      "targetField": 2
-                    },
-                    "group": {
-                      "$type": "BattleModel.PVEPlayerTeam",
-                      "includeDead": false,
-                      "includeEmpty": false
-                    }
-                  },
-                  "targetField": 1
+              "$type": "BattleModel.FixedHealRatioMaxSkillEffect",
+              "Ratio": {
+                "$type": "BattleModel.ConstanctFloat",
+                "constant": 0.4
+              },
+              "Tag": 32802,
+              "_keyString": "1"
+            },
+            {
+              "$type": "BattleModel.AddBuffSkillEffect",
+              "Tag": 132,
+              "_buffData": [
+                {
+                  "BuffId": "rage",
+                  "Forever": false,
+                  "LevelStack": 1,
+                  "OverwriteDuration": 3,
+                  "UserDefineVariable": {
+                  }
                 },
-                "_ratio": 0.44444
-              }
+                {
+                  "BuffId": "defense_up_small",
+                  "Forever": false,
+                  "LevelStack": 1,
+                  "OverwriteDuration": 3,
+                  "UserDefineVariable": {
+                  }
+                }
+              ],
+              "_keyString": "1"
+            },
+            {
+              "$type": "BattleModel.CastSkillSetSkillEffect",
+              "AssignParameter": {
+                "AssignCharacter": {
+                  "$type": "BattleModel.NoneCharacter"
+                },
+                "AssignCharacterGroup": {
+                  "$type": "BattleModel.NoneCharacters"
+                },
+                "AssignInteger": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 0
+                },
+                "AssignIntegerGroup": {
+                  "$type": "BattleModel.ConstanctIntegerGroup",
+                  "Group": [
+                  ]
+                }
+              },
+              "CastLimitPerTurn": true,
+              "CounterKey": "Var1",
+              "Limit": 1,
+              "Tag": 1048580,
+              "UseAssignParameter": false,
+              "_keyString": "1",
+              "resetCasterCD": false,
+              "skillsetId": "S2"
             }
           ]
         }
@@ -395,8 +430,23 @@
                   "$type": "BattleModel.SkillCasterPower",
                   "basePower": false
                 },
-                "_ratio": 0.2
+                "_ratio": 0.1
               }
+            },
+            {
+              "$type": "BattleModel.AddBuffSkillEffect",
+              "Tag": 132,
+              "_buffData": [
+                {
+                  "BuffId": "bonusAttackPower",
+                  "Forever": false,
+                  "LevelStack": 1,
+                  "OverwriteDuration": 3,
+                  "UserDefineVariable": {
+                  }
+                }
+              ],
+              "_keyString": "1"
             }
           ]
         },
@@ -439,8 +489,23 @@
                   "$type": "BattleModel.SkillCasterPower",
                   "basePower": false
                 },
-                "_ratio": 0.2
+                "_ratio": 0.1
               }
+            },
+            {
+              "$type": "BattleModel.AddBuffSkillEffect",
+              "Tag": 132,
+              "_buffData": [
+                {
+                  "BuffId": "bonusAttackPower",
+                  "Forever": false,
+                  "LevelStack": 1,
+                  "OverwriteDuration": 3,
+                  "UserDefineVariable": {
+                  }
+                }
+              ],
+              "_keyString": "2"
             }
           ]
         },
@@ -467,8 +532,23 @@
                   "$type": "BattleModel.SkillCasterPower",
                   "basePower": false
                 },
-                "_ratio": 2.8
+                "_ratio": 3
               }
+            },
+            {
+              "$type": "BattleModel.AddBuffSkillEffect",
+              "Tag": 132,
+              "_buffData": [
+                {
+                  "BuffId": "tearing",
+                  "Forever": false,
+                  "LevelStack": 1,
+                  "OverwriteDuration": 3,
+                  "UserDefineVariable": {
+                  }
+                }
+              ],
+              "_keyString": "3"
             }
           ]
         }
@@ -500,85 +580,6 @@
               "$type": "BattleModel.PVEPlayerTeam",
               "includeDead": false,
               "includeEmpty": false
-            }
-          },
-          "skillEffects": [
-            {
-              "$type": "BattleModel.HpDamageSkillEffect",
-              "Tag": 9,
-              "_keyString": "1",
-              "_skillModifier": {
-                "_constant": 0,
-                "_parameter": {
-                  "$type": "BattleModel.SkillCasterPower",
-                  "basePower": false
-                },
-                "_ratio": 0.2
-              }
-            }
-          ]
-        },
-        {
-          "CanBeEmpty": false,
-          "IsMultiple": false,
-          "multi": null,
-          "single": {
-            "$type": "BattleModel.FrontOfChars",
-            "group": {
-              "$type": "BattleModel.PVEEnemyTeam",
-              "includeDead": false,
-              "includeEmpty": false
-            }
-          },
-          "skillEffects": [
-            {
-              "$type": "BattleModel.HpDamageSkillEffect",
-              "Tag": 9,
-              "_keyString": "2",
-              "_skillModifier": {
-                "_constant": 0,
-                "_parameter": {
-                  "$type": "BattleModel.SkillCasterPower",
-                  "basePower": false
-                },
-                "_ratio": 2.8
-              }
-            }
-          ]
-        }
-      ]
-    },
-    "S2_2X": {
-      "$type": "BattleModel.BattleSkill",
-      "_isFallBackIfEmptyTarget": false,
-      "_isResolveTargetEachUnit": false,
-      "_skillIdentifiers": [
-        {
-          "CanBeEmpty": false,
-          "IsMultiple": true,
-          "multi": {
-            "$type": "BattleModel.CharGroupWhere",
-            "condition": {
-              "$type": "BattleModel.StoneTypeIs",
-              "type": 2
-            },
-            "group": {
-              "$type": "BattleModel.PVEPlayerTeam",
-              "includeDead": false,
-              "includeEmpty": false
-            }
-          },
-          "single": {
-            "$type": "BattleModel.IndexOfChars",
-            "backward": false,
-            "group": {
-              "$type": "BattleModel.PVEPlayerTeam",
-              "includeDead": false,
-              "includeEmpty": false
-            },
-            "index": {
-              "$type": "BattleModel.ConstanctInt",
-              "constant": 1
             }
           },
           "skillEffects": [
@@ -915,113 +916,6 @@
         }
       ]
     },
-    "S3_2X": {
-      "$type": "BattleModel.BattleSkill",
-      "_isFallBackIfEmptyTarget": false,
-      "_isResolveTargetEachUnit": false,
-      "_skillIdentifiers": [
-        {
-          "CanBeEmpty": false,
-          "IsMultiple": true,
-          "multi": {
-            "$type": "BattleModel.CharGroupWhere",
-            "condition": {
-              "$type": "BattleModel.StoneTypeIs",
-              "type": 2
-            },
-            "group": {
-              "$type": "BattleModel.PVEPlayerTeam",
-              "includeDead": false,
-              "includeEmpty": false
-            }
-          },
-          "single": {
-            "$type": "BattleModel.IndexOfChars",
-            "backward": false,
-            "group": {
-              "$type": "BattleModel.PVEPlayerTeam",
-              "includeDead": false,
-              "includeEmpty": false
-            },
-            "index": {
-              "$type": "BattleModel.ConstanctInt",
-              "constant": 2
-            }
-          },
-          "skillEffects": [
-            {
-              "$type": "BattleModel.HpDamageSkillEffect",
-              "Tag": 9,
-              "_keyString": "1",
-              "_skillModifier": {
-                "_constant": 0,
-                "_parameter": {
-                  "$type": "BattleModel.SkillCasterPower",
-                  "basePower": false
-                },
-                "_ratio": 0.4
-              }
-            }
-          ]
-        },
-        {
-          "CanBeEmpty": false,
-          "IsMultiple": false,
-          "multi": null,
-          "single": {
-            "$type": "BattleModel.FrontOfChars",
-            "group": {
-              "$type": "BattleModel.PVEEnemyTeam",
-              "includeDead": false,
-              "includeEmpty": false
-            }
-          },
-          "skillEffects": [
-            {
-              "$type": "BattleModel.HpDamageSkillEffect",
-              "Tag": 9,
-              "_keyString": "2",
-              "_skillModifier": {
-                "_constant": 0,
-                "_parameter": {
-                  "$type": "BattleModel.SkillCasterPower",
-                  "basePower": false
-                },
-                "_ratio": 2.8
-              }
-            }
-          ]
-        },
-        {
-          "CanBeEmpty": false,
-          "IsMultiple": false,
-          "multi": null,
-          "single": {
-            "$type": "BattleModel.BackOfChars",
-            "group": {
-              "$type": "BattleModel.PVEEnemyTeam",
-              "includeDead": false,
-              "includeEmpty": false
-            }
-          },
-          "skillEffects": [
-            {
-              "$type": "BattleModel.HpDamageSkillEffect",
-              "Tag": 9,
-              "_keyString": "3",
-              "_skillModifier": {
-                "_constant": 0,
-                "_parameter": {
-                  "$type": "BattleModel.SkillCasterPower",
-                  "basePower": false
-                },
-                "_ratio": 2.8
-              }
-            }
-          ]
-        }
-      ]
-    },
     "S3_3": {
       "$type": "BattleModel.BattleSkill",
       "_isFallBackIfEmptyTarget": false,
@@ -1099,9 +993,19 @@
           },
           "skillEffects": [
             {
-              "$type": "BattleModel.EmptyBuffSkillEffect",
-              "Tag": 0,
-              "_keyString": ""
+              "$type": "BattleModel.AddBuffSkillEffect",
+              "Tag": 132,
+              "_buffData": [
+                {
+                  "BuffId": "rage",
+                  "Forever": false,
+                  "LevelStack": 1,
+                  "OverwriteDuration": 5,
+                  "UserDefineVariable": {
+                  }
+                }
+              ],
+              "_keyString": "1"
             }
           ]
         }
@@ -1123,36 +1027,47 @@
               "targetField": 2
             },
             "group": {
-              "$type": "BattleModel.PVEPlayerTeam",
+              "$type": "BattleModel.SelfTeamChars",
+              "excludeSelf": false,
               "includeDead": false,
-              "includeEmpty": false
+              "includeEmpty": false,
+              "reference": {
+                "$type": "BattleModel.ThisSkillCaster"
+              }
             }
           },
           "skillEffects": [
             {
-              "$type": "BattleModel.HpHealSkillEffect",
-              "Tag": 34,
-              "_keyString": "1",
-              "_skillModifier": {
-                "_constant": 0,
-                "_parameter": {
-                  "$type": "BattleModel.IntCharaterField",
-                  "character": {
-                    "$type": "BattleModel.FieldMinChar",
-                    "field": {
-                      "$type": "BattleModel.IntFieldC",
-                      "targetField": 2
-                    },
-                    "group": {
-                      "$type": "BattleModel.PVEPlayerTeam",
-                      "includeDead": false,
-                      "includeEmpty": false
-                    }
-                  },
-                  "targetField": 1
+              "$type": "BattleModel.FixedHealRatioMaxSkillEffect",
+              "Ratio": {
+                "$type": "BattleModel.ConstanctFloat",
+                "constant": 0.4
+              },
+              "Tag": 32802,
+              "_keyString": "1"
+            },
+            {
+              "$type": "BattleModel.AddBuffSkillEffect",
+              "Tag": 132,
+              "_buffData": [
+                {
+                  "BuffId": "rage",
+                  "Forever": false,
+                  "LevelStack": 1,
+                  "OverwriteDuration": 3,
+                  "UserDefineVariable": {
+                  }
                 },
-                "_ratio": 0.44444
-              }
+                {
+                  "BuffId": "defense_up_small",
+                  "Forever": false,
+                  "LevelStack": 1,
+                  "OverwriteDuration": 3,
+                  "UserDefineVariable": {
+                  }
+                }
+              ],
+              "_keyString": "1"
             }
           ]
         }
@@ -1178,7 +1093,7 @@
           ],
           "_characterCoolDown": 0,
           "assignTarget": null,
-          "icon": 8
+          "icon": 40
         }
       ],
       "_isViewSkillSet": false
@@ -1280,7 +1195,7 @@
           ],
           "_characterCoolDown": 0,
           "assignTarget": null,
-          "icon": 1
+          "icon": 97
         },
         {
           "ConditionList": [
@@ -1314,7 +1229,7 @@
           ],
           "_characterCoolDown": 0,
           "assignTarget": null,
-          "icon": 1
+          "icon": 97
         },
         {
           "ConditionList": [
@@ -1332,7 +1247,7 @@
           ],
           "_characterCoolDown": 0,
           "assignTarget": null,
-          "icon": 1
+          "icon": 97
         }
       ],
       "_isViewSkillSet": false
@@ -1433,9 +1348,29 @@
         {
           "ConditionList": [
             {
-              "$type": "BattleModel.RandomCondition",
-              "lessThan": 4,
-              "randBase": 10
+              "$type": "BattleModel.CharGroupCondition",
+              "condition": {
+                "$type": "BattleModel.IntCompareC",
+                "left": {
+                  "$type": "BattleModel.IntFieldC",
+                  "targetField": 0
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.IntFieldC",
+                  "targetField": 1
+                }
+              },
+              "everybody": true,
+              "group": {
+                "$type": "BattleModel.SelfTeamChars",
+                "excludeSelf": false,
+                "includeDead": false,
+                "includeEmpty": false,
+                "reference": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              }
             }
           ],
           "SkillList": [

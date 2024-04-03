@@ -66,7 +66,7 @@
         "效果": [
           {
             "效果": [
-              "技能效果增加((40 + floor(本角色的HP% * -0.8)))%"
+              "技能效果增加((本角色的失去的HP% * 2))%"
             ],
             "條件": [
             ]
@@ -74,7 +74,7 @@
         ],
         "條件": [
           "施術者是本角色",
-          "本角色的HP% <= 50"
+          "指定目標不是本角色"
         ]
       },
       "OnTurnBegin": {
@@ -181,6 +181,63 @@
           }
         ],
         "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 1024,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.BonusEffectForSkillProperty",
+                  "isPercent": true,
+                  "property": -1,
+                  "value": {
+                    "$type": "BattleModel.MultiplyInt",
+                    "left": {
+                      "$type": "BattleModel.IntCharaterField",
+                      "character": {
+                        "$type": "BattleModel.ThisBuffOwner"
+                      },
+                      "targetField": 3
+                    },
+                    "right": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 2
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+            ]
+          }
+        ],
+        "Conditions": [
+          {
+            "$type": "BattleModel.CharacterEqual",
+            "left": {
+              "$type": "BattleModel.ThisSkillCaster"
+            },
+            "right": {
+              "$type": "BattleModel.ThisBuffOwner"
+            }
+          },
+          {
+            "$type": "BattleModel.Inverse",
+            "condition": {
+              "$type": "BattleModel.CharacterEqual",
+              "left": {
+                "$type": "BattleModel.ThisSpecifiedTarget"
+              },
+              "right": {
+                "$type": "BattleModel.ThisBuffOwner"
+              }
+            }
+          }
         ]
       }
     },
@@ -534,70 +591,6 @@
             "cond2": {
               "$type": "BattleModel.ThisSkillSetIdEqual",
               "id": "S3"
-            }
-          }
-        ]
-      }
-    },
-    {
-      "Key": 1024,
-      "Value": {
-        "Actions": [
-          {
-            "Actions": [
-              {
-                "TargetField": {
-                  "$type": "BattleModel.BonusEffectForSkillProperty",
-                  "isPercent": true,
-                  "property": -1,
-                  "value": {
-                    "$type": "BattleModel.PlusInt",
-                    "left": {
-                      "$type": "BattleModel.ConstanctInt",
-                      "constant": 40
-                    },
-                    "right": {
-                      "$type": "BattleModel.MultiplyFloat",
-                      "left": {
-                        "$type": "BattleModel.IntCharaterField",
-                        "character": {
-                          "$type": "BattleModel.ThisBuffOwner"
-                        },
-                        "targetField": 2
-                      },
-                      "ratio": -0.8
-                    }
-                  }
-                }
-              }
-            ],
-            "Conditions": [
-            ]
-          }
-        ],
-        "Conditions": [
-          {
-            "$type": "BattleModel.CharacterEqual",
-            "left": {
-              "$type": "BattleModel.ThisSkillCaster"
-            },
-            "right": {
-              "$type": "BattleModel.ThisBuffOwner"
-            }
-          },
-          {
-            "$type": "BattleModel.IntCompare",
-            "left": {
-              "$type": "BattleModel.IntCharaterField",
-              "character": {
-                "$type": "BattleModel.ThisBuffOwner"
-              },
-              "targetField": 2
-            },
-            "op": 3,
-            "right": {
-              "$type": "BattleModel.ConstanctInt",
-              "constant": 50
             }
           }
         ]
