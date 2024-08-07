@@ -6,8 +6,8 @@
         "效果": [
           {
             "效果": [
-              "對本角色的目標賦予2回合taunt(嘲諷)",
-              "對本角色的友方指定對象賦予2回合taunt(嘲諷)"
+              "立即施展技能：對本角色的目標賦予2回合1層taunt(嘲諷)",
+              "立即施展技能：對本角色的友方指定對象賦予2回合1層taunt(嘲諷)"
             ],
             "條件": [
               "本角色是施術者"
@@ -35,46 +35,70 @@
             "Actions": [
               {
                 "TargetField": {
-                  "$type": "BattleModel.OperateCharacter",
-                  "character": {
-                    "$type": "BattleModel.EnemyAssignee",
-                    "reference": {
-                      "$type": "BattleModel.ThisBuffOwner"
-                    }
-                  },
-                  "operation": {
-                    "$type": "BattleModel.AddBuff",
-                    "buffToAdd": {
-                      "BuffId": "taunt",
-                      "Forever": false,
-                      "LevelStack": 0,
-                      "OverwriteDuration": 2,
-                      "UserDefineVariable": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": null,
+                    "single": {
+                      "$type": "BattleModel.EnemyAssignee",
+                      "reference": {
+                        "$type": "BattleModel.ThisBuffOwner"
                       }
-                    }
-                  }
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.AddBuffSkillEffect",
+                        "Tag": 132,
+                        "_buffData": [
+                          {
+                            "BuffId": "taunt",
+                            "Forever": false,
+                            "LevelStack": 1,
+                            "OverwriteDuration": 2,
+                            "UserDefineVariable": {
+                            }
+                          }
+                        ],
+                        "_keyString": ""
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": true
                 }
               },
               {
                 "TargetField": {
-                  "$type": "BattleModel.OperateCharacter",
-                  "character": {
-                    "$type": "BattleModel.FriendAssignee",
-                    "reference": {
-                      "$type": "BattleModel.ThisBuffOwner"
-                    }
-                  },
-                  "operation": {
-                    "$type": "BattleModel.AddBuff",
-                    "buffToAdd": {
-                      "BuffId": "taunt",
-                      "Forever": false,
-                      "LevelStack": 0,
-                      "OverwriteDuration": 2,
-                      "UserDefineVariable": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": null,
+                    "single": {
+                      "$type": "BattleModel.FriendAssignee",
+                      "reference": {
+                        "$type": "BattleModel.ThisBuffOwner"
                       }
-                    }
-                  }
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.AddBuffSkillEffect",
+                        "Tag": 132,
+                        "_buffData": [
+                          {
+                            "BuffId": "taunt",
+                            "Forever": false,
+                            "LevelStack": 1,
+                            "OverwriteDuration": 2,
+                            "UserDefineVariable": {
+                            }
+                          }
+                        ],
+                        "_keyString": ""
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": true
                 }
               }
             ],

@@ -20,8 +20,8 @@
         "效果": [
           {
             "效果": [
-              "對本角色的對方所有角色賦予5回合taunt(嘲諷)",
-              "對本角色的隊伍所有角色賦予5回合taunt(嘲諷)",
+              "立即施展技能：對本角色的對方全體賦予5回合1層taunt(嘲諷)",
+              "立即施展技能：對本角色的隊伍全體賦予5回合1層taunt(嘲諷)",
               "對施術者的對方中符合(狀態taunt(嘲諷) 有(Forever)標籤)的角色所有角色賦予3回合1層weak(易傷)",
               "對施術者的隊伍中符合(狀態taunt(嘲諷) 有(Forever)標籤)的角色所有角色賦予3回合1層bonusAttackPower(強化)"
             ],
@@ -77,51 +77,75 @@
             "Actions": [
               {
                 "TargetField": {
-                  "$type": "BattleModel.OperateCharacterGroup",
-                  "group": {
-                    "$type": "BattleModel.OppositeTeamChars",
-                    "includeDead": false,
-                    "includeEmpty": false,
-                    "reference": {
-                      "$type": "BattleModel.ThisBuffOwner"
-                    }
-                  },
-                  "operation": {
-                    "$type": "BattleModel.AddBuff",
-                    "buffToAdd": {
-                      "BuffId": "taunt",
-                      "Forever": false,
-                      "LevelStack": 0,
-                      "OverwriteDuration": 5,
-                      "UserDefineVariable": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": true,
+                    "multi": {
+                      "$type": "BattleModel.OppositeTeamChars",
+                      "includeDead": false,
+                      "includeEmpty": false,
+                      "reference": {
+                        "$type": "BattleModel.ThisBuffOwner"
                       }
-                    }
-                  }
+                    },
+                    "single": null,
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.AddBuffSkillEffect",
+                        "Tag": 132,
+                        "_buffData": [
+                          {
+                            "BuffId": "taunt",
+                            "Forever": false,
+                            "LevelStack": 1,
+                            "OverwriteDuration": 5,
+                            "UserDefineVariable": {
+                            }
+                          }
+                        ],
+                        "_keyString": ""
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": true
                 }
               },
               {
                 "TargetField": {
-                  "$type": "BattleModel.OperateCharacterGroup",
-                  "group": {
-                    "$type": "BattleModel.SelfTeamChars",
-                    "excludeSelf": false,
-                    "includeDead": false,
-                    "includeEmpty": false,
-                    "reference": {
-                      "$type": "BattleModel.ThisBuffOwner"
-                    }
-                  },
-                  "operation": {
-                    "$type": "BattleModel.AddBuff",
-                    "buffToAdd": {
-                      "BuffId": "taunt",
-                      "Forever": false,
-                      "LevelStack": 0,
-                      "OverwriteDuration": 5,
-                      "UserDefineVariable": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": true,
+                    "multi": {
+                      "$type": "BattleModel.SelfTeamChars",
+                      "excludeSelf": false,
+                      "includeDead": false,
+                      "includeEmpty": false,
+                      "reference": {
+                        "$type": "BattleModel.ThisBuffOwner"
                       }
-                    }
-                  }
+                    },
+                    "single": null,
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.AddBuffSkillEffect",
+                        "Tag": 132,
+                        "_buffData": [
+                          {
+                            "BuffId": "taunt",
+                            "Forever": false,
+                            "LevelStack": 1,
+                            "OverwriteDuration": 5,
+                            "UserDefineVariable": {
+                            }
+                          }
+                        ],
+                        "_keyString": ""
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": true
                 }
               },
               {
