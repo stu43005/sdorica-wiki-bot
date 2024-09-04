@@ -1,0 +1,306 @@
+{
+  "$interpreted": {
+    "Localization": "頑強怪根草",
+    "復活魂芯數": 0,
+    "技能": {
+      "S1_I1": [
+        "對玩家的隨機角色攻擊(攻擊力 x1)、賦予3回合1層nerf_damage_small(弱化)"
+      ],
+      "S1_I2": [
+        "對玩家的隨機角色攻擊(攻擊力 x2)"
+      ]
+    },
+    "技能組": {
+      "S1": [
+        {
+          "CoolDown": 1,
+          "技能列表": [
+            "對玩家的隨機角色施展S1_I1"
+          ],
+          "條件": [
+            "施術者 沒有e0084c4_enemy_fest048_P2狀態"
+          ],
+          "目標": ""
+        }
+      ],
+      "S2": [
+        {
+          "CoolDown": 99,
+          "技能列表": [
+            "施展S1_I2"
+          ],
+          "條件": [
+            "施術者擁有e0084c4_enemy_fest048_P2狀態"
+          ],
+          "目標": ""
+        }
+      ]
+    },
+    "攻擊力": 100,
+    "攻擊力等級調整後": 94,
+    "敵人AI": "S1",
+    "消魂設置": {
+    },
+    "疊盾": 6000,
+    "疊盾等級調整後": 5660,
+    "站位": "無",
+    "血量": 4500,
+    "血量等級調整後": 4245,
+    "被動Buff": [
+      "賦予永久e0084c4_enemy_fest048_P1(這株藥草很想活下去，可以憑藉著草根的毅力爬起來三次。小心它臨死前的奮力一搏！)",
+      "賦予3回合1層ArmorToBlood(盾轉)"
+    ],
+    "起始CD": 3,
+    "預設CD": 4
+  },
+  "$type": "BattleModel.EnemyCharacter",
+  "ReferenceBuffKeys": [
+    "e0084c4_turn",
+    "e0084c4_Target",
+    "weak",
+    "e0084c4_turn02",
+    "e0084c4_P1",
+    "revengeTarget"
+  ],
+  "ReferenceCharacterKeys": [
+  ],
+  "ReferenceEffectKeys": [
+    "e0084c3_s01_Bullet",
+    "Common_HitPoison01_A",
+    "e0084c3_s01_Ready",
+    "Common_HitSlash01_C",
+    "e0084c4_s01_Att01",
+    "e0084c4_s01_Att02",
+    "Common_SmokeRun03_C",
+    "e0084c3_s02_Ready"
+  ],
+  "ReferenceEmoIconKeys": [
+  ],
+  "ReferenceMusicKeys": [
+  ],
+  "ReferenceSFXKeys": [
+    "movment_049",
+    "movment_050",
+    "electric_zap_short_01",
+    "voice_011",
+    "step_soles_512",
+    "step_soles_513",
+    "swoosh_031",
+    "swoosh_scifi_med_01",
+    "step_shoes_002",
+    "step_shoes_001",
+    "voice_502",
+    "explode_503",
+    "punch_004",
+    "explode_504",
+    "movment_052",
+    "punch_006",
+    "voice_501",
+    "step_soles_514",
+    "voice_012",
+    "movment_051"
+  ],
+  "ReferenceVoiceSFXKeys": [
+  ],
+  "_armorCapacity": 6000,
+  "_assistantSkill": null,
+  "_bloodCapacity": 4500,
+  "_characterAI": {
+    "$type": "BattleModel.SequenceEnemyAI",
+    "OrderList": [
+      "S1"
+    ]
+  },
+  "_defaultCoolDown": 4,
+  "_initialCoolDown": 3,
+  "_levelStartBuff": [
+  ],
+  "_mass": 3,
+  "_masterRank": 1,
+  "_passiveBuff": [
+    {
+      "BuffId": "e0084c4_enemy_fest048_P1",
+      "Forever": true,
+      "LevelStack": 0,
+      "OverwriteDuration": -1,
+      "UserDefineVariable": {
+      }
+    },
+    {
+      "BuffId": "ArmorToBlood",
+      "Forever": false,
+      "LevelStack": 1,
+      "OverwriteDuration": 3,
+      "UserDefineVariable": {
+      }
+    }
+  ],
+  "_pose": "Stand",
+  "_power": 100,
+  "_reviveCount": 0,
+  "_skills": {
+    "S1_I1": {
+      "$type": "BattleModel.BattleSkill",
+      "_isFallBackIfEmptyTarget": false,
+      "_isResolveTargetEachUnit": false,
+      "_skillIdentifiers": [
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": false,
+          "multi": null,
+          "single": {
+            "$type": "BattleModel.RandomOfChars",
+            "group": {
+              "$type": "BattleModel.PVEPlayerTeam",
+              "includeDead": false,
+              "includeEmpty": false
+            }
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.HpDamageSkillEffect",
+              "Tag": 9,
+              "_keyString": "1",
+              "_skillModifier": {
+                "_constant": 0,
+                "_parameter": {
+                  "$type": "BattleModel.SkillCasterPower",
+                  "basePower": false
+                },
+                "_ratio": 1
+              }
+            },
+            {
+              "$type": "BattleModel.AddBuffSkillEffect",
+              "Tag": 132,
+              "_buffData": [
+                {
+                  "BuffId": "nerf_damage_small",
+                  "Forever": false,
+                  "LevelStack": 1,
+                  "OverwriteDuration": 3,
+                  "UserDefineVariable": {
+                  }
+                }
+              ],
+              "_keyString": ""
+            }
+          ]
+        }
+      ]
+    },
+    "S1_I2": {
+      "$type": "BattleModel.BattleSkill",
+      "_isFallBackIfEmptyTarget": false,
+      "_isResolveTargetEachUnit": false,
+      "_skillIdentifiers": [
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": false,
+          "multi": null,
+          "single": {
+            "$type": "BattleModel.RandomOfChars",
+            "group": {
+              "$type": "BattleModel.PVEPlayerTeam",
+              "includeDead": false,
+              "includeEmpty": false
+            }
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.HpDamageSkillEffect",
+              "Tag": 9,
+              "_keyString": "",
+              "_skillModifier": {
+                "_constant": 0,
+                "_parameter": {
+                  "$type": "BattleModel.SkillCasterPower",
+                  "basePower": false
+                },
+                "_ratio": 2
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "_skillsetTable": {
+    "S1": {
+      "ComboList": [
+        {
+          "ConditionList": [
+            {
+              "$type": "BattleModel.Inverse",
+              "condition": {
+                "$type": "BattleModel.CharacterCondition",
+                "character": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                },
+                "condition": {
+                  "$type": "BattleModel.HasBuff",
+                  "buffId": "e0084c4_enemy_fest048_P2"
+                }
+              }
+            }
+          ],
+          "SkillList": [
+            {
+              "ConditionList": [
+              ],
+              "SkillID": "S1_I1",
+              "_conditionalSequences": [
+              ],
+              "seq": "",
+              "t": {
+                "$type": "BattleModel.RandomOfChars",
+                "group": {
+                  "$type": "BattleModel.PVEPlayerTeam",
+                  "includeDead": false,
+                  "includeEmpty": false
+                }
+              }
+            }
+          ],
+          "_characterCoolDown": 1,
+          "assignTarget": null,
+          "icon": 0
+        }
+      ],
+      "_isViewSkillSet": false
+    },
+    "S2": {
+      "ComboList": [
+        {
+          "ConditionList": [
+            {
+              "$type": "BattleModel.CharacterHasBuff",
+              "buffId": "e0084c4_enemy_fest048_P2",
+              "character": {
+                "$type": "BattleModel.ThisSkillCaster"
+              }
+            }
+          ],
+          "SkillList": [
+            {
+              "ConditionList": [
+              ],
+              "SkillID": "S1_I2",
+              "_conditionalSequences": [
+              ],
+              "seq": "",
+              "t": null
+            }
+          ],
+          "_characterCoolDown": 99,
+          "assignTarget": null,
+          "icon": 0
+        }
+      ],
+      "_isViewSkillSet": false
+    }
+  },
+  "_stoneEraseSetting": {
+  },
+  "_stoneType": 0
+}
