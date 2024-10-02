@@ -1,0 +1,198 @@
+{
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "OnEachSkillSetEnd": {
+        "效果": [
+          {
+            "效果": [
+              "立即施展技能：對敵人後排攻擊(在此技能組的目標中，敵人首位的減少疊盾 x0.5)"
+            ],
+            "條件": [
+              "(敵人首位 {\"$type\":\"BattleModel.IsCharacterAlive\"}) 且 (敵人後排 {\"$type\":\"BattleModel.IsCharacterAlive\"})",
+              "施展的技能效果中包含(Attack)屬性",
+              "在此技能組的目標中，敵人首位的減少疊盾 > 0"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 99,
+    "標籤": "Forever"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+  ],
+  "_actionTable": [
+    {
+      "Key": 8,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.AssignParameterSkillEffect",
+                  "AssignParameter": {
+                    "AssignCharacter": {
+                      "$type": "BattleModel.NoneCharacter"
+                    },
+                    "AssignCharacterGroup": {
+                      "$type": "BattleModel.NoneCharacters"
+                    },
+                    "AssignInteger": {
+                      "$type": "BattleModel.TransitionResultValue",
+                      "ResultValue": {
+                        "$type": "BattleModel.TotalResultsValueOfCharacter",
+                        "CharType": "Target",
+                        "Character": {
+                          "$type": "BattleModel.FrontOfChars",
+                          "group": {
+                            "$type": "BattleModel.PVEEnemyTeam",
+                            "includeDead": false,
+                            "includeEmpty": false
+                          }
+                        },
+                        "Results": {
+                          "$type": "BattleModel.ThisSkillSetResult"
+                        },
+                        "ValueType": "ArmorReduce"
+                      }
+                    },
+                    "AssignIntegerGroup": {
+                      "$type": "BattleModel.ConstanctIntegerGroup",
+                      "Group": [
+                      ]
+                    }
+                  },
+                  "SkillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": null,
+                    "single": {
+                      "$type": "BattleModel.BackOfChars",
+                      "group": {
+                        "$type": "BattleModel.PVEEnemyTeam",
+                        "includeDead": false,
+                        "includeEmpty": false
+                      }
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.HpDamageSkillEffect",
+                        "Tag": 9,
+                        "_keyString": "",
+                        "_skillModifier": {
+                          "_constant": 0,
+                          "_parameter": {
+                            "$type": "BattleModel.BuffAssignedInteger",
+                            "_value": {
+                              "$type": "BattleModel.TransitionResultValue",
+                              "ResultValue": {
+                                "$type": "BattleModel.TotalResultsValueOfCharacter",
+                                "CharType": "Target",
+                                "Character": {
+                                  "$type": "BattleModel.FrontOfChars",
+                                  "group": {
+                                    "$type": "BattleModel.PVEEnemyTeam",
+                                    "includeDead": false,
+                                    "includeEmpty": false
+                                  }
+                                },
+                                "Results": {
+                                  "$type": "BattleModel.ThisSkillSetResult"
+                                },
+                                "ValueType": "ArmorReduce"
+                              }
+                            }
+                          },
+                          "_ratio": 0.5
+                        }
+                      }
+                    ]
+                  },
+                  "UseAssignParameter": true,
+                  "WillTriggerBuff": false
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.AndConditions",
+                "cond1": {
+                  "$type": "BattleModel.CharacterCondition",
+                  "character": {
+                    "$type": "BattleModel.FrontOfChars",
+                    "group": {
+                      "$type": "BattleModel.PVEEnemyTeam",
+                      "includeDead": true,
+                      "includeEmpty": false
+                    }
+                  },
+                  "condition": {
+                    "$type": "BattleModel.IsCharacterAlive"
+                  }
+                },
+                "cond2": {
+                  "$type": "BattleModel.CharacterCondition",
+                  "character": {
+                    "$type": "BattleModel.BackOfChars",
+                    "group": {
+                      "$type": "BattleModel.PVEEnemyTeam",
+                      "includeDead": true,
+                      "includeEmpty": false
+                    }
+                  },
+                  "condition": {
+                    "$type": "BattleModel.IsCharacterAlive"
+                  }
+                }
+              },
+              {
+                "$type": "BattleModel.ThisSkillEffectTagContains",
+                "containsAll": 1
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.TransitionResultValue",
+                  "ResultValue": {
+                    "$type": "BattleModel.TotalResultsValueOfCharacter",
+                    "CharType": "Target",
+                    "Character": {
+                      "$type": "BattleModel.FrontOfChars",
+                      "group": {
+                        "$type": "BattleModel.PVEEnemyTeam",
+                        "includeDead": false,
+                        "includeEmpty": false
+                      }
+                    },
+                    "Results": {
+                      "$type": "BattleModel.ThisSkillSetResult"
+                    },
+                    "ValueType": "ArmorReduce"
+                  }
+                },
+                "op": 2,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 0
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 99,
+  "_orderTable": {
+  },
+  "_tag": 64
+}

@@ -1,0 +1,119 @@
+{
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "OnEachSkillTargetEffect": {
+        "效果": [
+          {
+            "效果": [
+              "技能的(Attack)屬性效果增加(100)%"
+            ],
+            "條件": [
+              "(施術者是{\"$type\":\"BattleModel.PVEAssistant\"}的一員) 或 (施術者是{\"includeDead\":false,\"includeEmpty\":false,\"$type\":\"BattleModel.PVEFriendCasters\"}的一員)"
+            ]
+          },
+          {
+            "效果": [
+              "技能的(Attack)屬性效果增加(50)%"
+            ],
+            "條件": [
+              "施術者是敵人的一員"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 99,
+    "標籤": "Forever"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+  ],
+  "_actionTable": [
+    {
+      "Key": 1024,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.BonusEffectForSkillProperty",
+                  "isPercent": true,
+                  "property": 1,
+                  "value": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 100
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.OrConditions",
+                "cond1": {
+                  "$type": "BattleModel.CharacterInside",
+                  "group": {
+                    "$type": "BattleModel.PVEAssistant"
+                  },
+                  "left": {
+                    "$type": "BattleModel.ThisSkillCaster"
+                  }
+                },
+                "cond2": {
+                  "$type": "BattleModel.CharacterInside",
+                  "group": {
+                    "$type": "BattleModel.PVEFriendCasters",
+                    "includeDead": false,
+                    "includeEmpty": false
+                  },
+                  "left": {
+                    "$type": "BattleModel.ThisSkillCaster"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.BonusEffectForSkillProperty",
+                  "isPercent": true,
+                  "property": 1,
+                  "value": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 50
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterInside",
+                "group": {
+                  "$type": "BattleModel.PVEEnemyTeam",
+                  "includeDead": false,
+                  "includeEmpty": false
+                },
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 99,
+  "_orderTable": {
+  },
+  "_tag": 64
+}
