@@ -1,3 +1,4 @@
+import { Octokit } from "@octokit/core";
 import * as chardet from "chardet";
 import extract from "extract-zip";
 import iconv from "iconv-lite";
@@ -8,44 +9,27 @@ import pLimit from "p-limit";
 import { ASSET_STUDIO_CLI_DIR } from "../config.js";
 import { Logger } from "../logger.js";
 import { rpFile } from "../out.js";
-import { __dirname } from "../utilities/node.js";
 
 const logger = new Logger("asset-studio-cli");
 const CLI_VERSION = path.join(ASSET_STUDIO_CLI_DIR, "VERSION");
 const CLI_DLL = path.join(ASSET_STUDIO_CLI_DIR, "AssetStudioModCLI.dll");
+const GITHUB_TOKEN = process.env["GITHUB_TOKEN"];
 
-async function getLatestRelease(
-	user: string,
-	repo: string,
-	filterRelease: (release: any) => boolean,
-	filterAsset: (asset: any) => boolean,
-) {
-	const res = await fetch(`https://api.github.com/repos/${user}/${repo}/releases`);
-	const releases = await res.json();
-	const filtered = releases.filter(filterRelease);
-	if (!filtered.length) {
-		return null;
-	}
-	for (let i = 0; i < filtered.length; i++) {
-		const release = filtered[i];
-		const assets = release.assets.filter(filterAsset);
-
-		if (assets.length) {
-			return Object.assign({}, release, { assets });
-		}
-	}
-	return null;
+async function getLatestRelease(user: string, repo: string) {
+	const octokit = new Octokit({ auth: GITHUB_TOKEN });
+	const { data: release } = await octokit.request("GET /repos/{owner}/{repo}/releases/latest", {
+		owner: user,
+		repo: repo,
+		headers: {
+			"X-GitHub-Api-Version": "2022-11-28",
+		},
+	});
+	return release;
 }
 
 async function downloadCli(): Promise<boolean> {
 	logger.info("Checking for updates of AssetStudioMod...");
-	const release = await getLatestRelease(
-		"aelurum",
-		"AssetStudio",
-		(release) =>
-			release.target_commitish === "AssetStudioMod" && !release.draft && !release.prerelease,
-		(asset) => asset.name === "AssetStudioModCLI_net7_portable.zip",
-	);
+	const release = await getLatestRelease("aelurum", "AssetStudio");
 
 	// check update
 	try {
@@ -53,9 +37,11 @@ async function downloadCli(): Promise<boolean> {
 		if (release.tag_name === version) return true;
 	} catch (error) {}
 
-	const asset = release?.assets[0];
-	const assetUrl: string | undefined = asset?.browser_download_url;
-	if (assetUrl) {
+	const asset = release.assets.find(
+		(asset) => asset.name === "AssetStudioModCLI_net8_portable.zip",
+	);
+	if (asset) {
+		const assetUrl = asset.browser_download_url;
 		logger.info(`Downloading ${assetUrl}`);
 		const destf = path.join(ASSET_STUDIO_CLI_DIR, asset.name);
 		try {
@@ -79,7 +65,7 @@ async function downloadCli(): Promise<boolean> {
 		logger.info("Successfully updated AssetStudioMod.");
 		return true;
 	} else {
-		logger.error("[DownloadCli] release not found.");
+		logger.error("[DownloadCli] release asset not found.");
 		return false;
 	}
 }
@@ -198,6 +184,10 @@ export interface CLIOptions {
 	 */
 	groupOption?: "none" | "type" | "container" | "containerFull" | "filename";
 	/**
+	 * Specify the file name format for exported assets
+	 */
+	filenameFormat?: "assetName" | "assetName_pathID" | "pathID";
+	/**
 	 * Specify path to the output folder
 	 */
 	output?: string;
@@ -276,6 +266,7 @@ function getCliArgs(options: CLIOptions) {
 	if (options.mode) args.push("--mode", options.mode);
 	if (options.assetType) args.push("--asset-type", options.assetType.join(","));
 	if (options.groupOption) args.push("--group-option", options.groupOption);
+	if (options.filenameFormat) args.push("--filename-format", options.filenameFormat);
 	if (options.output) args.push("--output", options.output);
 	if (options.logLevel) args.push("--log-level", options.logLevel);
 	if (options.imageFormat) args.push("--image-format", options.imageFormat);
