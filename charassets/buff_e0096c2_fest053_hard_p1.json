@@ -1,16 +1,16 @@
 {
   "$interpreted": {
-    "Localization": "敏感：本角色的行動冷卻時間被技能效果影響時，立即行動1次。",
+    "Localization": "",
     "動作": {
-      "OnEachSkillTargetEffect": {
+      "OnTurnBegin": {
         "效果": [
           {
             "效果": [
               "對本角色觸發S2"
             ],
             "條件": [
-              "本角色是指定目標",
-              "施展的技能效果中包含(ChangeCD)屬性"
+              "目前回合輪到本角色",
+              "敵人的角色數量 != 1"
             ]
           }
         ],
@@ -20,14 +20,14 @@
     },
     "持續時間": 0,
     "最高層數": 99,
-    "標籤": "Forever | InfinityTrigger"
+    "標籤": ""
   },
   "$type": "BattleModel.Buff",
   "ReferenceBuffKeys": [
   ],
   "_actionTable": [
     {
-      "Key": 1024,
+      "Key": 1,
       "Value": {
         "Actions": [
           {
@@ -66,17 +66,29 @@
             ],
             "Conditions": [
               {
-                "$type": "BattleModel.CharacterEqual",
-                "left": {
+                "$type": "BattleModel.CurrentTurnBelongsTo",
+                "character": {
                   "$type": "BattleModel.ThisBuffOwner"
-                },
-                "right": {
-                  "$type": "BattleModel.ThisSpecifiedTarget"
                 }
               },
               {
-                "$type": "BattleModel.ThisSkillEffectTagContains",
-                "containsAll": 1024
+                "$type": "BattleModel.Inverse",
+                "condition": {
+                  "$type": "BattleModel.IntCompare",
+                  "left": {
+                    "$type": "BattleModel.CountOfCharGroup",
+                    "group": {
+                      "$type": "BattleModel.PVEEnemyTeam",
+                      "includeDead": false,
+                      "includeEmpty": false
+                    }
+                  },
+                  "op": 0,
+                  "right": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 1
+                  }
+                }
               }
             ]
           }
@@ -90,5 +102,5 @@
   "_maxLevel": 99,
   "_orderTable": {
   },
-  "_tag": 32832
+  "_tag": 0
 }

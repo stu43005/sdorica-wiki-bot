@@ -1,33 +1,32 @@
 {
   "$interpreted": {
-    "Localization": "敏感：本角色的行動冷卻時間被技能效果影響時，立即行動1次。",
+    "Localization": "",
     "動作": {
-      "OnEachSkillTargetEffect": {
+      "BeforeAnyoneDie": {
         "效果": [
           {
             "效果": [
-              "對本角色觸發S2"
+              "對本角色觸發revenge"
             ],
             "條件": [
-              "本角色是指定目標",
-              "施展的技能效果中包含(ChangeCD)屬性"
             ]
           }
         ],
         "條件": [
+          "死亡或復活的角色是本角色"
         ]
       }
     },
-    "持續時間": 0,
+    "持續時間": 1,
     "最高層數": 99,
-    "標籤": "Forever | InfinityTrigger"
+    "標籤": "Hidden | Forever"
   },
   "$type": "BattleModel.Buff",
   "ReferenceBuffKeys": [
   ],
   "_actionTable": [
     {
-      "Key": 1024,
+      "Key": 131072,
       "Value": {
         "Actions": [
           {
@@ -59,36 +58,38 @@
                     },
                     "UseAssignParameter": false,
                     "resetCasterCD": false,
-                    "skillsetId": "S2"
+                    "skillsetId": "revenge"
                   }
                 }
               }
             ],
             "Conditions": [
-              {
-                "$type": "BattleModel.CharacterEqual",
-                "left": {
-                  "$type": "BattleModel.ThisBuffOwner"
-                },
-                "right": {
-                  "$type": "BattleModel.ThisSpecifiedTarget"
-                }
-              },
-              {
-                "$type": "BattleModel.ThisSkillEffectTagContains",
-                "containsAll": 1024
-              }
             ]
           }
         ],
         "Conditions": [
+          {
+            "$type": "BattleModel.CharacterEqual",
+            "left": {
+              "$type": "BattleModel.DeadOrReviveTarget"
+            },
+            "right": {
+              "$type": "BattleModel.ThisBuffOwner"
+            }
+          }
         ]
       }
     }
   ],
-  "_duration": 0,
+  "_duration": 1,
   "_maxLevel": 99,
-  "_orderTable": {
-  },
-  "_tag": 32832
+  "_orderTable": [
+    {
+      "Key": 131072,
+      "Value": {
+        "Order": 0
+      }
+    }
+  ],
+  "_tag": 65
 }

@@ -1,16 +1,15 @@
 {
   "$interpreted": {
-    "Localization": "敏感：本角色的行動冷卻時間被技能效果影響時，立即行動1次。",
+    "Localization": "",
     "動作": {
-      "OnEachSkillTargetEffect": {
+      "OnEachSkillSetEnd": {
         "效果": [
           {
             "效果": [
-              "對本角色觸發S2"
+              "對敵人中符合((的AssetId包含＂t0026s4_fest053＂字串) 且 (符合條件 HP > 0))的角色所有角色觸發S2"
             ],
             "條件": [
-              "本角色是指定目標",
-              "施展的技能效果中包含(ChangeCD)屬性"
+              "本角色是施術者"
             ]
           }
         ],
@@ -18,25 +17,49 @@
         ]
       }
     },
-    "持續時間": 0,
+    "持續時間": 1,
     "最高層數": 99,
-    "標籤": "Forever | InfinityTrigger"
+    "標籤": ""
   },
   "$type": "BattleModel.Buff",
   "ReferenceBuffKeys": [
   ],
   "_actionTable": [
     {
-      "Key": 1024,
+      "Key": 8,
       "Value": {
         "Actions": [
           {
             "Actions": [
               {
                 "TargetField": {
-                  "$type": "BattleModel.OperateCharacter",
-                  "character": {
-                    "$type": "BattleModel.ThisBuffOwner"
+                  "$type": "BattleModel.OperateCharacterGroup",
+                  "group": {
+                    "$type": "BattleModel.CharGroupWhere",
+                    "condition": {
+                      "$type": "BattleModel.AndConditionsC",
+                      "cond1": {
+                        "$type": "BattleModel.AssetIdHasSubString",
+                        "subString": "t0026s4_fest053"
+                      },
+                      "cond2": {
+                        "$type": "BattleModel.IntCompareC",
+                        "left": {
+                          "$type": "BattleModel.IntFieldC",
+                          "targetField": 0
+                        },
+                        "op": 2,
+                        "right": {
+                          "$type": "BattleModel.ConstantIntC",
+                          "constant": 0
+                        }
+                      }
+                    },
+                    "group": {
+                      "$type": "BattleModel.PVEEnemyTeam",
+                      "includeDead": false,
+                      "includeEmpty": false
+                    }
                   },
                   "operation": {
                     "$type": "BattleModel.CastSkillSet",
@@ -71,12 +94,8 @@
                   "$type": "BattleModel.ThisBuffOwner"
                 },
                 "right": {
-                  "$type": "BattleModel.ThisSpecifiedTarget"
+                  "$type": "BattleModel.ThisSkillCaster"
                 }
-              },
-              {
-                "$type": "BattleModel.ThisSkillEffectTagContains",
-                "containsAll": 1024
               }
             ]
           }
@@ -86,9 +105,15 @@
       }
     }
   ],
-  "_duration": 0,
+  "_duration": 1,
   "_maxLevel": 99,
-  "_orderTable": {
-  },
-  "_tag": 32832
+  "_orderTable": [
+    {
+      "Key": 8,
+      "Value": {
+        "Order": 0
+      }
+    }
+  ],
+  "_tag": 0
 }

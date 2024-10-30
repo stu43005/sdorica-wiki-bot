@@ -1,16 +1,16 @@
 {
   "$interpreted": {
-    "Localization": "敏感：本角色的行動冷卻時間被技能效果影響時，立即行動1次。",
+    "Localization": "",
     "動作": {
-      "OnEachSkillTargetEffect": {
+      "OnBuffAdd": {
         "效果": [
           {
             "效果": [
-              "對本角色觸發S2"
+              "對本角色觸發S2",
+              "對本角色移除狀態t3218c4_fest053_combo"
             ],
             "條件": [
-              "本角色是指定目標",
-              "施展的技能效果中包含(ChangeCD)屬性"
+              "當前事件的狀態 是＂t3218c4_fest053_combo＂"
             ]
           }
         ],
@@ -20,14 +20,14 @@
     },
     "持續時間": 0,
     "最高層數": 99,
-    "標籤": "Forever | InfinityTrigger"
+    "標籤": "Hidden"
   },
   "$type": "BattleModel.Buff",
   "ReferenceBuffKeys": [
   ],
   "_actionTable": [
     {
-      "Key": 1024,
+      "Key": 16384,
       "Value": {
         "Actions": [
           {
@@ -62,21 +62,30 @@
                     "skillsetId": "S2"
                   }
                 }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.RemoveBuff",
+                    "buffId": "t3218c4_fest053_combo"
+                  }
+                }
               }
             ],
             "Conditions": [
               {
-                "$type": "BattleModel.CharacterEqual",
-                "left": {
-                  "$type": "BattleModel.ThisBuffOwner"
+                "$type": "BattleModel.BuffCondition",
+                "buff": {
+                  "$type": "BattleModel.SpecifiedBuff"
                 },
-                "right": {
-                  "$type": "BattleModel.ThisSpecifiedTarget"
+                "condition": {
+                  "$type": "BattleModel.CheckBuffMatchBuffId",
+                  "subString": "t3218c4_fest053_combo"
                 }
-              },
-              {
-                "$type": "BattleModel.ThisSkillEffectTagContains",
-                "containsAll": 1024
               }
             ]
           }
@@ -88,7 +97,13 @@
   ],
   "_duration": 0,
   "_maxLevel": 99,
-  "_orderTable": {
-  },
-  "_tag": 32832
+  "_orderTable": [
+    {
+      "Key": 16384,
+      "Value": {
+        "Order": 0
+      }
+    }
+  ],
+  "_tag": 1
 }

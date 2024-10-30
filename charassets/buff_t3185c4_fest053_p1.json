@@ -1,16 +1,15 @@
 {
   "$interpreted": {
-    "Localization": "敏感：本角色的行動冷卻時間被技能效果影響時，立即行動1次。",
+    "Localization": "",
     "動作": {
-      "OnEachSkillTargetEffect": {
+      "OnTurnBegin": {
         "效果": [
           {
             "效果": [
               "對本角色觸發S2"
             ],
             "條件": [
-              "本角色是指定目標",
-              "施展的技能效果中包含(ChangeCD)屬性"
+              "(目前戰鬥回合數 == 0) 且 (目前回合輪到敵人首位)"
             ]
           }
         ],
@@ -20,14 +19,14 @@
     },
     "持續時間": 0,
     "最高層數": 99,
-    "標籤": "Forever | InfinityTrigger"
+    "標籤": "Forever"
   },
   "$type": "BattleModel.Buff",
   "ReferenceBuffKeys": [
   ],
   "_actionTable": [
     {
-      "Key": 1024,
+      "Key": 1,
       "Value": {
         "Actions": [
           {
@@ -66,17 +65,32 @@
             ],
             "Conditions": [
               {
-                "$type": "BattleModel.CharacterEqual",
-                "left": {
-                  "$type": "BattleModel.ThisBuffOwner"
+                "$type": "BattleModel.AndConditions",
+                "cond1": {
+                  "$type": "BattleModel.IntCompare",
+                  "left": {
+                    "$type": "BattleModel.BattleActionRecordValue",
+                    "RecordValue": {
+                      "$type": "BattleModel.ThisBattleTurnCount"
+                    }
+                  },
+                  "op": 0,
+                  "right": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 0
+                  }
                 },
-                "right": {
-                  "$type": "BattleModel.ThisSpecifiedTarget"
+                "cond2": {
+                  "$type": "BattleModel.CurrentTurnBelongsTo",
+                  "character": {
+                    "$type": "BattleModel.FrontOfChars",
+                    "group": {
+                      "$type": "BattleModel.PVEEnemyTeam",
+                      "includeDead": true,
+                      "includeEmpty": true
+                    }
+                  }
                 }
-              },
-              {
-                "$type": "BattleModel.ThisSkillEffectTagContains",
-                "containsAll": 1024
               }
             ]
           }
@@ -88,7 +102,13 @@
   ],
   "_duration": 0,
   "_maxLevel": 99,
-  "_orderTable": {
-  },
-  "_tag": 32832
+  "_orderTable": [
+    {
+      "Key": 1,
+      "Value": {
+        "Order": 0
+      }
+    }
+  ],
+  "_tag": 64
 }
