@@ -1,0 +1,47 @@
+{
+  "$interpreted": "(玩家中符合({\"$type\":\"BattleModel.IsCharacterAlive\"})的角色的角色數量 < 2) 或 (玩家中的所有角色皆 符合條件 HP% < 30)",
+  "$type": "BattleModel.OrConditions",
+  "cond1": {
+    "$type": "BattleModel.IntCompare",
+    "left": {
+      "$type": "BattleModel.CountOfCharGroup",
+      "group": {
+        "$type": "BattleModel.CharGroupWhere",
+        "condition": {
+          "$type": "BattleModel.IsCharacterAlive"
+        },
+        "group": {
+          "$type": "BattleModel.PVEPlayerTeam",
+          "includeDead": true,
+          "includeEmpty": false
+        }
+      }
+    },
+    "op": 1,
+    "right": {
+      "$type": "BattleModel.ConstanctInt",
+      "constant": 2
+    }
+  },
+  "cond2": {
+    "$type": "BattleModel.CharGroupCondition",
+    "condition": {
+      "$type": "BattleModel.IntCompareC",
+      "left": {
+        "$type": "BattleModel.IntFieldC",
+        "targetField": 2
+      },
+      "op": 1,
+      "right": {
+        "$type": "BattleModel.ConstanctInt",
+        "constant": 30
+      }
+    },
+    "everybody": true,
+    "group": {
+      "$type": "BattleModel.PVEPlayerTeam",
+      "includeDead": false,
+      "includeEmpty": false
+    }
+  }
+}
