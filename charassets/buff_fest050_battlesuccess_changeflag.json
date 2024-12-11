@@ -1,0 +1,184 @@
+{
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "OnEachSkillSetEnd": {
+        "效果": [
+          {
+            "效果": [
+              "立即施展技能：對敵人首位將探索flag:fest050_BattleWinOrLose改為1"
+            ],
+            "條件": [
+              "敵人中的所有角色皆 符合條件 HP == 0"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnTurnBegin": {
+        "效果": [
+          {
+            "效果": [
+              "立即施展技能：對玩家首位將探索flag:fest050_BattleWinOrLose改為0"
+            ],
+            "條件": [
+              "目前回合輪到敵人首位"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 1,
+    "標籤": "Hidden | NotRemoveWhenDie"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+  ],
+  "_actionTable": [
+    {
+      "Key": 8,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": {
+                      "$type": "BattleModel.CharGroupWhere",
+                      "condition": {
+                        "$type": "BattleModel.IsCharacterDead"
+                      },
+                      "group": {
+                        "$type": "BattleModel.PVEPlayerTeam",
+                        "includeDead": true,
+                        "includeEmpty": false
+                      }
+                    },
+                    "single": {
+                      "$type": "BattleModel.FrontOfChars",
+                      "group": {
+                        "$type": "BattleModel.PVEEnemyTeam",
+                        "includeDead": true,
+                        "includeEmpty": true
+                      }
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.ChangeExploreFlagSkillEffect",
+                        "Tag": 16384,
+                        "_flagId": "fest050_BattleWinOrLose",
+                        "_keyString": "",
+                        "_operation": "Set",
+                        "_value": {
+                          "$type": "BattleModel.ConstanctInt",
+                          "constant": 1
+                        }
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": false
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharGroupCondition",
+                "condition": {
+                  "$type": "BattleModel.IntCompareC",
+                  "left": {
+                    "$type": "BattleModel.IntFieldC",
+                    "targetField": 0
+                  },
+                  "op": 0,
+                  "right": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 0
+                  }
+                },
+                "everybody": true,
+                "group": {
+                  "$type": "BattleModel.PVEEnemyTeam",
+                  "includeDead": true,
+                  "includeEmpty": false
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 1,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": null,
+                    "single": {
+                      "$type": "BattleModel.FrontOfChars",
+                      "group": {
+                        "$type": "BattleModel.PVEPlayerTeam",
+                        "includeDead": true,
+                        "includeEmpty": true
+                      }
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.ChangeExploreFlagSkillEffect",
+                        "Tag": 16384,
+                        "_flagId": "fest050_BattleWinOrLose",
+                        "_keyString": "",
+                        "_operation": "Set",
+                        "_value": {
+                          "$type": "BattleModel.ConstanctInt",
+                          "constant": 0
+                        }
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": false
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CurrentTurnBelongsTo",
+                "character": {
+                  "$type": "BattleModel.FrontOfChars",
+                  "group": {
+                    "$type": "BattleModel.PVEEnemyTeam",
+                    "includeDead": true,
+                    "includeEmpty": true
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 1,
+  "_orderTable": {
+  },
+  "_tag": 5
+}

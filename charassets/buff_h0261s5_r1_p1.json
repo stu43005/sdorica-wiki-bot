@@ -1,0 +1,518 @@
+{
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "OnEachSkillSetEnd": {
+        "效果": [
+          {
+            "效果": [
+              "對本角色觸發S1",
+              "對本狀態的變數一增加1"
+            ],
+            "條件": [
+              "施術者是本角色的隊伍的一員",
+              "施展的技能組是S1",
+              "本狀態的變數一 < 3"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnEachSkillTargetEffect": {
+        "效果": [
+          {
+            "效果": [
+              "技能效果增加((({\"group\":{\"reference\":{\"$type\":\"BattleModel.ThisBuffOwner\"},\"excludeSelf\":false,\"includeDead\":false,\"includeEmpty\":false,\"$type\":\"BattleModel.SelfTeamChars\"},\"$type\":\"BattleModel.AllBuffsOnCharGroup\"}中是＂regeneration(再生)＂的Buff中的層數)的總和 * 10))%"
+            ],
+            "條件": [
+              "施術者是本角色的隊伍的一員",
+              "施展的技能組是S1",
+              "施術者擁有regeneration(再生)狀態"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnTurnBegin": {
+        "效果": [
+          {
+            "效果": [
+              "對本角色的隊伍所有角色賦予永久3層immortal_bless(【永生祝福】)",
+              "對本角色的隊伍所有角色賦予1回合3層regeneration(再生)"
+            ],
+            "條件": [
+              "(目前戰鬥回合數 == 0) 且 (目前回合輪到玩家首位)"
+            ]
+          },
+          {
+            "效果": [
+              "對本狀態的變數一改為0"
+            ],
+            "條件": [
+              "目前回合輪到本角色"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnTurnEnd": {
+        "效果": [
+          {
+            "效果": [
+              "立即施展技能：對本角色的隊伍全體移除狀態immortal_bless(【永生祝福】)",
+              "立即施展技能：對本角色{\"skillsetId\":\"S3\",\"CastLimitPerTurn\":false,\"CounterKey\":\"Var1\",\"Limit\":0,\"resetCasterCD\":false,\"UseAssignParameter\":false,\"AssignParameter\":{\"AssignInteger\":{\"constant\":0,\"$type\":\"BattleModel.ConstanctInt\"},\"AssignIntegerGroup\":{\"Group\":[],\"$type\":\"BattleModel.ConstanctIntegerGroup\"},\"AssignCharacter\":{\"$type\":\"BattleModel.NoneCharacter\"},\"AssignCharacterGroup\":{\"$type\":\"BattleModel.NoneCharacters\"}},\"Tag\":1048580,\"_keyString\":\"\",\"$type\":\"BattleModel.CastSkillSetSkillEffect\"}"
+            ],
+            "條件": [
+              "目前回合輪到本角色",
+              "({\"group\":{\"reference\":{\"$type\":\"BattleModel.ThisBuffOwner\"},\"excludeSelf\":false,\"includeDead\":true,\"includeEmpty\":true,\"$type\":\"BattleModel.SelfTeamChars\"},\"$type\":\"BattleModel.AllBuffsOnCharGroup\"}中是＂immortal_bless(【永生祝福】)＂的Buff中的層數)的總和 >= 9"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 99,
+    "標籤": "Forever | InfinityTrigger"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+    "immortal_bless",
+    "regeneration",
+    "regeneration_trigger"
+  ],
+  "_actionTable": [
+    {
+      "Key": 1,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacterGroup",
+                  "group": {
+                    "$type": "BattleModel.SelfTeamChars",
+                    "excludeSelf": false,
+                    "includeDead": true,
+                    "includeEmpty": false,
+                    "reference": {
+                      "$type": "BattleModel.ThisBuffOwner"
+                    }
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "immortal_bless",
+                      "Forever": true,
+                      "LevelStack": 3,
+                      "OverwriteDuration": -1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacterGroup",
+                  "group": {
+                    "$type": "BattleModel.SelfTeamChars",
+                    "excludeSelf": false,
+                    "includeDead": true,
+                    "includeEmpty": false,
+                    "reference": {
+                      "$type": "BattleModel.ThisBuffOwner"
+                    }
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "regeneration",
+                      "Forever": false,
+                      "LevelStack": 3,
+                      "OverwriteDuration": 1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.AndConditions",
+                "cond1": {
+                  "$type": "BattleModel.IntCompare",
+                  "left": {
+                    "$type": "BattleModel.BattleActionRecordValue",
+                    "RecordValue": {
+                      "$type": "BattleModel.ThisBattleTurnCount"
+                    }
+                  },
+                  "op": 0,
+                  "right": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 0
+                  }
+                },
+                "cond2": {
+                  "$type": "BattleModel.CurrentTurnBelongsTo",
+                  "character": {
+                    "$type": "BattleModel.FrontOfChars",
+                    "group": {
+                      "$type": "BattleModel.PVEPlayerTeam",
+                      "includeDead": true,
+                      "includeEmpty": true
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CurrentTurnBelongsTo",
+                "character": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 8,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.CastSkillSet",
+                    "AssignParameter": {
+                      "AssignCharacter": {
+                        "$type": "BattleModel.NoneCharacter"
+                      },
+                      "AssignCharacterGroup": {
+                        "$type": "BattleModel.NoneCharacters"
+                      },
+                      "AssignInteger": {
+                        "$type": "BattleModel.ConstanctInt",
+                        "constant": 0
+                      },
+                      "AssignIntegerGroup": {
+                        "$type": "BattleModel.ConstanctIntegerGroup",
+                        "Group": [
+                        ]
+                      }
+                    },
+                    "UseAssignParameter": false,
+                    "resetCasterCD": false,
+                    "skillsetId": "S1"
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 1,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 1
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterInside",
+                "group": {
+                  "$type": "BattleModel.SelfTeamChars",
+                  "excludeSelf": true,
+                  "includeDead": false,
+                  "includeEmpty": false,
+                  "reference": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  }
+                },
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              },
+              {
+                "$type": "BattleModel.ThisSkillSetIdEqual",
+                "id": "S1"
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.ThisBuff"
+                  },
+                  "targetField": 4
+                },
+                "op": 1,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 3
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 1024,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.BonusEffectForSkillProperty",
+                  "isPercent": true,
+                  "property": -1,
+                  "value": {
+                    "$type": "BattleModel.MultiplyInt",
+                    "left": {
+                      "$type": "BattleModel.SumOfInts",
+                      "group": {
+                        "$type": "BattleModel.IntsOnBuffGroup",
+                        "group": {
+                          "$type": "BattleModel.BuffGroupWhere",
+                          "condition": {
+                            "$type": "BattleModel.CheckBuffMatchBuffId",
+                            "subString": "regeneration"
+                          },
+                          "group": {
+                            "$type": "BattleModel.AllBuffsOnCharGroup",
+                            "group": {
+                              "$type": "BattleModel.SelfTeamChars",
+                              "excludeSelf": false,
+                              "includeDead": false,
+                              "includeEmpty": false,
+                              "reference": {
+                                "$type": "BattleModel.ThisBuffOwner"
+                              }
+                            }
+                          }
+                        },
+                        "targetField": 1
+                      }
+                    },
+                    "right": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 10
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterInside",
+                "group": {
+                  "$type": "BattleModel.SelfTeamChars",
+                  "excludeSelf": false,
+                  "includeDead": false,
+                  "includeEmpty": false,
+                  "reference": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  }
+                },
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              },
+              {
+                "$type": "BattleModel.ThisSkillSetIdEqual",
+                "id": "S1"
+              },
+              {
+                "$type": "BattleModel.CharacterHasBuff",
+                "buffId": "regeneration",
+                "character": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 2,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": true,
+                    "multi": {
+                      "$type": "BattleModel.SelfTeamChars",
+                      "excludeSelf": false,
+                      "includeDead": false,
+                      "includeEmpty": false,
+                      "reference": {
+                        "$type": "BattleModel.ThisBuffOwner"
+                      }
+                    },
+                    "single": null,
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.RemoveBuffSkillEffect",
+                        "Tag": 4100,
+                        "_buffID": "immortal_bless",
+                        "_keyString": ""
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": false
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": null,
+                    "single": {
+                      "$type": "BattleModel.ThisBuffOwner"
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.CastSkillSetSkillEffect",
+                        "AssignParameter": {
+                          "AssignCharacter": {
+                            "$type": "BattleModel.NoneCharacter"
+                          },
+                          "AssignCharacterGroup": {
+                            "$type": "BattleModel.NoneCharacters"
+                          },
+                          "AssignInteger": {
+                            "$type": "BattleModel.ConstanctInt",
+                            "constant": 0
+                          },
+                          "AssignIntegerGroup": {
+                            "$type": "BattleModel.ConstanctIntegerGroup",
+                            "Group": [
+                            ]
+                          }
+                        },
+                        "CastLimitPerTurn": false,
+                        "CounterKey": "Var1",
+                        "Limit": 0,
+                        "Tag": 1048580,
+                        "UseAssignParameter": false,
+                        "_keyString": "",
+                        "resetCasterCD": false,
+                        "skillsetId": "S3"
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": false
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CurrentTurnBelongsTo",
+                "character": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.SumOfInts",
+                  "group": {
+                    "$type": "BattleModel.IntsOnBuffGroup",
+                    "group": {
+                      "$type": "BattleModel.BuffGroupWhere",
+                      "condition": {
+                        "$type": "BattleModel.CheckBuffMatchBuffId",
+                        "subString": "immortal_bless"
+                      },
+                      "group": {
+                        "$type": "BattleModel.AllBuffsOnCharGroup",
+                        "group": {
+                          "$type": "BattleModel.SelfTeamChars",
+                          "excludeSelf": false,
+                          "includeDead": true,
+                          "includeEmpty": true,
+                          "reference": {
+                            "$type": "BattleModel.ThisBuffOwner"
+                          }
+                        }
+                      }
+                    },
+                    "targetField": 1
+                  }
+                },
+                "op": 4,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 9
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 99,
+  "_orderTable": {
+  },
+  "_tag": 32832
+}
