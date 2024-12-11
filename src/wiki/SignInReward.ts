@@ -22,7 +22,13 @@ export default function wikiSignInReward() {
 			(r) => r.get("category"),
 		);
 
-		out += `\n\n${wikiH2(groupId)}`;
+		if (categories["special"]) {
+			const groupTitle = localizationString("SignInSpecial")(`${groupId}_title`) || groupId;
+			const groupDesc = localizationString("SignInSpecial")(`${groupId}_description`);
+			out += `\n\n${wikiH2(groupTitle, groupId)}\n<pre>${groupDesc}</pre>`;
+		} else {
+			out += `\n\n${wikiH2(groupId)}`;
+		}
 
 		if (categories["day"]) {
 			out += `\n${wikitable(buildWeekTable(categories["day"], categories["week"]))}`;
