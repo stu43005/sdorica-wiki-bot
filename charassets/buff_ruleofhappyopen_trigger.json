@@ -6,26 +6,12 @@
         "效果": [
           {
             "效果": [
-              "對本角色賦予永久sharp(銳利)",
-              "對在本角色的sharp(銳利)狀態的層數增加(2 * 本角色持有的Buff中有在generalNerf[弱化, 易傷, 撕裂, 中毒, 暈眩, 汙染, 出血, 汙染, 寒冷, 燃燒]列表內的Buff的狀態數量)",
-              "對本角色{\"BuffGroupIds\":{\"BuffLabel\":{\"BuffLabel\":\"generalNerf\",\"BuffIdList\":[\"nerf_damage_small\",\"weak\",\"tearing\",\"poison\",\"stun\",\"infection_maintain\",\"bleeding_maintain\",\"infection\",\"frosted\",\"burn\"]},\"$type\":\"BattleModel.BuffIdFromLabelList\"},\"RemoveAllBuff\":true,\"RandomRemoveCount\":0,\"$type\":\"BattleModel.RemoveBuffFromGroupedBuffId\"}"
-            ],
-            "條件": [
-              "當前事件的狀態 是＂ruleOfHappyOpen_trigger＂"
-            ]
-          }
-        ],
-        "條件": [
-        ]
-      },
-      "OnTurnBegin": {
-        "效果": [
-          {
-            "效果": [
+              "{\"RepeatCount\":{\"group\":{\"group\":{\"character\":{\"$type\":\"BattleModel.ThisBuffOwner\"},\"$type\":\"BattleModel.AllBuffsOnChar\"},\"condition\":{\"BuffLabel\":{\"BuffLabel\":\"generalNerf\",\"BuffIdList\":[\"nerf_damage_small\",\"weak\",\"tearing\",\"poison\",\"stun\",\"infection_maintain\",\"bleeding_maintain\",\"infection\",\"frosted\",\"burn\"]},\"$type\":\"BattleModel.CheckBuffBelongLabel\"},\"$type\":\"BattleModel.BuffGroupWhere\"},\"$type\":\"BattleModel.CountOfBuffGroup\"},\"Operation\":{\"character\":{\"$type\":\"BattleModel.ThisBuffOwner\"},\"operation\":{\"buffToAdd\":{\"BuffId\":\"sharp\",\"OverwriteDuration\":-1,\"Forever\":true,\"LevelStack\":2,\"UserDefineVariable\":{}},\"$type\":\"BattleModel.AddBuff\"},\"$type\":\"BattleModel.OperateCharacter\"},\"$type\":\"BattleModel.RepeatAction\"}",
+              "對本角色{\"BuffGroupIds\":{\"BuffLabel\":{\"BuffLabel\":\"generalNerf\",\"BuffIdList\":[\"nerf_damage_small\",\"weak\",\"tearing\",\"poison\",\"stun\",\"infection_maintain\",\"bleeding_maintain\",\"infection\",\"frosted\",\"burn\"]},\"$type\":\"BattleModel.BuffIdFromLabelList\"},\"RemoveAllBuff\":true,\"RandomRemoveCount\":0,\"$type\":\"BattleModel.RemoveBuffFromGroupedBuffId\"}",
               "對本角色移除狀態ruleOfHappyOpen_trigger"
             ],
             "條件": [
-              "目前回合輪到本角色"
+              "當前事件的狀態 是＂ruleOfHappyOpen_trigger＂"
             ]
           }
         ],
@@ -63,72 +49,50 @@
             "Actions": [
               {
                 "TargetField": {
-                  "$type": "BattleModel.OperateCharacter",
-                  "character": {
-                    "$type": "BattleModel.ThisBuffOwner"
-                  },
-                  "operation": {
-                    "$type": "BattleModel.AddBuff",
-                    "buffToAdd": {
-                      "BuffId": "sharp",
-                      "Forever": true,
-                      "LevelStack": 0,
-                      "OverwriteDuration": -1,
-                      "UserDefineVariable": {
-                      }
-                    }
-                  }
-                }
-              },
-              {
-                "TargetField": {
-                  "$type": "BattleModel.OperateSingleBuff",
-                  "buff": {
-                    "$type": "BattleModel.BuffOnCharater",
-                    "buffId": "sharp",
+                  "$type": "BattleModel.RepeatAction",
+                  "Operation": {
+                    "$type": "BattleModel.OperateCharacter",
                     "character": {
                       "$type": "BattleModel.ThisBuffOwner"
+                    },
+                    "operation": {
+                      "$type": "BattleModel.AddBuff",
+                      "buffToAdd": {
+                        "BuffId": "sharp",
+                        "Forever": true,
+                        "LevelStack": 2,
+                        "OverwriteDuration": -1,
+                        "UserDefineVariable": {
+                        }
+                      }
                     }
                   },
-                  "operation": {
-                    "$type": "BattleModel.SetBuffField",
-                    "lastIndepedentStack": false,
-                    "setOperator": 1,
-                    "targetField": 1,
-                    "value": {
-                      "$type": "BattleModel.MultiplyInt",
-                      "left": {
-                        "$type": "BattleModel.ConstanctInt",
-                        "constant": 2
+                  "RepeatCount": {
+                    "$type": "BattleModel.CountOfBuffGroup",
+                    "group": {
+                      "$type": "BattleModel.BuffGroupWhere",
+                      "condition": {
+                        "$type": "BattleModel.CheckBuffBelongLabel",
+                        "BuffLabel": {
+                          "BuffIdList": [
+                            "nerf_damage_small",
+                            "weak",
+                            "tearing",
+                            "poison",
+                            "stun",
+                            "infection_maintain",
+                            "bleeding_maintain",
+                            "infection",
+                            "frosted",
+                            "burn"
+                          ],
+                          "BuffLabel": "generalNerf"
+                        }
                       },
-                      "right": {
-                        "$type": "BattleModel.CountOfBuffGroup",
-                        "group": {
-                          "$type": "BattleModel.BuffGroupWhere",
-                          "condition": {
-                            "$type": "BattleModel.CheckBuffBelongLabel",
-                            "BuffLabel": {
-                              "BuffIdList": [
-                                "nerf_damage_small",
-                                "weak",
-                                "tearing",
-                                "poison",
-                                "stun",
-                                "infection_maintain",
-                                "bleeding_maintain",
-                                "infection",
-                                "frosted",
-                                "burn"
-                              ],
-                              "BuffLabel": "generalNerf"
-                            }
-                          },
-                          "group": {
-                            "$type": "BattleModel.AllBuffsOnChar",
-                            "character": {
-                              "$type": "BattleModel.ThisBuffOwner"
-                            }
-                          }
+                      "group": {
+                        "$type": "BattleModel.AllBuffsOnChar",
+                        "character": {
+                          "$type": "BattleModel.ThisBuffOwner"
                         }
                       }
                     }
@@ -165,32 +129,7 @@
                     "RemoveAllBuff": true
                   }
                 }
-              }
-            ],
-            "Conditions": [
-              {
-                "$type": "BattleModel.BuffCondition",
-                "buff": {
-                  "$type": "BattleModel.SpecifiedBuff"
-                },
-                "condition": {
-                  "$type": "BattleModel.CheckBuffMatchBuffId",
-                  "subString": "ruleOfHappyOpen_trigger"
-                }
-              }
-            ]
-          }
-        ],
-        "Conditions": [
-        ]
-      }
-    },
-    {
-      "Key": 1,
-      "Value": {
-        "Actions": [
-          {
-            "Actions": [
+              },
               {
                 "TargetField": {
                   "$type": "BattleModel.OperateCharacter",
@@ -206,9 +145,13 @@
             ],
             "Conditions": [
               {
-                "$type": "BattleModel.CurrentTurnBelongsTo",
-                "character": {
-                  "$type": "BattleModel.ThisBuffOwner"
+                "$type": "BattleModel.BuffCondition",
+                "buff": {
+                  "$type": "BattleModel.SpecifiedBuff"
+                },
+                "condition": {
+                  "$type": "BattleModel.CheckBuffMatchBuffId",
+                  "subString": "ruleOfHappyOpen_trigger"
                 }
               }
             ]

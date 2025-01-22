@@ -1,0 +1,294 @@
+{
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "OnEachSkillTargetEffect": {
+        "效果": [
+          {
+            "效果": [
+              "技能效果增加((本狀態的層數 * -15))%"
+            ],
+            "條件": [
+              "施術者是玩家的一員"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnTurnBegin": {
+        "效果": [
+          {
+            "效果": [
+              "對本狀態的變數一增加1"
+            ],
+            "條件": [
+              "目前回合輪到玩家首位"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnTurnEnd": {
+        "效果": [
+          {
+            "效果": [
+              "對本狀態的層數增加1",
+              "對本狀態的變數一改為0"
+            ],
+            "條件": [
+              "目前回合輪到玩家首位",
+              "本狀態的變數一 == 2"
+            ]
+          },
+          {
+            "效果": [
+              "立即施展技能：對玩家全體破甲((本狀態的層數 * 指定目標的疊盾) x0.1)"
+            ],
+            "條件": [
+              "目前回合輪到玩家首位"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 10,
+    "標籤": "Hidden | NotRemoveWhenDie | InfinityTrigger"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+  ],
+  "_actionTable": [
+    {
+      "Key": 1024,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.BonusEffectForSkillProperty",
+                  "isPercent": true,
+                  "property": -1,
+                  "value": {
+                    "$type": "BattleModel.MultiplyInt",
+                    "left": {
+                      "$type": "BattleModel.IntBuffField",
+                      "buff": {
+                        "$type": "BattleModel.ThisBuff"
+                      },
+                      "targetField": 1
+                    },
+                    "right": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": -15
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterInside",
+                "group": {
+                  "$type": "BattleModel.PVEPlayerTeam",
+                  "includeDead": false,
+                  "includeEmpty": false
+                },
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 2,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 1,
+                    "targetField": 1,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 1
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CurrentTurnBelongsTo",
+                "character": {
+                  "$type": "BattleModel.FrontOfChars",
+                  "group": {
+                    "$type": "BattleModel.PVEPlayerTeam",
+                    "includeDead": true,
+                    "includeEmpty": true
+                  }
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.ThisBuff"
+                  },
+                  "targetField": 4
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 2
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": true,
+                    "multi": {
+                      "$type": "BattleModel.PVEPlayerTeam",
+                      "includeDead": false,
+                      "includeEmpty": false
+                    },
+                    "single": {
+                      "$type": "BattleModel.ThisSpecifiedTarget"
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.AmrReduceSkillEffect",
+                        "Tag": 2052,
+                        "_keyString": "",
+                        "_skillModifier": {
+                          "_constant": 0,
+                          "_parameter": {
+                            "$type": "BattleModel.MultiplyInt",
+                            "left": {
+                              "$type": "BattleModel.IntBuffField",
+                              "buff": {
+                                "$type": "BattleModel.ThisBuff"
+                              },
+                              "targetField": 1
+                            },
+                            "right": {
+                              "$type": "BattleModel.IntCharaterField",
+                              "character": {
+                                "$type": "BattleModel.ThisSpecifiedTarget"
+                              },
+                              "targetField": 4
+                            }
+                          },
+                          "_ratio": 0.1
+                        }
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": false
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CurrentTurnBelongsTo",
+                "character": {
+                  "$type": "BattleModel.FrontOfChars",
+                  "group": {
+                    "$type": "BattleModel.PVEPlayerTeam",
+                    "includeDead": true,
+                    "includeEmpty": true
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 1,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 1,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 1
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CurrentTurnBelongsTo",
+                "character": {
+                  "$type": "BattleModel.FrontOfChars",
+                  "group": {
+                    "$type": "BattleModel.PVEPlayerTeam",
+                    "includeDead": true,
+                    "includeEmpty": true
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 10,
+  "_orderTable": {
+  },
+  "_tag": 32773
+}
