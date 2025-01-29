@@ -33,12 +33,6 @@ export class ImperiumData {
 	static fromDialog() {
 		return this.from("dialog");
 	}
-	static fromAndroid() {
-		return this.from("android");
-	}
-	static fromAndroidExp() {
-		return this.from("androidExp");
-	}
 
 	data: ImperiumDataRaw | null = null;
 

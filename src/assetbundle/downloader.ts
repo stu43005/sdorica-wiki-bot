@@ -10,9 +10,12 @@ import {
 	BUNDLE_DOWNLOAD_PATH,
 	BUNDLE_EXTRACT_PATH,
 	BUNDLE_UPLOAD_PATH,
+	LATEST_PATH,
 } from "../config.js";
+import type { LatestDataRaw } from "../data-raw-type.js";
 import { assetDownload } from "../imperium-asset-download.js";
 import { ImperiumData } from "../imperium-data.js";
+import { inputJsonSync } from "../input.js";
 import { Logger } from "../logger.js";
 import { outJson, rpFile } from "../out.js";
 import { siJsonParse } from "../viewerjs/utils.js";
@@ -37,6 +40,16 @@ const doUnzip = promisify(unzip);
 const logger = new Logger("downloader");
 const metadataFilePath = path.join(ASSETBUNDLE_PATH, "metadata.json");
 
+function checkUseAndroid() {
+	try {
+		const androidLatest: LatestDataRaw = inputJsonSync(path.join(LATEST_PATH, "android.json"));
+		const iosLatest: LatestDataRaw = inputJsonSync(path.join(LATEST_PATH, "ios/ios.json"));
+		return androidLatest.R >= iosLatest.R;
+	} catch (error) {
+		return true;
+	}
+}
+
 export async function assetBundleDownloader(force = false): Promise<boolean> {
 	await fsp.mkdir(BUNDLE_UPLOAD_PATH, {
 		recursive: true,
@@ -48,7 +61,9 @@ export async function assetBundleDownloader(force = false): Promise<boolean> {
 	logger.info(`[${++i}] update need upload list`);
 	updateNeedUpdateList();
 
-	for (const imperiumName of ["android", "androidExp"]) {
+	for (const imperiumName of checkUseAndroid()
+		? ["android", "androidExp"]
+		: ["ios/ios", "ios/iosExp"]) {
 		logger.info(`[${++i}] check '${imperiumName}' update`);
 		const imperium = ImperiumData.from(imperiumName);
 		await assetDownload(metadataFilePath, imperium, force, async (bundleName, asset) =>
