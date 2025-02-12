@@ -1,0 +1,147 @@
+{
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "OnTurnBegin": {
+        "效果": [
+          {
+            "效果": [
+              "對玩家所有角色賦予10回合1層TrueDamageBless(穿透賜福)",
+              "對玩家所有角色賦予10回合1層damage_absorption(轉盾)",
+              "對玩家所有角色賦予永久1層guilt(業障)"
+            ],
+            "條件": [
+            ]
+          }
+        ],
+        "條件": [
+          "(目前戰鬥回合數 == 0) 且 (目前回合輪到敵人首位)"
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 99,
+    "標籤": "NotRemoveAfterBattle | Forever"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+    "TrueDamageBless",
+    "damage_absorption",
+    "guilt",
+    "damage_absorption_trigger",
+    "taunt"
+  ],
+  "_actionTable": [
+    {
+      "Key": 1,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacterGroup",
+                  "group": {
+                    "$type": "BattleModel.PVEPlayerTeam",
+                    "includeDead": false,
+                    "includeEmpty": false
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "TrueDamageBless",
+                      "Forever": false,
+                      "LevelStack": 1,
+                      "OverwriteDuration": 10,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacterGroup",
+                  "group": {
+                    "$type": "BattleModel.PVEPlayerTeam",
+                    "includeDead": false,
+                    "includeEmpty": false
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "damage_absorption",
+                      "Forever": false,
+                      "LevelStack": 1,
+                      "OverwriteDuration": 10,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacterGroup",
+                  "group": {
+                    "$type": "BattleModel.PVEPlayerTeam",
+                    "includeDead": false,
+                    "includeEmpty": false
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "guilt",
+                      "Forever": true,
+                      "LevelStack": 1,
+                      "OverwriteDuration": 10,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+            ]
+          }
+        ],
+        "Conditions": [
+          {
+            "$type": "BattleModel.AndConditions",
+            "cond1": {
+              "$type": "BattleModel.IntCompare",
+              "left": {
+                "$type": "BattleModel.BattleActionRecordValue",
+                "RecordValue": {
+                  "$type": "BattleModel.ThisBattleTurnCount"
+                }
+              },
+              "op": 0,
+              "right": {
+                "$type": "BattleModel.ConstanctInt",
+                "constant": 0
+              }
+            },
+            "cond2": {
+              "$type": "BattleModel.CurrentTurnBelongsTo",
+              "character": {
+                "$type": "BattleModel.FrontOfChars",
+                "group": {
+                  "$type": "BattleModel.PVEEnemyTeam",
+                  "includeDead": true,
+                  "includeEmpty": true
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 99,
+  "_orderTable": {
+  },
+  "_tag": 66
+}

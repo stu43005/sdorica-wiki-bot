@@ -21,12 +21,24 @@
         "效果": [
           {
             "效果": [
-              "技能係數增加((隊伍攜帶探索道具Mandora_Medal(王國獎章)的數量 * 3))%",
+              "{\"property\":-1,\"value\":{\"left\":{\"ExploreItemId\":\"Mandora_Medal\",\"$type\":\"BattleModel.ThisTeamExploreItemCount\"},\"right\":{\"constant\":3,\"$type\":\"BattleModel.ConstanctInt\"},\"$type\":\"BattleModel.MultiplyInt\"},\"isPercent\":true,\"$type\":\"BattleModel.ExtraBonusEffectForSkillProperty\"}",
               "對本狀態的變數一改為1"
             ],
             "條件": [
               "施術者是玩家的一員",
-              "本狀態的變數一 == 0"
+              "本狀態的變數一 == 0",
+              "隊伍攜帶探索道具Mandora_Medal(王國獎章)的數量 < 3"
+            ]
+          },
+          {
+            "效果": [
+              "{\"property\":-1,\"value\":{\"constant\":9,\"$type\":\"BattleModel.ConstanctInt\"},\"isPercent\":true,\"$type\":\"BattleModel.ExtraBonusEffectForSkillProperty\"}",
+              "對本狀態的變數一改為1"
+            ],
+            "條件": [
+              "施術者是玩家的一員",
+              "本狀態的變數一 == 0",
+              "隊伍攜帶探索道具Mandora_Medal(王國獎章)的數量 > 2"
             ]
           }
         ],
@@ -41,7 +53,7 @@
             ],
             "條件": [
               "目前回合輪到玩家首位",
-              "隊伍攜帶探索道具Mandora_Medal(王國獎章)的數量 == 3"
+              "隊伍攜帶探索道具Mandora_Medal(王國獎章)的數量 > 2"
             ]
           }
         ],
@@ -164,10 +176,10 @@
                   "$type": "BattleModel.ThisTeamExploreItemCount",
                   "ExploreItemId": "Mandora_Medal"
                 },
-                "op": 0,
+                "op": 2,
                 "right": {
                   "$type": "BattleModel.ConstanctInt",
-                  "constant": 3
+                  "constant": 2
                 }
               }
             ]
@@ -185,8 +197,9 @@
             "Actions": [
               {
                 "TargetField": {
-                  "$type": "BattleModel.ExtraPowerForSkillEffect",
+                  "$type": "BattleModel.ExtraBonusEffectForSkillProperty",
                   "isPercent": true,
+                  "property": -1,
                   "value": {
                     "$type": "BattleModel.MultiplyInt",
                     "left": {
@@ -241,6 +254,88 @@
                 "right": {
                   "$type": "BattleModel.ConstanctInt",
                   "constant": 0
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.ThisTeamExploreItemCount",
+                  "ExploreItemId": "Mandora_Medal"
+                },
+                "op": 1,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 3
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.ExtraBonusEffectForSkillProperty",
+                  "isPercent": true,
+                  "property": -1,
+                  "value": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 9
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 1
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CharacterInside",
+                "group": {
+                  "$type": "BattleModel.PVEPlayerTeam",
+                  "includeDead": true,
+                  "includeEmpty": false
+                },
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.ThisBuff"
+                  },
+                  "targetField": 4
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 0
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.ThisTeamExploreItemCount",
+                  "ExploreItemId": "Mandora_Medal"
+                },
+                "op": 2,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 2
                 }
               }
             ]
