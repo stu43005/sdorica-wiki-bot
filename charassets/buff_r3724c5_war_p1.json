@@ -1,0 +1,1088 @@
+{
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "OnEachSkillSetEnd": {
+        "效果": [
+          {
+            "效果": [
+              "立即施展技能：對敵人後排攻擊(在此技能組的目標中，敵人的倒數第3個角色的HpAndArmorDamage x0.6)"
+            ],
+            "條件": [
+              "施展的技能效果中包含(Attack)屬性",
+              "在此技能組的目標中，敵人的倒數第3個角色的HpAndArmorDamage > 0",
+              "施術者是玩家的一員"
+            ]
+          },
+          {
+            "效果": [
+              "立即施展技能：對敵人後排攻擊(在此技能組的目標中，敵人的倒數第2個角色的HpAndArmorDamage x0.6)"
+            ],
+            "條件": [
+              "施展的技能效果中包含(Attack)屬性",
+              "在此技能組的目標中，敵人的倒數第2個角色的HpAndArmorDamage > 0",
+              "施術者是玩家的一員"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnTurnBegin": {
+        "效果": [
+          {
+            "效果": [
+              "對本角色賦予永久10層defense_wall(堅盾)"
+            ],
+            "條件": [
+              "本角色的13 >= 19"
+            ]
+          },
+          {
+            "效果": [
+              "對本角色賦予永久10層defense_wall(堅盾)"
+            ],
+            "條件": [
+              "本角色的13 >= 39"
+            ]
+          },
+          {
+            "效果": [
+              "對本角色賦予永久10層defense_wall(堅盾)"
+            ],
+            "條件": [
+              "本角色的13 >= 50"
+            ]
+          },
+          {
+            "效果": [
+              "對本角色賦予永久10層defense_wall(堅盾)"
+            ],
+            "條件": [
+              "本角色的13 >= 60"
+            ]
+          },
+          {
+            "效果": [
+              "對本角色賦予永久10層defense_wall(堅盾)"
+            ],
+            "條件": [
+              "本角色的13 >= 81"
+            ]
+          },
+          {
+            "效果": [
+              "對本角色賦予永久10層defense_wall(堅盾)"
+            ],
+            "條件": [
+              "本角色的13 >= 93"
+            ]
+          },
+          {
+            "效果": [
+              "對本角色賦予永久10層defense_wall(堅盾)"
+            ],
+            "條件": [
+              "本角色的13 >= 103"
+            ]
+          }
+        ],
+        "條件": [
+          "(目前戰鬥回合數 == 0) 且 (目前回合輪到敵人首位)"
+        ]
+      },
+      "OnTurnEnd": {
+        "效果": [
+          {
+            "效果": [
+              "對本角色觸發S3",
+              "對本狀態的變數一改為1"
+            ],
+            "條件": [
+              "本角色的HP% <= 60",
+              "本角色的HP% > 40",
+              "本狀態的變數一 == 0"
+            ]
+          },
+          {
+            "效果": [
+              "對本角色觸發S3",
+              "對本狀態的變數二改為1"
+            ],
+            "條件": [
+              "本角色的HP% <= 40",
+              "本角色的HP% > 20",
+              "本狀態的變數二 == 0"
+            ]
+          },
+          {
+            "效果": [
+              "對本角色觸發S3",
+              "對本狀態的變數三改為1"
+            ],
+            "條件": [
+              "本角色的HP% <= 20",
+              "本角色的HP% > 0",
+              "本狀態的變數三 == 0"
+            ]
+          }
+        ],
+        "條件": [
+          "本角色的13 > 50"
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 99,
+    "標籤": "Forever"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+    "defense_wall",
+    "FSM_DefenseUp_Normal"
+  ],
+  "_actionTable": [
+    {
+      "Key": 8,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.AssignParameterSkillEffect",
+                  "AssignParameter": {
+                    "AssignCharacter": {
+                      "$type": "BattleModel.NoneCharacter"
+                    },
+                    "AssignCharacterGroup": {
+                      "$type": "BattleModel.NoneCharacters"
+                    },
+                    "AssignInteger": {
+                      "$type": "BattleModel.TransitionResultValue",
+                      "ResultValue": {
+                        "$type": "BattleModel.TotalResultsValueOfCharacter",
+                        "CharType": "Target",
+                        "Character": {
+                          "$type": "BattleModel.IndexOfChars",
+                          "backward": false,
+                          "group": {
+                            "$type": "BattleModel.PVEEnemyTeam",
+                            "includeDead": true,
+                            "includeEmpty": false
+                          },
+                          "index": {
+                            "$type": "BattleModel.ConstanctInt",
+                            "constant": 2
+                          }
+                        },
+                        "Results": {
+                          "$type": "BattleModel.ThisSkillSetResult"
+                        },
+                        "ValueType": "HpAndArmorDamage"
+                      }
+                    },
+                    "AssignIntegerGroup": {
+                      "$type": "BattleModel.ConstanctIntegerGroup",
+                      "Group": [
+                      ]
+                    }
+                  },
+                  "SkillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": null,
+                    "single": {
+                      "$type": "BattleModel.BackOfChars",
+                      "group": {
+                        "$type": "BattleModel.PVEEnemyTeam",
+                        "includeDead": false,
+                        "includeEmpty": false
+                      }
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.HpDamageSkillEffect",
+                        "Tag": 9,
+                        "_keyString": "",
+                        "_skillModifier": {
+                          "_constant": 0,
+                          "_parameter": {
+                            "$type": "BattleModel.BuffAssignedInteger",
+                            "_value": {
+                              "$type": "BattleModel.TransitionResultValue",
+                              "ResultValue": {
+                                "$type": "BattleModel.TotalResultsValueOfCharacter",
+                                "CharType": "Target",
+                                "Character": {
+                                  "$type": "BattleModel.IndexOfChars",
+                                  "backward": false,
+                                  "group": {
+                                    "$type": "BattleModel.PVEEnemyTeam",
+                                    "includeDead": true,
+                                    "includeEmpty": false
+                                  },
+                                  "index": {
+                                    "$type": "BattleModel.ConstanctInt",
+                                    "constant": 2
+                                  }
+                                },
+                                "Results": {
+                                  "$type": "BattleModel.ThisSkillSetResult"
+                                },
+                                "ValueType": "HpAndArmorDamage"
+                              }
+                            }
+                          },
+                          "_ratio": 0.6
+                        }
+                      }
+                    ]
+                  },
+                  "UseAssignParameter": true,
+                  "WillTriggerBuff": false
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.ThisSkillEffectTagContains",
+                "containsAll": 1
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.TransitionResultValue",
+                  "ResultValue": {
+                    "$type": "BattleModel.TotalResultsValueOfCharacter",
+                    "CharType": "Target",
+                    "Character": {
+                      "$type": "BattleModel.IndexOfChars",
+                      "backward": false,
+                      "group": {
+                        "$type": "BattleModel.PVEEnemyTeam",
+                        "includeDead": true,
+                        "includeEmpty": false
+                      },
+                      "index": {
+                        "$type": "BattleModel.ConstanctInt",
+                        "constant": 2
+                      }
+                    },
+                    "Results": {
+                      "$type": "BattleModel.ThisSkillSetResult"
+                    },
+                    "ValueType": "HpAndArmorDamage"
+                  }
+                },
+                "op": 2,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 0
+                }
+              },
+              {
+                "$type": "BattleModel.CharacterInside",
+                "group": {
+                  "$type": "BattleModel.PVEPlayerTeam",
+                  "includeDead": false,
+                  "includeEmpty": false
+                },
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.AssignParameterSkillEffect",
+                  "AssignParameter": {
+                    "AssignCharacter": {
+                      "$type": "BattleModel.NoneCharacter"
+                    },
+                    "AssignCharacterGroup": {
+                      "$type": "BattleModel.NoneCharacters"
+                    },
+                    "AssignInteger": {
+                      "$type": "BattleModel.TransitionResultValue",
+                      "ResultValue": {
+                        "$type": "BattleModel.TotalResultsValueOfCharacter",
+                        "CharType": "Target",
+                        "Character": {
+                          "$type": "BattleModel.IndexOfChars",
+                          "backward": false,
+                          "group": {
+                            "$type": "BattleModel.PVEEnemyTeam",
+                            "includeDead": false,
+                            "includeEmpty": false
+                          },
+                          "index": {
+                            "$type": "BattleModel.ConstanctInt",
+                            "constant": 1
+                          }
+                        },
+                        "Results": {
+                          "$type": "BattleModel.ThisSkillSetResult"
+                        },
+                        "ValueType": "HpAndArmorDamage"
+                      }
+                    },
+                    "AssignIntegerGroup": {
+                      "$type": "BattleModel.ConstanctIntegerGroup",
+                      "Group": [
+                      ]
+                    }
+                  },
+                  "SkillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": null,
+                    "single": {
+                      "$type": "BattleModel.BackOfChars",
+                      "group": {
+                        "$type": "BattleModel.PVEEnemyTeam",
+                        "includeDead": false,
+                        "includeEmpty": false
+                      }
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.HpDamageSkillEffect",
+                        "Tag": 9,
+                        "_keyString": "",
+                        "_skillModifier": {
+                          "_constant": 0,
+                          "_parameter": {
+                            "$type": "BattleModel.BuffAssignedInteger",
+                            "_value": {
+                              "$type": "BattleModel.TransitionResultValue",
+                              "ResultValue": {
+                                "$type": "BattleModel.TotalResultsValueOfCharacter",
+                                "CharType": "Target",
+                                "Character": {
+                                  "$type": "BattleModel.IndexOfChars",
+                                  "backward": false,
+                                  "group": {
+                                    "$type": "BattleModel.PVEEnemyTeam",
+                                    "includeDead": false,
+                                    "includeEmpty": false
+                                  },
+                                  "index": {
+                                    "$type": "BattleModel.ConstanctInt",
+                                    "constant": 1
+                                  }
+                                },
+                                "Results": {
+                                  "$type": "BattleModel.ThisSkillSetResult"
+                                },
+                                "ValueType": "HpAndArmorDamage"
+                              }
+                            }
+                          },
+                          "_ratio": 0.6
+                        }
+                      }
+                    ]
+                  },
+                  "UseAssignParameter": true,
+                  "WillTriggerBuff": false
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.ThisSkillEffectTagContains",
+                "containsAll": 1
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.TransitionResultValue",
+                  "ResultValue": {
+                    "$type": "BattleModel.TotalResultsValueOfCharacter",
+                    "CharType": "Target",
+                    "Character": {
+                      "$type": "BattleModel.IndexOfChars",
+                      "backward": false,
+                      "group": {
+                        "$type": "BattleModel.PVEEnemyTeam",
+                        "includeDead": true,
+                        "includeEmpty": false
+                      },
+                      "index": {
+                        "$type": "BattleModel.ConstanctInt",
+                        "constant": 1
+                      }
+                    },
+                    "Results": {
+                      "$type": "BattleModel.ThisSkillSetResult"
+                    },
+                    "ValueType": "HpAndArmorDamage"
+                  }
+                },
+                "op": 2,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 0
+                }
+              },
+              {
+                "$type": "BattleModel.CharacterInside",
+                "group": {
+                  "$type": "BattleModel.PVEPlayerTeam",
+                  "includeDead": false,
+                  "includeEmpty": false
+                },
+                "left": {
+                  "$type": "BattleModel.ThisSkillCaster"
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 2,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.CastSkillSet",
+                    "AssignParameter": {
+                      "AssignCharacter": {
+                        "$type": "BattleModel.NoneCharacter"
+                      },
+                      "AssignCharacterGroup": {
+                        "$type": "BattleModel.NoneCharacters"
+                      },
+                      "AssignInteger": {
+                        "$type": "BattleModel.ConstanctInt",
+                        "constant": 0
+                      },
+                      "AssignIntegerGroup": {
+                        "$type": "BattleModel.ConstanctIntegerGroup",
+                        "Group": [
+                        ]
+                      }
+                    },
+                    "UseAssignParameter": false,
+                    "resetCasterCD": false,
+                    "skillsetId": "S3"
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 1
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntCharaterField",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "targetField": 2
+                },
+                "op": 3,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 60
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntCharaterField",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "targetField": 2
+                },
+                "op": 2,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 40
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.ThisBuff"
+                  },
+                  "targetField": 4
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 0
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.CastSkillSet",
+                    "AssignParameter": {
+                      "AssignCharacter": {
+                        "$type": "BattleModel.NoneCharacter"
+                      },
+                      "AssignCharacterGroup": {
+                        "$type": "BattleModel.NoneCharacters"
+                      },
+                      "AssignInteger": {
+                        "$type": "BattleModel.ConstanctInt",
+                        "constant": 0
+                      },
+                      "AssignIntegerGroup": {
+                        "$type": "BattleModel.ConstanctIntegerGroup",
+                        "Group": [
+                        ]
+                      }
+                    },
+                    "UseAssignParameter": false,
+                    "resetCasterCD": false,
+                    "skillsetId": "S3"
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 8,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 1
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntCharaterField",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "targetField": 2
+                },
+                "op": 3,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 40
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntCharaterField",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "targetField": 2
+                },
+                "op": 2,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 20
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.ThisBuff"
+                  },
+                  "targetField": 8
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 0
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.CastSkillSet",
+                    "AssignParameter": {
+                      "AssignCharacter": {
+                        "$type": "BattleModel.NoneCharacter"
+                      },
+                      "AssignCharacterGroup": {
+                        "$type": "BattleModel.NoneCharacters"
+                      },
+                      "AssignInteger": {
+                        "$type": "BattleModel.ConstanctInt",
+                        "constant": 0
+                      },
+                      "AssignIntegerGroup": {
+                        "$type": "BattleModel.ConstanctIntegerGroup",
+                        "Group": [
+                        ]
+                      }
+                    },
+                    "UseAssignParameter": false,
+                    "resetCasterCD": false,
+                    "skillsetId": "S3"
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 16,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 1
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntCharaterField",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "targetField": 2
+                },
+                "op": 3,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 20
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntCharaterField",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "targetField": 2
+                },
+                "op": 2,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 0
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.ThisBuff"
+                  },
+                  "targetField": 16
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 0
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+          {
+            "$type": "BattleModel.IntCompare",
+            "left": {
+              "$type": "BattleModel.IntCharaterField",
+              "character": {
+                "$type": "BattleModel.ThisBuffOwner"
+              },
+              "targetField": 13
+            },
+            "op": 2,
+            "right": {
+              "$type": "BattleModel.ConstanctInt",
+              "constant": 50
+            }
+          }
+        ]
+      }
+    },
+    {
+      "Key": 1,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "defense_wall",
+                      "Forever": true,
+                      "LevelStack": 10,
+                      "OverwriteDuration": -1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntCharaterField",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "targetField": 13
+                },
+                "op": 4,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 19
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "defense_wall",
+                      "Forever": true,
+                      "LevelStack": 10,
+                      "OverwriteDuration": -1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntCharaterField",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "targetField": 13
+                },
+                "op": 4,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 39
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "defense_wall",
+                      "Forever": true,
+                      "LevelStack": 10,
+                      "OverwriteDuration": -1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntCharaterField",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "targetField": 13
+                },
+                "op": 4,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 50
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "defense_wall",
+                      "Forever": true,
+                      "LevelStack": 10,
+                      "OverwriteDuration": -1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntCharaterField",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "targetField": 13
+                },
+                "op": 4,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 60
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "defense_wall",
+                      "Forever": true,
+                      "LevelStack": 10,
+                      "OverwriteDuration": -1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntCharaterField",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "targetField": 13
+                },
+                "op": 4,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 81
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "defense_wall",
+                      "Forever": true,
+                      "LevelStack": 10,
+                      "OverwriteDuration": -1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntCharaterField",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "targetField": 13
+                },
+                "op": 4,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 93
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacter",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "defense_wall",
+                      "Forever": true,
+                      "LevelStack": 10,
+                      "OverwriteDuration": -1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntCharaterField",
+                  "character": {
+                    "$type": "BattleModel.ThisBuffOwner"
+                  },
+                  "targetField": 13
+                },
+                "op": 4,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 103
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+          {
+            "$type": "BattleModel.AndConditions",
+            "cond1": {
+              "$type": "BattleModel.IntCompare",
+              "left": {
+                "$type": "BattleModel.BattleActionRecordValue",
+                "RecordValue": {
+                  "$type": "BattleModel.ThisBattleTurnCount"
+                }
+              },
+              "op": 0,
+              "right": {
+                "$type": "BattleModel.ConstanctInt",
+                "constant": 0
+              }
+            },
+            "cond2": {
+              "$type": "BattleModel.CurrentTurnBelongsTo",
+              "character": {
+                "$type": "BattleModel.FrontOfChars",
+                "group": {
+                  "$type": "BattleModel.PVEEnemyTeam",
+                  "includeDead": true,
+                  "includeEmpty": true
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 99,
+  "_orderTable": {
+  },
+  "_tag": 64
+}
