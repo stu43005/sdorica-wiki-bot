@@ -62,11 +62,12 @@
           },
           {
             "效果": [
-              "對玩家首位賦予永久dreamwalking(【夢遊】)"
+              "對玩家中符合(是金位)的角色首位賦予永久dreamwalking(【夢遊】)"
             ],
             "條件": [
               "玩家中符合(是金位)的角色首位 沒有dreamwalking(【夢遊】)狀態",
-              "(目前戰鬥回合數 == 0) 且 (目前回合輪到敵人首位)"
+              "(目前戰鬥回合數 == 0) 且 (目前回合輪到敵人首位)",
+              "玩家中符合(是金位)的角色首位 {\"$type\":\"BattleModel.IsCharacterAlive\"}"
             ]
           }
         ],
@@ -204,9 +205,16 @@
                   "character": {
                     "$type": "BattleModel.FrontOfChars",
                     "group": {
-                      "$type": "BattleModel.PVEPlayerTeam",
-                      "includeDead": false,
-                      "includeEmpty": false
+                      "$type": "BattleModel.CharGroupWhere",
+                      "condition": {
+                        "$type": "BattleModel.StoneTypeIs",
+                        "type": 1
+                      },
+                      "group": {
+                        "$type": "BattleModel.PVEPlayerTeam",
+                        "includeDead": false,
+                        "includeEmpty": false
+                      }
                     }
                   },
                   "operation": {
@@ -275,6 +283,27 @@
                       "includeEmpty": true
                     }
                   }
+                }
+              },
+              {
+                "$type": "BattleModel.CharacterCondition",
+                "character": {
+                  "$type": "BattleModel.FrontOfChars",
+                  "group": {
+                    "$type": "BattleModel.CharGroupWhere",
+                    "condition": {
+                      "$type": "BattleModel.StoneTypeIs",
+                      "type": 1
+                    },
+                    "group": {
+                      "$type": "BattleModel.PVEPlayerTeam",
+                      "includeDead": false,
+                      "includeEmpty": false
+                    }
+                  }
+                },
+                "condition": {
+                  "$type": "BattleModel.IsCharacterAlive"
                 }
               }
             ]
