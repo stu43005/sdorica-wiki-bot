@@ -1,0 +1,539 @@
+{
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "OnTurnEnd": {
+        "效果": [
+          {
+            "效果": [
+              "對敵人所有角色賦予1回合1層stun(暈眩)",
+              "對{\"$type\":\"BattleModel.PVEField\"}所有角色賦予1回合1層fest057_WeakPointBonusDamage(我方全體角色此回合的攻擊技能效果、技能係數提升。)",
+              "對本狀態的變數一改為1"
+            ],
+            "條件": [
+              "((在{\"$type\":\"BattleModel.PVEField\"}首位的NoDeadOrUndead_DownExtraBonus&BonusEffect(死亡詛咒)狀態的變數一 > 4) 且 (在{\"$type\":\"BattleModel.PVEField\"}首位的NoDeadOrUndead_DownExtraBonus&BonusEffect(死亡詛咒)狀態的變數一 < 8)) 或 ((在{\"$type\":\"BattleModel.PVEField\"}首位的NoDeadOrUndead_DownExtraBonus&BonusEffect(死亡詛咒)狀態的變數二 > 10) 且 (在{\"$type\":\"BattleModel.PVEField\"}首位的NoDeadOrUndead_DownExtraBonus&BonusEffect(死亡詛咒)狀態的變數二 < 16))",
+              "本狀態的變數一 < 1"
+            ]
+          },
+          {
+            "效果": [
+              "對敵人所有角色賦予1回合1層stun(暈眩)",
+              "對{\"$type\":\"BattleModel.PVEField\"}所有角色賦予1回合1層fest057_WeakPointBonusDamage(我方全體角色此回合的攻擊技能效果、技能係數提升。)",
+              "對本狀態的變數一改為2"
+            ],
+            "條件": [
+              "((在{\"$type\":\"BattleModel.PVEField\"}首位的NoDeadOrUndead_DownExtraBonus&BonusEffect(死亡詛咒)狀態的變數一 > 7) 且 (在{\"$type\":\"BattleModel.PVEField\"}首位的NoDeadOrUndead_DownExtraBonus&BonusEffect(死亡詛咒)狀態的變數一 < 12)) 或 ((在{\"$type\":\"BattleModel.PVEField\"}首位的NoDeadOrUndead_DownExtraBonus&BonusEffect(死亡詛咒)狀態的變數二 > 15) 且 (在{\"$type\":\"BattleModel.PVEField\"}首位的NoDeadOrUndead_DownExtraBonus&BonusEffect(死亡詛咒)狀態的變數二 < 21))",
+              "本狀態的變數一 == 1"
+            ]
+          },
+          {
+            "效果": [
+              "對敵人所有角色賦予1回合1層stun(暈眩)",
+              "對{\"$type\":\"BattleModel.PVEField\"}所有角色賦予1回合1層fest057_WeakPointBonusDamage(我方全體角色此回合的攻擊技能效果、技能係數提升。)",
+              "對本狀態的變數一改為3"
+            ],
+            "條件": [
+              "(在{\"$type\":\"BattleModel.PVEField\"}首位的NoDeadOrUndead_DownExtraBonus&BonusEffect(死亡詛咒)狀態的變數一 > 11) 或 (在{\"$type\":\"BattleModel.PVEField\"}首位的NoDeadOrUndead_DownExtraBonus&BonusEffect(死亡詛咒)狀態的變數二 > 20)",
+              "本狀態的變數一 == 2"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 99,
+    "標籤": ""
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+    "stun",
+    "fest057_WeakPointBonusDamage"
+  ],
+  "_actionTable": [
+    {
+      "Key": 2,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacterGroup",
+                  "group": {
+                    "$type": "BattleModel.PVEEnemyTeam",
+                    "includeDead": false,
+                    "includeEmpty": false
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "stun",
+                      "Forever": false,
+                      "LevelStack": 1,
+                      "OverwriteDuration": 1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacterGroup",
+                  "group": {
+                    "$type": "BattleModel.PVEField"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "fest057_WeakPointBonusDamage",
+                      "Forever": false,
+                      "LevelStack": 1,
+                      "OverwriteDuration": 1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 1
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.OrConditions",
+                "cond1": {
+                  "$type": "BattleModel.AndConditions",
+                  "cond1": {
+                    "$type": "BattleModel.IntCompare",
+                    "left": {
+                      "$type": "BattleModel.IntBuffField",
+                      "buff": {
+                        "$type": "BattleModel.BuffOnCharater",
+                        "buffId": "NoDeadOrUndead_DownExtraBonus&BonusEffect",
+                        "character": {
+                          "$type": "BattleModel.FrontOfChars",
+                          "group": {
+                            "$type": "BattleModel.PVEField"
+                          }
+                        }
+                      },
+                      "targetField": 4
+                    },
+                    "op": 2,
+                    "right": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 4
+                    }
+                  },
+                  "cond2": {
+                    "$type": "BattleModel.IntCompare",
+                    "left": {
+                      "$type": "BattleModel.IntBuffField",
+                      "buff": {
+                        "$type": "BattleModel.BuffOnCharater",
+                        "buffId": "NoDeadOrUndead_DownExtraBonus&BonusEffect",
+                        "character": {
+                          "$type": "BattleModel.FrontOfChars",
+                          "group": {
+                            "$type": "BattleModel.PVEField"
+                          }
+                        }
+                      },
+                      "targetField": 4
+                    },
+                    "op": 1,
+                    "right": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 8
+                    }
+                  }
+                },
+                "cond2": {
+                  "$type": "BattleModel.AndConditions",
+                  "cond1": {
+                    "$type": "BattleModel.IntCompare",
+                    "left": {
+                      "$type": "BattleModel.IntBuffField",
+                      "buff": {
+                        "$type": "BattleModel.BuffOnCharater",
+                        "buffId": "NoDeadOrUndead_DownExtraBonus&BonusEffect",
+                        "character": {
+                          "$type": "BattleModel.FrontOfChars",
+                          "group": {
+                            "$type": "BattleModel.PVEField"
+                          }
+                        }
+                      },
+                      "targetField": 8
+                    },
+                    "op": 2,
+                    "right": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 10
+                    }
+                  },
+                  "cond2": {
+                    "$type": "BattleModel.IntCompare",
+                    "left": {
+                      "$type": "BattleModel.IntBuffField",
+                      "buff": {
+                        "$type": "BattleModel.BuffOnCharater",
+                        "buffId": "NoDeadOrUndead_DownExtraBonus&BonusEffect",
+                        "character": {
+                          "$type": "BattleModel.FrontOfChars",
+                          "group": {
+                            "$type": "BattleModel.PVEField"
+                          }
+                        }
+                      },
+                      "targetField": 8
+                    },
+                    "op": 1,
+                    "right": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 16
+                    }
+                  }
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.ThisBuff"
+                  },
+                  "targetField": 4
+                },
+                "op": 1,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 1
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacterGroup",
+                  "group": {
+                    "$type": "BattleModel.PVEEnemyTeam",
+                    "includeDead": false,
+                    "includeEmpty": false
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "stun",
+                      "Forever": false,
+                      "LevelStack": 1,
+                      "OverwriteDuration": 1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacterGroup",
+                  "group": {
+                    "$type": "BattleModel.PVEField"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "fest057_WeakPointBonusDamage",
+                      "Forever": false,
+                      "LevelStack": 1,
+                      "OverwriteDuration": 1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 2
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.OrConditions",
+                "cond1": {
+                  "$type": "BattleModel.AndConditions",
+                  "cond1": {
+                    "$type": "BattleModel.IntCompare",
+                    "left": {
+                      "$type": "BattleModel.IntBuffField",
+                      "buff": {
+                        "$type": "BattleModel.BuffOnCharater",
+                        "buffId": "NoDeadOrUndead_DownExtraBonus&BonusEffect",
+                        "character": {
+                          "$type": "BattleModel.FrontOfChars",
+                          "group": {
+                            "$type": "BattleModel.PVEField"
+                          }
+                        }
+                      },
+                      "targetField": 4
+                    },
+                    "op": 2,
+                    "right": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 7
+                    }
+                  },
+                  "cond2": {
+                    "$type": "BattleModel.IntCompare",
+                    "left": {
+                      "$type": "BattleModel.IntBuffField",
+                      "buff": {
+                        "$type": "BattleModel.BuffOnCharater",
+                        "buffId": "NoDeadOrUndead_DownExtraBonus&BonusEffect",
+                        "character": {
+                          "$type": "BattleModel.FrontOfChars",
+                          "group": {
+                            "$type": "BattleModel.PVEField"
+                          }
+                        }
+                      },
+                      "targetField": 4
+                    },
+                    "op": 1,
+                    "right": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 12
+                    }
+                  }
+                },
+                "cond2": {
+                  "$type": "BattleModel.AndConditions",
+                  "cond1": {
+                    "$type": "BattleModel.IntCompare",
+                    "left": {
+                      "$type": "BattleModel.IntBuffField",
+                      "buff": {
+                        "$type": "BattleModel.BuffOnCharater",
+                        "buffId": "NoDeadOrUndead_DownExtraBonus&BonusEffect",
+                        "character": {
+                          "$type": "BattleModel.FrontOfChars",
+                          "group": {
+                            "$type": "BattleModel.PVEField"
+                          }
+                        }
+                      },
+                      "targetField": 8
+                    },
+                    "op": 2,
+                    "right": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 15
+                    }
+                  },
+                  "cond2": {
+                    "$type": "BattleModel.IntCompare",
+                    "left": {
+                      "$type": "BattleModel.IntBuffField",
+                      "buff": {
+                        "$type": "BattleModel.BuffOnCharater",
+                        "buffId": "NoDeadOrUndead_DownExtraBonus&BonusEffect",
+                        "character": {
+                          "$type": "BattleModel.FrontOfChars",
+                          "group": {
+                            "$type": "BattleModel.PVEField"
+                          }
+                        }
+                      },
+                      "targetField": 8
+                    },
+                    "op": 1,
+                    "right": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 21
+                    }
+                  }
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.ThisBuff"
+                  },
+                  "targetField": 4
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 1
+                }
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacterGroup",
+                  "group": {
+                    "$type": "BattleModel.PVEEnemyTeam",
+                    "includeDead": false,
+                    "includeEmpty": false
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "stun",
+                      "Forever": false,
+                      "LevelStack": 1,
+                      "OverwriteDuration": 1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateCharacterGroup",
+                  "group": {
+                    "$type": "BattleModel.PVEField"
+                  },
+                  "operation": {
+                    "$type": "BattleModel.AddBuff",
+                    "buffToAdd": {
+                      "BuffId": "fest057_WeakPointBonusDamage",
+                      "Forever": false,
+                      "LevelStack": 1,
+                      "OverwriteDuration": 1,
+                      "UserDefineVariable": {
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 3
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.OrConditions",
+                "cond1": {
+                  "$type": "BattleModel.IntCompare",
+                  "left": {
+                    "$type": "BattleModel.IntBuffField",
+                    "buff": {
+                      "$type": "BattleModel.BuffOnCharater",
+                      "buffId": "NoDeadOrUndead_DownExtraBonus&BonusEffect",
+                      "character": {
+                        "$type": "BattleModel.FrontOfChars",
+                        "group": {
+                          "$type": "BattleModel.PVEField"
+                        }
+                      }
+                    },
+                    "targetField": 4
+                  },
+                  "op": 2,
+                  "right": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 11
+                  }
+                },
+                "cond2": {
+                  "$type": "BattleModel.IntCompare",
+                  "left": {
+                    "$type": "BattleModel.IntBuffField",
+                    "buff": {
+                      "$type": "BattleModel.BuffOnCharater",
+                      "buffId": "NoDeadOrUndead_DownExtraBonus&BonusEffect",
+                      "character": {
+                        "$type": "BattleModel.FrontOfChars",
+                        "group": {
+                          "$type": "BattleModel.PVEField"
+                        }
+                      }
+                    },
+                    "targetField": 8
+                  },
+                  "op": 2,
+                  "right": {
+                    "$type": "BattleModel.ConstanctInt",
+                    "constant": 20
+                  }
+                }
+              },
+              {
+                "$type": "BattleModel.IntCompare",
+                "left": {
+                  "$type": "BattleModel.IntBuffField",
+                  "buff": {
+                    "$type": "BattleModel.ThisBuff"
+                  },
+                  "targetField": 4
+                },
+                "op": 0,
+                "right": {
+                  "$type": "BattleModel.ConstanctInt",
+                  "constant": 2
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 99,
+  "_orderTable": {
+  },
+  "_tag": 0
+}

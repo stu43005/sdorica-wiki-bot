@@ -1,0 +1,108 @@
+{
+  "$interpreted": {
+    "Localization": "審判疑問：本角色受到自身或同伴的治療技能時，溢出的治療量轉化為傷害（傷害依層數增加）。此傷害不視為攻擊且不受其他效果影響。",
+    "動作": {
+    },
+    "持續時間": 0,
+    "最高層數": 10,
+    "標籤": "NotRemoveWhenDie | InfinityTrigger"
+  },
+  "$type": "BattleModel.NumerialBuff",
+  "_duration": 0,
+  "_effect": {
+    "LimitResultValueConditions": [
+    ],
+    "LimitResultValues": [
+    ],
+    "LimitSkillValueConditions": [
+    ],
+    "LimitSkillValues": [
+    ],
+    "NumericDamageEffecActions": [
+    ],
+    "NumericEffectConditions": [
+    ],
+    "NumericResultActions": [
+      {
+        "$type": "BattleModel.NumericDamageEffectData",
+        "Conditions": [
+          {
+            "$type": "BattleModel.OrConditions",
+            "cond1": {
+              "$type": "BattleModel.CharacterInside",
+              "group": {
+                "$type": "BattleModel.SelfTeamChars",
+                "excludeSelf": false,
+                "includeDead": false,
+                "includeEmpty": false,
+                "reference": {
+                  "$type": "BattleModel.ThisBuffOwner"
+                }
+              },
+              "left": {
+                "$type": "BattleModel.ThisSkillCaster"
+              }
+            },
+            "cond2": {
+              "$type": "BattleModel.CharacterInside",
+              "group": {
+                "$type": "BattleModel.PVEAssistant"
+              },
+              "left": {
+                "$type": "BattleModel.ThisSkillCaster"
+              }
+            }
+          },
+          {
+            "$type": "BattleModel.ThisSkillEffectTagContains",
+            "containsAll": 32
+          },
+          {
+            "$type": "BattleModel.IntCompare",
+            "left": {
+              "$type": "BattleModel.NumericSkillValue",
+              "Value": {
+                "$type": "BattleModel.NumericResultOverflowValue"
+              }
+            },
+            "op": 2,
+            "right": {
+              "$type": "BattleModel.ConstanctInt",
+              "constant": 0
+            }
+          }
+        ],
+        "IsMultipleTarget": true,
+        "SkillEffectValue": {
+          "$type": "BattleModel.MultiplyInt",
+          "left": {
+            "$type": "BattleModel.NumericSkillValue",
+            "Value": {
+              "$type": "BattleModel.NumericResultOverflowValue"
+            }
+          },
+          "right": {
+            "$type": "BattleModel.IntBuffField",
+            "buff": {
+              "$type": "BattleModel.ThisBuff"
+            },
+            "targetField": 1
+          }
+        },
+        "Target": null,
+        "Targets": {
+          "$type": "BattleModel.OppositeTeamChars",
+          "includeDead": false,
+          "includeEmpty": false,
+          "reference": {
+            "$type": "BattleModel.ThisBuffOwner"
+          }
+        }
+      }
+    ],
+    "NumericResultConditions": [
+    ]
+  },
+  "_maxLevel": 10,
+  "_tag": 32772
+}
