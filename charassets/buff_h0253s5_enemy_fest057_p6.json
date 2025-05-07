@@ -9,6 +9,7 @@
               "對本狀態的變數一改為1"
             ],
             "條件": [
+              "目前回合輪到玩家首位",
               "死亡或復活的角色是玩家的一員",
               "本狀態的變數一 < 1"
             ]
@@ -17,13 +18,14 @@
         "條件": [
         ]
       },
-      "OnBuffAdd": {
+      "OnBuffAddFromAnyone": {
         "效果": [
           {
             "效果": [
               "對本狀態的變數二改為1"
             ],
             "條件": [
+              "目前回合輪到玩家首位",
               "當前事件的狀態 是＂undead2(延命)＂",
               "本狀態的變數二 < 1"
             ]
@@ -32,15 +34,31 @@
         "條件": [
         ]
       },
-      "OnBuffStack": {
+      "OnBuffStackFromAnyone": {
         "效果": [
           {
             "效果": [
               "對本狀態的變數二改為1"
             ],
             "條件": [
+              "目前回合輪到玩家首位",
               "當前事件的狀態 是＂undead2(延命)＂",
               "本狀態的變數二 < 1"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      },
+      "OnTurnBegin": {
+        "效果": [
+          {
+            "效果": [
+              "對本狀態的變數一改為0",
+              "對本狀態的變數二改為0"
+            ],
+            "條件": [
+              "目前回合輪到玩家首位"
             ]
           }
         ],
@@ -55,6 +73,7 @@
               "立即施展技能：對玩家首位精神值-3"
             ],
             "條件": [
+              "目前回合輪到玩家首位",
               "(本狀態的變數一 < 1) 且 (本狀態的變數二 < 1)"
             ]
           }
@@ -88,8 +107,8 @@
                       "$type": "BattleModel.FrontOfChars",
                       "group": {
                         "$type": "BattleModel.PVEPlayerTeam",
-                        "includeDead": false,
-                        "includeEmpty": false
+                        "includeDead": true,
+                        "includeEmpty": true
                       }
                     },
                     "skillEffects": [
@@ -118,8 +137,8 @@
                       "$type": "BattleModel.FrontOfChars",
                       "group": {
                         "$type": "BattleModel.PVEPlayerTeam",
-                        "includeDead": false,
-                        "includeEmpty": false
+                        "includeDead": true,
+                        "includeEmpty": true
                       }
                     },
                     "skillEffects": [
@@ -139,6 +158,17 @@
               }
             ],
             "Conditions": [
+              {
+                "$type": "BattleModel.CurrentTurnBelongsTo",
+                "character": {
+                  "$type": "BattleModel.FrontOfChars",
+                  "group": {
+                    "$type": "BattleModel.PVEPlayerTeam",
+                    "includeDead": true,
+                    "includeEmpty": false
+                  }
+                }
+              },
               {
                 "$type": "BattleModel.AndConditions",
                 "cond1": {
@@ -180,7 +210,7 @@
       }
     },
     {
-      "Key": 8192,
+      "Key": 2097152,
       "Value": {
         "Actions": [
           {
@@ -202,6 +232,17 @@
               }
             ],
             "Conditions": [
+              {
+                "$type": "BattleModel.CurrentTurnBelongsTo",
+                "character": {
+                  "$type": "BattleModel.FrontOfChars",
+                  "group": {
+                    "$type": "BattleModel.PVEPlayerTeam",
+                    "includeDead": true,
+                    "includeEmpty": false
+                  }
+                }
+              },
               {
                 "$type": "BattleModel.BuffCondition",
                 "buff": {
@@ -235,7 +276,7 @@
       }
     },
     {
-      "Key": 16384,
+      "Key": 4194304,
       "Value": {
         "Actions": [
           {
@@ -257,6 +298,17 @@
               }
             ],
             "Conditions": [
+              {
+                "$type": "BattleModel.CurrentTurnBelongsTo",
+                "character": {
+                  "$type": "BattleModel.FrontOfChars",
+                  "group": {
+                    "$type": "BattleModel.PVEPlayerTeam",
+                    "includeDead": true,
+                    "includeEmpty": false
+                  }
+                }
+              },
               {
                 "$type": "BattleModel.BuffCondition",
                 "buff": {
@@ -313,6 +365,17 @@
             ],
             "Conditions": [
               {
+                "$type": "BattleModel.CurrentTurnBelongsTo",
+                "character": {
+                  "$type": "BattleModel.FrontOfChars",
+                  "group": {
+                    "$type": "BattleModel.PVEPlayerTeam",
+                    "includeDead": true,
+                    "includeEmpty": false
+                  }
+                }
+              },
+              {
                 "$type": "BattleModel.CharacterInside",
                 "group": {
                   "$type": "BattleModel.PVEPlayerTeam",
@@ -336,6 +399,62 @@
                 "right": {
                   "$type": "BattleModel.ConstanctInt",
                   "constant": 1
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    },
+    {
+      "Key": 1,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 4,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 0
+                    }
+                  }
+                }
+              },
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 0,
+                    "targetField": 8,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 0
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CurrentTurnBelongsTo",
+                "character": {
+                  "$type": "BattleModel.FrontOfChars",
+                  "group": {
+                    "$type": "BattleModel.PVEPlayerTeam",
+                    "includeDead": true,
+                    "includeEmpty": false
+                  }
                 }
               }
             ]

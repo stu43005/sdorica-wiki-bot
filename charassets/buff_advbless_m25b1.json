@@ -1,0 +1,129 @@
+{
+  "$interpreted": {
+    "Localization": "",
+    "動作": {
+      "OnTurnBegin": {
+        "效果": [
+          {
+            "效果": [
+              "立即施展技能：對玩家首位的友方指定對象賦予1回合1層bonusAttackPower(強化)、賦予1回合1層dexterity(靈巧)、賦予1回合1層TrueDamageBless(穿透賜福)"
+            ],
+            "條件": [
+              "目前回合輪到玩家首位"
+            ]
+          }
+        ],
+        "條件": [
+        ]
+      }
+    },
+    "持續時間": 0,
+    "最高層數": 99,
+    "標籤": "NotRemoveAfterBattle | Forever"
+  },
+  "$type": "BattleModel.Buff",
+  "ReferenceBuffKeys": [
+    "bonusAttackPower",
+    "dexterity",
+    "TrueDamageBless",
+    "dexterity_trigger",
+    "dexterity_fightback_0",
+    "dexterity_fightback_1",
+    "dexterity_fightback_2",
+    "dexterity_fightback_3",
+    "dexterity_fightback_4",
+    "b0028sx_dodge"
+  ],
+  "_actionTable": [
+    {
+      "Key": 1,
+      "Value": {
+        "Actions": [
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.DirectSkillEffect",
+                  "skillUnit": {
+                    "CanBeEmpty": false,
+                    "IsMultiple": false,
+                    "multi": {
+                      "$type": "BattleModel.PVEPlayerTeam",
+                      "includeDead": false,
+                      "includeEmpty": false
+                    },
+                    "single": {
+                      "$type": "BattleModel.FriendAssignee",
+                      "reference": {
+                        "$type": "BattleModel.FrontOfChars",
+                        "group": {
+                          "$type": "BattleModel.PVEPlayerTeam",
+                          "includeDead": false,
+                          "includeEmpty": false
+                        }
+                      }
+                    },
+                    "skillEffects": [
+                      {
+                        "$type": "BattleModel.AddBuffSkillEffect",
+                        "Tag": 132,
+                        "_buffData": [
+                          {
+                            "BuffId": "bonusAttackPower",
+                            "Forever": false,
+                            "LevelStack": 1,
+                            "OverwriteDuration": 1,
+                            "UserDefineVariable": {
+                            }
+                          },
+                          {
+                            "BuffId": "dexterity",
+                            "Forever": false,
+                            "LevelStack": 1,
+                            "OverwriteDuration": 1,
+                            "UserDefineVariable": {
+                            }
+                          },
+                          {
+                            "BuffId": "TrueDamageBless",
+                            "Forever": false,
+                            "LevelStack": 1,
+                            "OverwriteDuration": 1,
+                            "UserDefineVariable": {
+                            }
+                          }
+                        ],
+                        "_keyString": "1"
+                      }
+                    ]
+                  },
+                  "willTriggerBuff": true
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.CurrentTurnBelongsTo",
+                "character": {
+                  "$type": "BattleModel.FrontOfChars",
+                  "group": {
+                    "$type": "BattleModel.PVEPlayerTeam",
+                    "includeDead": false,
+                    "includeEmpty": false
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "Conditions": [
+        ]
+      }
+    }
+  ],
+  "_duration": 0,
+  "_maxLevel": 99,
+  "_orderTable": {
+  },
+  "_tag": 66
+}
