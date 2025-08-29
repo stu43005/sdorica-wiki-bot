@@ -34,7 +34,7 @@ export interface InterpretedAssistantSkill {
 }
 
 export interface InterpretedAssistantPassiveBuffSkill extends InterpretedAssistantSkill {
-	動作: string;
+	被動: string[];
 }
 
 export interface InterpretedAssistantActiveCastSkill extends InterpretedAssistantSkill {

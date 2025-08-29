@@ -185,7 +185,9 @@ function assistantSkill(a1: AssistantSkill) {
 			技能CD: a1._skillCD,
 			_startCastStack: a1._startCastStack,
 			_maxCastStack: a1._maxCastStack,
-			動作: `${targetResolve(a2.TargetSelector)}${addBuff(a2.BuffData)}`,
+			被動: a2.PassiveBuffDatas.map(
+				(p) => `${targetResolve(p.TargetSelector)}${addBuff(p.BuffData)}`,
+			),
 		};
 		return out;
 	}
