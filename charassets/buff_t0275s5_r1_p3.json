@@ -17,16 +17,6 @@
               "對本狀態的層數增加1"
             ],
             "條件": [
-              "施術者是敵人的一員",
-              "指定目標是本角色",
-              "施展的技能效果中包含(Attack)屬性"
-            ]
-          },
-          {
-            "效果": [
-              "對本狀態的層數增加1"
-            ],
-            "條件": [
               "施術者是本角色",
               "施展的技能效果中包含(NormalDamage)屬性",
               "施展的技能效果中包含(Attack)屬性"
@@ -50,7 +40,7 @@
         "效果": [
           {
             "效果": [
-              "{\"property\":1,\"value\":{\"constant\":7,\"$type\":\"BattleModel.ConstanctInt\"},\"isPercent\":true,\"$type\":\"BattleModel.ExtraBonusEffectForSkillProperty\"}"
+              "{\"property\":1,\"value\":{\"left\":{\"buff\":{\"$type\":\"BattleModel.ThisBuff\"},\"targetField\":1,\"$type\":\"BattleModel.IntBuffField\"},\"right\":{\"constant\":7,\"$type\":\"BattleModel.ConstanctInt\"},\"$type\":\"BattleModel.MultiplyInt\"},\"isPercent\":true,\"$type\":\"BattleModel.ExtraBonusEffectForSkillProperty\"}"
             ],
             "條件": [
               "施術者是本角色",
@@ -64,6 +54,16 @@
             "條件": [
               "本狀態的層數 == 5",
               "施術者是玩家中符合(是金位)的角色首位",
+              "施展的技能效果中包含(Attack)屬性"
+            ]
+          },
+          {
+            "效果": [
+              "對本狀態的層數增加1"
+            ],
+            "條件": [
+              "(施術者是玩家的一員) 或 ((施術者是敵人的一員) 或 ({\"SourceType\":\"AssistantSkill\",\"$type\":\"BattleModel.SkillSetSourceTypeEqual\"}))",
+              "指定目標是本角色",
               "施展的技能效果中包含(Attack)屬性"
             ]
           }
@@ -111,51 +111,6 @@
                 "right": {
                   "$type": "BattleModel.ThisBuffOwner"
                 }
-              }
-            ]
-          },
-          {
-            "Actions": [
-              {
-                "TargetField": {
-                  "$type": "BattleModel.OperateThisBuff",
-                  "operation": {
-                    "$type": "BattleModel.SetBuffField",
-                    "lastIndepedentStack": false,
-                    "setOperator": 1,
-                    "targetField": 1,
-                    "value": {
-                      "$type": "BattleModel.ConstanctInt",
-                      "constant": 1
-                    }
-                  }
-                }
-              }
-            ],
-            "Conditions": [
-              {
-                "$type": "BattleModel.CharacterInside",
-                "group": {
-                  "$type": "BattleModel.PVEEnemyTeam",
-                  "includeDead": false,
-                  "includeEmpty": false
-                },
-                "left": {
-                  "$type": "BattleModel.ThisSkillCaster"
-                }
-              },
-              {
-                "$type": "BattleModel.CharacterEqual",
-                "left": {
-                  "$type": "BattleModel.ThisSpecifiedTarget"
-                },
-                "right": {
-                  "$type": "BattleModel.ThisBuffOwner"
-                }
-              },
-              {
-                "$type": "BattleModel.ThisSkillEffectTagContains",
-                "containsAll": 1
               }
             ]
           },
@@ -275,8 +230,18 @@
                   "isPercent": true,
                   "property": 1,
                   "value": {
-                    "$type": "BattleModel.ConstanctInt",
-                    "constant": 7
+                    "$type": "BattleModel.MultiplyInt",
+                    "left": {
+                      "$type": "BattleModel.IntBuffField",
+                      "buff": {
+                        "$type": "BattleModel.ThisBuff"
+                      },
+                      "targetField": 1
+                    },
+                    "right": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 7
+                    }
                   }
                 }
               }
@@ -346,6 +311,72 @@
                       "includeEmpty": false
                     }
                   }
+                }
+              },
+              {
+                "$type": "BattleModel.ThisSkillEffectTagContains",
+                "containsAll": 1
+              }
+            ]
+          },
+          {
+            "Actions": [
+              {
+                "TargetField": {
+                  "$type": "BattleModel.OperateThisBuff",
+                  "operation": {
+                    "$type": "BattleModel.SetBuffField",
+                    "lastIndepedentStack": false,
+                    "setOperator": 1,
+                    "targetField": 1,
+                    "value": {
+                      "$type": "BattleModel.ConstanctInt",
+                      "constant": 1
+                    }
+                  }
+                }
+              }
+            ],
+            "Conditions": [
+              {
+                "$type": "BattleModel.OrConditions",
+                "cond1": {
+                  "$type": "BattleModel.CharacterInside",
+                  "group": {
+                    "$type": "BattleModel.PVEPlayerTeam",
+                    "includeDead": false,
+                    "includeEmpty": false
+                  },
+                  "left": {
+                    "$type": "BattleModel.ThisSkillCaster"
+                  }
+                },
+                "cond2": {
+                  "$type": "BattleModel.OrConditions",
+                  "cond1": {
+                    "$type": "BattleModel.CharacterInside",
+                    "group": {
+                      "$type": "BattleModel.PVEEnemyTeam",
+                      "includeDead": false,
+                      "includeEmpty": false
+                    },
+                    "left": {
+                      "$type": "BattleModel.ThisSkillCaster"
+                    }
+                  },
+                  "cond2": {
+                    "$type": "BattleModel.SkillSetSourceTypeEqual",
+                    "SourceType": "AssistantSkill"
+                  }
+                }
+              },
+              {
+                "$type": "BattleModel.CharacterEqual",
+                "left": {
+                  "$type": "BattleModel.ThisSpecifiedTarget"
+                },
+                "right": {
+                  "$type": "BattleModel.ThisBuffOwner"
                 }
               },
               {

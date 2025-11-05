@@ -331,6 +331,28 @@
         }
       ]
     },
+    "A1_1": {
+      "$type": "BattleModel.BattleSkill",
+      "_isFallBackIfEmptyTarget": false,
+      "_isResolveTargetEachUnit": false,
+      "_skillIdentifiers": [
+        {
+          "CanBeEmpty": false,
+          "IsMultiple": false,
+          "multi": null,
+          "single": {
+            "$type": "BattleModel.ThisSkillCaster"
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.EmptyBuffSkillEffect",
+              "Tag": 0,
+              "_keyString": ""
+            }
+          ]
+        }
+      ]
+    },
     "Arrive1": {
       "$type": "BattleModel.BattleSkill",
       "_isFallBackIfEmptyTarget": false,
@@ -1511,22 +1533,20 @@
       "_isResolveTargetEachUnit": false,
       "_skillIdentifiers": [
         {
-          "CanBeEmpty": false,
+          "CanBeEmpty": true,
           "IsMultiple": false,
           "multi": null,
           "single": {
-            "$type": "BattleModel.FrontOfChars",
+            "$type": "BattleModel.IndexOfChars",
+            "backward": false,
             "group": {
-              "$type": "BattleModel.CharGroupWhere",
-              "condition": {
-                "$type": "BattleModel.StoneTypeIs",
-                "type": 4
-              },
-              "group": {
-                "$type": "BattleModel.PVEPlayerTeam",
-                "includeDead": false,
-                "includeEmpty": false
-              }
+              "$type": "BattleModel.PVEPlayerTeam",
+              "includeDead": true,
+              "includeEmpty": false
+            },
+            "index": {
+              "$type": "BattleModel.ConstanctInt",
+              "constant": 1
             }
           },
           "skillEffects": [
@@ -1538,22 +1558,20 @@
           ]
         },
         {
-          "CanBeEmpty": false,
+          "CanBeEmpty": true,
           "IsMultiple": false,
           "multi": null,
           "single": {
-            "$type": "BattleModel.FrontOfChars",
+            "$type": "BattleModel.IndexOfChars",
+            "backward": false,
             "group": {
-              "$type": "BattleModel.CharGroupWhere",
-              "condition": {
-                "$type": "BattleModel.StoneTypeIs",
-                "type": 2
-              },
-              "group": {
-                "$type": "BattleModel.PVEPlayerTeam",
-                "includeDead": false,
-                "includeEmpty": false
-              }
+              "$type": "BattleModel.PVEPlayerTeam",
+              "includeDead": true,
+              "includeEmpty": false
+            },
+            "index": {
+              "$type": "BattleModel.ConstanctInt",
+              "constant": 0
             }
           },
           "skillEffects": [
@@ -1594,7 +1612,7 @@
         },
         {
           "CanBeEmpty": true,
-          "IsMultiple": true,
+          "IsMultiple": false,
           "multi": {
             "$type": "BattleModel.SelfTeamChars",
             "excludeSelf": true,
@@ -1605,7 +1623,19 @@
             }
           },
           "single": {
-            "$type": "BattleModel.ThisSkillCaster"
+            "$type": "BattleModel.FrontOfChars",
+            "group": {
+              "$type": "BattleModel.CharGroupWhere",
+              "condition": {
+                "$type": "BattleModel.StoneTypeIs",
+                "type": 4
+              },
+              "group": {
+                "$type": "BattleModel.PVEPlayerTeam",
+                "includeDead": false,
+                "includeEmpty": false
+              }
+            }
           },
           "skillEffects": [
             {
@@ -1641,7 +1671,72 @@
               "OverwriteDuration": 1,
               "RandomAddCount": 0,
               "Tag": 132,
-              "_keyString": "1"
+              "_keyString": "2"
+            }
+          ]
+        },
+        {
+          "CanBeEmpty": true,
+          "IsMultiple": false,
+          "multi": {
+            "$type": "BattleModel.SelfTeamChars",
+            "excludeSelf": true,
+            "includeDead": false,
+            "includeEmpty": false,
+            "reference": {
+              "$type": "BattleModel.ThisSkillCaster"
+            }
+          },
+          "single": {
+            "$type": "BattleModel.FrontOfChars",
+            "group": {
+              "$type": "BattleModel.CharGroupWhere",
+              "condition": {
+                "$type": "BattleModel.StoneTypeIs",
+                "type": 2
+              },
+              "group": {
+                "$type": "BattleModel.PVEPlayerTeam",
+                "includeDead": false,
+                "includeEmpty": false
+              }
+            }
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.AddBuffFromGroupedBuffIdSkillEffect",
+              "AddAllBuff": true,
+              "BuffGroupIds": {
+                "$type": "BattleModel.GeneralGroupedBuffId",
+                "BuffGroup": {
+                  "$type": "BattleModel.BuffGroupWhere",
+                  "condition": {
+                    "$type": "BattleModel.CheckBuffBelongLabel",
+                    "BuffLabel": {
+                      "BuffIdList": [
+                        "bonusAttackPower",
+                        "rage",
+                        "warfare",
+                        "leader"
+                      ],
+                      "BuffLabel": "generalBuff_attack"
+                    }
+                  },
+                  "group": {
+                    "$type": "BattleModel.AllBuffsOnChar",
+                    "character": {
+                      "$type": "BattleModel.ThisSkillCaster"
+                    }
+                  }
+                }
+              },
+              "Forever": false,
+              "LevelStack": 3,
+              "NotRepeatSameBuffId": false,
+              "OverwriteDuration": 1,
+              "RandomAddCount": 0,
+              "Tag": 132,
+              "_keyString": "3"
             }
           ]
         },
@@ -1701,22 +1796,45 @@
       "_isResolveTargetEachUnit": false,
       "_skillIdentifiers": [
         {
-          "CanBeEmpty": false,
+          "CanBeEmpty": true,
           "IsMultiple": false,
           "multi": null,
           "single": {
-            "$type": "BattleModel.FrontOfChars",
+            "$type": "BattleModel.IndexOfChars",
+            "backward": false,
             "group": {
-              "$type": "BattleModel.CharGroupWhere",
-              "condition": {
-                "$type": "BattleModel.StoneTypeIs",
-                "type": 4
-              },
-              "group": {
-                "$type": "BattleModel.PVEPlayerTeam",
-                "includeDead": false,
-                "includeEmpty": false
-              }
+              "$type": "BattleModel.PVEPlayerTeam",
+              "includeDead": true,
+              "includeEmpty": false
+            },
+            "index": {
+              "$type": "BattleModel.ConstanctInt",
+              "constant": 1
+            }
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.EmptyBuffSkillEffect",
+              "Tag": 0,
+              "_keyString": "1"
+            }
+          ]
+        },
+        {
+          "CanBeEmpty": true,
+          "IsMultiple": false,
+          "multi": null,
+          "single": {
+            "$type": "BattleModel.IndexOfChars",
+            "backward": false,
+            "group": {
+              "$type": "BattleModel.PVEPlayerTeam",
+              "includeDead": true,
+              "includeEmpty": false
+            },
+            "index": {
+              "$type": "BattleModel.ConstanctInt",
+              "constant": 0
             }
           },
           "skillEffects": [
@@ -1804,7 +1922,7 @@
               "OverwriteDuration": 1,
               "RandomAddCount": 0,
               "Tag": 132,
-              "_keyString": "1"
+              "_keyString": "2"
             }
           ]
         },
@@ -1864,22 +1982,45 @@
       "_isResolveTargetEachUnit": false,
       "_skillIdentifiers": [
         {
-          "CanBeEmpty": false,
+          "CanBeEmpty": true,
           "IsMultiple": false,
           "multi": null,
           "single": {
-            "$type": "BattleModel.FrontOfChars",
+            "$type": "BattleModel.IndexOfChars",
+            "backward": false,
             "group": {
-              "$type": "BattleModel.CharGroupWhere",
-              "condition": {
-                "$type": "BattleModel.StoneTypeIs",
-                "type": 2
-              },
-              "group": {
-                "$type": "BattleModel.PVEPlayerTeam",
-                "includeDead": false,
-                "includeEmpty": false
-              }
+              "$type": "BattleModel.PVEPlayerTeam",
+              "includeDead": true,
+              "includeEmpty": false
+            },
+            "index": {
+              "$type": "BattleModel.ConstanctInt",
+              "constant": 1
+            }
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.EmptyBuffSkillEffect",
+              "Tag": 0,
+              "_keyString": "1"
+            }
+          ]
+        },
+        {
+          "CanBeEmpty": true,
+          "IsMultiple": false,
+          "multi": null,
+          "single": {
+            "$type": "BattleModel.IndexOfChars",
+            "backward": false,
+            "group": {
+              "$type": "BattleModel.PVEPlayerTeam",
+              "includeDead": true,
+              "includeEmpty": false
+            },
+            "index": {
+              "$type": "BattleModel.ConstanctInt",
+              "constant": 0
             }
           },
           "skillEffects": [
@@ -1967,7 +2108,7 @@
               "OverwriteDuration": 1,
               "RandomAddCount": 0,
               "Tag": 132,
-              "_keyString": "1"
+              "_keyString": "2"
             }
           ]
         },
@@ -2027,11 +2168,46 @@
       "_isResolveTargetEachUnit": false,
       "_skillIdentifiers": [
         {
-          "CanBeEmpty": false,
+          "CanBeEmpty": true,
           "IsMultiple": false,
           "multi": null,
           "single": {
-            "$type": "BattleModel.ThisSkillCaster"
+            "$type": "BattleModel.IndexOfChars",
+            "backward": false,
+            "group": {
+              "$type": "BattleModel.PVEPlayerTeam",
+              "includeDead": true,
+              "includeEmpty": false
+            },
+            "index": {
+              "$type": "BattleModel.ConstanctInt",
+              "constant": 1
+            }
+          },
+          "skillEffects": [
+            {
+              "$type": "BattleModel.EmptyBuffSkillEffect",
+              "Tag": 0,
+              "_keyString": "1"
+            }
+          ]
+        },
+        {
+          "CanBeEmpty": true,
+          "IsMultiple": false,
+          "multi": null,
+          "single": {
+            "$type": "BattleModel.IndexOfChars",
+            "backward": false,
+            "group": {
+              "$type": "BattleModel.PVEPlayerTeam",
+              "includeDead": true,
+              "includeEmpty": false
+            },
+            "index": {
+              "$type": "BattleModel.ConstanctInt",
+              "constant": 0
+            }
           },
           "skillEffects": [
             {
@@ -2159,7 +2335,7 @@
             {
               "$type": "BattleModel.AmrGainSkillEffect",
               "Tag": 66,
-              "_keyString": "",
+              "_keyString": "1",
               "_skillModifier": {
                 "_constant": 0,
                 "_parameter": {
@@ -2253,6 +2429,39 @@
               ],
               "SkillID": "A1",
               "_conditionalSequences": [
+                {
+                  "ConditionList": [
+                  ],
+                  "_sequenceId": "A1_1"
+                }
+              ],
+              "seq": "",
+              "t": null
+            }
+          ],
+          "_characterCoolDown": 0,
+          "assignTarget": null,
+          "icon": 32
+        }
+      ],
+      "_isViewSkillSet": false
+    },
+    "A1_1": {
+      "ComboList": [
+        {
+          "ConditionList": [
+          ],
+          "SkillList": [
+            {
+              "ConditionList": [
+              ],
+              "SkillID": "A1_1",
+              "_conditionalSequences": [
+                {
+                  "ConditionList": [
+                  ],
+                  "_sequenceId": "A1"
+                }
               ],
               "seq": "",
               "t": null
@@ -2291,12 +2500,12 @@
               }
             },
             {
-              "$type": "BattleModel.CharGroupCondition",
-              "condition": {
-                "$type": "BattleModel.IntCompareC_Other",
-                "left": {
-                  "$type": "BattleModel.CountOfConditionalBuff",
-                  "Condition": {
+              "$type": "BattleModel.IntCompare",
+              "left": {
+                "$type": "BattleModel.CountOfBuffGroup",
+                "group": {
+                  "$type": "BattleModel.BuffGroupWhere",
+                  "condition": {
                     "$type": "BattleModel.CheckBuffBelongLabel",
                     "BuffLabel": {
                       "BuffIdList": [
@@ -2306,23 +2515,31 @@
                       ],
                       "BuffLabel": "generalBuff_attackButNoLeader"
                     }
+                  },
+                  "group": {
+                    "$type": "BattleModel.AllBuffsOnChar",
+                    "character": {
+                      "$type": "BattleModel.FrontOfChars",
+                      "group": {
+                        "$type": "BattleModel.CharGroupWhere",
+                        "condition": {
+                          "$type": "BattleModel.StoneTypeIs",
+                          "type": 2
+                        },
+                        "group": {
+                          "$type": "BattleModel.PVEPlayerTeam",
+                          "includeDead": false,
+                          "includeEmpty": false
+                        }
+                      }
+                    }
                   }
-                },
-                "op": 4,
-                "right": {
-                  "$type": "BattleModel.ConstanctInt",
-                  "constant": 3
                 }
               },
-              "everybody": false,
-              "group": {
-                "$type": "BattleModel.SelfTeamChars",
-                "excludeSelf": true,
-                "includeDead": false,
-                "includeEmpty": false,
-                "reference": {
-                  "$type": "BattleModel.ThisSkillCaster"
-                }
+              "op": 4,
+              "right": {
+                "$type": "BattleModel.ConstanctInt",
+                "constant": 3
               }
             }
           ],
@@ -2370,12 +2587,12 @@
               }
             },
             {
-              "$type": "BattleModel.CharGroupCondition",
-              "condition": {
-                "$type": "BattleModel.IntCompareC_Other",
-                "left": {
-                  "$type": "BattleModel.CountOfConditionalBuff",
-                  "Condition": {
+              "$type": "BattleModel.IntCompare",
+              "left": {
+                "$type": "BattleModel.CountOfBuffGroup",
+                "group": {
+                  "$type": "BattleModel.BuffGroupWhere",
+                  "condition": {
                     "$type": "BattleModel.CheckBuffBelongLabel",
                     "BuffLabel": {
                       "BuffIdList": [
@@ -2385,23 +2602,31 @@
                       ],
                       "BuffLabel": "generalBuff_attackButNoLeader"
                     }
+                  },
+                  "group": {
+                    "$type": "BattleModel.AllBuffsOnChar",
+                    "character": {
+                      "$type": "BattleModel.FrontOfChars",
+                      "group": {
+                        "$type": "BattleModel.CharGroupWhere",
+                        "condition": {
+                          "$type": "BattleModel.StoneTypeIs",
+                          "type": 4
+                        },
+                        "group": {
+                          "$type": "BattleModel.PVEPlayerTeam",
+                          "includeDead": false,
+                          "includeEmpty": false
+                        }
+                      }
+                    }
                   }
-                },
-                "op": 4,
-                "right": {
-                  "$type": "BattleModel.ConstanctInt",
-                  "constant": 3
                 }
               },
-              "everybody": false,
-              "group": {
-                "$type": "BattleModel.SelfTeamChars",
-                "excludeSelf": true,
-                "includeDead": false,
-                "includeEmpty": false,
-                "reference": {
-                  "$type": "BattleModel.ThisSkillCaster"
-                }
+              "op": 4,
+              "right": {
+                "$type": "BattleModel.ConstanctInt",
+                "constant": 3
               }
             }
           ],
@@ -2428,12 +2653,12 @@
         {
           "ConditionList": [
             {
-              "$type": "BattleModel.CharGroupCondition",
-              "condition": {
-                "$type": "BattleModel.IntCompareC_Other",
-                "left": {
-                  "$type": "BattleModel.CountOfConditionalBuff",
-                  "Condition": {
+              "$type": "BattleModel.IntCompare",
+              "left": {
+                "$type": "BattleModel.CountOfBuffGroup",
+                "group": {
+                  "$type": "BattleModel.BuffGroupWhere",
+                  "condition": {
                     "$type": "BattleModel.CheckBuffBelongLabel",
                     "BuffLabel": {
                       "BuffIdList": [
@@ -2443,23 +2668,27 @@
                       ],
                       "BuffLabel": "generalBuff_attackButNoLeader"
                     }
+                  },
+                  "group": {
+                    "$type": "BattleModel.AllBuffsOnCharGroup",
+                    "group": {
+                      "$type": "BattleModel.SlicedCharGroup",
+                      "backward": true,
+                      "count": 2,
+                      "fromIndex": 0,
+                      "group": {
+                        "$type": "BattleModel.PVEPlayerTeam",
+                        "includeDead": false,
+                        "includeEmpty": false
+                      }
+                    }
                   }
-                },
-                "op": 4,
-                "right": {
-                  "$type": "BattleModel.ConstanctInt",
-                  "constant": 3
                 }
               },
-              "everybody": false,
-              "group": {
-                "$type": "BattleModel.SelfTeamChars",
-                "excludeSelf": true,
-                "includeDead": false,
-                "includeEmpty": false,
-                "reference": {
-                  "$type": "BattleModel.ThisSkillCaster"
-                }
+              "op": 4,
+              "right": {
+                "$type": "BattleModel.ConstanctInt",
+                "constant": 3
               }
             }
           ],
