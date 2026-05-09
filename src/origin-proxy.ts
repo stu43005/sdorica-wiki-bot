@@ -104,15 +104,13 @@ export function createOriginProxy(port = 443) {
 		ssl: credentials,
 		secure: true,
 		router: {
-			// when request.headers.host == 'dev.localhost:3000',
-			// override target 'http://www.example.org' to 'http://localhost:8000'
-			// 'dev.localhost:3000': 'http://localhost:8000',
 			"sdorica.rayark.download": "https://sdorica.rayark.download",
 			"soe.rayark.download": "https://soe.rayark.download",
 		},
-		logProvider: (provider) => logger,
-		// logLevel: 'debug',
-		onProxyReq: onProxyReq,
+		logger: logger,
+		on: {
+			proxyReq: onProxyReq,
+		},
 	});
 
 	const app = express();
