@@ -1,4 +1,4 @@
-import MWBot from "mwbot";
+import type { Mwn } from "mwn";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { AssetbundleLookupTable } from "./assetbundle/assetbundle-lookup-table.js";
@@ -101,7 +101,7 @@ async function applyHtmlTemplate(title: string, body: string) {
 	return template.replace(/<%title%>/g, title).replace(/<%body%>/g, body);
 }
 
-async function outWiki(bot: MWBot | undefined, title: string, out: string) {
+async function outWiki(bot: Mwn | undefined, title: string, out: string) {
 	const ext = out.startsWith("#") ? "md" : out.startsWith("<") ? "html" : "txt";
 	if (ext === "html") {
 		out = await applyHtmlTemplate(title, out);
@@ -116,7 +116,7 @@ async function outWiki(bot: MWBot | undefined, title: string, out: string) {
 	}
 }
 
-async function outWikiJson(bot: MWBot | undefined, title: string, data: any) {
+async function outWikiJson(bot: Mwn | undefined, title: string, data: any) {
 	await outJson(path.join(WIKI_PATH, `${title}.json`), data);
 	if (bot) {
 		await bot.editOnDifference(
@@ -126,7 +126,7 @@ async function outWikiJson(bot: MWBot | undefined, title: string, data: any) {
 	}
 }
 
-async function outWikiConstant(bot: MWBot | undefined, title: string, value: string) {
+async function outWikiConstant(bot: Mwn | undefined, title: string, value: string) {
 	if (value && bot) {
 		await bot.editOnDifference(
 			`模板:Constant/${title}`,
@@ -136,7 +136,7 @@ async function outWikiConstant(bot: MWBot | undefined, title: string, value: str
 }
 
 export async function wikiMain(updateWiki?: boolean) {
-	let bot: MWBot | undefined;
+	let bot: Mwn | undefined;
 	try {
 		if (updateWiki) {
 			bot = await getMWBot();

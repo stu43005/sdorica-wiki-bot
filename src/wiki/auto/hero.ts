@@ -1,4 +1,4 @@
-import MWBot from "mwbot";
+import type { Mwn } from "mwn";
 import { Logger } from "../../logger.js";
 import { getHeroJsonData } from "../../wiki-hero.js";
 
@@ -6,7 +6,7 @@ const logger = new Logger("mwbot");
 
 const checkRanks = ["三階+", "Skin", "Alt"];
 
-export async function wikiHeroBot(bot: MWBot) {
+export async function wikiHeroBot(bot: Mwn) {
 	const json = getHeroJsonData();
 
 	for (const name in json) {

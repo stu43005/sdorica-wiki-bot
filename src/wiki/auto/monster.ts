@@ -1,4 +1,4 @@
-import MWBot from "mwbot";
+import type { Mwn } from "mwn";
 import { ImperiumData } from "../../imperium-data.js";
 import { TemplateFormatter } from "../../lib/TemplateFormatter.js";
 import {
@@ -18,7 +18,7 @@ const MonsterSpecialityTable = ImperiumData.fromGamedata().getTable("MonsterSpec
 
 const skip = ["嗜血軟泥怪", "巨蠍", "壞蛋", "漂浮水母", "脫毛棉花鼠", "滑翔蜈蚣"];
 
-export async function wikiMonsterBot(bot: MWBot) {
+export async function wikiMonsterBot(bot: Mwn) {
 	const skillIds = arrayUnique(MonsterSkillTable.rows.map((r) => r.get("skillId")));
 	for (let i = 0; i < skillIds.length; i++) {
 		const skillId = skillIds[i];

@@ -1,4 +1,4 @@
-import MWBot from "mwbot";
+import type { Mwn } from "mwn";
 import { Logger } from "../../logger.js";
 
 const runeNames = [
@@ -55,7 +55,7 @@ const runeNames = [
 
 const logger = new Logger("mwbot");
 
-export async function wikiRuneRedirectBot(bot: MWBot) {
+export async function wikiRuneRedirectBot(bot: Mwn) {
 	for (const name of runeNames) {
 		const text = await bot.readText(name, false);
 		const target = `符文#${name}`;

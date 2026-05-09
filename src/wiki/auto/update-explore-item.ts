@@ -1,10 +1,10 @@
-import MWBot from "mwbot";
+import type { Mwn } from "mwn";
 import { Logger } from "../../logger.js";
 import { ExploreItem } from "../../model/explore-item.js";
 
 const logger = new Logger("mwbot");
 
-export async function wikiUpdateExploreItemBot(bot: MWBot) {
+export async function wikiUpdateExploreItemBot(bot: Mwn) {
 	for (const item of ExploreItem.getAll().filter((i) => i.enable)) {
 		const pageName = item.getWikiPageName();
 

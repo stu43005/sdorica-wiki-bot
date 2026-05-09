@@ -1,4 +1,4 @@
-import MWBot from "mwbot";
+import type { Mwn } from "mwn";
 import { ImperiumData } from "../../imperium-data.js";
 import { setDefaultLanguage } from "../../localization.js";
 import { Logger } from "../../logger.js";
@@ -17,7 +17,7 @@ const QuestsTable = ImperiumData.fromGamedata().getTable("Quests");
 
 const logger = new Logger("mwbot");
 
-export async function wikiScRedirectBot(bot: MWBot) {
+export async function wikiScRedirectBot(bot: Mwn) {
 	if (enable.hero) {
 		for (const hero of Hero.getAll().filter((h) => h.enable)) {
 			const tcName = hero.firstname;
