@@ -134,8 +134,9 @@ mwn 的 `bot.request(params, customOptions)` 簽名與 mwbot 一致（mwn `bot.d
 `MWBot.RequestOptions` 在呼叫端僅作為 `customRequestOptions?: MWBot.RequestOptions` 的選用參數型別出現，且呼叫端**不會傳入此參數**（grep 確認所有 `bot.readText`、`bot.exists`、`bot.editOnDifference` 呼叫處皆無第三或第四個引數）。
 
 替換策略：
-- 在新的 `WikiBot` wrapper 中宣告 `RequestOptions` 為 `mwn` 的 `RawRequestParams` alias。
-- 對外 export 的型別別名 `WikiRequestOptions` 給呼叫端引用（雖然目前無人引用）。
+
+- 在 `src/wiki-bot.ts` 內部使用 `mwn` 的 `RawRequestParams` 型別作為 `customRequestOptions?` 的型別宣告。
+- **不對外 export** 任何新的型別別名；若未來呼叫端需要引用，再依需求新增。遵守最小改動原則。
 
 #### 3.1.5 編輯後的 webhook 通知
 
@@ -190,7 +191,7 @@ const exampleProxy = createProxyMiddleware({
 });
 ```
 
-`onProxyReq` 函式本身的簽名 `(proxyReq, req, res) => void` 在 v4 維持不變。
+`onProxyReq` 函式本身的簽名 `(proxyReq, req, res) => void` 在 v3 維持不變。
 
 ### 3.3 fast-xml-parser 升級設計
 
@@ -244,14 +245,14 @@ mwn 內建型別，本專案的自訂 ambient module 宣告不再需要：
 | V1 | 編譯所有入口檔 | `npm run build` | exit code 0，產出 `dist/` |
 | V2 | viewerjs webpack 打包 | `npm run webpack` | exit code 0；`dist/viewerjs/*.js`（或現有的 webpack 產出位置）存在；若失敗，可能需要在 `webpack.config.*` 加 `externals: { vue: 'Vue', 'vue-axios': 'VueAxios' }` |
 | V3 | origin-proxy 啟動 | 程式碼層級驗證（type check + lint）；不要求運行時測試（需 credentials） | V1、V2 通過即視為通過 |
-| V4 | mwbot → mwn 行為等價 | 在 dev 模式（`NODE_ENV=development`）執行 `npm run wiki:dev` 一次，目標頁面範圍限縮為 `使用者:小飄飄/wiki/*`（沙盒範圍）。觀察 log。 | (a) 至少一次 `Edit:` 或 `No modify:` log 出現；(b) 無 `UnhandledPromiseRejection` / 拋出 Error；(c) 若出現 `Edit:` log，手動到 sdorica.xyz 該頁面查看 diff，確認內容與本地產出一致（手動 visual check 即可，無需自動 diff）。 |
+| V4 | mwbot → mwn 行為等價 | 在 dev 模式（`NODE_ENV=development`）執行 `npm run wiki:dev` 一次。現行流程會寫入三類頁面：`使用者:小飄飄/wiki/*`、`使用者:小飄飄/bot/*.json`、`模板:Constant/*`（皆由 [src/wiki.ts:104-134](../../../src/wiki.ts#L104) 的 `outWiki` / `outWikiJson` / `outWikiConstant` 統一控制）。觀察 log。 | (a) 至少一次 `Edit:` 或 `No modify:` log 出現；(b) 無 `UnhandledPromiseRejection` / 拋出 Error；(c) 若出現 `Edit:` log，**手動到 sdorica.xyz 該頁面查看 diff，確認內容與本地產出一致**（手動 visual check 即可）。本驗證不要求新增 sandbox filter（明確排除於 spec 範圍）；驗收者需注意 dev 模式仍會對線上 wiki 寫入。 |
 | V5 | asset list 解析 | 在 dev 模式執行 `npm run assetbundle:dev` 一次 | (a) exit code 0；(b) 任一輸出的 `assets.json` 與升級前同 commit 的對應 `assets.json` diff 為空（升級前先以 git stash 暫存或 worktree 比對） |
 
 ### 4.4 兼容性檢查
 
 - 確認 `package.json` 不再有 `request`、`mwbot`、`@types/request`。
 - 確認 `dependencies` 中不再有 `vue`、`vue-axios`；`devDependencies` 中加入。
-- 確認新增 `mwn`（dependencies）、`fast-xml-parser` 升至 ^5.7.3、`http-proxy-middleware` 升至 ^4.0.0。
+- 確認新增 `mwn`（dependencies）、`fast-xml-parser` 升至 ^5.7.3、`http-proxy-middleware` 升至 ^3.0.5。
 
 ## 5. 風險與緩解
 
@@ -259,7 +260,7 @@ mwn 內建型別，本專案的自訂 ambient module 宣告不再需要：
 | --- | --- | --- | --- |
 | mwn 的 `save()` 行為與 mwbot `edit()` 不完全等價（例如 token 處理、重試策略） | 中 | wiki 編輯失敗 | 實作時保留 `editOnDifference` 函式內的 try/catch 與既有 logging；首次 dry-run 觀察 |
 | mwn 的 `read()` 在頁面不存在時的回傳形態不同於 mwbot | 中 | `exists()` 邏輯誤判 | 在 `readText` 實作時直接走 `bot.request({action:'query', ...})`，自己解析 `query.pages` 結構，避開 `bot.read()` 的便捷封裝差異（完全保留現有 mwbot 實作的解析邏輯） |
-| http-proxy-middleware v4 對 `router` 物件型別更嚴格 | 低 | type error | type check 階段就會出現；如出現可改用 `pathRewrite` 或 function form |
+| http-proxy-middleware v3 對 `router` 物件型別比 v1 更嚴格 | 低 | type error | type check 階段就會出現；如出現可改用 `pathRewrite` 或 function form |
 | vue 移到 devDependencies 後 webpack 找不到 vue-axios | 低 | webpack build fail | webpack 將 vue-axios 視為外部 module（viewerjs 環境提供），實際上不打包；若有問題加 `externals` 設定 |
 
 ## 6. 交付物
