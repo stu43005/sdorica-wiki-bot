@@ -8,7 +8,7 @@ const xmlParser = new XMLParser({
 	ignoreAttributes: false,
 	attributeNamePrefix: "@",
 	isArray: (name, jpath) => {
-		return ["Assets.Asset"].indexOf(jpath) !== -1;
+		return ["Assets.Asset"].indexOf(jpath.toString()) !== -1;
 	},
 });
 
