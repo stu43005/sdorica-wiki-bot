@@ -1,4 +1,3 @@
-import "vue";
 import "vue-axios";
 import { ImperiumDataRaw } from "../data-raw-type.js";
 
